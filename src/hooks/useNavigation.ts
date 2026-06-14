@@ -1,0 +1,65 @@
+import { useState } from 'react';
+
+export type AppView =
+  | 'home'
+  | 'browse'
+  | 'organisations'
+  | 'org-profile'
+  | 'detail'
+  | 'submit'
+  | 'about'
+  | 'contact'
+  | 'my-listings'
+  | 'my-profile'
+  | 'profile-setup';
+
+export interface NavigationState {
+  currentView: AppView;
+  selectedListingId: string | null;
+  selectedOrgId: string | null;
+}
+
+export const useNavigation = (isAuthenticated: boolean, openSignIn: () => void) => {
+  const [currentView, setCurrentView] = useState<AppView>('home');
+  const [selectedListingId, setSelectedListingId] = useState<string | null>(null);
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
+
+  const handleNavigate = (view: string) => {
+    if (view === 'submit' && !isAuthenticated) {
+      openSignIn();
+      return;
+    }
+    if (view === 'home') {
+      setCurrentView('home');
+      setSelectedListingId(null);
+    } else {
+      setCurrentView(view as AppView);
+      setSelectedListingId(null);
+    }
+  };
+
+  const handleSelectListing = (id: string) => {
+    setSelectedListingId(id);
+    setCurrentView('detail');
+  };
+
+  const handleSelectOrganisation = (id: string) => {
+    setSelectedOrgId(id);
+    setCurrentView('org-profile');
+  };
+
+  const handleViewListingFromOrg = (id: string) => {
+    setSelectedListingId(id);
+    setCurrentView('detail');
+  };
+
+  return {
+    currentView,
+    selectedListingId,
+    selectedOrgId,
+    handleNavigate,
+    handleSelectListing,
+    handleSelectOrganisation,
+    handleViewListingFromOrg,
+  };
+};
