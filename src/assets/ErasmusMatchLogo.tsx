@@ -1,0 +1,56 @@
+import React from 'react';
+
+interface LogoProps {
+  size?: number;
+  className?: string;
+}
+
+export default function ErasmusMatchLogo({ size = 32, className = '' }: LogoProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 500 500"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <defs>
+        <clipPath id="or-base"><path d="M0 0 H500 V500 H0 Z M187 0 H313 V500 H187 Z" fillRule="evenodd"/></clipPath>
+        <clipPath id="or-top"><rect x="187" y="0" width="126" height="250"/></clipPath>
+        <clipPath id="bl-bot"><rect x="187" y="250" width="126" height="250"/></clipPath>
+      </defs>
+
+      {/* BLUE RING (full, sits behind) */}
+      <path fill="#2b5ac7" fillRule="evenodd" d="
+        M172 89
+        a161 161 0 1 0 0.001 0 Z
+        M172 131
+        a119 119 0 1 1 -0.001 0 Z
+      "/>
+
+      {/* ORANGE RING — outside the overlap zone */}
+      <path fill="#f48c06" fillRule="evenodd" clipPath="url(#or-base)" d="
+        M328 89
+        a161 161 0 1 0 0.001 0 Z
+        M328 131
+        a119 119 0 1 1 -0.001 0 Z
+      "/>
+
+      {/* ORANGE RING — top half of overlap (orange in front) */}
+      <path fill="#f48c06" fillRule="evenodd" clipPath="url(#or-top)" d="
+        M328 89
+        a161 161 0 1 0 0.001 0 Z
+        M328 131
+        a119 119 0 1 1 -0.001 0 Z
+      "/>
+
+      {/* BLUE RING — bottom half of overlap (blue in front) */}
+      <path fill="#2b5ac7" fillRule="evenodd" clipPath="url(#bl-bot)" d="
+        M172 89
+        a161 161 0 1 0 0.001 0 Z
+        M172 131
+        a119 119 0 1 1 -0.001 0 Z
+      "/>
+    </svg>
+  );
+}

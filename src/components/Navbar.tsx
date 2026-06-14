@@ -4,7 +4,8 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut } from 'lucide-react';
+import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut } from 'lucide-react';
+import ErasmusMatchLogo from '../assets/ErasmusMatchLogo';
 
 interface NavbarProps {
   currentView: string;
@@ -58,9 +59,7 @@ export default function Navbar({
             onClick={() => { onNavigate('home'); setMobileMenuOpen(false); }}
             className="flex items-center space-x-2 cursor-pointer group"
           >
-            <div className="p-2 bg-brand-primary text-white rounded-xl transition-all duration-300 group-hover:rotate-6">
-              <Sparkles className="w-5 h-5" />
-            </div>
+            <ErasmusMatchLogo size={32} />
             <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-brand-primary">
               Erasmus<span className="text-brand-accent">Match</span>
             </span>
