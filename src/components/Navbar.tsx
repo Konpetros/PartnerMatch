@@ -40,7 +40,7 @@ export default function Navbar({
   }, []);
 
   const navItems = [
-    { id: 'home', label: 'Browse Directory', icon: Compass },
+    { id: 'browse', label: 'Browse Directory', icon: Compass },
     { id: 'organisations', label: 'Organisations', icon: Users },
     { id: 'submit', label: 'Submit Listing', icon: PlusCircle },
   ];

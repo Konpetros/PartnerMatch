@@ -9,6 +9,7 @@ import { Listing, OrganisationProfile } from './types';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomeView from './components/HomeView';
+import BrowseView from './components/BrowseView';
 import DetailView from './components/DetailView';
 import SubmitView from './components/SubmitView';
 import MyListingsView from './components/MyListingsView';
@@ -190,6 +191,16 @@ export default function App() {
                 listings={listings} 
                 onNavigate={handleNavigate} 
                 onSelectListing={handleSelectListing} 
+              />
+            );
+          }
+
+          if (currentView === 'browse') {
+            return (
+              <BrowseView
+                listings={listings}
+                onNavigate={handleNavigate}
+                onSelectListing={handleSelectListing}
               />
             );
           }

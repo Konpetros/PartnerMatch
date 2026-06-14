@@ -3,21 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
-import { Listing, SearchFilters, KeyAction } from '../types';
-import { COUNTRIES, ORGANISATION_TYPES, THEMATIC_AREAS, KEY_ACTIONS, ERASMUS_SECTORS } from '../data';
+import React from 'react';
+import { Listing, KeyAction } from '../types';
 import { 
   Search, 
-  MapPin, 
-  Building2, 
-  BookOpen, 
-  RefreshCcw, 
   ArrowRight, 
   Users, 
   Globe2, 
   Layers, 
-  Sparkles,
-  Inbox
+  BookOpen, 
+  RefreshCcw 
 } from 'lucide-react';
 
 interface HomeViewProps {
@@ -27,30 +22,7 @@ interface HomeViewProps {
 }
 
 export default function HomeView({ listings, onNavigate, onSelectListing }: HomeViewProps) {
-  // Search & Filter State
-  const [filters, setFilters] = useState<SearchFilters>({
-    searchQuery: '',
-    country: '',
-    organisationType: '',
-    keyActions: [],
-    thematicArea: '',
-    sector: '',
-    projectRole: ''
-  });
-
-  const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
-
-  const isAnyFilterActive = 
-    filters.country !== '' ||
-    filters.organisationType !== '' ||
-    filters.thematicArea !== '' ||
-    filters.sector !== '' ||
-    filters.keyActions.length > 0 ||
-    filters.projectRole !== '';
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [displayedListings, setDisplayedListings] = useState<Listing[]>(listings);
-
+  // Helper to format date
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
     const date = new Date(dateStr);
@@ -60,111 +32,6 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
     const month = months[date.getMonth()];
     const year = date.getFullYear();
     return `${day} ${month} ${year}`;
-  };
-
-  // Trigger simulated loading skeleton when filters/sorting modify
-  useEffect(() => {
-    setIsLoading(true);
-    const handler = setTimeout(() => {
-      // Perform client-side filter logic
-      const filtered = listings.filter((item) => {
-        // Query search matches name, city, or description
-        const query = filters.searchQuery.toLowerCase().trim();
-        const cityValue = item.submitterProfile?.city || (item as any).city || '';
-        const matchesQuery = !query || 
-          item.name.toLowerCase().includes(query) ||
-          item.description.toLowerCase().includes(query) ||
-          cityValue.toLowerCase().includes(query);
-
-        // Country match
-        const matchesCountry = !filters.country || item.country === filters.country;
-
-        // Org type match
-        const matchesOrgType = !filters.organisationType || item.type === filters.organisationType;
-
-        // Key Actions match (item has all of the selected active filters, or any, let's do matching any selected key action, or if no filter selected, match all)
-        const matchesKeyAction = filters.keyActions.length === 0 || 
-          filters.keyActions.some(action => item.keyActions.includes(action));
-
-        // Thematic Area match
-        const matchesThematic = !filters.thematicArea || item.thematicAreas.includes(filters.thematicArea);
-
-        // Project Role match
-        const matchesProjectRole = !filters.projectRole || item.projectRole === filters.projectRole;
-
-        // Sector match
-        const matchesSector = !filters.sector || item.submitterProfile?.sector === filters.sector;
-
-        return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic && matchesSector && matchesProjectRole;
-      });
-
-      // Apply sorting AFTER filtering
-      const sorted = [...filtered].sort((a, b) => {
-        if (sortBy === 'newest') {
-          const dateA = a.createdAt || '';
-          const dateB = b.createdAt || '';
-          if (dateA !== dateB) {
-            return dateB.localeCompare(dateA); // descending
-          }
-          return a.id.localeCompare(b.id);
-        } else if (sortBy === 'deadline') {
-          const dlA = a.partnerSearchDeadline || '';
-          const dlB = b.partnerSearchDeadline || '';
-          return dlA.localeCompare(dlB); // ascending
-        } else if (sortBy === 'views') {
-          const viewsA = a.views ?? 0;
-          const viewsB = b.views ?? 0;
-          return viewsB - viewsA; // descending
-        }
-        return 0;
-      });
-
-      setDisplayedListings(sorted);
-      setIsLoading(false);
-    }, 500); // 500ms feel-good delay
-
-    return () => clearTimeout(handler);
-  }, [filters, sortBy, listings]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters(prev => ({ ...prev, searchQuery: e.target.value }));
-  };
-
-  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters(prev => ({ ...prev, country: e.target.value }));
-  };
-
-  const handleOrgTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters(prev => ({ ...prev, organisationType: e.target.value }));
-  };
-
-  const handleThematicChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters(prev => ({ ...prev, thematicArea: e.target.value }));
-  };
-
-  const handleSectorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilters(prev => ({ ...prev, sector: e.target.value }));
-  };
-
-  const toggleKeyAction = (action: KeyAction) => {
-    setFilters(prev => {
-      const active = prev.keyActions.includes(action)
-        ? prev.keyActions.filter(a => a !== action)
-        : [...prev.keyActions, action];
-      return { ...prev, keyActions: active };
-    });
-  };
-
-  const handleClearFilters = () => {
-    setFilters({
-      searchQuery: '',
-      country: '',
-      organisationType: '',
-      keyActions: [],
-      thematicArea: '',
-      sector: '',
-      projectRole: ''
-    });
   };
 
   // Badge styler helper for Key Actions
@@ -180,6 +47,16 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
         return 'bg-gray-100 text-gray-600 border border-gray-200';
     }
   };
+
+  // Filter listings where status === 'active', sort by createdAt descending, slice to 9
+  const recentActiveListings = [...listings]
+    .filter(item => item.status === 'active')
+    .sort((a, b) => {
+      const dateA = a.createdAt || '';
+      const dateB = b.createdAt || '';
+      return dateB.localeCompare(dateA);
+    })
+    .slice(0, 9);
 
   return (
     <div className="space-y-12 pb-16">
@@ -210,9 +87,9 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                 id="search-input-field"
                 type="text"
                 placeholder="Filter by organisation name, city, keywords..."
-                value={filters.searchQuery}
-                onChange={handleSearchChange}
-                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400"
+                readOnly
+                onClick={() => onNavigate('browse')}
+                className="flex-1 bg-transparent实时 outline-none text-sm font-medium text-slate-705 placeholder:text-slate-400 cursor-pointer"
               />
               <button
                 id="hero-submit-cta"
@@ -235,297 +112,18 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
         </div>
       </section>
 
-      {/* 2. CATEGORY & FILTER STRIP */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white p-6 rounded-[24px] border border-blue-50/80 shadow-sm space-y-5">
-          <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-            <h2 className="text-base font-bold text-slate-800 flex items-center space-x-2">
-              <Layers className="w-5 h-5 text-brand-primary" />
-              <span>Filter Directory Results</span>
-            </h2>
-            <button
-              id="clear-filters-btn"
-              onClick={handleClearFilters}
-              className="flex items-center space-x-1.5 text-xs font-bold text-slate-500 hover:text-brand-primary transition-colors hover:underline"
-            >
-              <RefreshCcw className="w-3.5 h-3.5" />
-              <span>Clear Filters</span>
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Country Select */}
-            <div className="space-y-2">
-              <label htmlFor="country-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                Partner Country
-              </label>
-              <div className="relative">
-                <select
-                  id="country-select"
-                  value={filters.country}
-                  onChange={handleCountryChange}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                >
-                  <option value="">🌍 All Countries</option>
-                  {COUNTRIES.map((c) => (
-                    <option key={c.name} value={c.name}>
-                      {c.flag} {c.name}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                  <span className="text-xs">▼</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Organisation Type Select */}
-            <div className="space-y-2">
-              <label htmlFor="orgtype-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                Organisation Type
-              </label>
-              <div className="relative">
-                <select
-                  id="orgtype-select"
-                  value={filters.organisationType}
-                  onChange={handleOrgTypeChange}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                >
-                  <option value="">🏢 All Types</option>
-                  {ORGANISATION_TYPES.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                  <span className="text-xs">▼</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Thematic Area Select */}
-            <div className="space-y-2">
-              <label htmlFor="thematic-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                Thematic Area
-              </label>
-              <div className="relative">
-                <select
-                  id="thematic-select"
-                  value={filters.thematicArea}
-                  onChange={handleThematicChange}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                >
-                  <option value="">🎓 All Thematics</option>
-                  {THEMATIC_AREAS.map((area) => (
-                    <option key={area} value={area}>
-                      {area}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                  <span className="text-xs">▼</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Erasmus+ Sector Select */}
-            <div className="space-y-2">
-              <label htmlFor="sector-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                Erasmus+ Sector
-              </label>
-              <div className="relative">
-                <select
-                  id="sector-select"
-                  value={filters.sector}
-                  onChange={handleSectorChange}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                >
-                  <option value="">🎯 All Sectors</option>
-                  {ERASMUS_SECTORS.map((s) => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                  <span className="text-xs">▼</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Key Action Select */}
-            <div className="space-y-2">
-              <label htmlFor="ka-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                KEY ACTION
-              </label>
-              <div className="relative">
-                <select
-                  id="ka-select"
-                  value={filters.keyActions[0] || ''}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setFilters(prev => ({ ...prev, keyActions: val ? [val as KeyAction] : [] }));
-                  }}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                >
-                  <option value="">⚡ All Key Actions</option>
-                  <option value="KA1">KA1 — Learning Mobility</option>
-                  <option value="KA210">KA210 — Small-Scale Partnerships</option>
-                  <option value="KA220">KA220 — Cooperation Partnerships</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                  <span className="text-xs">▼</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Project Role Select */}
-            <div className="space-y-2">
-              <label htmlFor="role-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
-                PROJECT ROLE
-              </label>
-              <div className="relative">
-                <select
-                  id="role-select"
-                  value={filters.projectRole}
-                  onChange={(e) => setFilters(prev => ({ ...prev, projectRole: e.target.value }))}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                >
-                  <option value="">🎭 All Roles</option>
-                  <option value="Coordinator">🎯 Coordinator</option>
-                  <option value="Partner">🤝 Partner</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                  <span className="text-xs">▼</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Active Filter Tags */}
-          {isAnyFilterActive && (
-            <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-2 items-center">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Active:</span>
-              
-              {filters.country && (
-                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
-                  <span>🌍 {filters.country}</span>
-                  <button onClick={() => setFilters(prev => ({ ...prev, country: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
-                </span>
-              )}
-              
-              {filters.organisationType && (
-                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
-                  <span>🏢 {filters.organisationType}</span>
-                  <button onClick={() => setFilters(prev => ({ ...prev, organisationType: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
-                </span>
-              )}
-              
-              {filters.thematicArea && (
-                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
-                  <span>🎓 {filters.thematicArea}</span>
-                  <button onClick={() => setFilters(prev => ({ ...prev, thematicArea: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
-                </span>
-              )}
-              
-              {filters.sector && (
-                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
-                  <span>🎯 {filters.sector}</span>
-                  <button onClick={() => setFilters(prev => ({ ...prev, sector: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
-                </span>
-              )}
-              
-              {filters.keyActions.length > 0 && filters.keyActions.map(ka => (
-                <span key={ka} className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
-                  <span>⚡ {ka}</span>
-                  <button onClick={() => setFilters(prev => ({ ...prev, keyActions: prev.keyActions.filter(k => k !== ka) }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
-                </span>
-              ))}
-              
-              {filters.projectRole && (
-                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
-                  <span>{filters.projectRole === 'Coordinator' ? '🎯' : '🤝'} {filters.projectRole}</span>
-                  <button onClick={() => setFilters(prev => ({ ...prev, projectRole: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
-                </span>
-              )}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* 3. LISTING GRID / DISCOVERY PORTAL */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-2xl font-extrabold tracking-tight text-slate-800">
-              Active Partner Proposals
-            </h2>
-            <p className="text-sm text-slate-500">
-              Found {displayedListings.length} matching partner request{displayedListings.length !== 1 ? 's' : ''}
+      {/* 2. RECENT PARTNER CALLS SECTION */}
+      {recentActiveListings.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="text-center space-y-2">
+            <h2 className="text-3xl font-black text-slate-850">Recent Partner Calls</h2>
+            <p className="text-slate-500 max-w-2xl mx-auto text-sm font-semibold">
+              The latest organisations looking for Erasmus+ partners
             </p>
           </div>
 
-          <div className="flex items-center space-x-2.5 shrink-0">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Sort By:</span>
-            <div className="relative min-w-[185px]">
-              <select
-                id="listing-sort-select"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-4 pr-8 py-2.5 text-xs font-bold text-slate-750 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-              >
-                <option value="newest">🗓 Newest First</option>
-                <option value="deadline">⏳ Deadline Soonest</option>
-                <option value="views">🔥 Most Viewed</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400">
-                <span className="text-[10px]">▼</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* LOADING SKELETON CARDS */}
-        {isLoading ? (
-          <div id="grid-loader-skeletons" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((idx) => (
-              <div key={idx} className="bg-white rounded-[20px] border border-gray-100 overflow-hidden shadow-sm h-[400px] flex flex-col p-5 space-y-4 animate-pulse">
-                <div className="w-full h-44 bg-slate-200 rounded-xl" />
-                <div className="h-4 bg-slate-200 rounded w-1/3" />
-                <div className="h-6 bg-slate-200 rounded w-3/4" />
-                <div className="flex space-x-2">
-                  <div className="h-5 bg-slate-200 rounded-full w-12" />
-                  <div className="h-5 bg-slate-200 rounded-full w-16" />
-                </div>
-                <div className="space-y-2 flex-1 pt-2">
-                  <div className="h-3 bg-slate-200 rounded w-full" />
-                  <div className="h-3 bg-slate-200 rounded w-4/5" />
-                </div>
-                <div className="h-10 bg-slate-200 rounded-xl w-full" />
-              </div>
-            ))}
-          </div>
-        ) : displayedListings.length === 0 ? (
-          /* EMPTY STATE */
-          <div id="listings-empty-state" className="flex flex-col items-center justify-center py-16 px-4 bg-white rounded-[24px] border border-dashed border-gray-200 text-center space-y-4 max-w-lg mx-auto">
-            <div className="p-4 bg-slate-50 text-slate-400 rounded-full">
-              <Inbox className="w-12 h-12" />
-            </div>
-            <h3 className="text-xl font-bold text-slate-800">No Listings Match Your Search</h3>
-            <p className="text-gray-500 text-sm max-w-sm">
-              We couldn't find any Erasmus+ listings matching your active filters. Try clearing your search query or selecting other countries.
-            </p>
-            <button
-              id="empty-reset-btn"
-              onClick={handleClearFilters}
-              className="bg-brand-primary hover:bg-brand-primary-hover text-white px-5 py-2.5 rounded-brand font-bold text-sm transition-all"
-            >
-              Reset Filters
-            </button>
-          </div>
-        ) : (
-          /* LISTING CARDS GRID */
-          <div id="listings-real-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {displayedListings.map((listing) => {
+          <div id="listings-recent-real-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recentActiveListings.map((listing) => {
               const flag = listing.countryFlag || '🇪🇺';
               return (
                 <div
@@ -614,10 +212,19 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
               );
             })}
           </div>
-        )}
-      </section>
 
-      {/* 4. THEMATIC STATS BAR */}
+          <div className="flex justify-center pt-4">
+            <button
+              onClick={() => onNavigate('browse')}
+              className="border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white font-bold py-3.5 px-8 rounded-full transition-all text-sm cursor-pointer"
+            >
+              Browse All Partner Listings →
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* 3. THEMATIC STATS BAR */}
       <section className="bg-gradient-to-r from-blue-50 to-indigo-50 border-t border-b border-indigo-100/50 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-6 rounded-[20px] shadow-sm flex items-center space-x-4 border border-blue-100/30">
@@ -652,7 +259,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
         </div>
       </section>
 
-      {/* 5. "HOW IT WORKS" SECTION */}
+      {/* 4. "HOW IT WORKS" SECTION */}
       <section id="how-it-works-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-2 mb-10">
           <h2 className="text-3xl font-black text-slate-800">How It Works</h2>
