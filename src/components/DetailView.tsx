@@ -14,7 +14,10 @@ import {
   Languages, 
   Tags, 
   Building2, 
-  ExternalLink 
+  ExternalLink,
+  Hash,
+  Award,
+  FolderOpen
 } from 'lucide-react';
 
 interface DetailViewProps {
@@ -35,6 +38,39 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
       default:
         return 'bg-gray-100 text-gray-600 border border-gray-200';
     }
+  };
+
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+    const day = date.getDate();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+  const getDeadlineCountdown = (deadlineStr: string) => {
+    if (!deadlineStr) return null;
+    const deadline = new Date(deadlineStr);
+    const today = new Date();
+    
+    // Set both to midnight to count whole days accurately
+    deadline.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    
+    const diffTime = deadline.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0) {
+      return <span className="text-red-600 font-bold">Expired</span>;
+    } else if (diffDays === 0) {
+      return <span className="text-orange-600 font-bold">Expires Today</span>;
+    } else if (diffDays === 1) {
+      return <span className="text-slate-600 font-semibold">1 day remaining</span>;
+    }
+    return <span className="text-slate-600 font-semibold">{diffDays} days remaining</span>;
   };
 
   return (
@@ -187,6 +223,41 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                     </div>
                   </div>
                 )}
+
+                {/* OID Number */}
+                <div className="flex items-center space-x-3">
+                  <div className="p-2.5 bg-white text-slate-500 rounded-xl shadow-sm">
+                    <Hash className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">OID Number</p>
+                    <p className={listing.oid ? "text-slate-800 font-bold animate-fade-in" : "text-slate-400 italic text-sm"}>
+                      {listing.oid || 'Not provided'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Experience Level */}
+                <div className="flex items-center space-x-3">
+                  <div className="p-2.5 bg-white text-slate-500 rounded-xl shadow-sm">
+                    <Award className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Experience</p>
+                    <p className="text-slate-800 font-bold">{listing.experienceLevel}</p>
+                  </div>
+                </div>
+
+                {/* Previous Projects */}
+                <div className="flex items-center space-x-3">
+                  <div className="p-2.5 bg-white text-slate-500 rounded-xl shadow-sm">
+                    <FolderOpen className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Past Projects</p>
+                    <p className="text-slate-800 font-bold">{listing.previousProjects}</p>
+                  </div>
+                </div>
               </div>
 
               {/* Target Key Actions badge row */}
@@ -205,6 +276,24 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                   ))}
                 </div>
               </div>
+
+              {/* Partner Search Deadline Info Box */}
+              {listing.partnerSearchDeadline && (
+                <div className="bg-orange-50 border border-orange-100 rounded-xl p-4 space-y-2">
+                  <div className="flex items-center space-x-2 text-orange-700">
+                    <Calendar className="w-4 h-4 shrink-0" />
+                    <span className="text-[10px] font-extrabold uppercase tracking-wide">Partner Search Deadline</span>
+                  </div>
+                  <div>
+                    <p className="text-slate-800 font-bold text-sm">
+                      {formatDate(listing.partnerSearchDeadline)}
+                    </p>
+                    <p className="text-xs mt-1">
+                      {getDeadlineCountdown(listing.partnerSearchDeadline)}
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* CTA Mailto Contact button */}
               <div className="pt-4 border-t border-slate-200">

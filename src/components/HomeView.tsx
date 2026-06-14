@@ -36,10 +36,23 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
     thematicArea: ''
   });
 
+  const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
+
   const [isLoading, setIsLoading] = useState(false);
   const [displayedListings, setDisplayedListings] = useState<Listing[]>(listings);
 
-  // Trigger simulated loading skeleton when filters modify
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+    const day = date.getDate();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+  // Trigger simulated loading skeleton when filters/sorting modify
   useEffect(() => {
     setIsLoading(true);
     const handler = setTimeout(() => {
@@ -68,12 +81,33 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
         return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic;
       });
 
-      setDisplayedListings(filtered);
+      // Apply sorting AFTER filtering
+      const sorted = [...filtered].sort((a, b) => {
+        if (sortBy === 'newest') {
+          const dateA = a.createdAt || '';
+          const dateB = b.createdAt || '';
+          if (dateA !== dateB) {
+            return dateB.localeCompare(dateA); // descending
+          }
+          return a.id.localeCompare(b.id);
+        } else if (sortBy === 'deadline') {
+          const dlA = a.partnerSearchDeadline || '';
+          const dlB = b.partnerSearchDeadline || '';
+          return dlA.localeCompare(dlB); // ascending
+        } else if (sortBy === 'views') {
+          const viewsA = a.views ?? 0;
+          const viewsB = b.views ?? 0;
+          return viewsB - viewsA; // descending
+        }
+        return 0;
+      });
+
+      setDisplayedListings(sorted);
       setIsLoading(false);
     }, 500); // 500ms feel-good delay
 
     return () => clearTimeout(handler);
-  }, [filters, listings]);
+  }, [filters, sortBy, listings]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters(prev => ({ ...prev, searchQuery: e.target.value }));
@@ -300,7 +334,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
 
       {/* 3. LISTING GRID / DISCOVERY PORTAL */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-800">
               Active Partner Proposals
@@ -308,6 +342,25 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             <p className="text-sm text-slate-500">
               Found {displayedListings.length} matching partner request{displayedListings.length !== 1 ? 's' : ''}
             </p>
+          </div>
+
+          <div className="flex items-center space-x-2.5 shrink-0">
+            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Sort By:</span>
+            <div className="relative min-w-[185px]">
+              <select
+                id="listing-sort-select"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-4 pr-8 py-2.5 text-xs font-bold text-slate-750 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+              >
+                <option value="newest">🗓 Newest First</option>
+                <option value="deadline">⏳ Deadline Soonest</option>
+                <option value="views">🔥 Most Viewed</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-400">
+                <span className="text-[10px]">▼</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -399,6 +452,15 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                     <h3 className="font-bold text-slate-800 text-lg leading-snug group-hover:text-brand-primary transition-colors line-clamp-1">
                       {listing.name}
                     </h3>
+
+                    <div className="flex flex-wrap gap-2">
+                      <span className="bg-orange-50 text-orange-600 font-bold text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1 shrink-0">
+                        🗓 Deadline: {formatDate(listing.partnerSearchDeadline)}
+                      </span>
+                      <span className="bg-slate-100 text-slate-600 font-bold text-[11px] px-2.5 py-1 rounded-full shrink-0">
+                        {listing.experienceLevel}
+                      </span>
+                    </div>
 
                     <p className="text-slate-500 text-xs leading-relaxed flex-1 line-clamp-3">
                       {listing.description}

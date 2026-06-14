@@ -105,7 +105,9 @@ export const MOCK_LISTINGS: Listing[] = [
     oid: 'E10123456',
     experienceLevel: 'Experienced (1–3 projects)',
     previousProjects: '1–3 projects',
-    partnerSearchDeadline: '2026-09-15'
+    partnerSearchDeadline: '2026-09-15',
+    views: 142,
+    createdAt: '2026-06-12T10:30:00Z'
   },
   {
     id: 'org-2',
@@ -125,7 +127,9 @@ export const MOCK_LISTINGS: Listing[] = [
     oid: 'E10223401',
     experienceLevel: 'Advanced (4–10 projects)',
     previousProjects: '4–10 projects',
-    partnerSearchDeadline: '2026-10-31'
+    partnerSearchDeadline: '2026-10-31',
+    views: 285,
+    createdAt: '2026-05-20T14:45:00Z'
   },
   {
     id: 'org-3',
@@ -145,7 +149,9 @@ export const MOCK_LISTINGS: Listing[] = [
     oid: 'E10543210',
     experienceLevel: 'Expert Coordinator (10+ projects)',
     previousProjects: '10+ projects',
-    partnerSearchDeadline: '2026-11-20'
+    partnerSearchDeadline: '2026-11-20',
+    views: 312,
+    createdAt: '2026-06-05T08:15:00Z'
   },
   {
     id: 'org-4',
@@ -165,7 +171,9 @@ export const MOCK_LISTINGS: Listing[] = [
     oid: 'E10009876',
     experienceLevel: 'First-timer (no previous projects)',
     previousProjects: '0 — this will be our first',
-    partnerSearchDeadline: '2026-08-30'
+    partnerSearchDeadline: '2026-08-30',
+    views: 45,
+    createdAt: '2026-06-13T16:20:00Z'
   },
   {
     id: 'org-5',
@@ -185,7 +193,9 @@ export const MOCK_LISTINGS: Listing[] = [
     oid: 'E10223344',
     experienceLevel: 'Advanced (4–10 projects)',
     previousProjects: '4–10 projects',
-    partnerSearchDeadline: '2026-12-15'
+    partnerSearchDeadline: '2026-12-15',
+    views: 198,
+    createdAt: '2026-05-18T11:00:00Z'
   },
   {
     id: 'org-6',
@@ -205,7 +215,9 @@ export const MOCK_LISTINGS: Listing[] = [
     oid: 'E10887766',
     experienceLevel: 'Experienced (1–3 projects)',
     previousProjects: '1–3 projects',
-    partnerSearchDeadline: '2026-09-30'
+    partnerSearchDeadline: '2026-09-30',
+    views: 78,
+    createdAt: '2026-06-01T09:00:00Z'
   },
   {
     id: 'org-7',
@@ -225,7 +237,9 @@ export const MOCK_LISTINGS: Listing[] = [
     oid: 'E10555666',
     experienceLevel: 'First-timer (no previous projects)',
     previousProjects: '0 — this will be our first',
-    partnerSearchDeadline: '2026-08-15'
+    partnerSearchDeadline: '2026-08-15',
+    views: 18,
+    createdAt: '2026-06-14T01:10:00Z'
   },
   {
     id: 'org-8',
@@ -245,7 +259,9 @@ export const MOCK_LISTINGS: Listing[] = [
     oid: 'E10444333',
     experienceLevel: 'Expert Coordinator (10+ projects)',
     previousProjects: '10+ projects',
-    partnerSearchDeadline: '2026-11-10'
+    partnerSearchDeadline: '2026-11-10',
+    views: 324,
+    createdAt: '2026-05-10T12:00:00Z'
   },
   {
     id: 'org-9',
@@ -265,6 +281,8 @@ export const MOCK_LISTINGS: Listing[] = [
     oid: 'E10999888',
     experienceLevel: 'Advanced (4–10 projects)',
     previousProjects: '4–10 projects',
-    partnerSearchDeadline: '2026-10-15'
+    partnerSearchDeadline: '2026-10-15',
+    views: 215,
+    createdAt: '2026-05-28T15:30:00Z'
   }
 ];

@@ -32,6 +32,8 @@ export interface Listing {
   experienceLevel: string;
   previousProjects: string;
   partnerSearchDeadline: string;
+  views?: number;
+  createdAt?: string;
 }
 
 export interface SearchFilters {
