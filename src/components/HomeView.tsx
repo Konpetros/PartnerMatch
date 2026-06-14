@@ -427,9 +427,9 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                       <span>{listing.country}</span>
                     </div>
 
-                    {listing.city && (
+                    {(listing.submitterProfile?.city || (listing as any).city) && (
                       <div className="absolute bottom-3 left-3 bg-slate-900/40 backdrop-blur-sm px-2.5 py-1 rounded-md text-[10px] font-bold text-white tracking-wide">
-                        📍 {listing.city}
+                        📍 {listing.submitterProfile?.city || (listing as any).city || ''}
                       </div>
                     )}
                   </div>
@@ -459,7 +459,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                         🗓 Deadline: {formatDate(listing.partnerSearchDeadline)}
                       </span>
                       <span className="bg-slate-100 text-slate-600 font-bold text-[11px] px-2.5 py-1 rounded-full shrink-0">
-                        {listing.experienceLevel}
+                        {listing.submitterProfile?.experienceLevel || ''}
                       </span>
                     </div>
 
