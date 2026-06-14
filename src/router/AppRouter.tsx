@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppView } from '../hooks/useNavigation';
-import { Listing, OrganisationProfile } from '../types';
+import { Listing, OrganisationProfile, AdminUser, ActivityLog } from '../types';
 
 import HomeView from '../components/HomeView';
 import BrowseView from '../components/BrowseView';
@@ -13,6 +13,14 @@ import ProfileSetupView from '../components/ProfileSetupView';
 import MyProfileView from '../components/MyProfileView';
 import OrganisationsView from '../components/OrganisationsView';
 import OrgProfileView from '../components/OrgProfileView';
+
+import {
+  AdminLayout,
+  AdminDashboard,
+  AdminPendingListings,
+  AdminAllListings,
+  AdminUsers
+} from '../features/admin';
 
 interface AppRouterProps {
   currentView: AppView;
@@ -32,6 +40,16 @@ interface AppRouterProps {
   onUpdateProfile: (profile: OrganisationProfile) => void;
   onOpenSignIn: () => void;
   onSignOut: () => void;
+
+  isAdmin: boolean;
+  adminUsers: AdminUser[];
+  activityLog: ActivityLog[];
+  onApproveListing: (id: string) => void;
+  onRejectListing: (id: string, reason: string) => void;
+  onBanUser: (uid: string) => void;
+  onUnbanUser: (uid: string) => void;
+  onDeleteUser: (uid: string) => void;
+  onPromoteToAdmin: (uid: string) => void;
 }
 
 export default function AppRouter({
@@ -52,8 +70,80 @@ export default function AppRouter({
   onUpdateProfile,
   onOpenSignIn,
   onSignOut,
+
+  isAdmin,
+  adminUsers,
+  activityLog,
+  onApproveListing,
+  onRejectListing,
+  onBanUser,
+  onUnbanUser,
+  onDeleteUser,
+  onPromoteToAdmin,
 }: AppRouterProps) {
 
+  // Admin Views Switch Routing Guard
+  const adminViews: AppView[] = ['admin', 'admin-pending', 'admin-listings', 'admin-users'];
+
+  if (adminViews.includes(currentView)) {
+    if (!isAdmin) {
+      // Not admin — redirect to home silently
+      return (
+        <HomeView
+          listings={listings}
+          onNavigate={onNavigate}
+          onSelectListing={onSelectListing}
+        />
+      );
+    }
+
+    const pendingCount = listings.filter(l => l.status === 'pending').length;
+
+    return (
+      <AdminLayout
+        currentView={currentView}
+        onNavigate={onNavigate}
+        onSignOut={onSignOut}
+        currentUser={currentUser}
+        pendingCount={pendingCount}
+      >
+        {currentView === 'admin' && (
+          <AdminDashboard
+            listings={listings}
+            users={adminUsers}
+            activityLog={activityLog}
+          />
+        )}
+        {currentView === 'admin-pending' && (
+          <AdminPendingListings
+            listings={listings.filter(l => l.status === 'pending')}
+            onApprove={onApproveListing}
+            onReject={onRejectListing}
+            onEdit={(id) => alert(`Edit is coming soon for listing: ${id}`)}
+            onDelete={onDeleteListing}
+          />
+        )}
+        {currentView === 'admin-listings' && (
+          <AdminAllListings
+            listings={listings}
+            onDelete={onDeleteListing}
+            onUpdateStatus={onUpdateListingStatus}
+          />
+        )}
+        {currentView === 'admin-users' && (
+          <AdminUsers
+            users={adminUsers}
+            onDeleteUser={onDeleteUser}
+            onBanUser={onBanUser}
+            onUnbanUser={onUnbanUser}
+            onPromoteToAdmin={onPromoteToAdmin}
+          />
+        )}
+      </AdminLayout>
+    );
+  }
+
+  // Standard Public & Organisation Views
   if (currentView === 'home') {
     return (
       <HomeView

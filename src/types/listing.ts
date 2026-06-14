@@ -27,6 +27,25 @@ export interface Listing {
   status?: 'active' | 'pending' | 'expired' | 'partnership-found';
   projectRole?: 'Coordinator' | 'Partner';
   submitterProfile?: OrganisationProfile;
+  rejectionReason?: string;
+}
+
+export interface AdminUser {
+  uid: string;
+  email: string;
+  displayName: string;
+  joinedAt: string;
+  listingCount: number;
+  status: 'active' | 'banned';
+  isAdmin: boolean;
+}
+
+export interface ActivityLog {
+  id: string;
+  action: 'submitted' | 'approved' | 'rejected' | 'deleted' | 'signup';
+  listingName?: string;
+  userName?: string;
+  timestamp: string;
 }
 
 export interface SearchFilters {

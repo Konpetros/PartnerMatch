@@ -7,6 +7,7 @@ export interface AuthState {
 
 export const useAuth = (onFirstLogin: () => void) => {
   const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
 
   const handleOpenSignIn = () => setIsSignInOpen(true);
@@ -15,15 +16,19 @@ export const useAuth = (onFirstLogin: () => void) => {
   const handleSignInSuccess = (username: string) => {
     setCurrentUser(username);
     setIsSignInOpen(false);
+    const mockIsAdmin = username.toLowerCase().includes('admin') || username.toLowerCase().includes('petros');
+    setIsAdmin(mockIsAdmin);
     onFirstLogin();
   };
 
   const handleSignOut = () => {
     setCurrentUser(null);
+    setIsAdmin(false);
   };
 
   return {
     currentUser,
+    isAdmin,
     isSignInOpen,
     handleOpenSignIn,
     handleCloseSignIn,

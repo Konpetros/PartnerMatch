@@ -22,10 +22,27 @@ export const useListings = () => {
     );
   };
 
+  const handleApproveListing = (id: string) => {
+    setListings(prev =>
+      prev.map(item => item.id === id ? { ...item, status: 'active' as const } : item)
+    );
+  };
+
+  const handleRejectListing = (id: string, reason: string) => {
+    setListings(prev =>
+      prev.map(item => item.id === id
+        ? { ...item, status: 'expired' as const, rejectionReason: reason }
+        : item
+      )
+    );
+  };
+
   return {
     listings,
     handleSubmitListing,
     handleDeleteListing,
     handleUpdateListingStatus,
+    handleApproveListing,
+    handleRejectListing,
   };
 };

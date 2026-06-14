@@ -1,4 +1,4 @@
-import { Listing } from '../types';
+import { Listing, AdminUser, ActivityLog } from '../types';
 
 export const MOCK_LISTINGS: Listing[] = [
   {
@@ -298,4 +298,65 @@ export const MOCK_LISTINGS: Listing[] = [
       description: 'Utrecht Sustainable Future Institute is an academic center dedicated to urban sustainability research, circular economies, and policy-making. We specialize in producing scientific models for green transit and systemic gender equality assessments. We seek top-tier universities and NGOs to form impactful consortia on climate resilience.'
     }
   }
+];
+
+export const MOCK_ADMIN_USERS: AdminUser[] = [
+  {
+    uid: 'user-001',
+    email: 'petros@erasmusmatch.eu',
+    displayName: 'Petros K.',
+    joinedAt: '2026-01-15T10:00:00Z',
+    listingCount: 3,
+    status: 'active',
+    isAdmin: true,
+  },
+  {
+    uid: 'user-002',
+    email: 'maria.rossi@istitutogalileo.it',
+    displayName: 'Maria Rossi',
+    joinedAt: '2026-02-10T09:00:00Z',
+    listingCount: 1,
+    status: 'active',
+    isAdmin: false,
+  },
+  {
+    uid: 'user-003',
+    email: 'carlos@vigouniversity.es',
+    displayName: 'Carlos Mendez',
+    joinedAt: '2026-03-05T14:00:00Z',
+    listingCount: 2,
+    status: 'active',
+    isAdmin: false,
+  },
+  {
+    uid: 'user-004',
+    email: 'ana@regenerar.pt',
+    displayName: 'Ana Ferreira',
+    joinedAt: '2026-03-20T11:00:00Z',
+    listingCount: 1,
+    status: 'banned',
+    isAdmin: false,
+  },
+  {
+    uid: 'user-005',
+    email: 'hans@munichvet.de',
+    displayName: 'Hans Mueller',
+    joinedAt: '2026-04-01T08:00:00Z',
+    listingCount: 1,
+    status: 'active',
+    isAdmin: false,
+  },
+];
+
+export const MOCK_ACTIVITY_LOG: ActivityLog[] = [
+  { id: 'act-1', action: 'submitted', listingName: 'Helios Eco-Youth Association', userName: 'Petros K.', timestamp: '2026-06-14T10:30:00Z' },
+  { id: 'act-2', action: 'approved', listingName: 'Istituto Superiore Galileo Galilei', userName: 'Admin', timestamp: '2026-06-14T09:15:00Z' },
+  { id: 'act-3', action: 'signup', userName: 'Hans Mueller', timestamp: '2026-06-13T16:00:00Z' },
+  { id: 'act-4', action: 'rejected', listingName: 'Test Listing', userName: 'Admin', timestamp: '2026-06-13T14:00:00Z' },
+  { id: 'act-5', action: 'submitted', listingName: 'Utrecht Sustainable Future Institute', userName: 'Ana Ferreira', timestamp: '2026-06-12T11:00:00Z' },
+  { id: 'act-6', action: 'approved', listingName: 'Solidarité Humanitaire France', userName: 'Admin', timestamp: '2026-06-11T10:00:00Z' },
+  { id: 'act-7', action: 'signup', userName: 'Maria Rossi', timestamp: '2026-06-10T09:00:00Z' },
+  { id: 'act-8', action: 'deleted', listingName: 'Old Test Entry', userName: 'Admin', timestamp: '2026-06-09T15:00:00Z' },
+  { id: 'act-9', action: 'submitted', listingName: 'Transylvania Secondary School', userName: 'Carlos Mendez', timestamp: '2026-06-08T13:00:00Z' },
+  { id: 'act-10', action: 'signup', userName: 'Carlos Mendez', timestamp: '2026-06-07T10:00:00Z' },
 ];

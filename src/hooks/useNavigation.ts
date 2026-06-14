@@ -11,7 +11,11 @@ export type AppView =
   | 'contact'
   | 'my-listings'
   | 'my-profile'
-  | 'profile-setup';
+  | 'profile-setup'
+  | 'admin'
+  | 'admin-pending'
+  | 'admin-listings'
+  | 'admin-users';
 
 export interface NavigationState {
   currentView: AppView;
@@ -19,7 +23,7 @@ export interface NavigationState {
   selectedOrgId: string | null;
 }
 
-export const useNavigation = (isAuthenticated: boolean, openSignIn: () => void) => {
+export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSignIn: () => void) => {
   const [currentView, setCurrentView] = useState<AppView>('home');
   const [selectedListingId, setSelectedListingId] = useState<string | null>(null);
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
@@ -28,6 +32,9 @@ export const useNavigation = (isAuthenticated: boolean, openSignIn: () => void) 
     if (view === 'submit' && !isAuthenticated) {
       openSignIn();
       return;
+    }
+    if ((view === 'admin' || view === 'admin-pending' || view === 'admin-listings' || view === 'admin-users') && !isAuthenticated) {
+      return; // silent redirect — don't expose admin panel exists
     }
     if (view === 'home') {
       setCurrentView('home');
