@@ -3,24 +3,50 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
-import { Sparkles, Menu, X, PlusCircle, Compass, FolderHeart, LogIn, Info, Mail, Users } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Sparkles, Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut } from 'lucide-react';
 
 interface NavbarProps {
   currentView: string;
   onNavigate: (view: string) => void;
   onOpenSignIn: () => void;
+  currentUser: string | null;
+  onSignOut: () => void;
 }
 
-export default function Navbar({ currentView, onNavigate, onOpenSignIn }: NavbarProps) {
+export default function Navbar({
+  currentView,
+  onNavigate,
+  onOpenSignIn,
+  currentUser,
+  onSignOut,
+}: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Click outside to close standard dropdown menu
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setAvatarMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const navItems = [
     { id: 'home', label: 'Browse Directory', icon: Compass },
     { id: 'organisations', label: 'Organisations', icon: Users },
     { id: 'submit', label: 'Submit Listing', icon: PlusCircle },
-    { id: 'my-listings', label: 'My Listings', icon: FolderHeart },
   ];
+
+  const truncatedName = currentUser && currentUser.length > 12 
+    ? `${currentUser.slice(0, 12)}...` 
+    : currentUser;
 
   return (
     <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-blue-50/50 shadow-sm transition-all">
@@ -63,16 +89,72 @@ export default function Navbar({ currentView, onNavigate, onOpenSignIn }: Navbar
             })}
           </div>
 
-          {/* Sign In CTA */}
-          <div className="hidden md:flex items-center">
-            <button
-              id="desktop-signin-btn"
-              onClick={onOpenSignIn}
-              className="flex items-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white px-5 py-2.5 rounded-brand font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-95"
-            >
-              <LogIn className="w-4 h-4" />
-              <span>Sign In</span>
-            </button>
+          {/* Sign In CTA or Profile Dropdown */}
+          <div className="hidden md:flex items-center relative" ref={dropdownRef}>
+            {!currentUser ? (
+              <button
+                id="desktop-signin-btn"
+                onClick={onOpenSignIn}
+                className="flex items-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white px-5 py-2.5 rounded-brand font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>Sign In</span>
+              </button>
+            ) : (
+              <div className="flex items-center">
+                <button
+                  id="navbar-avatar-btn"
+                  onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
+                  className="flex items-center space-x-2 cursor-pointer focus:outline-none"
+                >
+                  <div className="w-9 h-9 rounded-full bg-brand-primary text-white font-bold text-sm flex items-center justify-center shadow-xs">
+                    {currentUser.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="font-semibold text-sm text-slate-700 max-w-[120px] truncate">
+                    {truncatedName}
+                  </span>
+                </button>
+
+                {avatarMenuOpen && (
+                  <div className="absolute right-0 top-12 bg-white rounded-[16px] border border-slate-200 shadow-xl py-2 w-48 z-50 animate-fade-in">
+                    <button
+                      id="dropdown-my-listings"
+                      onClick={() => {
+                        onNavigate('my-listings');
+                        setAvatarMenuOpen(false);
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
+                    >
+                      <LayoutDashboard className="w-4 h-4 text-slate-500" />
+                      <span>My Listings</span>
+                    </button>
+                    <button
+                      id="dropdown-my-profile"
+                      onClick={() => {
+                        onNavigate('my-profile');
+                        setAvatarMenuOpen(false);
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
+                    >
+                      <User className="w-4 h-4 text-slate-500" />
+                      <span>My Profile</span>
+                    </button>
+                    <div className="border-t border-slate-100 my-1" />
+                    <button
+                      id="dropdown-signout"
+                      onClick={() => {
+                        onSignOut();
+                        setAvatarMenuOpen(false);
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-red-500 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Handheld/Mobile Menu Toggle */}
@@ -115,19 +197,66 @@ export default function Navbar({ currentView, onNavigate, onOpenSignIn }: Navbar
                 </button>
               );
             })}
-            <div className="pt-4 pb-2 border-t border-gray-100 px-4">
-              <button
-                id="mobile-signin-btn"
-                onClick={() => {
-                  onOpenSignIn();
-                  setMobileMenuOpen(false);
-                }}
-                className="flex items-center justify-center space-x-2 w-full bg-brand-primary hover:bg-brand-primary-hover text-white py-3 rounded-brand font-semibold transition-all"
-              >
-                <LogIn className="w-5 h-5" />
-                <span>Sign In</span>
-              </button>
-            </div>
+            
+            {!currentUser ? (
+              <div className="pt-4 pb-2 border-t border-gray-100 px-4">
+                <button
+                  id="mobile-signin-btn"
+                  onClick={() => {
+                    onOpenSignIn();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center justify-center space-x-2 w-full bg-brand-primary hover:bg-brand-primary-hover text-white py-3 rounded-brand font-semibold transition-all cursor-pointer"
+                >
+                  <LogIn className="w-5 h-5" />
+                  <span>Sign In</span>
+                </button>
+              </div>
+            ) : (
+              <div className="pt-4 pb-2 border-t border-gray-100 px-4 space-y-1">
+                <div className="flex items-center space-x-3 px-4 py-2 border-b border-gray-50 mb-2">
+                  <div className="w-9 h-9 rounded-full bg-brand-primary text-white font-bold text-sm flex items-center justify-center shadow-xs">
+                    {currentUser.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="font-semibold text-sm text-slate-700">
+                    {truncatedName}
+                  </span>
+                </div>
+                <button
+                  id="mobile-my-listings"
+                  onClick={() => {
+                    onNavigate('my-listings');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+                >
+                  <LayoutDashboard className="w-5 h-5 text-gray-400" />
+                  <span>My Listings</span>
+                </button>
+                <button
+                  id="mobile-my-profile"
+                  onClick={() => {
+                    onNavigate('my-profile');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+                >
+                  <User className="w-5 h-5 text-gray-400" />
+                  <span>My Profile</span>
+                </button>
+                <button
+                  id="mobile-signout"
+                  onClick={() => {
+                    onSignOut();
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-red-500 hover:bg-red-50 transition-all cursor-pointer text-left"
+                >
+                  <LogOut className="w-5 h-5 text-red-450" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

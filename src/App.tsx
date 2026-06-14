@@ -177,6 +177,8 @@ export default function App() {
         currentView={currentView} 
         onNavigate={handleNavigate} 
         onOpenSignIn={() => setIsSignInOpen(true)} 
+        currentUser={currentUser}
+        onSignOut={handleSignOut}
       />
 
       {/* 4. Active Router View Render Switcher */}
