@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Listing, SearchFilters, KeyAction } from '../types';
-import { COUNTRIES, ORGANISATION_TYPES, THEMATIC_AREAS, KEY_ACTIONS } from '../data';
+import { COUNTRIES, ORGANISATION_TYPES, THEMATIC_AREAS, KEY_ACTIONS, ERASMUS_SECTORS } from '../data';
 import { 
   Search, 
   MapPin, 
@@ -33,7 +33,8 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
     country: '',
     organisationType: '',
     keyActions: [],
-    thematicArea: ''
+    thematicArea: '',
+    sector: ''
   });
 
   const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
@@ -79,7 +80,10 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
         // Thematic Area match
         const matchesThematic = !filters.thematicArea || item.thematicAreas.includes(filters.thematicArea);
 
-        return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic;
+        // Sector match
+        const matchesSector = !filters.sector || item.sector === filters.sector;
+
+        return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic && matchesSector;
       });
 
       // Apply sorting AFTER filtering
@@ -126,6 +130,10 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
     setFilters(prev => ({ ...prev, thematicArea: e.target.value }));
   };
 
+  const handleSectorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFilters(prev => ({ ...prev, sector: e.target.value }));
+  };
+
   const toggleKeyAction = (action: KeyAction) => {
     setFilters(prev => {
       const active = prev.keyActions.includes(action)
@@ -141,7 +149,8 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
       country: '',
       organisationType: '',
       keyActions: [],
-      thematicArea: ''
+      thematicArea: '',
+      sector: ''
     });
   };
 
@@ -219,7 +228,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
           <div className="flex justify-between items-center border-b border-gray-100 pb-4">
             <h2 className="text-base font-bold text-slate-800 flex items-center space-x-2">
               <Layers className="w-5 h-5 text-brand-primary" />
-              <span>Refine Directory Results</span>
+              <span>Filter Directory Results</span>
             </h2>
             <button
               id="clear-filters-btn"
@@ -231,7 +240,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {/* Country Select */}
             <div className="space-y-2">
               <label htmlFor="country-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
@@ -299,6 +308,29 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                     <option key={area} value={area}>
                       {area}
                     </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                  <span className="text-xs">▼</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Erasmus+ Sector Select */}
+            <div className="space-y-2">
+              <label htmlFor="sector-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
+                Erasmus+ Sector
+              </label>
+              <div className="relative">
+                <select
+                  id="sector-select"
+                  value={filters.sector}
+                  onChange={handleSectorChange}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+                >
+                  <option value="">🎯 All Sectors</option>
+                  {ERASMUS_SECTORS.map((s) => (
+                    <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">

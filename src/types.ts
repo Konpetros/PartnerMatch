@@ -43,6 +43,7 @@ export interface Listing {
   views?: number;
   createdAt?: string;
   status?: 'active' | 'pending' | 'expired' | 'partnership-found';
+  sector?: string;
   submitterProfile?: OrganisationProfile;
 }
 
@@ -52,4 +53,5 @@ export interface SearchFilters {
   organisationType: string;
   keyActions: KeyAction[];
   thematicArea: string;
+  sector: string;
 }
