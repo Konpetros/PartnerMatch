@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Listing, KeyAction } from '../types';
 import { 
   Search, 
@@ -22,6 +22,147 @@ interface HomeViewProps {
 }
 
 export default function HomeView({ listings, onNavigate, onSelectListing }: HomeViewProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const hero = heroRef.current;
+    if (!canvas || !hero) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationId: number;
+    const isMobile = window.innerWidth < 768;
+    const NUM_STARS = isMobile ? 15 : 30;
+    const MOUSE_REPEL_DISTANCE = 120;
+    const MOUSE_REPEL_FORCE = 3;
+
+    const resize = () => {
+      canvas.width = hero.offsetWidth;
+      canvas.height = hero.offsetHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
+
+    const mouse = { x: null as number | null, y: null as number | null };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    };
+
+    const handleMouseLeave = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
+    hero.addEventListener('mousemove', handleMouseMove);
+    hero.addEventListener('mouseleave', handleMouseLeave);
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationId);
+      } else {
+        animate();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
+    const stars = Array.from({ length: NUM_STARS }, () => {
+      const baseSpeedX = (Math.random() - 0.5) * 0.4;
+      const baseSpeedY = (Math.random() - 0.5) * 0.4;
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 10 + 8,
+        opacity: Math.random() * 0.4 + 0.15,
+        speedX: baseSpeedX,
+        speedY: baseSpeedY,
+        baseSpeedX,
+        baseSpeedY,
+        rotation: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.005,
+      };
+    });
+
+    const drawStar = (x: number, y: number, size: number, rotation: number, glowing: boolean) => {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      if (glowing) {
+        ctx.shadowColor = '#FFCC00';
+        ctx.shadowBlur = 15;
+      } else {
+        ctx.shadowBlur = 0;
+      }
+      ctx.beginPath();
+      for (let i = 0; i < 5; i++) {
+        const outerAngle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
+        const innerAngle = outerAngle + (2 * Math.PI) / 10;
+        ctx.lineTo(Math.cos(outerAngle) * size, Math.sin(outerAngle) * size);
+        ctx.lineTo(Math.cos(innerAngle) * (size * 0.4), Math.sin(innerAngle) * (size * 0.4));
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        let isGlowing = false;
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = star.x - mouse.x;
+          const dy = star.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MOUSE_REPEL_DISTANCE) {
+            const force = (MOUSE_REPEL_DISTANCE - dist) / MOUSE_REPEL_DISTANCE;
+            star.speedX += (dx / dist) * force * MOUSE_REPEL_FORCE * 0.1;
+            star.speedY += (dy / dist) * force * MOUSE_REPEL_FORCE * 0.1;
+            isGlowing = true;
+          }
+        }
+        star.speedX += (star.baseSpeedX - star.speedX) * 0.05;
+        star.speedY += (star.baseSpeedY - star.speedY) * 0.05;
+        star.rotation += star.rotSpeed;
+        star.x += star.speedX;
+        star.y += star.speedY;
+        if (star.x < -20) star.x = canvas.width + 20;
+        if (star.x > canvas.width + 20) star.x = -20;
+        if (star.y < -20) star.y = canvas.height + 20;
+        if (star.y > canvas.height + 20) star.y = -20;
+
+        let drawSize = star.size;
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = star.x - mouse.x;
+          const dy = star.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < MOUSE_REPEL_DISTANCE) {
+            drawSize = star.size * (1 + (1 - dist / MOUSE_REPEL_DISTANCE) * 0.8);
+          }
+        }
+        ctx.globalAlpha = isGlowing ? Math.min(star.opacity * 2, 1) : star.opacity;
+        ctx.fillStyle = '#FFCC00';
+        drawStar(star.x, star.y, drawSize, star.rotation, isGlowing);
+      });
+      ctx.globalAlpha = 1;
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', resize);
+      hero.removeEventListener('mousemove', handleMouseMove);
+      hero.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, []);
+
   // Helper to format date
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -61,8 +202,12 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
   return (
     <div className="space-y-12 pb-16">
       {/* 1. HERO SECTION */}
-      <section className="bg-brand-bg py-20 px-4 relative">
-        <div className="max-w-7xl mx-auto text-center flex flex-col items-center">
+      <section ref={heroRef} className="bg-brand-bg py-20 px-4 relative overflow-hidden">
+        <canvas
+          ref={canvasRef}
+          className="absolute top-0 left-0 w-full h-full pointer-events-none z-0"
+        />
+        <div className="relative z-10 max-w-7xl mx-auto text-center flex flex-col items-center">
           {/* Small pill badge at the top */}
           <div className="inline-flex items-center space-x-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 shadow-sm mb-6">
             <span className="w-2 h-2 rounded-full bg-brand-accent" />
