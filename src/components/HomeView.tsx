@@ -162,48 +162,53 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
   return (
     <div className="space-y-12 pb-16">
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white rounded-[32px] mx-4 sm:mx-6 lg:mx-8 mt-6 px-6 py-16 sm:py-24 shadow-xl">
-        {/* Subtle decorative circles */}
-        <div className="absolute top-0 right-0 -transtype-x-12 w-96 h-96 bg-brand-primary opacity-10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-brand-accent opacity-10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative max-w-4xl mx-auto text-center space-y-6">
-          <div className="inline-flex items-center space-x-2 bg-blue-500/10 text-brand-accent px-4 py-1.5 rounded-full text-sm font-bold tracking-wide backdrop-blur-sm">
-            <Sparkles className="w-4 h-4" />
-            <span>Discover Your Ideal Partnership</span>
+      <section className="bg-brand-bg py-20 px-4 relative">
+        <div className="max-w-7xl mx-auto text-center flex flex-col items-center">
+          {/* Small pill badge at the top */}
+          <div className="inline-flex items-center space-x-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 shadow-sm mb-6">
+            <span className="w-2 h-2 rounded-full bg-brand-accent" />
+            <span>Free Erasmus+ Partner Search · KA1 · KA210 · KA220</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-            Find Your <span className="text-brand-accent">Erasmus+</span> Partner
+          {/* Large heading — two lines */}
+          <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-tight text-center text-slate-900">
+            Find Your <span className="text-brand-primary">Erasmus+</span> Partner
           </h1>
-          
-          <p className="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto font-medium">
+
+          {/* Subheading below */}
+          <p className="text-base sm:text-lg text-slate-500 font-medium text-center max-w-2xl mx-auto mt-4">
             Browse organisations across Europe looking for KA1, KA210 and KA220 partners. Connect, share knowledge, and build consortia.
           </p>
 
-          {/* Prompt search bar */}
-          <div className="pt-4 max-w-2xl mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3 bg-white/10 p-2 rounded-[24px] border border-white/20 backdrop-blur-md">
-              <div className="flex-1 flex items-center px-3 space-x-2">
-                <Search className="w-5 h-5 text-slate-300 shrink-0" />
-                <input
-                  id="search-input-field"
-                  type="text"
-                  placeholder="Filter by organisation name, city, keywords..."
-                  value={filters.searchQuery}
-                  onChange={handleSearchChange}
-                  className="w-full bg-transparent text-white placeholder-slate-400 outline-none text-base font-medium py-2.5"
-                />
-              </div>
+          {/* Search bar + CTA button in one row below */}
+          <div className="w-full mt-8">
+            <div className="flex items-center bg-white border border-slate-200 rounded-full shadow-md px-4 py-2 max-w-2xl mx-auto gap-3">
+              <Search className="text-slate-400 w-4 h-4 shrink-0" />
+              <input
+                id="search-input-field"
+                type="text"
+                placeholder="Filter by organisation name, city, keywords..."
+                value={filters.searchQuery}
+                onChange={handleSearchChange}
+                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400"
+              />
               <button
                 id="hero-submit-cta"
                 onClick={() => onNavigate('submit')}
-                className="bg-brand-accent hover:bg-brand-accent-hover text-white px-6 py-3 rounded-brand font-bold text-sm transition-all shadow-md flex items-center justify-center space-x-2"
+                className="bg-brand-accent hover:bg-orange-500 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shrink-0 flex items-center space-x-1.5 cursor-pointer"
               >
                 <span>Submit Your Listing</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
+          </div>
+
+          {/* Trust row below the search bar */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-6 text-sm font-bold text-slate-500">
+            <span>✓ Free to browse</span>
+            <span>✓ Free to list</span>
+            <span>✓ No subscription</span>
+            <span>✓ Pan-European</span>
           </div>
         </div>
       </section>
