@@ -1,0 +1,6 @@
+{
+  "name": "ErasmusMatch",
+  "description": "Find and partner with Erasmus+ organisations across Europe for KA1, KA210, and KA220 projects.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

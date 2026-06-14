@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  --color-brand-primary: #2b5ac7;
+  --color-brand-primary-hover: #1f459c;
+  --color-brand-accent: #f48c06;
+  --color-brand-accent-hover: #d67a03;
+  --color-brand-bg: #f8f9ff;
+  
+  --radius-brand: 20px;
+}
+
+/* Custom styles and scrollbar aesthetics */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-brand-bg);
+  color: #1e293b;
+  overflow-x: hidden;
+}
+
+/* Design theme classes */
+.card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card-shadow:hover {
+  box-shadow: 0 10px 15px -3px rgba(43, 90, 199, 0.1), 0 4px 6px -2px rgba(43, 90, 199, 0.05);
+  transform: translateY(-4px);
+}
+
+.ka1 {
+  background-color: #2b5ac7;
+  color: white;
+}
+
+.ka210 {
+  background-color: #22c55e;
+  color: white;
+}
+
+.ka220 {
+  background-color: #a855f7;
+  color: white;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}

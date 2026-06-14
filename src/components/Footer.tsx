@@ -1,0 +1,178 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React from 'react';
+import { Sparkles, Globe, Mail, BookOpen, ShieldCheck } from 'lucide-react';
+
+interface FooterProps {
+  onNavigate: (view: string) => void;
+}
+
+export default function Footer({ onNavigate }: FooterProps) {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 pt-16 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          {/* Logo & Description */}
+          <div className="md:col-span-1 space-y-4">
+            <div 
+              id="footer-logo"
+              className="flex items-center space-x-2 cursor-pointer group"
+              onClick={() => onNavigate('home')}
+            >
+              <div className="p-2 bg-brand-primary text-white rounded-xl">
+                <Sparkles className="w-5 h-5 text-brand-accent" />
+              </div>
+              <span className="text-xl font-extrabold tracking-tight text-white">
+                Erasmus<span className="text-brand-accent">Match</span>
+              </span>
+            </div>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              Bridging opportunities and fostering cross-border alliances by simplifying partner-finding for Erasmus+ schools, universities, NGOs, and youth workers.
+            </p>
+            <div className="flex space-x-3 pt-2">
+              <span className="inline-flex items-center text-xs bg-slate-800 text-slate-400 px-3 py-1 rounded-full">
+                🇪🇺 Funded by Hope & Innovation
+              </span>
+            </div>
+          </div>
+
+          {/* Directory Shortcuts */}
+          <div>
+            <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-4 flex items-center space-x-2">
+              <Globe className="w-4 h-4 text-brand-primary" />
+              <span>Platform</span>
+            </h3>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>
+                <button 
+                  onClick={() => onNavigate('home')} 
+                  className="hover:text-white hover:underline transition-colors text-left"
+                >
+                  Browse Organisations
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onNavigate('submit')} 
+                  className="hover:text-white hover:underline transition-colors text-left"
+                >
+                  Publish Listing
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onNavigate('my-listings')} 
+                  className="hover:text-white hover:underline transition-colors text-left"
+                >
+                  Manage Listings
+                </button>
+              </li>
+              <li>
+                <a 
+                  href="#how-it-works-section" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigate('home');
+                    setTimeout(() => {
+                      document.getElementById('how-it-works-section')?.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }}
+                  className="hover:text-white hover:underline transition-colors text-left block"
+                >
+                  How It Works
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* European Resources */}
+          <div>
+            <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-4 flex items-center space-x-2">
+              <BookOpen className="w-4 h-4 text-green-500" />
+              <span>Official Resources</span>
+            </h3>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>
+                <a 
+                  href="https://erasmus-plus.ec.europa.eu/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-white hover:underline transition-colors"
+                >
+                  Erasmus+ Programme Guide
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://ec.europa.eu/programmes/erasmus-plus/opportunities/calls_en" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-white hover:underline transition-colors"
+                >
+                  Open Calls for Proposals
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://wikis.ec.europa.eu/display/erasmusplay" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-white hover:underline transition-colors"
+                >
+                  Key Action 1 & 2 Overviews
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://european-union.europa.eu/index_en" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-white hover:underline transition-colors"
+                >
+                  European Commission Page
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Legal / Contact */}
+          <div>
+            <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-4 flex items-center space-x-2">
+              <ShieldCheck className="w-4 h-4 text-brand-accent" />
+              <span>Support & Safety</span>
+            </h3>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>
+                <a href="#privacy" className="hover:text-white hover:underline transition-colors">
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a href="#terms" className="hover:text-white hover:underline transition-colors">
+                  Terms of Cooperation
+                </a>
+              </li>
+              <li className="flex items-center space-x-2 pt-2 text-xs text-slate-500">
+                <Mail className="w-4 h-4 text-slate-400" />
+                <span>support@erasmusmatch.org</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
+          <p>© {currentYear} ErasmusMatch. Designed to empower European collaborations.</p>
+          <p className="mt-2 sm:mt-0">
+            For academic and educational exchange networks only.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}

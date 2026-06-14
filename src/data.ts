@@ -1,0 +1,234 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import { Listing } from './types';
+
+export const COUNTRIES = [
+  { name: 'Austria', flag: '🇦🇹' },
+  { name: 'Belgium', flag: '🇧🇪' },
+  { name: 'Bulgaria', flag: '🇧🇬' },
+  { name: 'Croatia', flag: '🇭🇷' },
+  { name: 'Cyprus', flag: '🇨🇾' },
+  { name: 'Czech Republic', flag: '🇨🇿' },
+  { name: 'Denmark', flag: '🇩🇰' },
+  { name: 'Estonia', flag: '🇪🇪' },
+  { name: 'Finland', flag: '🇫🇮' },
+  { name: 'France', flag: '🇫🇷' },
+  { name: 'Germany', flag: '🇩🇪' },
+  { name: 'Greece', flag: '🇬🇷' },
+  { name: 'Hungary', flag: '🇭🇺' },
+  { name: 'Ireland', flag: '🇮🇪' },
+  { name: 'Italy', flag: '🇮🇹' },
+  { name: 'Latvia', flag: '🇱🇻' },
+  { name: 'Lithuania', flag: '🇱🇹' },
+  { name: 'Luxembourg', flag: '🇱🇺' },
+  { name: 'Malta', flag: '🇲🇹' },
+  { name: 'Netherlands', flag: '🇳🇱' },
+  { name: 'Poland', flag: '🇵🇱' },
+  { name: 'Portugal', flag: '🇵🇹' },
+  { name: 'Romania', flag: '🇷🇴' },
+  { name: 'Slovakia', flag: '🇸🇰' },
+  { name: 'Slovenia', flag: '🇸🇮' },
+  { name: 'Spain', flag: '🇪🇸' },
+  { name: 'Sweden', flag: '🇸🇪' }
+];
+
+export const ORGANISATION_TYPES = [
+  'NGO',
+  'School',
+  'VET Provider',
+  'University',
+  'Youth Organisation',
+  'Other'
+];
+
+export const KEY_ACTIONS = [
+  { code: 'KA1', label: 'KA1 - Learning Mobility of Individuals' },
+  { code: 'KA210', label: 'KA210 - Small-Scale Partnerships' },
+  { code: 'KA220', label: 'KA220 - Cooperation Partnerships' }
+];
+
+export const THEMATIC_AREAS = [
+  'Youth Empowerment',
+  'Digital Education',
+  'Environment & Climate',
+  'Social Inclusion',
+  'Entrepreneurship',
+  'Arts & Culture',
+  'Sport & Health',
+  'Civic Participation',
+  'Migration & Refugees',
+  'Gender Equality',
+  'Rural Development',
+  'Vocational Training',
+  'Adult Education',
+  'School Education',
+  'Higher Education'
+];
+
+export const LANGUAGES = [
+  'English',
+  'Greek',
+  'Italian',
+  'Spanish',
+  'Portuguese',
+  'French',
+  'German',
+  'Polish',
+  'Romanian',
+  'Dutch',
+  'Swedish',
+  'Finnish',
+  'Bulgarian',
+  'Hungarian',
+  'Czech'
+];
+
+export const MOCK_LISTINGS: Listing[] = [
+  {
+    id: 'org-1',
+    name: 'Helios Eco-Youth Association',
+    type: 'NGO',
+    country: 'Greece',
+    countryFlag: '🇬🇷',
+    keyActions: ['KA1', 'KA210'],
+    thematicAreas: ['Environment & Climate', 'Youth Empowerment', 'Civic Participation'],
+    languagesSpoken: ['English', 'Greek', 'French'],
+    contactEmail: 'contact@heliosecoyouth.gr',
+    description: 'We are a non-governmental organization dedicated to empowering young people through green outdoor education, sustainability initiatives, and community-driven actions. Located in the beautiful region of Thessaly, we host youth exchanges and volunteer projects that promote zero-waste lifestyles, bio-diversity conservation, and ecological awareness.',
+    thumbnailUrl: 'https://picsum.photos/800/600?random=10',
+    city: 'Larissa',
+    website: 'https://heliosecoyouth.gr',
+    foundedYear: '2018'
+  },
+  {
+    id: 'org-2',
+    name: 'Istituto Superiore Galileo Galilei',
+    type: 'School',
+    country: 'Italy',
+    countryFlag: '🇮🇹',
+    keyActions: ['KA1', 'KA220'],
+    thematicAreas: ['Digital Education', 'School Education', 'Arts & Culture'],
+    languagesSpoken: ['English', 'Italian', 'Spanish'],
+    contactEmail: 'erasmus@galileitoscana.it',
+    description: 'A comprehensive secondary school in Florence, Tuscany, catering to students aged 14-19 with general and technology-oriented tracks. We are actively seeking partnerships to develop digital curriculum integration, hybrid teaching models, and European cultural exchanges focusing on immersive science and historical arts education.',
+    thumbnailUrl: 'https://picsum.photos/800/600?random=20',
+    city: 'Florence',
+    website: 'https://galileitoscana.it',
+    foundedYear: '1962'
+  },
+  {
+    id: 'org-3',
+    name: 'Vigo Tech Innovation Hub',
+    type: 'University',
+    country: 'Spain',
+    countryFlag: '🇪🇸',
+    keyActions: ['KA220'],
+    thematicAreas: ['Entrepreneurship', 'Digital Education', 'Higher Education'],
+    languagesSpoken: ['English', 'Spanish', 'Portuguese'],
+    contactEmail: 'partnerships@vigotechhub.es',
+    description: 'Based within the research park of Galicia, Vigo Tech Innovation Hub serves as a bridge between high-quality university research and regional start-ups. We focus on AI-assisted learning frameworks, green technology incubators, and student startup accelerators, looking for consortiums to join under upcoming Erasmus+ Key Action 2 actions.',
+    thumbnailUrl: 'https://picsum.photos/800/600?random=30',
+    city: 'Vigo',
+    website: 'https://vigotechhub.es',
+    foundedYear: '2015'
+  },
+  {
+    id: 'org-4',
+    name: 'Associação Regenerar Portugal',
+    type: 'Youth Organisation',
+    country: 'Portugal',
+    countryFlag: '🇵🇹',
+    keyActions: ['KA210'],
+    thematicAreas: ['Social Inclusion', 'Civic Participation', 'Gender Equality'],
+    languagesSpoken: ['English', 'Portuguese', 'Spanish'],
+    contactEmail: 'erasmus@regenerarportugal.pt',
+    description: 'A vibrant Portuguese youth collective focused on rural youth activation, gender expression support groups, and inclusive social projects. We aim to design small-scale cooperation partnerships (KA210) that share methodologies on combatting discrimination, mental health awareness, and digital inclusion in isolated areas.',
+    thumbnailUrl: 'https://picsum.photos/800/600?random=40',
+    city: 'Coimbra',
+    website: 'https://regenerarportugal.pt',
+    foundedYear: '2021'
+  },
+  {
+    id: 'org-5',
+    name: 'Munich Vocational Arts Academy',
+    type: 'VET Provider',
+    country: 'Germany',
+    countryFlag: '🇩🇪',
+    keyActions: ['KA1', 'KA220'],
+    thematicAreas: ['Vocational Training', 'Digital Education', 'Arts & Culture'],
+    languagesSpoken: ['English', 'German'],
+    contactEmail: 'international@berufsakademie-muenchen.de',
+    description: 'We provide specialized vocational education and training in digital media design, interior design, and classical craftsmanship. Our aim is to foster international mobility pathways for our apprentices and create high-level cooperation partnerships that explore VR applications in traditional artisan practices.',
+    thumbnailUrl: 'https://picsum.photos/800/600?random=50',
+    city: 'Munich',
+    website: 'https://berufsakademie-muenchen.de',
+    foundedYear: '1995'
+  },
+  {
+    id: 'org-6',
+    name: 'Silesian Heritage & Culture Foundation',
+    type: 'Other',
+    country: 'Poland',
+    countryFlag: '🇵🇱',
+    keyActions: ['KA1'],
+    thematicAreas: ['Arts & Culture', 'Rural Development', 'Adult Education'],
+    languagesSpoken: ['English', 'Polish', 'German'],
+    contactEmail: 'culture@silesianheritage.pl',
+    description: 'An independent cultural research non-profit working to preserve and celebrate Central European regional identities and craft-making. We specialize in adult learner mobilities, community integration through music, and culinary history courses that bring together seniors and youth across Silesia.',
+    thumbnailUrl: 'https://picsum.photos/800/600?random=60',
+    city: 'Katowice',
+    website: 'https://silesianheritage.pl',
+    foundedYear: '2010'
+  },
+  {
+    id: 'org-7',
+    name: 'Transylvania Secondary School of Ecology',
+    type: 'School',
+    country: 'Romania',
+    countryFlag: '🇷🇴',
+    keyActions: ['KA210'],
+    thematicAreas: ['Environment & Climate', 'Rural Development', 'School Education'],
+    languagesSpoken: ['English', 'Romanian'],
+    contactEmail: 'eco-scolar@transylvaniaedu.ro',
+    description: 'Located in the majestic Carpathian foothills, our school integrates ecology and agricultural sciences directly into our standard secondary curriculum. We seek partnerships with other European schools to share best practices in outdoor gardening labs, small-scale composting techniques, and environmental awareness campaigns.',
+    thumbnailUrl: 'https://picsum.photos/800/600?random=70',
+    city: 'Brașov',
+    website: 'https://transylvaniaedu.ro',
+    foundedYear: '2004'
+  },
+  {
+    id: 'org-8',
+    name: 'Solidarité Humanitaire France',
+    type: 'NGO',
+    country: 'France',
+    countryFlag: '🇫🇷',
+    keyActions: ['KA1', 'KA220'],
+    thematicAreas: ['Migration & Refugees', 'Social Inclusion', 'Civic Participation'],
+    languagesSpoken: ['English', 'French', 'Arabic'],
+    contactEmail: 'contact@solidarite-humanitaire.fr',
+    description: 'An active humanitarian NGO operating in Marseille, supporting newly arrived migrants, refugees, and asylum seekers with legal clinics, integration workshops, and language lessons. We are highly experienced in Erasmus+ KA1 mobility programs and seek partnerships for KA220 human development strategies.',
+    thumbnailUrl: 'https://picsum.photos/800/600?random=80',
+    city: 'Marseille',
+    website: 'https://solidarite-humanitaire.fr',
+    foundedYear: '2012'
+  },
+  {
+    id: 'org-9',
+    name: 'Utrecht Sustainable Future Institute',
+    type: 'University',
+    country: 'Netherlands',
+    countryFlag: '🇳🇱',
+    keyActions: ['KA220'],
+    thematicAreas: ['Environment & Climate', 'Gender Equality', 'Higher Education'],
+    languagesSpoken: ['English', 'Dutch', 'German'],
+    contactEmail: 'sustainable@utrechtfuture.nl',
+    description: 'A leading academic research institute addressing urban planning, circular economies, and gender equality in climate policies. We develop and coordinate complex KA220 Cooperation Partnerships that connect academic metrics with city councils and local youth activist groups for systemic change.',
+    thumbnailUrl: 'https://picsum.photos/800/600?random=90',
+    city: 'Utrecht',
+    website: 'https://utrechtfuture.nl',
+    foundedYear: '2016'
+  }
+];
