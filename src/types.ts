@@ -28,6 +28,10 @@ export interface Listing {
   city?: string;
   website?: string;
   foundedYear?: string;
+  oid?: string;
+  experienceLevel: string;
+  previousProjects: string;
+  partnerSearchDeadline: string;
 }
 
 export interface SearchFilters {

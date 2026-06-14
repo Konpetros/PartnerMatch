@@ -18,7 +18,8 @@ import {
   ArrowRight, 
   FileCheck,
   Building,
-  AlertCircle
+  AlertCircle,
+  Info
 } from 'lucide-react';
 
 interface SubmitViewProps {
@@ -40,6 +41,10 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
   const [city, setCity] = useState('');
   const [website, setWebsite] = useState('');
   const [foundedYear, setFoundedYear] = useState('');
+  const [oid, setOid] = useState('');
+  const [experienceLevel, setExperienceLevel] = useState('First-timer (no previous projects)');
+  const [previousProjects, setPreviousProjects] = useState('0 — this will be our first');
+  const [partnerSearchDeadline, setPartnerSearchDeadline] = useState('');
 
   // Image upload
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -99,6 +104,17 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
     if (!name.trim()) errors.push('Organisation name is required.');
     if (!country) errors.push('Please select a country.');
     if (!contactEmail.trim() || !contactEmail.includes('@')) errors.push('A valid contact email is required.');
+    if (!partnerSearchDeadline) {
+      errors.push('Please select a partner search deadline.');
+    } else {
+      const selectedDate = new Date(partnerSearchDeadline);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      selectedDate.setHours(0, 0, 0, 0);
+      if (selectedDate <= today) {
+        errors.push('Partner search deadline must be a future date.');
+      }
+    }
     if (!description.trim()) errors.push('Please provide a short description.');
     if (selectedKeyActions.length === 0) errors.push('Select at least one Key Action (e.g. KA1, KA210, KA220).');
 
@@ -131,6 +147,10 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
       city: city.trim() || undefined,
       website: website.trim() || undefined,
       foundedYear: foundedYear.trim() || undefined,
+      oid: oid.trim() || undefined,
+      experienceLevel: experienceLevel,
+      previousProjects: previousProjects,
+      partnerSearchDeadline: partnerSearchDeadline,
     };
 
     onSubmitListing(userListing);
@@ -150,6 +170,10 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
     setCity('');
     setWebsite('');
     setFoundedYear('');
+    setOid('');
+    setExperienceLevel('First-timer (no previous projects)');
+    setPreviousProjects('0 — this will be our first');
+    setPartnerSearchDeadline('');
     setPreviewUrl(null);
     setIsSuccess(false);
     setCreatedId('');
@@ -352,6 +376,74 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
                 />
               </div>
             </div>
+
+            {/* OID Number */}
+            <div className="space-y-1">
+              <label htmlFor="form-org-oid" className="inline-flex items-center space-x-1.5 text-xs font-bold text-slate-600 uppercase tracking-wide">
+                <span>OID Number (Erasmus+ Organisation ID)</span>
+                <Info className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              </label>
+              <input
+                id="form-org-oid"
+                type="text"
+                placeholder="e.g. E10123456"
+                value={oid}
+                onChange={(e) => setOid(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400"
+              />
+              <p className="text-[11px] text-slate-450 font-medium">
+                Your Organisation ID from the EU Login portal. Optional but recommended.
+              </p>
+            </div>
+
+            {/* Experience Level & Previous Projects side by side */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Experience Level */}
+              <div className="space-y-1">
+                <label htmlFor="form-org-experience" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                  Experience Level
+                </label>
+                <div className="relative">
+                  <select
+                    id="form-org-experience"
+                    value={experienceLevel}
+                    onChange={(e) => setExperienceLevel(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="First-timer (no previous projects)">First-timer (no previous projects)</option>
+                    <option value="Experienced (1–3 projects)">Experienced (1–3 projects)</option>
+                    <option value="Advanced (4–10 projects)">Advanced (4–10 projects)</option>
+                    <option value="Expert Coordinator (10+ projects)">Expert Coordinator (10+ projects)</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                    <span className="text-xs">▼</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Number of Previous Projects */}
+              <div className="space-y-1">
+                <label htmlFor="form-org-previous" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                  Previous Erasmus+ Projects
+                </label>
+                <div className="relative">
+                  <select
+                    id="form-org-previous"
+                    value={previousProjects}
+                    onChange={(e) => setPreviousProjects(e.target.value)}
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="0 — this will be our first">0 — this will be our first</option>
+                    <option value="1–3 projects">1–3 projects</option>
+                    <option value="4–10 projects">4–10 projects</option>
+                    <option value="10+ projects">10+ projects</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                    <span className="text-xs">▼</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Section 2: Image Publication */}
@@ -521,6 +613,24 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
                 onChange={(e) => setContactEmail(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400"
               />
+            </div>
+
+            {/* Partner Search Deadline */}
+            <div className="space-y-1">
+              <label htmlFor="form-org-deadline" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                Partner Search Deadline *
+              </label>
+              <input
+                id="form-org-deadline"
+                type="date"
+                required
+                value={partnerSearchDeadline}
+                onChange={(e) => setPartnerSearchDeadline(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all"
+              />
+              <p className="text-[11px] text-slate-450 font-medium">
+                The date you need to find a partner by. Your listing will expire automatically on this date.
+              </p>
             </div>
 
             {/* Description with live character counter */}

@@ -101,7 +101,11 @@ export const MOCK_LISTINGS: Listing[] = [
     thumbnailUrl: 'https://picsum.photos/800/600?random=10',
     city: 'Larissa',
     website: 'https://heliosecoyouth.gr',
-    foundedYear: '2018'
+    foundedYear: '2018',
+    oid: 'E10123456',
+    experienceLevel: 'Experienced (1–3 projects)',
+    previousProjects: '1–3 projects',
+    partnerSearchDeadline: '2026-09-15'
   },
   {
     id: 'org-2',
@@ -117,7 +121,11 @@ export const MOCK_LISTINGS: Listing[] = [
     thumbnailUrl: 'https://picsum.photos/800/600?random=20',
     city: 'Florence',
     website: 'https://galileitoscana.it',
-    foundedYear: '1962'
+    foundedYear: '1962',
+    oid: 'E10223401',
+    experienceLevel: 'Advanced (4–10 projects)',
+    previousProjects: '4–10 projects',
+    partnerSearchDeadline: '2026-10-31'
   },
   {
     id: 'org-3',
@@ -133,7 +141,11 @@ export const MOCK_LISTINGS: Listing[] = [
     thumbnailUrl: 'https://picsum.photos/800/600?random=30',
     city: 'Vigo',
     website: 'https://vigotechhub.es',
-    foundedYear: '2015'
+    foundedYear: '2015',
+    oid: 'E10543210',
+    experienceLevel: 'Expert Coordinator (10+ projects)',
+    previousProjects: '10+ projects',
+    partnerSearchDeadline: '2026-11-20'
   },
   {
     id: 'org-4',
@@ -149,7 +161,11 @@ export const MOCK_LISTINGS: Listing[] = [
     thumbnailUrl: 'https://picsum.photos/800/600?random=40',
     city: 'Coimbra',
     website: 'https://regenerarportugal.pt',
-    foundedYear: '2021'
+    foundedYear: '2021',
+    oid: 'E10009876',
+    experienceLevel: 'First-timer (no previous projects)',
+    previousProjects: '0 — this will be our first',
+    partnerSearchDeadline: '2026-08-30'
   },
   {
     id: 'org-5',
@@ -165,7 +181,11 @@ export const MOCK_LISTINGS: Listing[] = [
     thumbnailUrl: 'https://picsum.photos/800/600?random=50',
     city: 'Munich',
     website: 'https://berufsakademie-muenchen.de',
-    foundedYear: '1995'
+    foundedYear: '1995',
+    oid: 'E10223344',
+    experienceLevel: 'Advanced (4–10 projects)',
+    previousProjects: '4–10 projects',
+    partnerSearchDeadline: '2026-12-15'
   },
   {
     id: 'org-6',
@@ -181,7 +201,11 @@ export const MOCK_LISTINGS: Listing[] = [
     thumbnailUrl: 'https://picsum.photos/800/600?random=60',
     city: 'Katowice',
     website: 'https://silesianheritage.pl',
-    foundedYear: '2010'
+    foundedYear: '2010',
+    oid: 'E10887766',
+    experienceLevel: 'Experienced (1–3 projects)',
+    previousProjects: '1–3 projects',
+    partnerSearchDeadline: '2026-09-30'
   },
   {
     id: 'org-7',
@@ -197,7 +221,11 @@ export const MOCK_LISTINGS: Listing[] = [
     thumbnailUrl: 'https://picsum.photos/800/600?random=70',
     city: 'Brașov',
     website: 'https://transylvaniaedu.ro',
-    foundedYear: '2004'
+    foundedYear: '2004',
+    oid: 'E10555666',
+    experienceLevel: 'First-timer (no previous projects)',
+    previousProjects: '0 — this will be our first',
+    partnerSearchDeadline: '2026-08-15'
   },
   {
     id: 'org-8',
@@ -213,7 +241,11 @@ export const MOCK_LISTINGS: Listing[] = [
     thumbnailUrl: 'https://picsum.photos/800/600?random=80',
     city: 'Marseille',
     website: 'https://solidarite-humanitaire.fr',
-    foundedYear: '2012'
+    foundedYear: '2012',
+    oid: 'E10444333',
+    experienceLevel: 'Expert Coordinator (10+ projects)',
+    previousProjects: '10+ projects',
+    partnerSearchDeadline: '2026-11-10'
   },
   {
     id: 'org-9',
@@ -229,6 +261,10 @@ export const MOCK_LISTINGS: Listing[] = [
     thumbnailUrl: 'https://picsum.photos/800/600?random=90',
     city: 'Utrecht',
     website: 'https://utrechtfuture.nl',
-    foundedYear: '2016'
+    foundedYear: '2016',
+    oid: 'E10999888',
+    experienceLevel: 'Advanced (4–10 projects)',
+    previousProjects: '4–10 projects',
+    partnerSearchDeadline: '2026-10-15'
   }
 ];
