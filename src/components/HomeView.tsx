@@ -40,6 +40,14 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
 
   const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
 
+  const isAnyFilterActive = 
+    filters.country !== '' ||
+    filters.organisationType !== '' ||
+    filters.thematicArea !== '' ||
+    filters.sector !== '' ||
+    filters.keyActions.length > 0 ||
+    filters.projectRole !== '';
+
   const [isLoading, setIsLoading] = useState(false);
   const [displayedListings, setDisplayedListings] = useState<Listing[]>(listings);
 
@@ -245,7 +253,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Country Select */}
             <div className="space-y-2">
               <label htmlFor="country-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
@@ -343,65 +351,104 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Key Actions filter */}
-          <div className="pt-2">
-            <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Key Actions (KA) Looking For:</span>
-            <div id="ka-filters" className="flex flex-wrap gap-2.5">
-              {['KA1', 'KA210', 'KA220'].map((action) => {
-                const isActive = filters.keyActions.includes(action as KeyAction);
-                return (
-                  <button
-                    id={`ka-pill-${action}`}
-                    key={action}
-                    type="button"
-                    onClick={() => toggleKeyAction(action as KeyAction)}
-                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 border cursor-pointer ${
-                      isActive 
-                        ? 'bg-slate-900 border-slate-900 text-white shadow-sm' 
-                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
-                  >
-                    <span>{action}</span>
-                    {action === 'KA1' && <span className="ml-1.5 opacity-60 font-light">KA1</span>}
-                    {action === 'KA210' && <span className="ml-1.5 opacity-60 font-light">Small</span>}
-                    {action === 'KA220' && <span className="ml-1.5 opacity-60 font-light">Coop</span>}
-                  </button>
-                );
-              })}
+            {/* Key Action Select */}
+            <div className="space-y-2">
+              <label htmlFor="ka-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
+                KEY ACTION
+              </label>
+              <div className="relative">
+                <select
+                  id="ka-select"
+                  value={filters.keyActions[0] || ''}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setFilters(prev => ({ ...prev, keyActions: val ? [val as KeyAction] : [] }));
+                  }}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+                >
+                  <option value="">⚡ All Key Actions</option>
+                  <option value="KA1">KA1 — Learning Mobility</option>
+                  <option value="KA210">KA210 — Small-Scale Partnerships</option>
+                  <option value="KA220">KA220 — Cooperation Partnerships</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                  <span className="text-xs">▼</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Project Role Select */}
+            <div className="space-y-2">
+              <label htmlFor="role-select" className="block text-xs font-bold text-gray-500 uppercase tracking-wider">
+                PROJECT ROLE
+              </label>
+              <div className="relative">
+                <select
+                  id="role-select"
+                  value={filters.projectRole}
+                  onChange={(e) => setFilters(prev => ({ ...prev, projectRole: e.target.value }))}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+                >
+                  <option value="">🎭 All Roles</option>
+                  <option value="Coordinator">🎯 Coordinator</option>
+                  <option value="Partner">🤝 Partner</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                  <span className="text-xs">▼</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Project Role Filter */}
-          <div className="pt-2">
-            <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Project Role:</span>
-            <div className="flex flex-wrap gap-2.5">
-              {[
-                { value: 'Coordinator', label: '🎯 Coordinator' },
-                { value: 'Partner', label: '🤝 Partner' },
-              ].map((role) => {
-                const isActive = filters.projectRole === role.value;
-                return (
-                  <button
-                    key={role.value}
-                    type="button"
-                    onClick={() => setFilters(prev => ({
-                      ...prev,
-                      projectRole: isActive ? '' : role.value
-                    }))}
-                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 border cursor-pointer ${
-                      isActive
-                        ? 'bg-slate-900 border-slate-900 text-white shadow-sm'
-                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                    }`}
-                  >
-                    {role.label}
-                  </button>
-                );
-              })}
+          {/* Active Filter Tags */}
+          {isAnyFilterActive && (
+            <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-2 items-center">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Active:</span>
+              
+              {filters.country && (
+                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                  <span>🌍 {filters.country}</span>
+                  <button onClick={() => setFilters(prev => ({ ...prev, country: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
+                </span>
+              )}
+              
+              {filters.organisationType && (
+                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                  <span>🏢 {filters.organisationType}</span>
+                  <button onClick={() => setFilters(prev => ({ ...prev, organisationType: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
+                </span>
+              )}
+              
+              {filters.thematicArea && (
+                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                  <span>🎓 {filters.thematicArea}</span>
+                  <button onClick={() => setFilters(prev => ({ ...prev, thematicArea: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
+                </span>
+              )}
+              
+              {filters.sector && (
+                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                  <span>🎯 {filters.sector}</span>
+                  <button onClick={() => setFilters(prev => ({ ...prev, sector: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
+                </span>
+              )}
+              
+              {filters.keyActions.length > 0 && filters.keyActions.map(ka => (
+                <span key={ka} className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                  <span>⚡ {ka}</span>
+                  <button onClick={() => setFilters(prev => ({ ...prev, keyActions: prev.keyActions.filter(k => k !== ka) }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
+                </span>
+              ))}
+              
+              {filters.projectRole && (
+                <span className="inline-flex items-center space-x-1.5 bg-brand-primary/10 text-brand-primary text-xs font-bold px-3 py-1.5 rounded-full">
+                  <span>{filters.projectRole === 'Coordinator' ? '🎯' : '🤝'} {filters.projectRole}</span>
+                  <button onClick={() => setFilters(prev => ({ ...prev, projectRole: '' }))} className="hover:text-red-500 transition-colors cursor-pointer">✕</button>
+                </span>
+              )}
             </div>
-          </div>
+          )}
         </div>
       </section>
 
