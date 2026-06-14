@@ -42,6 +42,7 @@ export default function SubmitView({
   const [partnerSearchDeadline, setPartnerSearchDeadline] = useState('');
   const [description, setDescription] = useState('');
   const [contactEmail, setContactEmail] = useState('');
+  const [projectRole, setProjectRole] = useState<'Coordinator' | 'Partner' | ''>('');
 
   // Pre-fill contact email once profile loads
   useEffect(() => {
@@ -108,6 +109,9 @@ export default function SubmitView({
     if (selectedKeyActions.length === 0) {
       errors.push('Select at least one Key Action (e.g. KA1, KA210, KA220).');
     }
+    if (!projectRole) {
+      errors.push('Please select your role in this project.');
+    }
     if (selectedThematics.length === 0) {
       errors.push('Select at least one Thematic Area.');
     }
@@ -155,6 +159,7 @@ export default function SubmitView({
       views: 0,
       createdAt: new Date().toISOString(),
       status: 'pending',
+      projectRole: projectRole as 'Coordinator' | 'Partner',
       submitterProfile: profile,
     };
 
@@ -168,6 +173,7 @@ export default function SubmitView({
     setSelectedThematics([]);
     setDescription('');
     setPartnerSearchDeadline('');
+    setProjectRole('');
     setPreviewUrl(null);
     setIsSuccess(false);
     setCreatedId('');
@@ -303,8 +309,12 @@ export default function SubmitView({
                 <div>
                   <span className="text-slate-400 font-bold">OID:</span> {profile.oid || 'Not Provided'}
                 </div>
-                <div>
-                  <span className="text-slate-400 font-bold">Experience:</span> {profile.experienceLevel}
+                <div className="flex items-center flex-wrap gap-1.5">
+                  <span className="text-slate-400 font-bold">Experience:</span>
+                  <span>{profile.experienceLevel}</span>
+                  <span className="bg-blue-50 text-brand-primary text-[11px] font-bold px-2.5 py-1 rounded-full">
+                    {profile.sector}
+                  </span>
                 </div>
               </div>
 
@@ -377,6 +387,42 @@ export default function SubmitView({
               <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">2</span>
               <span>Partner Search Details</span>
             </h2>
+
+            {/* Project Role Selector */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                Your Role in This Project *
+              </label>
+              <p className="text-[11px] text-slate-400 font-medium">
+                Are you looking for partners to join your project, or are you open to joining someone else's project?
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setProjectRole('Coordinator')}
+                  className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
+                    projectRole === 'Coordinator'
+                      ? 'border-brand-primary bg-blue-50/50'
+                      : 'border-slate-200 bg-white hover:border-slate-300'
+                  }`}
+                >
+                  <div className="font-bold text-sm text-slate-800">🎯 Coordinator</div>
+                  <div className="text-[11px] text-slate-500 mt-1">I am leading a project and looking for partner organisations to join my consortium</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProjectRole('Partner')}
+                  className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
+                    projectRole === 'Partner'
+                      ? 'border-brand-primary bg-blue-50/50'
+                      : 'border-slate-200 bg-white hover:border-slate-300'
+                  }`}
+                >
+                  <div className="font-bold text-sm text-slate-800">🤝 Partner</div>
+                  <div className="text-[11px] text-slate-500 mt-1">I am open to joining another organisation's project as a partner in their consortium</div>
+                </button>
+              </div>
+            </div>
 
             {/* Key Actions KeyAction toggle representation */}
             <div className="space-y-2">

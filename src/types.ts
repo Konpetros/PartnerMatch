@@ -44,6 +44,7 @@ export interface Listing {
   views?: number;
   createdAt?: string;
   status?: 'active' | 'pending' | 'expired' | 'partnership-found';
+  projectRole?: 'Coordinator' | 'Partner';
   submitterProfile?: OrganisationProfile;
 }
 
@@ -54,4 +55,5 @@ export interface SearchFilters {
   keyActions: KeyAction[];
   thematicArea: string;
   sector: string;
+  projectRole: string;
 }

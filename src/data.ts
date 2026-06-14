@@ -110,6 +110,7 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 142,
     createdAt: '2026-06-12T10:30:00Z',
     status: 'active',
+    projectRole: 'Coordinator',
     submitterProfile: {
       organisationName: 'Helios Eco-Youth Association',
       organisationType: 'NGO',
@@ -141,6 +142,7 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 285,
     createdAt: '2026-05-20T14:45:00Z',
     status: 'active',
+    projectRole: 'Partner',
     submitterProfile: {
       organisationName: 'Istituto Superiore Galileo Galilei',
       organisationType: 'School',
@@ -172,6 +174,7 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 312,
     createdAt: '2026-06-05T08:15:00Z',
     status: 'active',
+    projectRole: 'Coordinator',
     submitterProfile: {
       organisationName: 'Vigo Tech Innovation Hub',
       organisationType: 'University',
@@ -203,6 +206,7 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 45,
     createdAt: '2026-06-13T16:20:00Z',
     status: 'pending',
+    projectRole: 'Partner',
     submitterProfile: {
       organisationName: 'Associação Regenerar Portugal',
       organisationType: 'Youth Organisation',
@@ -234,6 +238,7 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 198,
     createdAt: '2026-05-18T11:00:00Z',
     status: 'active',
+    projectRole: 'Coordinator',
     submitterProfile: {
       organisationName: 'Munich Vocational Arts Academy',
       organisationType: 'VET Provider',
@@ -265,6 +270,7 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 78,
     createdAt: '2026-06-01T09:00:00Z',
     status: 'pending',
+    projectRole: 'Partner',
     submitterProfile: {
       organisationName: 'Silesian Heritage & Culture Foundation',
       organisationType: 'Other',
@@ -296,6 +302,7 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 18,
     createdAt: '2026-06-14T01:10:00Z',
     status: 'expired',
+    projectRole: 'Partner',
     submitterProfile: {
       organisationName: 'Transylvania Secondary School of Ecology',
       organisationType: 'School',
@@ -327,6 +334,7 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 324,
     createdAt: '2026-05-10T12:00:00Z',
     status: 'active',
+    projectRole: 'Coordinator',
     submitterProfile: {
       organisationName: 'Solidarité Humanitaire France',
       organisationType: 'NGO',
@@ -358,6 +366,7 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 215,
     createdAt: '2026-05-28T15:30:00Z',
     status: 'partnership-found',
+    projectRole: 'Coordinator',
     submitterProfile: {
       organisationName: 'Utrecht Sustainable Future Institute',
       organisationType: 'University',

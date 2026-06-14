@@ -17,7 +17,8 @@ import {
   ExternalLink,
   Hash,
   Award,
-  FolderOpen
+  FolderOpen,
+  Target
 } from 'lucide-react';
 
 interface DetailViewProps {
@@ -213,6 +214,23 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                     <p className="text-slate-800 font-bold">{listing.type}</p>
                   </div>
                 </div>
+
+                {/* Project Role */}
+                {listing.projectRole && (
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2.5 bg-white text-slate-500 rounded-xl shadow-sm">
+                      <Target className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Project Role</p>
+                      <p className={`font-bold text-sm ${
+                        listing.projectRole === 'Coordinator' ? 'text-purple-700' : 'text-teal-700'
+                      }`}>
+                        {listing.projectRole === 'Coordinator' ? '🎯 Coordinator' : '🤝 Partner'}
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 {/* Country */}
                 <div className="flex items-center space-x-3">

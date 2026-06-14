@@ -34,7 +34,8 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
     organisationType: '',
     keyActions: [],
     thematicArea: '',
-    sector: ''
+    sector: '',
+    projectRole: ''
   });
 
   const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
@@ -80,10 +81,13 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
         // Thematic Area match
         const matchesThematic = !filters.thematicArea || item.thematicAreas.includes(filters.thematicArea);
 
+        // Project Role match
+        const matchesProjectRole = !filters.projectRole || item.projectRole === filters.projectRole;
+
         // Sector match
         const matchesSector = !filters.sector || item.submitterProfile?.sector === filters.sector;
 
-        return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic && matchesSector;
+        return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic && matchesSector && matchesProjectRole;
       });
 
       // Apply sorting AFTER filtering
@@ -150,7 +154,8 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
       organisationType: '',
       keyActions: [],
       thematicArea: '',
-      sector: ''
+      sector: '',
+      projectRole: ''
     });
   };
 
@@ -367,6 +372,36 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
               })}
             </div>
           </div>
+
+          {/* Project Role Filter */}
+          <div className="pt-2">
+            <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Project Role:</span>
+            <div className="flex flex-wrap gap-2.5">
+              {[
+                { value: 'Coordinator', label: '🎯 Coordinator' },
+                { value: 'Partner', label: '🤝 Partner' },
+              ].map((role) => {
+                const isActive = filters.projectRole === role.value;
+                return (
+                  <button
+                    key={role.value}
+                    type="button"
+                    onClick={() => setFilters(prev => ({
+                      ...prev,
+                      projectRole: isActive ? '' : role.value
+                    }))}
+                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 border cursor-pointer ${
+                      isActive
+                        ? 'bg-slate-900 border-slate-900 text-white shadow-sm'
+                        : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    {role.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -477,6 +512,15 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                       <span className="bg-slate-100 text-slate-700 text-[10px] font-extrabold uppercase px-2 py-1 rounded-md tracking-wider">
                         {listing.type}
                       </span>
+                      {listing.projectRole && (
+                        <span className={`text-[10px] font-extrabold px-2 py-1 rounded-md ${
+                          listing.projectRole === 'Coordinator'
+                            ? 'bg-purple-100 text-purple-700'
+                            : 'bg-teal-100 text-teal-700'
+                        }`}>
+                          {listing.projectRole === 'Coordinator' ? '🎯 Coordinator' : '🤝 Partner'}
+                        </span>
+                      )}
                       {listing.keyActions.map((action) => (
                         <span
                           key={action}
