@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { OrganisationProfile, OrganisationType } from '../types';
-import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES } from '../data';
+import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
 import { Building, AlertCircle, Check, Info } from 'lucide-react';
 
 interface ProfileSetupViewProps {
@@ -24,6 +24,7 @@ export default function ProfileSetupView({ onProfileComplete }: ProfileSetupView
   const [previousProjects, setPreviousProjects] = useState('0');
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [contactEmail, setContactEmail] = useState('');
+  const [sector, setSector] = useState('Youth');
   const [formErrors, setFormErrors] = useState<string[]>([]);
 
   const handleLanguageToggle = (lang: string) => {
@@ -54,6 +55,9 @@ export default function ProfileSetupView({ onProfileComplete }: ProfileSetupView
     if (selectedLanguages.length === 0) {
       errors.push('Please select at least one language.');
     }
+    if (!sector) {
+      errors.push('Please select your Erasmus+ sector');
+    }
 
     if (errors.length > 0) {
       setFormErrors(errors);
@@ -79,6 +83,7 @@ export default function ProfileSetupView({ onProfileComplete }: ProfileSetupView
       previousProjects,
       languagesSpoken: selectedLanguages,
       contactEmail: contactEmail.trim(),
+      sector,
     };
 
     onProfileComplete(profile);
@@ -291,6 +296,30 @@ export default function ProfileSetupView({ onProfileComplete }: ProfileSetupView
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
                   <span className="text-xs">▼</span>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Erasmus+ Sector */}
+          <div className="space-y-1">
+            <label htmlFor="setup-org-sector" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+              Erasmus+ Sector *
+            </label>
+            <div className="relative">
+              <select
+                id="setup-org-sector"
+                value={sector}
+                onChange={(e) => setSector(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+              >
+                {ERASMUS_SECTORS.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                <span className="text-xs">▼</span>
               </div>
             </div>
           </div>

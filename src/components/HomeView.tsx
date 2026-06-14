@@ -81,7 +81,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
         const matchesThematic = !filters.thematicArea || item.thematicAreas.includes(filters.thematicArea);
 
         // Sector match
-        const matchesSector = !filters.sector || item.sector === filters.sector;
+        const matchesSector = !filters.sector || item.submitterProfile?.sector === filters.sector;
 
         return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic && matchesSector;
       });

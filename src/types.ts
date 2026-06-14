@@ -26,6 +26,7 @@ export interface OrganisationProfile {
   previousProjects: string;
   languagesSpoken: string[];
   contactEmail: string;
+  sector: string;
 }
 
 export interface Listing {
@@ -43,7 +44,6 @@ export interface Listing {
   views?: number;
   createdAt?: string;
   status?: 'active' | 'pending' | 'expired' | 'partnership-found';
-  sector?: string;
   submitterProfile?: OrganisationProfile;
 }
 

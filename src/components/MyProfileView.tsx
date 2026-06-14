@@ -18,7 +18,7 @@ import {
   Sparkles 
 } from 'lucide-react';
 import { OrganisationProfile, OrganisationType, Listing } from '../types';
-import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES } from '../data';
+import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
 
 interface MyProfileViewProps {
   currentUser: string | null;
@@ -49,6 +49,7 @@ export default function MyProfileView({
   const [previousProjects, setPreviousProjects] = useState(profile?.previousProjects || '0');
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>(profile?.languagesSpoken || []);
   const [contactEmail, setContactEmail] = useState(profile?.contactEmail || '');
+  const [sector, setSector] = useState(profile?.sector || 'Youth');
 
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [toast, setToast] = useState<string | null>(null);
@@ -88,6 +89,9 @@ export default function MyProfileView({
     if (selectedLanguages.length === 0) {
       errors.push('Please select at least one language.');
     }
+    if (!sector) {
+      errors.push('Please select your Erasmus+ sector');
+    }
 
     if (errors.length > 0) {
       setFormErrors(errors);
@@ -113,6 +117,7 @@ export default function MyProfileView({
       previousProjects,
       languagesSpoken: selectedLanguages,
       contactEmail: contactEmail.trim(),
+      sector,
     };
 
     onUpdateProfile(updatedProfile);
@@ -441,6 +446,30 @@ export default function MyProfileView({
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
                     <span className="text-xs">▼</span>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Erasmus+ Sector */}
+            <div className="space-y-1">
+              <label htmlFor="modal-org-sector" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                Erasmus+ Sector *
+              </label>
+              <div className="relative">
+                <select
+                  id="modal-org-sector"
+                  value={sector}
+                  onChange={(e) => setSector(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+                >
+                  {ERASMUS_SECTORS.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                  <span className="text-xs">▼</span>
                 </div>
               </div>
             </div>

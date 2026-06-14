@@ -44,6 +44,7 @@ export default function OrgProfileView({
     previousProjects: (listing as any).previousProjects || '0',
     languagesSpoken: (listing as any).languagesSpoken || ['English'],
     contactEmail: listing.contactEmail,
+    sector: 'Youth',
   };
 
   const activeStatus = listing.status || 'active';
@@ -272,6 +273,17 @@ export default function OrgProfileView({
                   <div>
                     <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Type</span>
                     <span className="text-slate-800 font-bold text-xs">{profile.organisationType}</span>
+                  </div>
+                </div>
+
+                {/* Sector */}
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
+                    <FileText className="w-4 h-4 text-slate-450" />
+                  </div>
+                  <div>
+                    <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Erasmus+ Sector</span>
+                    <span className="text-slate-800 font-bold text-xs">{profile.sector}</span>
                   </div>
                 </div>
 

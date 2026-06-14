@@ -110,7 +110,6 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 142,
     createdAt: '2026-06-12T10:30:00Z',
     status: 'active',
-    sector: 'Youth',
     submitterProfile: {
       organisationName: 'Helios Eco-Youth Association',
       organisationType: 'NGO',
@@ -123,7 +122,8 @@ export const MOCK_LISTINGS: Listing[] = [
       experienceLevel: 'Experienced (1–3 projects)',
       previousProjects: '1–3 projects',
       languagesSpoken: ['English', 'Greek', 'French'],
-      contactEmail: 'contact@heliosecoyouth.gr'
+      contactEmail: 'contact@heliosecoyouth.gr',
+      sector: 'Youth'
     }
   },
   {
@@ -141,7 +141,6 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 285,
     createdAt: '2026-05-20T14:45:00Z',
     status: 'active',
-    sector: 'School Education',
     submitterProfile: {
       organisationName: 'Istituto Superiore Galileo Galilei',
       organisationType: 'School',
@@ -154,7 +153,8 @@ export const MOCK_LISTINGS: Listing[] = [
       experienceLevel: 'Advanced (4–10 projects)',
       previousProjects: '4–10 projects',
       languagesSpoken: ['English', 'Italian', 'Spanish'],
-      contactEmail: 'erasmus@galileitoscana.it'
+      contactEmail: 'erasmus@galileitoscana.it',
+      sector: 'School Education'
     }
   },
   {
@@ -172,7 +172,6 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 312,
     createdAt: '2026-06-05T08:15:00Z',
     status: 'active',
-    sector: 'Adult Education',
     submitterProfile: {
       organisationName: 'Vigo Tech Innovation Hub',
       organisationType: 'University',
@@ -185,7 +184,8 @@ export const MOCK_LISTINGS: Listing[] = [
       experienceLevel: 'Expert Coordinator (10+ projects)',
       previousProjects: '10+ projects',
       languagesSpoken: ['English', 'Spanish', 'Portuguese'],
-      contactEmail: 'partnerships@vigotechhub.es'
+      contactEmail: 'partnerships@vigotechhub.es',
+      sector: 'Adult Education'
     }
   },
   {
@@ -203,7 +203,6 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 45,
     createdAt: '2026-06-13T16:20:00Z',
     status: 'pending',
-    sector: 'Youth',
     submitterProfile: {
       organisationName: 'Associação Regenerar Portugal',
       organisationType: 'Youth Organisation',
@@ -216,7 +215,8 @@ export const MOCK_LISTINGS: Listing[] = [
       experienceLevel: 'First-timer (no previous projects)',
       previousProjects: '0 — this will be our first',
       languagesSpoken: ['English', 'Portuguese', 'Spanish'],
-      contactEmail: 'erasmus@regenerarportugal.pt'
+      contactEmail: 'erasmus@regenerarportugal.pt',
+      sector: 'Youth'
     }
   },
   {
@@ -234,7 +234,6 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 198,
     createdAt: '2026-05-18T11:00:00Z',
     status: 'active',
-    sector: 'Vocational Education & Training',
     submitterProfile: {
       organisationName: 'Munich Vocational Arts Academy',
       organisationType: 'VET Provider',
@@ -247,7 +246,8 @@ export const MOCK_LISTINGS: Listing[] = [
       experienceLevel: 'Advanced (4–10 projects)',
       previousProjects: '4–10 projects',
       languagesSpoken: ['English', 'German'],
-      contactEmail: 'international@berufsakademie-muenchen.de'
+      contactEmail: 'international@berufsakademie-muenchen.de',
+      sector: 'Vocational Education & Training'
     }
   },
   {
@@ -265,7 +265,6 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 78,
     createdAt: '2026-06-01T09:00:00Z',
     status: 'pending',
-    sector: 'Adult Education',
     submitterProfile: {
       organisationName: 'Silesian Heritage & Culture Foundation',
       organisationType: 'Other',
@@ -278,7 +277,8 @@ export const MOCK_LISTINGS: Listing[] = [
       experienceLevel: 'Experienced (1–3 projects)',
       previousProjects: '1–3 projects',
       languagesSpoken: ['English', 'Polish', 'German'],
-      contactEmail: 'culture@silesianheritage.pl'
+      contactEmail: 'culture@silesianheritage.pl',
+      sector: 'Adult Education'
     }
   },
   {
@@ -296,7 +296,6 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 18,
     createdAt: '2026-06-14T01:10:00Z',
     status: 'expired',
-    sector: 'School Education',
     submitterProfile: {
       organisationName: 'Transylvania Secondary School of Ecology',
       organisationType: 'School',
@@ -309,7 +308,8 @@ export const MOCK_LISTINGS: Listing[] = [
       experienceLevel: 'First-timer (no previous projects)',
       previousProjects: '0 — this will be our first',
       languagesSpoken: ['English', 'Romanian'],
-      contactEmail: 'eco-scolar@transylvaniaedu.ro'
+      contactEmail: 'eco-scolar@transylvaniaedu.ro',
+      sector: 'School Education'
     }
   },
   {
@@ -327,7 +327,6 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 324,
     createdAt: '2026-05-10T12:00:00Z',
     status: 'active',
-    sector: 'Youth',
     submitterProfile: {
       organisationName: 'Solidarité Humanitaire France',
       organisationType: 'NGO',
@@ -340,7 +339,8 @@ export const MOCK_LISTINGS: Listing[] = [
       experienceLevel: 'Expert Coordinator (10+ projects)',
       previousProjects: '10+ projects',
       languagesSpoken: ['English', 'French', 'Arabic'],
-      contactEmail: 'contact@solidarite-humanitaire.fr'
+      contactEmail: 'contact@solidarite-humanitaire.fr',
+      sector: 'Youth'
     }
   },
   {
@@ -358,7 +358,6 @@ export const MOCK_LISTINGS: Listing[] = [
     views: 215,
     createdAt: '2026-05-28T15:30:00Z',
     status: 'partnership-found',
-    sector: 'Sport',
     submitterProfile: {
       organisationName: 'Utrecht Sustainable Future Institute',
       organisationType: 'University',
@@ -371,7 +370,8 @@ export const MOCK_LISTINGS: Listing[] = [
       experienceLevel: 'Advanced (4–10 projects)',
       previousProjects: '4–10 projects',
       languagesSpoken: ['English', 'Dutch', 'German'],
-      contactEmail: 'sustainable@utrechtfuture.nl'
+      contactEmail: 'sustainable@utrechtfuture.nl',
+      sector: 'Adult Education'
     }
   }
 ];

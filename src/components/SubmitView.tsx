@@ -296,7 +296,10 @@ export default function SubmitView({
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 pt-2 border-t border-slate-100 text-xs text-slate-650 font-medium">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-2 pt-2 border-t border-slate-100 text-xs text-slate-650 font-medium">
+                <div>
+                  <span className="text-slate-400 font-bold">Sector:</span> {profile.sector}
+                </div>
                 <div>
                   <span className="text-slate-400 font-bold">OID:</span> {profile.oid || 'Not Provided'}
                 </div>
