@@ -141,6 +141,23 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
             >
               {isLoading ? 'Verifying Coordinates...' : 'Authenticate Account'}
             </button>
+
+            <div className="relative flex items-center py-2">
+              <div className="flex-1 border-t border-slate-100" />
+              <span className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-wider">or</span>
+              <div className="flex-1 border-t border-slate-100" />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                onSuccessSignIn('Petros');
+                onClose();
+              }}
+              className="w-full border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white py-2.5 rounded-brand text-xs font-bold transition-all cursor-pointer"
+            >
+              ⚡ Quick Sign In as Admin (Testing Only)
+            </button>
           </form>
 
           {/* Quick Demo Access Divider */}
