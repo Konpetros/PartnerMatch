@@ -227,7 +227,7 @@ export default function MyListingsView({
             </button>
 
             <button
-              onClick={() => showToast('Coming soon')}
+              onClick={() => onNavigate('my-profile')}
               className="w-full flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-any text-left"
             >
               <User className="w-4 h-4 shrink-0 text-slate-450" />
@@ -295,7 +295,7 @@ export default function MyListingsView({
                 <span>Submit New</span>
               </button>
               <button
-                onClick={() => showToast('Coming soon')}
+                onClick={() => onNavigate('my-profile')}
                 className="flex-1 border border-slate-205 text-slate-700 bg-slate-50 hover:bg-slate-100 py-2.5 rounded-xl font-bold text-[11px]"
               >
                 Profile Settings
@@ -403,7 +403,7 @@ export default function MyListingsView({
                                 </h4>
                                 <p className="text-[11px] text-slate-500 font-medium flex items-center space-x-1">
                                   <span>{listing.countryFlag}</span>
-                                  <span>{listing.city ? `${listing.city}, ` : ''}{listing.country}</span>
+                                  <span>{listing.submitterProfile?.city || (listing as any).city ? `${listing.submitterProfile?.city || (listing as any).city}, ` : ''}{listing.country}</span>
                                 </p>
                               </div>
                             </div>
@@ -527,9 +527,9 @@ export default function MyListingsView({
                             <h4 className="font-bold text-slate-800 text-xs line-clamp-2 leading-snug">
                               {listing.name}
                             </h4>
-                            <p className="text-[10px] text-slate-500 font-semibold mt-0.5 flex items-center space-x-1">
+                            <p className="text-[10px] text-slate-505 font-semibold mt-0.5 flex items-center space-x-1">
                               <span>{listing.countryFlag}</span>
-                              <span>{listing.city ? `${listing.city}, ` : ''}{listing.country}</span>
+                              <span>{listing.submitterProfile?.city || (listing as any).city ? `${listing.submitterProfile?.city || (listing as any).city}, ` : ''}{listing.country}</span>
                             </p>
                           </div>
                         </div>

@@ -3,17 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useRef } from 'react';
-import { Listing, OrganisationType, KeyAction } from '../types';
-import { COUNTRIES, ORGANISATION_TYPES, THEMATIC_AREAS, LANGUAGES } from '../data';
+import React, { useState, useRef, useEffect } from 'react';
+import { Listing, KeyAction, OrganisationProfile } from '../types';
+import { COUNTRIES, THEMATIC_AREAS } from '../data';
 import { 
   CloudUpload, 
   Sparkles, 
   MapPin, 
-  Users, 
   Mail, 
   Check, 
-  TrendingUp, 
   PlusCircle, 
   ArrowRight, 
   FileCheck,
@@ -23,28 +21,34 @@ import {
 } from 'lucide-react';
 
 interface SubmitViewProps {
+  organisationProfile: OrganisationProfile | null;
   onSubmitListing: (listing: Listing) => void;
   onNavigate: (view: string) => void;
   onSelectListing: (id: string) => void;
 }
 
-export default function SubmitView({ onSubmitListing, onNavigate, onSelectListing }: SubmitViewProps) {
-  // Form values
-  const [name, setName] = useState('');
-  const [country, setCountry] = useState('');
-  const [type, setType] = useState<OrganisationType>('NGO');
+export default function SubmitView({ 
+  organisationProfile, 
+  onSubmitListing, 
+  onNavigate, 
+  onSelectListing 
+}: SubmitViewProps) {
+  // Safe fallback if profile is somehow null (e.g., initial render of preview)
+  const profile = organisationProfile;
+
+  // Form values specific to listings
   const [selectedKeyActions, setSelectedKeyActions] = useState<KeyAction[]>([]);
   const [selectedThematics, setSelectedThematics] = useState<string[]>([]);
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-  const [contactEmail, setContactEmail] = useState('');
-  const [description, setDescription] = useState('');
-  const [city, setCity] = useState('');
-  const [website, setWebsite] = useState('');
-  const [foundedYear, setFoundedYear] = useState('');
-  const [oid, setOid] = useState('');
-  const [experienceLevel, setExperienceLevel] = useState('First-timer (no previous projects)');
-  const [previousProjects, setPreviousProjects] = useState('0 — this will be our first');
   const [partnerSearchDeadline, setPartnerSearchDeadline] = useState('');
+  const [description, setDescription] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+
+  // Pre-fill contact email once profile loads
+  useEffect(() => {
+    if (profile) {
+      setContactEmail(profile.contactEmail);
+    }
+  }, [profile]);
 
   // Image upload
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -79,20 +83,14 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
 
   // Checkbox state toggles
   const handleKeyActionToggle = (action: KeyAction) => {
-    setSelectedKeyActions(prev => 
-      prev.includes(action) ? prev.filter(x => x !== action) : [...prev, action]
+    setSelectedKeyActions((prev) => 
+      prev.includes(action) ? prev.filter((x) => x !== action) : [...prev, action]
     );
   };
 
   const handleThematicToggle = (area: string) => {
-    setSelectedThematics(prev => 
-      prev.includes(area) ? prev.filter(x => x !== area) : [...prev, area]
-    );
-  };
-
-  const handleLanguageToggle = (lang: string) => {
-    setSelectedLanguages(prev => 
-      prev.includes(lang) ? prev.filter(x => x !== lang) : [...prev, lang]
+    setSelectedThematics((prev) => 
+      prev.includes(area) ? prev.filter((x) => x !== area) : [...prev, area]
     );
   };
 
@@ -101,9 +99,18 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
     e.preventDefault();
     const errors: string[] = [];
 
-    if (!name.trim()) errors.push('Organisation name is required.');
-    if (!country) errors.push('Please select a country.');
-    if (!contactEmail.trim() || !contactEmail.includes('@')) errors.push('A valid contact email is required.');
+    if (!profile) {
+      errors.push('No active organisation profile found. Please set up your profile first.');
+      setFormErrors(errors);
+      return;
+    }
+
+    if (selectedKeyActions.length === 0) {
+      errors.push('Select at least one Key Action (e.g. KA1, KA210, KA220).');
+    }
+    if (selectedThematics.length === 0) {
+      errors.push('Select at least one Thematic Area.');
+    }
     if (!partnerSearchDeadline) {
       errors.push('Please select a partner search deadline.');
     } else {
@@ -115,80 +122,70 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
         errors.push('Partner search deadline must be a future date.');
       }
     }
-    if (!description.trim()) errors.push('Please provide a short description.');
-    if (selectedKeyActions.length === 0) errors.push('Select at least one Key Action (e.g. KA1, KA210, KA220).');
+    if (!description.trim()) {
+      errors.push('Please provide a partner search description.');
+    }
+    if (!contactEmail.trim() || !contactEmail.includes('@')) {
+      errors.push('A valid contact email is required.');
+    }
 
     if (errors.length > 0) {
       setFormErrors(errors);
-      // Scroll to error alert
       document.getElementById('form-error-alert')?.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 
     setFormErrors([]);
 
-    // Generate unique index matching listing ID
     const newId = `user-org-${Date.now()}`;
-    const flagMeta = COUNTRIES.find(c => c.name === country)?.flag || '🇪🇺';
 
-    // Construct listing
-    const userListing: Listing = {
+    // Construct listing matching specs in Part 4
+    const newListing: Listing = {
       id: newId,
-      name: name.trim(),
-      type: type,
-      country: country,
-      countryFlag: flagMeta,
+      name: profile.organisationName,
+      type: profile.organisationType,
+      country: profile.country,
+      countryFlag: profile.countryFlag,
       keyActions: selectedKeyActions,
-      thematicAreas: selectedThematics.length > 0 ? selectedThematics : ['General Exchange'],
-      languagesSpoken: selectedLanguages.length > 0 ? selectedLanguages : ['English'],
+      thematicAreas: selectedThematics,
       contactEmail: contactEmail.trim(),
+      thumbnailUrl: previewUrl || `https://picsum.photos/800/600?random=${Date.now()}`,
       description: description.trim(),
-      thumbnailUrl: previewUrl || `https://picsum.photos/800/600?random=${Math.floor(Math.random() * 100)}`,
-      city: city.trim() || undefined,
-      website: website.trim() || undefined,
-      foundedYear: foundedYear.trim() || undefined,
-      oid: oid.trim() || undefined,
-      experienceLevel: experienceLevel,
-      previousProjects: previousProjects,
       partnerSearchDeadline: partnerSearchDeadline,
+      views: 0,
+      createdAt: new Date().toISOString(),
+      status: 'pending',
+      submitterProfile: profile,
     };
 
-    onSubmitListing(userListing);
+    onSubmitListing(newListing);
     setCreatedId(newId);
     setIsSuccess(true);
   };
 
   const resetFormState = () => {
-    setName('');
-    setCountry('');
-    setType('NGO');
     setSelectedKeyActions([]);
     setSelectedThematics([]);
-    setSelectedLanguages([]);
-    setContactEmail('');
     setDescription('');
-    setCity('');
-    setWebsite('');
-    setFoundedYear('');
-    setOid('');
-    setExperienceLevel('First-timer (no previous projects)');
-    setPreviousProjects('0 — this will be our first');
     setPartnerSearchDeadline('');
     setPreviewUrl(null);
     setIsSuccess(false);
     setCreatedId('');
     setFormErrors([]);
+    if (profile) {
+      setContactEmail(profile.contactEmail);
+    }
   };
 
   // Key action color badge helper
   const getKeyActionBadgeStyle = (action: KeyAction) => {
     switch (action) {
       case 'KA1':
-        return 'ka1';
+        return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'KA210':
-        return 'ka210';
+        return 'bg-indigo-100 text-indigo-800 border-indigo-200';
       case 'KA220':
-        return 'ka220';
+        return 'bg-purple-100 text-purple-800 border-purple-200';
       default:
         return 'bg-gray-100 text-gray-600 border border-gray-200';
     }
@@ -203,9 +200,9 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
         </div>
         
         <div className="space-y-3">
-          <h1 className="text-3xl font-black text-slate-800">Proposal Published!</h1>
+          <h1 className="text-3xl font-black text-slate-800">Partner Call Published!</h1>
           <p className="text-slate-500 text-sm max-w-sm mx-auto">
-            Your Erasmus+ organisation profile has been successfully generated and compiled into our client directory. Other partners can locate you now.
+            Your Erasmus+ partner search listing has been successfully generated and compiled into our client directory. Other partners can locate you now.
           </p>
         </div>
 
@@ -213,16 +210,16 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
           <button
             id="success-view-proposal"
             onClick={() => onSelectListing(createdId)}
-            className="flex items-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white px-6 py-3 rounded-brand font-bold text-sm transition-all"
+            className="flex items-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white px-6 py-3 rounded-brand font-bold text-sm transition-all cursor-pointer"
           >
-            <span>View Published Profile</span>
+            <span>View Partner Call</span>
             <ArrowRight className="w-4 h-4" />
           </button>
           
           <button
             id="success-create-new"
             onClick={resetFormState}
-            className="flex items-center space-x-2 bg-slate-50 hover:bg-slate-100 text-slate-700 px-6 py-3 rounded-brand font-bold text-sm border border-slate-200 transition-all"
+            className="flex items-center space-x-2 bg-slate-50 hover:bg-slate-100 text-slate-700 px-6 py-3 rounded-brand font-bold text-sm border border-slate-200 transition-all cursor-pointer"
           >
             <span>Submit Another</span>
           </button>
@@ -231,17 +228,36 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
     );
   }
 
+  // Guard view if profile not loaded
+  if (!profile) {
+    return (
+      <div className="max-w-md mx-auto px-4 py-16 text-center space-y-4">
+        <AlertCircle className="w-12 h-12 text-amber-500 mx-auto" />
+        <h2 className="text-xl font-bold text-slate-850">Profile Setup Required</h2>
+        <p className="text-slate-500 text-sm">
+          You need an active Organisation Profile to submit partner searches.
+        </p>
+        <button
+          onClick={() => onNavigate('profile-setup')}
+          className="bg-brand-primary text-white text-xs px-4 py-2 rounded-brand font-bold cursor-pointer"
+        >
+          Set Up Profile Now
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
       <div className="text-center max-w-2xl mx-auto space-y-2 mb-10">
-        <h1 className="text-3xl font-black text-slate-800">Submit Your Erasmus+ Listing</h1>
+        <h1 className="text-3xl font-black text-slate-800">Post a Partner Search Listing</h1>
         <p className="text-sm text-slate-500">
-          Make your organisation searchable by hundreds of other institutions preparing European project proposals. It takes less than 3 minutes.
+          Publish your project details to find the exact European partners you need.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Form Panel (8 Columns on Large Screens) */}
+        {/* Form Panel (7 Columns) */}
         <form onSubmit={handleFormSubmit} className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-[24px] border border-blue-50/80 shadow-sm space-y-8">
           
           {/* Form Error Panel */}
@@ -259,206 +275,59 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
             </div>
           )}
 
-          {/* Section 1: Basic Information */}
-          <div className="space-y-6">
+          {/* Section 1 — Organisation Preview (read-only, locked) */}
+          <div className="space-y-4">
             <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">1</span>
-              <span>Institution Information</span>
+              <Building className="w-5 h-5 text-brand-primary" />
+              <span>Submitting As</span>
             </h2>
 
-            {/* Name */}
-            <div className="space-y-1">
-              <label htmlFor="form-org-name" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                Organisation Name *
-              </label>
-              <input
-                id="form-org-name"
-                type="text"
-                placeholder="e.g. European Institute of Educational Progress"
-                value={name}
-                required
-                onChange={(e) => setName(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400"
-              />
-            </div>
+            <div className="bg-slate-50 border border-slate-205 rounded-[16px] p-5 space-y-3">
+              <div className="flex items-start justify-between">
+                <div>
+                  <h3 className="font-extrabold text-slate-850 text-base">{profile.organisationName}</h3>
+                  <p className="text-xs text-slate-500 font-bold mt-0.5 flex items-center space-x-1">
+                    <span>{profile.countryFlag}</span>
+                    <span>{profile.city}, {profile.country}</span>
+                  </p>
+                </div>
+                <span className="bg-brand-primary text-white text-[9.5px] font-extrabold uppercase px-2 py-0.5 rounded-md tracking-wider">
+                  {profile.organisationType}
+                </span>
+              </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Type Option */}
-              <div className="space-y-1">
-                <label htmlFor="form-org-type" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                  Organisation Type *
-                </label>
-                <div className="relative">
-                  <select
-                    id="form-org-type"
-                    value={type}
-                    onChange={(e) => setType(e.target.value as OrganisationType)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                  >
-                    {ORGANISATION_TYPES.map((t) => (
-                      <option key={t} value={t}>{t}</option>
-                    ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                    <span className="text-xs">▼</span>
-                  </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 pt-2 border-t border-slate-100 text-xs text-slate-650 font-medium">
+                <div>
+                  <span className="text-slate-400 font-bold">OID:</span> {profile.oid || 'Not Provided'}
+                </div>
+                <div>
+                  <span className="text-slate-400 font-bold">Experience:</span> {profile.experienceLevel}
                 </div>
               </div>
 
-              {/* Country Select */}
-              <div className="space-y-1">
-                <label htmlFor="form-org-country" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                  Country *
-                </label>
-                <div className="relative">
-                  <select
-                    id="form-org-country"
-                    value={country}
-                    required
-                    onChange={(e) => setCountry(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                  >
-                    <option value="">-- Choose Country --</option>
-                    {COUNTRIES.map((c) => (
-                      <option key={c.name} value={c.name}>{c.flag} {c.name}</option>
-                    ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                    <span className="text-xs">▼</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* City */}
-              <div className="space-y-1">
-                <label htmlFor="form-org-city" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                  City
-                </label>
-                <input
-                  id="form-org-city"
-                  type="text"
-                  placeholder="e.g. Athens"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all"
-                />
-              </div>
-
-              {/* Website */}
-              <div className="space-y-1">
-                <label htmlFor="form-org-web" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                  Website URL
-                </label>
-                <input
-                  id="form-org-web"
-                  type="url"
-                  placeholder="https://..."
-                  value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all"
-                />
-              </div>
-
-              {/* Founded */}
-              <div className="space-y-1">
-                <label htmlFor="form-org-founded" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                  Founded Year
-                </label>
-                <input
-                  id="form-org-founded"
-                  type="number"
-                  placeholder="e.g. 2015"
-                  value={foundedYear}
-                  onChange={(e) => setFoundedYear(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all"
-                />
-              </div>
-            </div>
-
-            {/* OID Number */}
-            <div className="space-y-1">
-              <label htmlFor="form-org-oid" className="inline-flex items-center space-x-1.5 text-xs font-bold text-slate-600 uppercase tracking-wide">
-                <span>OID Number (Erasmus+ Organisation ID)</span>
-                <Info className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-              </label>
-              <input
-                id="form-org-oid"
-                type="text"
-                placeholder="e.g. E10123456"
-                value={oid}
-                onChange={(e) => setOid(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400"
-              />
-              <p className="text-[11px] text-slate-450 font-medium">
-                Your Organisation ID from the EU Login portal. Optional but recommended.
-              </p>
-            </div>
-
-            {/* Experience Level & Previous Projects side by side */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Experience Level */}
-              <div className="space-y-1">
-                <label htmlFor="form-org-experience" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                  Experience Level
-                </label>
-                <div className="relative">
-                  <select
-                    id="form-org-experience"
-                    value={experienceLevel}
-                    onChange={(e) => setExperienceLevel(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                  >
-                    <option value="First-timer (no previous projects)">First-timer (no previous projects)</option>
-                    <option value="Experienced (1–3 projects)">Experienced (1–3 projects)</option>
-                    <option value="Advanced (4–10 projects)">Advanced (4–10 projects)</option>
-                    <option value="Expert Coordinator (10+ projects)">Expert Coordinator (10+ projects)</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                    <span className="text-xs">▼</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Number of Previous Projects */}
-              <div className="space-y-1">
-                <label htmlFor="form-org-previous" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                  Previous Erasmus+ Projects
-                </label>
-                <div className="relative">
-                  <select
-                    id="form-org-previous"
-                    value={previousProjects}
-                    onChange={(e) => setPreviousProjects(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
-                  >
-                    <option value="0 — this will be our first">0 — this will be our first</option>
-                    <option value="1–3 projects">1–3 projects</option>
-                    <option value="4–10 projects">4–10 projects</option>
-                    <option value="10+ projects">10+ projects</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                    <span className="text-xs">▼</span>
-                  </div>
-                </div>
+              <div className="pt-2 text-right">
+                <button
+                  type="button"
+                  onClick={() => onNavigate('my-profile')}
+                  className="text-xs font-bold text-brand-primary hover:underline cursor-pointer"
+                >
+                  Not correct? Update your profile
+                </button>
               </div>
             </div>
           </div>
 
-          {/* Section 2: Image Publication */}
-          <div className="space-y-6">
+          {/* Section 2 — Listing Visual */}
+          <div className="space-y-4">
             <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">2</span>
+              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">1</span>
               <span>Banner Visual Thumbnail</span>
             </h2>
 
-            {/* Thumbnail Drag and Drop */}
             <div className="space-y-2">
               <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Landscape Thumbnail Image</span>
               
               <div
-                id="drag-and-drop-container"
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
@@ -499,17 +368,17 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
             </div>
           </div>
 
-          {/* Section 3: Key Actions, Thematic, & Languages */}
+          {/* Section 3 — Partner Search Details */}
           <div className="space-y-6">
             <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">3</span>
-              <span>Project Target Preferences</span>
+              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">2</span>
+              <span>Partner Search Details</span>
             </h2>
 
-            {/* Key Actions checkboxes */}
+            {/* Key Actions KeyAction toggle representation */}
             <div className="space-y-2">
               <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Key Actions Target Projects * (Select at least 1)</span>
-              <div id="form-ka-options" className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {['KA1', 'KA210', 'KA220'].map((action) => {
                   const isChecked = selectedKeyActions.includes(action as KeyAction);
                   return (
@@ -540,10 +409,10 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
               </div>
             </div>
 
-            {/* Thematic Areas Checkboxes */}
+            {/* Thematics Selection checkboxes */}
             <div className="space-y-2">
-              <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Main Thematic Areas (Select multiple)</span>
-              <div id="form-thematics-grid" className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 h-64 overflow-y-auto pr-2 border border-slate-150 rounded-xl bg-slate-50 p-4">
+              <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Main Thematic Areas * (Select at least 1)</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 h-64 overflow-y-auto pr-2 border border-slate-150 rounded-xl bg-slate-50 p-4">
                 {THEMATIC_AREAS.map((area) => {
                   const isChecked = selectedThematics.includes(area);
                   return (
@@ -567,55 +436,7 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
               </div>
             </div>
 
-            {/* Languages spoken */}
-            <div className="space-y-2">
-              <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Languages Spoken</span>
-              <div id="form-languages-badgerow" className="flex flex-wrap gap-1.5 p-3.5 border border-slate-150 bg-slate-50 rounded-xl max-h-40 overflow-y-auto">
-                {LANGUAGES.map((lang) => {
-                  const isSelected = selectedLanguages.includes(lang);
-                  return (
-                    <button
-                      key={lang}
-                      type="button"
-                      onClick={() => handleLanguageToggle(lang)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                        isSelected 
-                          ? 'bg-green-600 text-white font-bold scale-102' 
-                          : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-                      }`}
-                    >
-                      <span>{lang}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Section 4: Bio Description & Contact */}
-          <div className="space-y-6">
-            <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">4</span>
-              <span>Contact & Bio Description</span>
-            </h2>
-
-            {/* Email */}
-            <div className="space-y-1">
-              <label htmlFor="form-org-email" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                Contact Email Address *
-              </label>
-              <input
-                id="form-org-email"
-                type="email"
-                required
-                placeholder="e.g. erasmus@institution.org"
-                value={contactEmail}
-                onChange={(e) => setContactEmail(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400"
-              />
-            </div>
-
-            {/* Partner Search Deadline */}
+            {/* Deadline Date picker */}
             <div className="space-y-1">
               <label htmlFor="form-org-deadline" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
                 Partner Search Deadline *
@@ -628,53 +449,67 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
                 onChange={(e) => setPartnerSearchDeadline(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all"
               />
-              <p className="text-[11px] text-slate-450 font-medium">
+              <p className="text-[11px] text-slate-400 font-medium">
                 The date you need to find a partner by. Your listing will expire automatically on this date.
               </p>
             </div>
 
-            {/* Description with live character counter */}
+            {/* Detailed Description */}
             <div className="space-y-1">
               <div className="flex justify-between items-center text-xs font-bold text-slate-600 uppercase tracking-wide">
-                <label htmlFor="form-org-desc">Institutional Narrative Profile Description *</label>
+                <label htmlFor="form-listing-desc">Project Description & Partner Requirements *</label>
                 <span className={`text-[10px] ${description.length > 500 ? 'text-red-500 font-bold' : 'text-slate-400'}`}>
                   {description.length} / 500 characters
                 </span>
               </div>
               <textarea
-                id="form-org-desc"
+                id="form-listing-desc"
                 rows={4}
                 maxLength={500}
                 required
-                placeholder="Give details about your institution, past cooperative project credentials, specific ideas, and what roles you want to play..."
+                placeholder="Describe your project idea, what kind of partner you are looking for, their expected role, and any specific requirements."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400"
               />
             </div>
+
+            {/* Editable Contact Email */}
+            <div className="space-y-1">
+              <label htmlFor="form-listing-email" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                Contact Email Address for this Listing *
+              </label>
+              <input
+                id="form-listing-email"
+                type="email"
+                required
+                value={contactEmail}
+                onChange={(e) => setContactEmail(e.target.value)}
+                placeholder=" erasmus@yourinstitution.org"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all"
+              />
+              <p className="text-[11px] text-slate-400 font-medium">
+                Pre-filled from profile. You can change this if you want specific submissions sent to a different inbox.
+              </p>
+            </div>
           </div>
 
-          {/* Submission Trigger button */}
-          <div className="pt-4">
-            <button
-              id="form-submit-trigger"
-              type="submit"
-              className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-4 rounded-brand font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
-            >
-              <PlusCircle className="w-5 h-5 text-brand-accent animate-spin-slow" />
-              <span>Publish Erasmus+ Listing</span>
-            </button>
-          </div>
+          <button
+            id="publish-listing-trigger"
+            type="submit"
+            className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-4 rounded-brand font-bold text-sm transition-all shadow-md active:scale-95 cursor-pointer"
+          >
+            <span>Publish Erasmus+ Listing</span>
+          </button>
         </form>
 
-        {/* Live Card Preview Panel (5 Columns) */}
-        <div id="live-preview-panel-column" className="lg:col-span-12 xl:col-span-5 space-y-4 lg:sticky lg:top-24">
+        {/* Live Card Preview Panel */}
+        <div className="lg:col-span-12 xl:col-span-5 space-y-4 lg:sticky lg:top-24">
           <div className="p-4 bg-orange-50 border border-orange-100 rounded-xl text-[11px] text-slate-700 font-medium">
             💡 <span className="font-bold text-slate-800">Dynamic Card Compilation:</span> Below is a live rendering of how your partner listing card compiles in the catalog index as you type.
           </div>
 
-          {/* The Compiled Card */}
-          <div className="bg-white rounded-[20px] border border-blue-105 overflow-hidden shadow-lg border-2 border-brand-primary max-w-sm mx-auto">
+          <div className="bg-white rounded-[20px] overflow-hidden shadow-lg border-2 border-brand-primary max-w-sm mx-auto">
             {/* Visual Header */}
             <div className="relative h-44 bg-slate-150">
               {previewUrl ? (
@@ -692,22 +527,20 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
               )}
               {/* Flag Overlay */}
               <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-[10px] font-bold text-slate-800 flex items-center space-x-1 shadow-sm">
-                <span>{COUNTRIES.find(c => c.name === country)?.flag || '🇪🇺'}</span>
-                <span>{country || 'Select Country'}</span>
+                <span>{profile.countryFlag}</span>
+                <span>{profile.country}</span>
               </div>
 
-              {(city || country) && (
-                <div className="absolute bottom-3 left-3 bg-slate-900/40 backdrop-blur-sm px-2.5 py-0.5 rounded-md text-[9px] font-bold text-white uppercase tracking-wide">
-                  📍 {city || 'City Draft'}
-                </div>
-              )}
+              <div className="absolute bottom-3 left-3 bg-slate-900/40 backdrop-blur-sm px-2.5 py-0.5 rounded-md text-[9px] font-bold text-white uppercase tracking-wide">
+                📍 {profile.city}
+              </div>
             </div>
 
             {/* Visual Body */}
             <div className="p-5 space-y-3">
               <div className="flex flex-wrap gap-1 items-center">
                 <span className="bg-slate-100 text-slate-700 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-md tracking-wider">
-                  {type}
+                  {profile.organisationType}
                 </span>
                 {selectedKeyActions.map((action) => (
                   <span
@@ -720,11 +553,11 @@ export default function SubmitView({ onSubmitListing, onNavigate, onSelectListin
               </div>
 
               <h3 className="font-bold text-slate-800 text-base leading-snug line-clamp-1">
-                {name || 'Institution Name Draft'}
+                {profile.organisationName}
               </h3>
 
               <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-3 h-[48px]">
-                {description || 'Provide a profile description to preview the live rendering text of how potential european partners learn about your priorities and experience...'}
+                {description || 'Provide a partner search description to preview the live rendering text of how potential European partners learn about your priorities and requirements...'}
               </p>
 
               {/* Tag row */}

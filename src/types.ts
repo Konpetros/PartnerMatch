@@ -13,6 +13,21 @@ export type OrganisationType =
 
 export type KeyAction = 'KA1' | 'KA210' | 'KA220';
 
+export interface OrganisationProfile {
+  organisationName: string;
+  organisationType: OrganisationType;
+  country: string;
+  countryFlag: string;
+  city: string;
+  website: string;
+  foundedYear: string;
+  oid: string;
+  experienceLevel: string;
+  previousProjects: string;
+  languagesSpoken: string[];
+  contactEmail: string;
+}
+
 export interface Listing {
   id: string;
   name: string;
@@ -21,20 +36,14 @@ export interface Listing {
   countryFlag: string;
   keyActions: KeyAction[];
   thematicAreas: string[];
-  languagesSpoken: string[];
   contactEmail: string;
   description: string;
   thumbnailUrl: string;
-  city?: string;
-  website?: string;
-  foundedYear?: string;
-  oid?: string;
-  experienceLevel: string;
-  previousProjects: string;
   partnerSearchDeadline: string;
   views?: number;
   createdAt?: string;
   status?: 'active' | 'pending' | 'expired' | 'partnership-found';
+  submitterProfile?: OrganisationProfile;
 }
 
 export interface SearchFilters {

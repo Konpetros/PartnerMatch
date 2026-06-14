@@ -26,6 +26,22 @@ interface DetailViewProps {
 }
 
 export default function DetailView({ listing, onBack }: DetailViewProps) {
+  // Graceful fallback helper to support migrated/sub-profile architecture gracefully
+  const profile = listing.submitterProfile || {
+    organisationName: listing.name,
+    organisationType: listing.type,
+    country: listing.country,
+    countryFlag: listing.countryFlag,
+    city: (listing as any).city || '',
+    website: (listing as any).website || '',
+    foundedYear: (listing as any).foundedYear || '',
+    oid: (listing as any).oid || '',
+    experienceLevel: (listing as any).experienceLevel || 'First-timer',
+    previousProjects: (listing as any).previousProjects || '0',
+    languagesSpoken: (listing as any).languagesSpoken || ['English'],
+    contactEmail: listing.contactEmail,
+  };
+
   // Badge styler helper for Key Actions
   const getKeyActionBadgeStyle = (action: KeyAction) => {
     switch (action) {
@@ -74,13 +90,13 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in font-sans">
       {/* Back to Directory Button */}
       <div>
         <button
           id="detail-back-button"
           onClick={onBack}
-          className="inline-flex items-center space-x-2 text-sm font-bold text-slate-600 hover:text-brand-primary bg-white px-4 py-2.5 rounded-xl border border-blue-50 hover:border-blue-150 shadow-sm transition-all"
+          className="inline-flex items-center space-x-2 text-sm font-bold text-slate-600 hover:text-brand-primary bg-white px-4 py-2.5 rounded-xl border border-blue-50 hover:border-blue-150 shadow-sm transition-all cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Directory</span>
@@ -113,9 +129,9 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
             </div>
 
             {/* Quick URL shortcut */}
-            {listing.website && (
+            {profile.website && (
               <a
-                href={listing.website}
+                href={profile.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center space-x-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-2 rounded-xl backdrop-blur-sm transition-all"
@@ -134,7 +150,7 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
             {/* Description Card */}
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">
-                About the Organisation
+                Project Call Description
               </h2>
               <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-line">
                 {listing.description}
@@ -166,7 +182,7 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                 <span>Working Languages Spoken</span>
               </h3>
               <div id="detail-languages" className="flex flex-wrap gap-2">
-                {listing.languagesSpoken.map((lang) => (
+                {profile.languagesSpoken.map((lang) => (
                   <span
                     key={lang}
                     className="bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-lg border border-emerald-100"
@@ -206,20 +222,20 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                   <div>
                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Location</p>
                     <p className="text-slate-800 font-bold">
-                      {listing.city ? `${listing.city}, ` : ''}{listing.country}
+                      {profile.city ? `${profile.city}, ` : ''}{listing.country}
                     </p>
                   </div>
                 </div>
 
                 {/* Founded */}
-                {listing.foundedYear && (
+                {profile.foundedYear && (
                   <div className="flex items-center space-x-3">
                     <div className="p-2.5 bg-white text-slate-500 rounded-xl shadow-sm">
                       <Calendar className="w-4 h-4" />
                     </div>
                     <div>
                       <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Founded In</p>
-                      <p className="text-slate-800 font-bold">{listing.foundedYear}</p>
+                      <p className="text-slate-800 font-bold">{profile.foundedYear}</p>
                     </div>
                   </div>
                 )}
@@ -231,8 +247,8 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                   </div>
                   <div>
                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">OID Number</p>
-                    <p className={listing.oid ? "text-slate-800 font-bold animate-fade-in" : "text-slate-400 italic text-sm"}>
-                      {listing.oid || 'Not provided'}
+                    <p className={profile.oid ? "text-slate-800 font-bold animate-fade-in" : "text-slate-400 italic text-sm"}>
+                      {profile.oid || 'Not provided'}
                     </p>
                   </div>
                 </div>
@@ -244,7 +260,7 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                   </div>
                   <div>
                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Experience</p>
-                    <p className="text-slate-800 font-bold">{listing.experienceLevel}</p>
+                    <p className="text-slate-800 font-bold">{profile.experienceLevel}</p>
                   </div>
                 </div>
 
@@ -255,7 +271,7 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                   </div>
                   <div>
                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Past Projects</p>
-                    <p className="text-slate-800 font-bold">{listing.previousProjects}</p>
+                    <p className="text-slate-800 font-bold">{profile.previousProjects}</p>
                   </div>
                 </div>
               </div>
@@ -302,7 +318,7 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                   href={`mailto:${listing.contactEmail}?subject=Erasmus+ Partnership Enquiry via ErasmusMatch`}
                   className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-3.5 rounded-brand font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 text-center cursor-pointer"
                 >
-                  <Mail className="w-4 h-4 text-brand-accent animate-pulse" />
+                  <Mail className="w-4 h-4 text-brand-accent shrink-0" />
                   <span>Initiate Inquiry</span>
                 </a>
                 <p className="text-center text-[10px] text-slate-400 mt-2">

@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { MOCK_LISTINGS } from './data';
-import { Listing } from './types';
+import { Listing, OrganisationProfile } from './types';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomeView from './components/HomeView';
@@ -15,7 +15,9 @@ import MyListingsView from './components/MyListingsView';
 import AboutView from './components/AboutView';
 import ContactView from './components/ContactView';
 import SignInModal from './components/SignInModal';
-import { Sparkles, CheckCircle2, LogOut, CheckSquare, PlusCircle, LayoutDashboard, Mail } from 'lucide-react';
+import ProfileSetupView from './components/ProfileSetupView';
+import MyProfileView from './components/MyProfileView';
+import { Sparkles, CheckCircle2, LogOut } from 'lucide-react';
 
 export default function App() {
   // Navigation State
@@ -24,6 +26,9 @@ export default function App() {
 
   // Core Data State (Pre-seeded with 9 premium entries)
   const [listings, setListings] = useState<Listing[]>(MOCK_LISTINGS);
+
+  // User Profile State
+  const [organisationProfile, setOrganisationProfile] = useState<OrganisationProfile | null>(null);
 
   // Authentication Mock State
   const [isSignInOpen, setIsSignInOpen] = useState(false);
@@ -37,10 +42,16 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentView, selectedListingId]);
 
-  // Navigate utility
+  // Navigate utility - Guard the submit route
   const handleNavigate = (view: string) => {
-    setCurrentView(view);
-    setSelectedListingId(null);
+    if (view === 'submit' && !currentUser) {
+      setIsSignInOpen(true);
+      setCurrentView('home');
+      setSelectedListingId(null);
+    } else {
+      setCurrentView(view);
+      setSelectedListingId(null);
+    }
   };
 
   // View individual listing
@@ -67,6 +78,13 @@ export default function App() {
     setTimeout(() => {
       setSessionNotification(null);
     }, 4000);
+
+    // If no organisation profile set up yet, route to profile-setup immediately
+    if (!organisationProfile) {
+      setCurrentView('profile-setup');
+    } else {
+      setCurrentView('home');
+    }
   };
 
   const handleSignOut = () => {
@@ -75,6 +93,7 @@ export default function App() {
     setTimeout(() => {
       setSessionNotification(null);
     }, 4000);
+    setCurrentView('home');
   };
 
   const handleDeleteListing = (id: string) => {
@@ -93,6 +112,19 @@ export default function App() {
     }, 4000);
   };
 
+  const handleProfileComplete = (profile: OrganisationProfile) => {
+    setOrganisationProfile(profile);
+    setSessionNotification('Profile saved! You can now submit your first listing.');
+    setTimeout(() => {
+      setSessionNotification(null);
+    }, 4000);
+    handleNavigate('home');
+  };
+
+  const handleUpdateProfile = (profile: OrganisationProfile) => {
+    setOrganisationProfile(profile);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-brand-bg relative font-sans text-slate-800 antialiased selection:bg-brand-primary/10 select-none">
       
@@ -100,11 +132,11 @@ export default function App() {
       {sessionNotification && (
         <div id="session-toast-banner" className="fixed bottom-6 right-6 z-50 max-w-sm w-full bg-slate-900 text-white rounded-2xl p-4 shadow-2xl border border-white/10 flex items-start space-x-3.5 animate-fade-in">
           <div className="p-1.5 bg-green-500/10 text-emerald-400 rounded-lg shrink-0">
-            <CheckCircle2 className="w-5 h-5" />
+            <CheckCircle2 className="w-5 h-5 animate-bounce-slow" />
           </div>
           <div className="flex-1 space-y-0.5">
             <p className="text-sm font-bold">Operational Logs</p>
-            <p className="text-xs text-slate-400 leading-relaxed">{sessionNotification}</p>
+            <p className="text-xs text-slate-405 leading-relaxed">{sessionNotification}</p>
           </div>
         </div>
       )}
@@ -114,7 +146,7 @@ export default function App() {
         <div id="auth-header-bar" className="bg-slate-900 text-slate-300 py-2.5 px-4 sm:px-6 lg:px-8 text-xs flex justify-between items-center border-b border-slate-800 tracking-wide font-medium">
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Authenticated session: <strong className="text-white text-semibold">{currentUser}</strong></span>
+            <span>Authenticated session: <strong className="text-white font-semibold">{currentUser}</strong></span>
           </div>
           <button 
             id="signout-header-btn"
@@ -147,6 +179,23 @@ export default function App() {
             );
           }
 
+          if (currentView === 'profile-setup') {
+            return <ProfileSetupView onProfileComplete={handleProfileComplete} />;
+          }
+
+          if (currentView === 'my-profile') {
+            return (
+              <MyProfileView
+                currentUser={currentUser}
+                profile={organisationProfile}
+                onUpdateProfile={handleUpdateProfile}
+                onNavigate={handleNavigate}
+                onSignOut={handleSignOut}
+                listings={listings}
+              />
+            );
+          }
+
           if (currentView === 'detail' && selectedListingId) {
             const activeItem = listings.find((item) => item.id === selectedListingId);
             if (activeItem) {
@@ -170,6 +219,7 @@ export default function App() {
           if (currentView === 'submit') {
             return (
               <SubmitView 
+                organisationProfile={organisationProfile}
                 onSubmitListing={handleSubmitListing} 
                 onNavigate={handleNavigate}
                 onSelectListing={handleSelectListing}

@@ -60,10 +60,11 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
       const filtered = listings.filter((item) => {
         // Query search matches name, city, or description
         const query = filters.searchQuery.toLowerCase().trim();
+        const cityValue = item.submitterProfile?.city || (item as any).city || '';
         const matchesQuery = !query || 
           item.name.toLowerCase().includes(query) ||
           item.description.toLowerCase().includes(query) ||
-          (item.city && item.city.toLowerCase().includes(query));
+          cityValue.toLowerCase().includes(query);
 
         // Country match
         const matchesCountry = !filters.country || item.country === filters.country;
