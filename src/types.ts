@@ -34,6 +34,7 @@ export interface Listing {
   partnerSearchDeadline: string;
   views?: number;
   createdAt?: string;
+  status?: 'active' | 'pending' | 'expired' | 'partnership-found';
 }
 
 export interface SearchFilters {

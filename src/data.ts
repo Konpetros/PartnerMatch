@@ -107,7 +107,8 @@ export const MOCK_LISTINGS: Listing[] = [
     previousProjects: '1–3 projects',
     partnerSearchDeadline: '2026-09-15',
     views: 142,
-    createdAt: '2026-06-12T10:30:00Z'
+    createdAt: '2026-06-12T10:30:00Z',
+    status: 'active'
   },
   {
     id: 'org-2',
@@ -129,7 +130,8 @@ export const MOCK_LISTINGS: Listing[] = [
     previousProjects: '4–10 projects',
     partnerSearchDeadline: '2026-10-31',
     views: 285,
-    createdAt: '2026-05-20T14:45:00Z'
+    createdAt: '2026-05-20T14:45:00Z',
+    status: 'active'
   },
   {
     id: 'org-3',
@@ -151,7 +153,8 @@ export const MOCK_LISTINGS: Listing[] = [
     previousProjects: '10+ projects',
     partnerSearchDeadline: '2026-11-20',
     views: 312,
-    createdAt: '2026-06-05T08:15:00Z'
+    createdAt: '2026-06-05T08:15:00Z',
+    status: 'active'
   },
   {
     id: 'org-4',
@@ -173,7 +176,8 @@ export const MOCK_LISTINGS: Listing[] = [
     previousProjects: '0 — this will be our first',
     partnerSearchDeadline: '2026-08-30',
     views: 45,
-    createdAt: '2026-06-13T16:20:00Z'
+    createdAt: '2026-06-13T16:20:00Z',
+    status: 'pending'
   },
   {
     id: 'org-5',
@@ -195,7 +199,8 @@ export const MOCK_LISTINGS: Listing[] = [
     previousProjects: '4–10 projects',
     partnerSearchDeadline: '2026-12-15',
     views: 198,
-    createdAt: '2026-05-18T11:00:00Z'
+    createdAt: '2026-05-18T11:00:00Z',
+    status: 'active'
   },
   {
     id: 'org-6',
@@ -217,7 +222,8 @@ export const MOCK_LISTINGS: Listing[] = [
     previousProjects: '1–3 projects',
     partnerSearchDeadline: '2026-09-30',
     views: 78,
-    createdAt: '2026-06-01T09:00:00Z'
+    createdAt: '2026-06-01T09:00:00Z',
+    status: 'pending'
   },
   {
     id: 'org-7',
@@ -239,7 +245,8 @@ export const MOCK_LISTINGS: Listing[] = [
     previousProjects: '0 — this will be our first',
     partnerSearchDeadline: '2026-08-15',
     views: 18,
-    createdAt: '2026-06-14T01:10:00Z'
+    createdAt: '2026-06-14T01:10:00Z',
+    status: 'expired'
   },
   {
     id: 'org-8',
@@ -261,7 +268,8 @@ export const MOCK_LISTINGS: Listing[] = [
     previousProjects: '10+ projects',
     partnerSearchDeadline: '2026-11-10',
     views: 324,
-    createdAt: '2026-05-10T12:00:00Z'
+    createdAt: '2026-05-10T12:00:00Z',
+    status: 'active'
   },
   {
     id: 'org-9',
@@ -283,6 +291,7 @@ export const MOCK_LISTINGS: Listing[] = [
     previousProjects: '4–10 projects',
     partnerSearchDeadline: '2026-10-15',
     views: 215,
-    createdAt: '2026-05-28T15:30:00Z'
+    createdAt: '2026-05-28T15:30:00Z',
+    status: 'partnership-found'
   }
 ];
