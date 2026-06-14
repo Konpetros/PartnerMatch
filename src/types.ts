@@ -28,6 +28,7 @@ export interface OrganisationProfile {
   contactEmail: string;
   sector: string;
   logoUrl?: string;
+  description: string;
 }
 
 export interface Listing {

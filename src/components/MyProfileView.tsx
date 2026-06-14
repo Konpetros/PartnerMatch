@@ -51,6 +51,7 @@ export default function MyProfileView({
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>(profile?.languagesSpoken || []);
   const [contactEmail, setContactEmail] = useState(profile?.contactEmail || '');
   const [sector, setSector] = useState(profile?.sector || 'Youth');
+  const [description, setDescription] = useState(profile?.description || '');
 
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(profile?.logoUrl || null);
@@ -106,6 +107,9 @@ export default function MyProfileView({
     if (!sector) {
       errors.push('Please select your Erasmus+ sector');
     }
+    if (!description.trim()) {
+      errors.push('Please add a description of your organisation.');
+    }
 
     if (errors.length > 0) {
       setFormErrors(errors);
@@ -133,6 +137,7 @@ export default function MyProfileView({
       contactEmail: contactEmail.trim(),
       sector,
       logoUrl: logoPreview || '',
+      description: description.trim(),
     };
 
     onUpdateProfile(updatedProfile);
@@ -580,6 +585,28 @@ export default function MyProfileView({
                 onChange={(e) => setContactEmail(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400"
               />
+            </div>
+
+            {/* About Your Organisation */}
+            <div className="space-y-1">
+              <label htmlFor="modal-org-description" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                About Your Organisation *
+              </label>
+              <p className="text-[11px] text-slate-400 font-medium">
+                Describe your organisation, your mission, your experience, and what kind of partnerships you are looking for. This will appear on your public profile.
+              </p>
+              <textarea
+                id="modal-org-description"
+                rows={5}
+                maxLength={800}
+                placeholder="e.g. We are a youth NGO based in Athens, Greece, with 10 years of experience in non-formal education and European mobility projects. We specialise in..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400 resize-none"
+              />
+              <p className="text-[10px] text-slate-400 font-medium text-right">
+                {description.length}/800 characters
+              </p>
             </div>
 
             {/* Warning notice */}

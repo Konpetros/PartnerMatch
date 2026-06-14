@@ -45,6 +45,7 @@ export default function OrgProfileView({
     languagesSpoken: (listing as any).languagesSpoken || ['English'],
     contactEmail: listing.contactEmail,
     sector: 'Youth',
+    description: listing.description || '',
   };
 
   const activeStatus = listing.status || 'active';
@@ -189,7 +190,7 @@ export default function OrgProfileView({
                 <span>About This Organisation</span>
               </h2>
               <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-line">
-                {listing.description}
+                {listing.submitterProfile?.description || listing.description}
               </p>
             </div>
 

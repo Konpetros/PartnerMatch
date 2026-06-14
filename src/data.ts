@@ -124,7 +124,8 @@ export const MOCK_LISTINGS: Listing[] = [
       previousProjects: '1–3 projects',
       languagesSpoken: ['English', 'Greek', 'French'],
       contactEmail: 'contact@heliosecoyouth.gr',
-      sector: 'Youth'
+      sector: 'Youth',
+      description: 'Helios Eco-Youth Association is a grassroots NGO based in central Greece promoting eco-citizenship and volunteerism. Our core mission is to connect young people with sustainable land-use projects and environmental conservation. We seek partners interested in developing non-formal learning modules for green leadership and zero-waste camp formats.'
     }
   },
   {
@@ -156,7 +157,8 @@ export const MOCK_LISTINGS: Listing[] = [
       previousProjects: '4–10 projects',
       languagesSpoken: ['English', 'Italian', 'Spanish'],
       contactEmail: 'erasmus@galileitoscana.it',
-      sector: 'School Education'
+      sector: 'School Education',
+      description: 'Istituto Superiore Galileo Galilei is a modern secondary school located in the historic heart of Florence. We focus on combining scientific studies with digital curriculum innovation and immersive arts projects. We strive to create cross-border student exchanges to expand creative horizons and build technical skill sets.'
     }
   },
   {
@@ -188,7 +190,8 @@ export const MOCK_LISTINGS: Listing[] = [
       previousProjects: '10+ projects',
       languagesSpoken: ['English', 'Spanish', 'Portuguese'],
       contactEmail: 'partnerships@vigotechhub.es',
-      sector: 'Adult Education'
+      sector: 'Adult Education',
+      description: 'Vigo Tech Innovation Hub is an entrepreneurship center affiliated with the University of Vigo, driving technology transfer in the Spanish northwest. Our mission is to scale innovative startups and foster collaborative digital initiatives among young researchers. We actively invite European entities interested in building robust incubation frameworks.'
     }
   },
   {
@@ -220,7 +223,8 @@ export const MOCK_LISTINGS: Listing[] = [
       previousProjects: '0 — this will be our first',
       languagesSpoken: ['English', 'Portuguese', 'Spanish'],
       contactEmail: 'erasmus@regenerarportugal.pt',
-      sector: 'Youth'
+      sector: 'Youth',
+      description: 'Associação Regenerar Portugal is a young, dynamic cooperative dedicated to social inclusion, youth empowerment, and gender expression initiatives in Coimbra. We design local campaigns to foster civic participation and counter isolation in rural areas. We are looking for like-minded partners to co-create inclusive communities across Europe.'
     }
   },
   {
@@ -252,7 +256,8 @@ export const MOCK_LISTINGS: Listing[] = [
       previousProjects: '4–10 projects',
       languagesSpoken: ['English', 'German'],
       contactEmail: 'international@berufsakademie-muenchen.de',
-      sector: 'Vocational Education & Training'
+      sector: 'Vocational Education & Training',
+      description: 'Munich Vocational Arts Academy is a prestigious training institution in Bavaria offering degree programs in digital arts and classic crafts. We look to bridge the gap between traditional manual skills and virtual reality engineering tools. Our team seeks partnerships with VET schools to design state-of-the-art apprentice mobility plans.'
     }
   },
   {
@@ -284,7 +289,8 @@ export const MOCK_LISTINGS: Listing[] = [
       previousProjects: '1–3 projects',
       languagesSpoken: ['English', 'Polish', 'German'],
       contactEmail: 'culture@silesianheritage.pl',
-      sector: 'Adult Education'
+      sector: 'Adult Education',
+      description: 'Silesian Heritage & Culture Foundation is an independent institution focused on regional history preservation, senior integration, and non-formal culinary arts education. We aim to revive artisanal customs and build stronger intergenerational links in local municipalities. We are looking for partners to exchange heritage promotion strategies.'
     }
   },
   {
@@ -316,7 +322,8 @@ export const MOCK_LISTINGS: Listing[] = [
       previousProjects: '0 — this will be our first',
       languagesSpoken: ['English', 'Romanian'],
       contactEmail: 'eco-scolar@transylvaniaedu.ro',
-      sector: 'School Education'
+      sector: 'School Education',
+      description: 'Transylvania Secondary School of Ecology is a dedicated high school focused on environmental sciences, sustainable horticulture, and local bio-diversity. We deliver hands-on learning through outdoor student-run ecological stations in Romania. We are eager to establish partner networks to exchange creative green teaching methods.'
     }
   },
   {
@@ -348,7 +355,8 @@ export const MOCK_LISTINGS: Listing[] = [
       previousProjects: '10+ projects',
       languagesSpoken: ['English', 'French', 'Arabic'],
       contactEmail: 'contact@solidarite-humanitaire.fr',
-      sector: 'Youth'
+      sector: 'Youth',
+      description: 'Solidarité Humanitaire France is an experienced NGO working at the intersection of migration, integration, and community assistance in Marseille. We organize integration workshops, language classes, and cultural exchanges that connect newcomers with citizens. We aim to collaborate on social solidarity projects and share successful legal inclusion methodologies.'
     }
   },
   {
@@ -380,7 +388,8 @@ export const MOCK_LISTINGS: Listing[] = [
       previousProjects: '4–10 projects',
       languagesSpoken: ['English', 'Dutch', 'German'],
       contactEmail: 'sustainable@utrechtfuture.nl',
-      sector: 'Adult Education'
+      sector: 'Adult Education',
+      description: 'Utrecht Sustainable Future Institute is an academic center dedicated to urban sustainability research, circular economies, and policy-making. We specialize in producing scientific models for green transit and systemic gender equality assessments. We seek top-tier universities and NGOs to form impactful consortia on climate resilience.'
     }
   }
 ];

@@ -25,6 +25,7 @@ export default function ProfileSetupView({ onProfileComplete }: ProfileSetupView
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [contactEmail, setContactEmail] = useState('');
   const [sector, setSector] = useState('Youth');
+  const [description, setDescription] = useState('');
   const [formErrors, setFormErrors] = useState<string[]>([]);
 
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -71,6 +72,9 @@ export default function ProfileSetupView({ onProfileComplete }: ProfileSetupView
     if (!sector) {
       errors.push('Please select your Erasmus+ sector');
     }
+    if (!description.trim()) {
+      errors.push('Please add a description of your organisation.');
+    }
 
     if (errors.length > 0) {
       setFormErrors(errors);
@@ -98,6 +102,7 @@ export default function ProfileSetupView({ onProfileComplete }: ProfileSetupView
       contactEmail: contactEmail.trim(),
       sector,
       logoUrl: logoPreview || '',
+      description: description.trim(),
     };
 
     onProfileComplete(profile);
@@ -431,6 +436,27 @@ export default function ProfileSetupView({ onProfileComplete }: ProfileSetupView
             />
             <p className="text-[11px] text-slate-400 font-medium">
               This will be shown to organisations who want to contact you.
+            </p>
+          </div>
+
+          <div className="space-y-1">
+            <label htmlFor="setup-org-description" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+              About Your Organisation *
+            </label>
+            <p className="text-[11px] text-slate-400 font-medium">
+              Describe your organisation, your mission, your experience, and what kind of partnerships you are looking for. This will appear on your public profile.
+            </p>
+            <textarea
+              id="setup-org-description"
+              rows={5}
+              maxLength={800}
+              placeholder="e.g. We are a youth NGO based in Athens, Greece, with 10 years of experience in non-formal education and European mobility projects. We specialise in..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400 resize-none"
+            />
+            <p className="text-[10px] text-slate-400 font-medium text-right">
+              {description.length}/800 characters
             </p>
           </div>
 
