@@ -27,6 +27,7 @@ export interface OrganisationProfile {
   languagesSpoken: string[];
   contactEmail: string;
   sector: string;
+  logoUrl?: string;
 }
 
 export interface Listing {

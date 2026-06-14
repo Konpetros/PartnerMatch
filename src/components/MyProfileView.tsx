@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Building, 
   AlertCircle, 
@@ -15,7 +15,8 @@ import {
   PlusCircle, 
   LogOut, 
   X, 
-  Sparkles 
+  Sparkles,
+  Upload
 } from 'lucide-react';
 import { OrganisationProfile, OrganisationType, Listing } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
@@ -50,6 +51,19 @@ export default function MyProfileView({
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>(profile?.languagesSpoken || []);
   const [contactEmail, setContactEmail] = useState(profile?.contactEmail || '');
   const [sector, setSector] = useState(profile?.sector || 'Youth');
+
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(profile?.logoUrl || null);
+  const logoInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setLogoFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => setLogoPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
 
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [toast, setToast] = useState<string | null>(null);
@@ -118,6 +132,7 @@ export default function MyProfileView({
       languagesSpoken: selectedLanguages,
       contactEmail: contactEmail.trim(),
       sector,
+      logoUrl: logoPreview || '',
     };
 
     onUpdateProfile(updatedProfile);
@@ -270,6 +285,58 @@ export default function MyProfileView({
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Organisation Logo Section */}
+            <div className="space-y-4 border-b border-slate-100 pb-6">
+              <div className="space-y-1">
+                <h3 className="text-sm font-extrabold text-slate-800">Organisation Logo</h3>
+                <p className="text-xs text-slate-400">Upload your organisation's logo. Optional but recommended.</p>
+              </div>
+              <div className="space-y-3">
+                <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                  Organisation Logo <span className="text-slate-400 font-medium normal-case">(optional)</span>
+                </label>
+                
+                {/* Logo preview or upload area */}
+                {logoPreview ? (
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={logoPreview}
+                      alt="Logo preview"
+                      className="w-20 h-20 rounded-[16px] object-contain border border-slate-200 bg-white p-2 shadow-sm"
+                    />
+                    <div className="space-y-2">
+                      <p className="text-xs font-bold text-slate-700">Logo uploaded</p>
+                      <button
+                        type="button"
+                        onClick={() => { setLogoPreview(null); setLogoFile(null); }}
+                        className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors cursor-pointer"
+                      >
+                        Remove logo
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => logoInputRef.current?.click()}
+                    className="border-2 border-dashed border-slate-200 hover:border-brand-primary rounded-[20px] p-6 text-center bg-slate-50 hover:bg-blue-50/10 cursor-pointer transition-all duration-300 group max-w-xs"
+                  >
+                    <input
+                      ref={logoInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleLogoChange}
+                      className="hidden"
+                    />
+                    <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:bg-blue-50 transition-colors">
+                      <Upload className="w-5 h-5 text-slate-400 group-hover:text-brand-primary transition-colors" />
+                    </div>
+                    <p className="text-xs font-bold text-slate-600">Click to upload logo</p>
+                    <p className="text-[10px] text-slate-400 mt-1">PNG, JPG, SVG up to 2MB · Square format recommended</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Organisation Name */}
             <div className="space-y-1">
               <label htmlFor="modal-org-name" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">

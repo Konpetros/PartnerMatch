@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { Listing, KeyAction } from '../types';
+import { Listing, KeyAction, OrganisationProfile } from '../types';
 import {
   ArrowLeft,
   Mail,
@@ -31,7 +31,7 @@ export default function OrgProfileView({
   onViewListing,
 }: OrgProfileViewProps) {
   // Graceful fallback helper to support sub-profile architectures
-  const profile = listing.submitterProfile || {
+  const profile: OrganisationProfile = listing.submitterProfile || {
     organisationName: listing.name,
     organisationType: listing.type,
     country: listing.country,
@@ -142,7 +142,7 @@ export default function OrgProfileView({
           </div>
 
           {/* Bottom aligned Overlay headings */}
-          <div className="absolute bottom-6 left-6 right-6 text-white flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className={`absolute bottom-6 left-6 right-6 text-white flex flex-col md:flex-row md:items-end justify-between gap-4 ${profile.logoUrl ? 'pl-0 md:pl-[120px] lg:pl-[150px]' : ''}`}>
             <div className="space-y-2 max-w-2xl">
               <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wide border ${renderStatusBadgeClass(activeStatus)} shadow-xs`}>
                 {renderStatusLabel(activeStatus)}
@@ -165,10 +165,21 @@ export default function OrgProfileView({
               </a>
             )}
           </div>
+
+          {/* Organisation Logo box overlapping the bottom edge of the hero cover image */}
+          {profile.logoUrl && (
+            <div className="absolute -bottom-10 left-6 sm:left-10 w-24 h-24 sm:w-32 sm:h-32 rounded-[24px] bg-white border-4 border-white shadow-md flex items-center justify-center overflow-hidden p-3 z-10">
+              <img
+                src={profile.logoUrl}
+                alt={`${profile.organisationName} logo`}
+                className="max-w-full max-h-full object-contain"
+              />
+            </div>
+          )}
         </div>
 
         {/* 3. TWO-COLUMN GRID SEPARATION BELOW HERO */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 sm:p-8">
+        <div className={`grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 sm:p-8 ${profile.logoUrl ? 'pt-12 sm:pt-14' : ''}`}>
           {/* Main Left Columns (2/3 width) */}
           <div className="lg:col-span-2 space-y-8">
             {/* Description */}

@@ -305,14 +305,27 @@ export default function OrganisationsView({
                   key={org.id}
                   className="bg-white rounded-[20px] overflow-hidden border border-blue-50/80 shadow-sm hover:border-blue-200 transition-all flex flex-col group hover:shadow-md"
                 >
-                  {/* Card Thumbnail section */}
-                  <div className="relative h-[180px] w-full bg-slate-150 overflow-hidden">
-                    <img
-                      src={org.thumbnailUrl}
-                      alt={org.name}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover transition-transform duration-550 group-hover:scale-105"
-                    />
+                  {/* Card image — logo if available, thumbnail fallback, or initials avatar */}
+                  <div className="relative h-44 bg-slate-50 overflow-hidden flex items-center justify-center">
+                    {org.submitterProfile?.logoUrl ? (
+                      <img
+                        src={org.submitterProfile.logoUrl}
+                        alt={`${org.name} logo`}
+                        className="w-28 h-28 object-contain p-2"
+                      />
+                    ) : org.thumbnailUrl ? (
+                      <img
+                        src={org.thumbnailUrl}
+                        alt={org.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-20 h-20 rounded-[20px] bg-brand-primary flex items-center justify-center shadow-sm">
+                        <span className="text-white font-black text-3xl">
+                          {org.name.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
 
                     {/* Status badge Overlay */}
                     <div className="absolute top-3 right-3">
