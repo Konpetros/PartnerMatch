@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { Sparkles, Menu, X, PlusCircle, Compass, FolderHeart, LogIn, Info, Mail } from 'lucide-react';
+import { Sparkles, Menu, X, PlusCircle, Compass, FolderHeart, LogIn, Info, Mail, Users } from 'lucide-react';
 
 interface NavbarProps {
   currentView: string;
@@ -17,6 +17,7 @@ export default function Navbar({ currentView, onNavigate, onOpenSignIn }: Navbar
 
   const navItems = [
     { id: 'home', label: 'Browse Directory', icon: Compass },
+    { id: 'organisations', label: 'Organisations', icon: Users },
     { id: 'submit', label: 'Submit Listing', icon: PlusCircle },
     { id: 'my-listings', label: 'My Listings', icon: FolderHeart },
   ];

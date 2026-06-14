@@ -17,12 +17,15 @@ import ContactView from './components/ContactView';
 import SignInModal from './components/SignInModal';
 import ProfileSetupView from './components/ProfileSetupView';
 import MyProfileView from './components/MyProfileView';
+import OrganisationsView from './components/OrganisationsView';
+import OrgProfileView from './components/OrgProfileView';
 import { Sparkles, CheckCircle2, LogOut } from 'lucide-react';
 
 export default function App() {
   // Navigation State
   const [currentView, setCurrentView] = useState<string>('home');
   const [selectedListingId, setSelectedListingId] = useState<string | null>(null);
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
 
   // Core Data State (Pre-seeded with 9 premium entries)
   const [listings, setListings] = useState<Listing[]>(MOCK_LISTINGS);
@@ -56,6 +59,16 @@ export default function App() {
 
   // View individual listing
   const handleSelectListing = (id: string) => {
+    setSelectedListingId(id);
+    setCurrentView('detail');
+  };
+
+  const handleSelectOrganisation = (id: string) => {
+    setSelectedOrgId(id);
+    setCurrentView('org-profile');
+  };
+
+  const handleViewListingFromOrg = (id: string) => {
     setSelectedListingId(id);
     setCurrentView('detail');
   };
@@ -177,6 +190,29 @@ export default function App() {
                 onSelectListing={handleSelectListing} 
               />
             );
+          }
+
+          if (currentView === 'organisations') {
+            return (
+              <OrganisationsView
+                listings={listings}
+                onSelectOrganisation={handleSelectOrganisation}
+                onNavigate={handleNavigate}
+              />
+            );
+          }
+
+          if (currentView === 'org-profile' && selectedOrgId) {
+            const activeOrg = listings.find(item => item.id === selectedOrgId);
+            if (activeOrg) {
+              return (
+                <OrgProfileView
+                  listing={activeOrg}
+                  onBack={() => handleNavigate('organisations')}
+                  onViewListing={handleViewListingFromOrg}
+                />
+              );
+            }
           }
 
           if (currentView === 'profile-setup') {
