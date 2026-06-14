@@ -531,7 +531,8 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                 <div
                   id={`listing-card-${listing.id}`}
                   key={listing.id}
-                  className="group bg-white rounded-[20px] border border-blue-50/50 hover:border-blue-200/85 overflow-hidden card-shadow flex flex-col"
+                  onClick={() => onSelectListing(listing.id)}
+                  className="group bg-white rounded-[20px] border border-blue-50/50 hover:border-blue-300 hover:shadow-md overflow-hidden card-shadow flex flex-col cursor-pointer"
                 >
                   {/* Card Header Image */}
                   <div className="relative h-44 bg-slate-100 overflow-hidden">
@@ -608,15 +609,6 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                         </span>
                       )}
                     </div>
-
-                    <button
-                      id={`view-profile-btn-${listing.id}`}
-                      onClick={() => onSelectListing(listing.id)}
-                      className="w-full mt-2 inline-flex items-center justify-center space-x-2 bg-slate-50 group-hover:bg-brand-primary text-slate-700 group-hover:text-white py-3 rounded-brand text-xs font-extrabold transition-all duration-300 pointer-events-auto border border-slate-150 group-hover:border-brand-primary cursor-pointer active:scale-95"
-                    >
-                      <span>View Profile</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
                   </div>
                 </div>
               );
