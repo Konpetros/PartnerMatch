@@ -12,6 +12,8 @@ import HomeView from './components/HomeView';
 import DetailView from './components/DetailView';
 import SubmitView from './components/SubmitView';
 import MyListingsView from './components/MyListingsView';
+import AboutView from './components/AboutView';
+import ContactView from './components/ContactView';
 import SignInModal from './components/SignInModal';
 import { Sparkles, CheckCircle2, LogOut, CheckSquare, PlusCircle, LayoutDashboard, Mail } from 'lucide-react';
 
@@ -156,6 +158,18 @@ export default function App() {
                 onNavigate={handleNavigate}
                 onSelectListing={handleSelectListing}
               />
+            );
+          }
+
+          if (currentView === 'about') {
+            return (
+              <AboutView onNavigate={handleNavigate} />
+            );
+          }
+
+          if (currentView === 'contact') {
+            return (
+              <ContactView onNavigate={handleNavigate} />
             );
           }
 
