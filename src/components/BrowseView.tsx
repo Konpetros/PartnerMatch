@@ -189,7 +189,7 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
   };
 
   return (
-    <div className="space-y-12 pb-16">
+    <div className="space-y-6 pb-16">
       {/* HEADER SECTION */}
       <section className="bg-brand-bg py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
