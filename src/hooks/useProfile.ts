@@ -9,6 +9,7 @@ export const useProfile = (currentUserUid: string | null) => {
   useEffect(() => {
     if (!currentUserUid) {
       setOrganisationProfile(null);
+      setProfileLoading(false);
       return;
     }
 
