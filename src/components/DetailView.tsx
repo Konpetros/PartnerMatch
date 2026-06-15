@@ -153,9 +153,10 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
               <h2 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2">
                 Project Call Description
               </h2>
-              <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-line">
-                {listing.description}
-              </p>
+              <div
+                className="text-slate-600 text-sm leading-relaxed prose prose-sm max-w-none prose-headings:text-slate-800 prose-a:text-brand-primary prose-strong:text-slate-800"
+                dangerouslySetInnerHTML={{ __html: listing.description }}
+              />
             </div>
 
             {/* Thematic Areas */}

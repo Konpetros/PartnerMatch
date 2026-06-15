@@ -151,7 +151,10 @@ export default function OrgProfileFromProfile({
                       <div className="flex items-start justify-between gap-3">
                         <div className="space-y-1 flex-1">
                           <p className="text-sm font-bold text-slate-800 group-hover:text-brand-primary transition-colors">
-                            {listing.description.slice(0, 100)}{listing.description.length > 100 ? '...' : ''}
+                            {(() => {
+                              const plain = listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+                              return plain.length > 100 ? plain.slice(0, 100) + '...' : plain;
+                            })()}
                           </p>
                           <div className="flex flex-wrap gap-1.5 mt-1">
                             {listing.keyActions.map((ka) => (

@@ -568,7 +568,7 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
                       </div>
 
                       <p className="text-slate-500 text-xs leading-relaxed flex-1 line-clamp-3 font-sans">
-                        {listing.description}
+                        {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
                       </p>
 
                       {/* Highly aesthetic metadata snippet */}
