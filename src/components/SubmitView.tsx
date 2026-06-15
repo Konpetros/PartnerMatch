@@ -612,6 +612,20 @@ export default function SubmitView({
                 <span className="bg-slate-100 text-slate-700 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-md tracking-wider">
                   {profile.organisationType}
                 </span>
+                {projectRole && (
+                  <>
+                    {(projectRole === 'Coordinator' || projectRole === 'Both') && (
+                      <span className="text-[9.5px] font-extrabold px-1.5 py-0.5 rounded-md bg-purple-100 text-purple-700">
+                        🎯 Coordinator
+                      </span>
+                    )}
+                    {(projectRole === 'Partner' || projectRole === 'Both') && (
+                      <span className="text-[9.5px] font-extrabold px-1.5 py-0.5 rounded-md bg-teal-100 text-teal-700">
+                        🤝 Partner
+                      </span>
+                    )}
+                  </>
+                )}
                 {selectedKeyActions.map((action) => (
                   <span
                     key={action}

@@ -304,13 +304,18 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                         {listing.type}
                       </span>
                       {listing.projectRole && (
-                        <span className={`text-[10px] font-extrabold px-2 py-1 rounded-md ${
-                          listing.projectRole === 'Coordinator'
-                            ? 'bg-purple-100 text-purple-700'
-                            : 'bg-teal-100 text-teal-700'
-                        }`}>
-                          {listing.projectRole === 'Coordinator' ? '🎯 Coordinator' : '🤝 Partner'}
-                        </span>
+                        <>
+                          {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
+                            <span className="text-[10px] font-extrabold px-2 py-1 rounded-md bg-purple-100 text-purple-700">
+                              🎯 Coordinator
+                            </span>
+                          )}
+                          {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
+                            <span className="text-[10px] font-extrabold px-2 py-1 rounded-md bg-teal-100 text-teal-700">
+                              🤝 Partner
+                            </span>
+                          )}
+                        </>
                       )}
                       {listing.keyActions.map((action) => (
                         <span
