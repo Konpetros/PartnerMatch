@@ -144,6 +144,7 @@ export default function App() {
           onOpenSignIn={handleOpenSignIn}
           currentUser={currentUser}
           onSignOut={onSignOut}
+          isAdmin={isAdmin}
         />
       )}
 

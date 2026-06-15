@@ -13,6 +13,7 @@ interface NavbarProps {
   onOpenSignIn: () => void;
   currentUser: string | null;
   onSignOut: () => void;
+  isAdmin: boolean;
 }
 
 export default function Navbar({
@@ -21,6 +22,7 @@ export default function Navbar({
   onOpenSignIn,
   currentUser,
   onSignOut,
+  isAdmin,
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
@@ -91,12 +93,14 @@ export default function Navbar({
           {/* Sign In CTA or Profile Dropdown */}
           <div className="hidden md:flex items-center relative" ref={dropdownRef}>
             {/* TEMP: Admin access button - remove before production */}
-            <button
-              onClick={() => onNavigate('admin')}
-              className="text-xs font-bold text-slate-400 hover:text-brand-primary transition-colors cursor-pointer border border-slate-200 px-3 py-1.5 rounded-full mr-3"
-            >
-              ⚙ Admin
-            </button>
+            {isAdmin && (
+              <button
+                onClick={() => onNavigate('admin')}
+                className="text-xs font-bold text-slate-400 hover:text-brand-primary transition-colors cursor-pointer border border-slate-200 px-3 py-1.5 rounded-full mr-3"
+              >
+                ⚙ Admin
+              </button>
+            )}
             {!currentUser ? (
               <button
                 id="desktop-signin-btn"
