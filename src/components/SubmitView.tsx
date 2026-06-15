@@ -483,7 +483,7 @@ export default function SubmitView({
 
             {/* Thematics Selection checkboxes */}
             <div className="space-y-2">
-              <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Main Thematic Areas * (Select at least 1)</span>
+              <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Main Thematic Topics * (Select at least 1)</span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 h-64 overflow-y-auto pr-2 border border-slate-150 rounded-xl bg-slate-50 p-4">
                 {THEMATIC_AREAS.map((area) => {
                   const isChecked = selectedThematics.includes(area);
@@ -491,6 +491,7 @@ export default function SubmitView({
                     <button
                       key={area}
                       type="button"
+                      title={area}
                       onClick={() => handleThematicToggle(area)}
                       className={`px-3 py-2.5 rounded-lg text-xs font-semibold text-left flex items-center space-x-2 border transition-all cursor-pointer ${
                         isChecked 
