@@ -130,28 +130,38 @@ export default function OrganisationsView({
             Discover, filter, and connect with all organisations registered on ErasmusMatch
           </p>
         </div>
-
-        {/* Stats row */}
-        <div className="flex items-center justify-center space-x-8 pt-2">
-          <div className="text-center">
-            <p className="text-2xl font-black text-brand-primary">{totalOrgs}</p>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Organisations</p>
-          </div>
-          <div className="w-px h-8 bg-slate-200" />
-          <div className="text-center">
-            <p className="text-2xl font-black text-brand-primary">{totalCountries}</p>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Countries</p>
-          </div>
-          <div className="w-px h-8 bg-slate-200" />
-          <div className="text-center">
-            <p className="text-2xl font-black text-brand-primary">{totalTypes}</p>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Types</p>
-          </div>
-        </div>
       </div>
 
       {/* 2. FILTER & SEARCH COMPRESSED CONTROL PANEL */}
-      <div className="bg-white p-5 rounded-[24px] border border-blue-50/80 shadow-sm space-y-4">
+      <div className="bg-white rounded-[24px] border border-blue-50/80 shadow-sm p-4 sm:p-6 space-y-4">
+          {/* Stats + count row */}
+          <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div className="flex items-center space-x-6">
+              <div className="text-center">
+                <p className="text-xl font-black text-brand-primary">{totalOrgs}</p>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Organisations</p>
+              </div>
+              <div className="w-px h-7 bg-slate-200" />
+              <div className="text-center">
+                <p className="text-xl font-black text-brand-primary">{totalCountries}</p>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Countries</p>
+              </div>
+              <div className="w-px h-7 bg-slate-200" />
+              <div className="text-center">
+                <p className="text-xl font-black text-brand-primary">{totalTypes}</p>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Types</p>
+              </div>
+            </div>
+            {isAnyFilterActive && (
+              <button
+                onClick={handleClearFilters}
+                className="text-xs font-bold text-slate-500 hover:text-brand-primary transition-colors cursor-pointer flex items-center space-x-1"
+              >
+                <span>✕</span>
+                <span>Clear filters</span>
+              </button>
+            )}
+          </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search bar inputs */}
           <div className="relative">
