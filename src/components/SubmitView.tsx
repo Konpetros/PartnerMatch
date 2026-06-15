@@ -467,9 +467,9 @@ export default function SubmitView({
                       <div className="flex flex-col">
                         <span>{action}</span>
                         <span className={`text-[10px] mt-0.5 font-normal opacity-80 ${isChecked ? 'text-slate-200' : 'text-slate-400'}`}>
-                          {action === 'KA1' && 'Mobility Projects'}
-                          {action === 'KA2' && 'Cooperation Partnerships (Small-Scale)'}
-                          {action === 'KA3' && 'Cooperation with Cooperation Partnerships (Large-Scale)'}
+                          {action === 'KA1' && 'Mobility'}
+                          {action === 'KA2' && 'Cooperation'}
+                          {action === 'KA3' && 'Policy'}
                         </span>
                       </div>
                       <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${isChecked ? 'border-brand-accent bg-brand-accent text-white' : 'border-slate-350'}`}>

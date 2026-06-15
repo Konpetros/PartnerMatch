@@ -364,7 +364,7 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
                   <option value="">⚡ All Key Actions</option>
                   <option value="KA1">KA1 — Learning Mobility</option>
                   <option value="KA2">KA2 — Cooperation Partnerships</option>
-                  <option value="KA3">KA3 — Support for Policy Reform</option>
+                  <option value="KA3">KA3 — Policy Support</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
                   <span className="text-xs">▼</span>
