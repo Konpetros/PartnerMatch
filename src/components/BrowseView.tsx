@@ -199,13 +199,35 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
           <p className="text-base text-slate-500 font-medium max-w-2xl mx-auto mt-3">
             Find Erasmus+ listings from organisations across Europe looking for partners.
           </p>
-          <div className="mt-4 bg-blue-50/70 text-brand-primary text-xs font-bold px-3.5 py-1.5 rounded-full shadow-xs">
-            {filteredAndSorted.length} {filteredAndSorted.length === 1 ? 'listing' : 'listings'} found
-          </div>
-          
-          {/* Main search bar next to heading */}
-          <div className="w-full mt-6 max-w-2xl">
-            <div className="flex items-center bg-white border border-slate-200 rounded-full shadow-md px-4 py-2 gap-3">
+
+        </div>
+      </section>
+
+      {/* FILTER STRIP */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white p-6 rounded-[24px] border border-blue-50/80 shadow-sm space-y-5">
+          <div className="space-y-4 border-b border-gray-100 pb-4">
+            {/* Top row — title + count + clear */}
+            <div className="flex justify-between items-center">
+              <h2 className="text-base font-bold text-slate-800 flex items-center space-x-2">
+                <Layers className="w-5 h-5 text-brand-primary" />
+                <span>Filter Directory Results</span>
+                <span className="bg-blue-50 text-brand-primary text-xs font-bold px-2.5 py-0.5 rounded-full">
+                  {filteredAndSorted.length} {filteredAndSorted.length === 1 ? 'listing' : 'listings'} found
+                </span>
+              </h2>
+              <button
+                id="clear-filters-btn"
+                onClick={handleClearFilters}
+                className="flex items-center space-x-1.5 text-xs font-bold text-slate-500 hover:text-brand-primary transition-colors cursor-pointer"
+              >
+                <RefreshCcw className="w-3.5 h-3.5" />
+                <span>Clear Filters</span>
+              </button>
+            </div>
+
+            {/* Search bar */}
+            <div className="flex items-center bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 gap-3 focus-within:border-brand-primary transition-colors">
               <Search className="text-slate-400 w-4 h-4 shrink-0" />
               <input
                 id="search-input-field"
@@ -216,34 +238,14 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
                 className="flex-1 bg-transparent border-none outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400"
               />
               {filters.searchQuery && (
-                <button 
+                <button
                   onClick={() => setFilters(prev => ({ ...prev, searchQuery: '' }))}
-                  className="text-xs font-bold text-slate-400 hover:text-slate-600 mr-2 cursor-pointer"
+                  className="text-xs font-bold text-slate-400 hover:text-slate-600 cursor-pointer"
                 >
-                  ✕ Clear
+                  ✕
                 </button>
               )}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FILTER STRIP */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white p-6 rounded-[24px] border border-blue-50/80 shadow-sm space-y-5">
-          <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-            <h2 className="text-base font-bold text-slate-800 flex items-center space-x-2">
-              <Layers className="w-5 h-5 text-brand-primary" />
-              <span>Filter Directory Results</span>
-            </h2>
-            <button
-              id="clear-filters-btn"
-              onClick={handleClearFilters}
-              className="flex items-center space-x-1.5 text-xs font-bold text-slate-500 hover:text-brand-primary transition-colors hover:underline cursor-pointer"
-            >
-              <RefreshCcw className="w-3.5 h-3.5" />
-              <span>Clear Filters</span>
-            </button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
