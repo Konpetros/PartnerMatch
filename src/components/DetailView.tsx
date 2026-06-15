@@ -224,11 +224,14 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                     </div>
                     <div>
                       <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Project Role</p>
-                      <p className={`font-bold text-sm ${
-                        listing.projectRole === 'Coordinator' ? 'text-purple-700' : 'text-teal-700'
-                      }`}>
-                        {listing.projectRole === 'Coordinator' ? '🎯 Coordinator' : '🤝 Partner'}
-                      </p>
+                      <div className="flex flex-wrap gap-1.5 mt-1">
+                        {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
+                          <span className="text-xs font-bold text-purple-700">🎯 Coordinator</span>
+                        )}
+                        {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
+                          <span className="text-xs font-bold text-teal-700">🤝 Partner</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
