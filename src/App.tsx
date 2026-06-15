@@ -9,6 +9,7 @@ import AppRouter from './router/AppRouter';
 import { useAuth } from './hooks/useAuth';
 import { useListings } from './hooks/useListings';
 import { useProfile } from './hooks/useProfile';
+import { useProfiles } from './hooks/useProfiles';
 import { useNavigation } from './hooks/useNavigation';
 import { useToast } from './hooks/useToast';
 import { Listing } from './types';
@@ -51,6 +52,9 @@ export default function App() {
     handleProfileComplete,
     handleUpdateProfile,
   } = useProfile(currentUserUid);
+
+  // All registered organisation profiles for the directory
+  const { profiles, profilesLoading } = useProfiles();
 
   // Navigation
   const {
@@ -174,6 +178,7 @@ export default function App() {
           selectedListingId={selectedListingId}
           selectedOrgId={selectedOrgId}
           listings={listings}
+          profiles={profiles}
           currentUser={currentUser}
           organisationProfile={organisationProfile}
           onNavigate={handleNavigate}

@@ -1,6 +1,8 @@
 import React from 'react';
 import { AppView } from '../hooks/useNavigation';
 import { Listing, OrganisationProfile, AdminUser, ActivityLog } from '../types';
+import { ProfileWithUid } from '../hooks/useProfiles';
+import OrgProfileFromProfile from '../components/OrgProfileFromProfile';
 
 import HomeView from '../components/HomeView';
 import BrowseView from '../components/BrowseView';
@@ -27,6 +29,7 @@ interface AppRouterProps {
   selectedListingId: string | null;
   selectedOrgId: string | null;
   listings: Listing[];
+  profiles: ProfileWithUid[];
   currentUser: string | null;
   organisationProfile: OrganisationProfile | null;
   onNavigate: (view: string) => void;
@@ -57,6 +60,7 @@ export default function AppRouter({
   selectedListingId,
   selectedOrgId,
   listings,
+  profiles,
   currentUser,
   organisationProfile,
   onNavigate,
@@ -167,7 +171,7 @@ export default function AppRouter({
   if (currentView === 'organisations') {
     return (
       <OrganisationsView
-        listings={listings}
+        listings={profiles}
         onSelectOrganisation={onSelectOrganisation}
         onNavigate={onNavigate}
       />
@@ -175,11 +179,12 @@ export default function AppRouter({
   }
 
   if (currentView === 'org-profile' && selectedOrgId) {
-    const activeOrg = listings.find(item => item.id === selectedOrgId);
-    if (activeOrg) {
+    const activeProfile = profiles.find(p => p.uid === selectedOrgId);
+    if (activeProfile) {
       return (
-        <OrgProfileView
-          listing={activeOrg}
+        <OrgProfileFromProfile
+          profile={activeProfile}
+          listings={listings}
           onBack={() => onNavigate('organisations')}
           onViewListing={onViewListingFromOrg}
         />

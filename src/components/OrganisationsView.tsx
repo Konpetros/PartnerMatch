@@ -4,12 +4,13 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Listing, OrganisationType } from '../types';
+import { OrganisationType } from '../types';
+import { ProfileWithUid } from '../hooks/useProfiles';
 import { COUNTRIES, ORGANISATION_TYPES } from '../data';
 import { MapPin, Inbox, Search } from 'lucide-react';
 
 interface OrganisationsViewProps {
-  listings: Listing[];
+  listings: ProfileWithUid[];
   onSelectOrganisation: (id: string) => void;
   onNavigate: (view: string) => void;
 }
@@ -38,31 +39,29 @@ export default function OrganisationsView({
   }, [searchQuery, selectedCountry, selectedType, selectedLetter]);
 
   // Derive unique organisations list based on name to avoid duplicate registry profiles
-  const uniqueOrganisations = Array.from(
-    new Map(listings.map((item) => [item.name, item])).values()
-  );
+  const uniqueOrganisations = listings;
 
   // Dynamic stats calculation from underlying lists
   const totalOrgs = uniqueOrganisations.length;
   const totalCountries = new Set(uniqueOrganisations.map((item) => item.country)).size;
-  const totalTypes = new Set(uniqueOrganisations.map((item) => item.type)).size;
+  const totalTypes = new Set(uniqueOrganisations.map((item) => item.organisationType)).size;
 
   // Filter logic
   const filteredOrganisations = uniqueOrganisations.filter((org) => {
     // 1. Search Query
     const query = searchQuery.toLowerCase().trim();
-    const matchesSearch = !query || org.name.toLowerCase().includes(query);
+    const matchesSearch = !query || org.organisationName.toLowerCase().includes(query);
 
     // 2. Country
     const matchesCountry = !selectedCountry || org.country === selectedCountry;
 
     // 3. Organisation Type
-    const matchesType = !selectedType || org.type === selectedType;
+    const matchesType = !selectedType || org.organisationType === selectedType;
 
     // 4. Alphabet letter
     const matchesLetter =
       selectedLetter === 'All' ||
-      org.name.trim().charAt(0).toUpperCase() === selectedLetter;
+      org.organisationName.trim().charAt(0).toUpperCase() === selectedLetter;
 
     return matchesSearch && matchesCountry && matchesType && matchesLetter;
   });
@@ -299,37 +298,33 @@ export default function OrganisationsView({
           /* Active Results grid block */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredOrganisations.map((org) => {
-              const cityValue = org.submitterProfile?.city || (org as any).city || 'Athens';
+              const cityValue = org.city || 'Greece';
               return (
                 <div
-                  key={org.id}
+                  key={org.uid}
+                  id={`org-card-${org.uid}`}
                   className="bg-white rounded-[20px] overflow-hidden border border-blue-50/80 shadow-sm hover:border-blue-200 transition-all flex flex-col group hover:shadow-md"
                 >
-                  {/* Card image — logo if available, thumbnail fallback, or initials avatar */}
+                  {/* Card image — logo if available, or initials avatar */}
                   <div className="relative h-44 bg-slate-50 overflow-hidden flex items-center justify-center">
-                    {org.submitterProfile?.logoUrl ? (
+                    {org.logoUrl ? (
                       <img
-                        src={org.submitterProfile.logoUrl}
-                        alt={`${org.name} logo`}
+                        src={org.logoUrl}
+                        alt={`${org.organisationName} logo`}
                         className="w-28 h-28 object-contain p-2"
-                      />
-                    ) : org.thumbnailUrl ? (
-                      <img
-                        src={org.thumbnailUrl}
-                        alt={org.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        referrerPolicy="no-referrer"
                       />
                     ) : (
                       <div className="w-20 h-20 rounded-[20px] bg-brand-primary flex items-center justify-center shadow-sm">
                         <span className="text-white font-black text-3xl">
-                          {org.name.charAt(0).toUpperCase()}
+                          {org.organisationName.charAt(0).toUpperCase()}
                         </span>
                       </div>
                     )}
 
                     {/* Status badge Overlay */}
                     <div className="absolute top-3 right-3">
-                      {renderStatusBadge(org.status)}
+                      {renderStatusBadge('active')}
                     </div>
 
                     {/* Flag and country Overlay */}
@@ -344,12 +339,12 @@ export default function OrganisationsView({
                     <div className="space-y-2">
                       <div className="flex items-center">
                         <span className="bg-slate-100 text-slate-600 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md tracking-wider">
-                          {org.type}
+                          {org.organisationType}
                         </span>
                       </div>
 
                       <h3 className="font-bold text-slate-850 text-base leading-snug line-clamp-1 group-hover:text-brand-primary transition-colors">
-                        {org.name}
+                        {org.organisationName}
                       </h3>
 
                       <div className="flex items-center space-x-1 text-[11px] text-slate-500 font-medium">
@@ -362,7 +357,8 @@ export default function OrganisationsView({
 
                     {/* Button trigger profiles */}
                     <button
-                      onClick={() => onSelectOrganisation(org.id)}
+                      id={`btn-view-org-${org.uid}`}
+                      onClick={() => onSelectOrganisation(org.uid)}
                       className="w-full py-2.5 border border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white rounded-brand font-bold text-xs transition-all duration-200 text-center cursor-pointer active:scale-95"
                     >
                       View Profile

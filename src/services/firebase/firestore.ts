@@ -113,3 +113,18 @@ export const checkIsAdmin = async (userId: string): Promise<boolean> => {
 export const incrementListingViews = async (id: string): Promise<void> => {
   await updateDoc(doc(db, 'listings', id), { views: increment(1) });
 };
+
+// FETCH ALL PROFILES (for Organisations directory)
+export const getProfiles = async (): Promise<(OrganisationProfile & { uid: string })[]> => {
+  const snapshot = await getDocs(collection(db, 'profiles'));
+  return snapshot.docs.map((d) => ({ uid: d.id, ...d.data() } as OrganisationProfile & { uid: string }));
+};
+
+export const subscribeToProfiles = (
+  callback: (profiles: (OrganisationProfile & { uid: string })[]) => void
+): (() => void) => {
+  return onSnapshot(collection(db, 'profiles'), (snapshot) => {
+    const profiles = snapshot.docs.map((d) => ({ uid: d.id, ...d.data() } as OrganisationProfile & { uid: string }));
+    callback(profiles);
+  });
+};
