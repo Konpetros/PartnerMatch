@@ -128,3 +128,42 @@ export const subscribeToProfiles = (
     callback(profiles);
   });
 };
+
+// ─── USERS ───────────────────────────────────────────────────
+
+export const upsertUser = async (
+  uid: string,
+  data: { email: string | null; displayName: string | null; photoURL: string | null }
+): Promise<void> => {
+  const userRef = doc(db, 'users', uid);
+  const snap = await getDoc(userRef);
+
+  if (!snap.exists()) {
+    // First time — create full record
+    await setDoc(userRef, {
+      uid,
+      email: data.email || '',
+      displayName: data.displayName || '',
+      photoURL: data.photoURL || '',
+      joinedAt: new Date().toISOString(),
+      listingCount: 0,
+      status: 'active',
+      isAdmin: false,
+    });
+  } else {
+    // Returning user — update display info only
+    await updateDoc(userRef, {
+      displayName: data.displayName || '',
+      email: data.email || '',
+    });
+  }
+};
+
+export const subscribeToUsers = (
+  callback: (users: any[]) => void
+): (() => void) => {
+  return onSnapshot(collection(db, 'users'), (snapshot) => {
+    const users = snapshot.docs.map((d) => ({ ...d.data() }));
+    callback(users);
+  });
+};

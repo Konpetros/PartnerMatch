@@ -10,6 +10,7 @@ import { useAuth } from './hooks/useAuth';
 import { useListings } from './hooks/useListings';
 import { useProfile } from './hooks/useProfile';
 import { useProfiles } from './hooks/useProfiles';
+import { useUsers } from './hooks/useUsers';
 import { useNavigation } from './hooks/useNavigation';
 import { useToast } from './hooks/useToast';
 import { Listing } from './types';
@@ -56,6 +57,9 @@ export default function App() {
   // All registered organisation profiles for the directory
   const { profiles, profilesLoading } = useProfiles();
 
+  // All registered users for the admin panel
+  const { adminUsers } = useUsers(isAdmin);
+
   // Navigation
   const {
     currentView,
@@ -67,8 +71,7 @@ export default function App() {
     handleViewListingFromOrg,
   } = useNavigation(!!currentUser, isAdmin, handleOpenSignIn);
 
-  // Admin users and activity log — kept in local state for now
-  const [adminUsers] = useState<any[]>([]);
+  // Activity log — kept in local state for now
   const [activityLog] = useState<any[]>([]);
 
   // Scroll to top on navigation

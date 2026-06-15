@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AuthUser, onAuthStateChanged, signOut } from '../services/firebase/auth';
-import { checkIsAdmin } from '../services/firebase/firestore';
+import { checkIsAdmin, upsertUser } from '../services/firebase/firestore';
 
 export interface AuthState {
   currentUser: string | null;
@@ -24,6 +24,17 @@ export const useAuth = (onFirstLogin: () => void) => {
         const displayName = user.displayName || user.email?.split('@')[0] || 'Member';
         setCurrentUser(displayName);
         setCurrentUserUid(user.uid);
+
+        // Save/update user record in Firestore
+        try {
+          await upsertUser(user.uid, {
+            email: user.email,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          });
+        } catch {
+          // Non-critical — don't block auth flow
+        }
 
         // Check admin status
         try {
