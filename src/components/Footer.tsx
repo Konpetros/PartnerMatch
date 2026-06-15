@@ -4,7 +4,8 @@
  */
 
 import React from 'react';
-import { Sparkles, Globe, Mail, BookOpen, ShieldCheck } from 'lucide-react';
+import { Globe, Mail, BookOpen, ShieldCheck } from 'lucide-react';
+import ErasmusMatchLogo from '../assets/ErasmusMatchLogo';
 
 interface FooterProps {
   onNavigate: (view: string) => void;
@@ -24,11 +25,9 @@ export default function Footer({ onNavigate }: FooterProps) {
               className="flex items-center space-x-2 cursor-pointer group"
               onClick={() => onNavigate('home')}
             >
-              <div className="p-2 bg-brand-primary text-white rounded-xl">
-                <Sparkles className="w-5 h-5 text-brand-accent" />
-              </div>
+              <ErasmusMatchLogo size={32} className="brightness-0 invert" />
               <span className="text-xl font-extrabold tracking-tight text-white">
-                Erasmus<span className="text-brand-accent">Match</span>
+                Erasmus<span className="text-white">Match</span>
               </span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed">
