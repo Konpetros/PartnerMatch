@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 
 import Navbar from './components/Navbar';
@@ -72,13 +72,24 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentView, selectedListingId]);
 
-  // Navigate after sign-in once profile loading is complete
+  // Track whether we have already navigated after this login session
+  const hasNavigatedAfterLogin = useRef(false);
+
+  // Reset the navigation flag when user signs out
   useEffect(() => {
-    if (currentUserUid && !profileLoading) {
-      if (currentView === 'home') {
-        if (!hasProfile) {
-          handleNavigate('profile-setup');
-        }
+    if (!currentUserUid) {
+      hasNavigatedAfterLogin.current = false;
+    }
+  }, [currentUserUid]);
+
+  // Navigate once after sign-in, but only after profile has finished loading
+  useEffect(() => {
+    if (currentUserUid && !profileLoading && !hasNavigatedAfterLogin.current) {
+      hasNavigatedAfterLogin.current = true;
+      if (!hasProfile) {
+        handleNavigate('profile-setup');
+      } else {
+        handleNavigate('home');
       }
     }
   }, [currentUserUid, profileLoading, hasProfile]);

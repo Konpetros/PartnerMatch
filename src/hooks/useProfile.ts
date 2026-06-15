@@ -4,7 +4,7 @@ import { getProfile, saveProfile } from '../services/firebase/firestore';
 
 export const useProfile = (currentUserUid: string | null) => {
   const [organisationProfile, setOrganisationProfile] = useState<OrganisationProfile | null>(null);
-  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(true);
 
   useEffect(() => {
     if (!currentUserUid) {
