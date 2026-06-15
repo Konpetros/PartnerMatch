@@ -569,7 +569,7 @@ export default function SubmitView({
             type="submit"
             className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-4 rounded-brand font-bold text-sm transition-all shadow-md active:scale-95 cursor-pointer"
           >
-            <span>Publish Erasmus+ Listing</span>
+            <span>Submit Listing</span>
           </button>
         </form>
 
