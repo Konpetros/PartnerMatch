@@ -216,7 +216,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
 
           {/* Large heading — two lines */}
           <h1 className="text-5xl sm:text-6xl font-black tracking-tight leading-tight text-center text-slate-900">
-            Find Your <span className="text-brand-primary">Erasmus+</span> Partner
+            Find Your Ideal <span className="text-brand-primary">Erasmus+</span> <span className="text-brand-accent">Match</span>
           </h1>
 
           {/* Subheading below */}
