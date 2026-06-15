@@ -28,11 +28,8 @@ export default function App() {
     handleSignInSuccess,
     handleSignOut,
   } = useAuth(() => {
-    if (!hasProfile) {
-      handleNavigate('profile-setup');
-    } else {
-      handleNavigate('home');
-    }
+    // onFirstLogin — navigation is handled by the useEffect below
+    // once the profile has finished loading from Firestore
   });
 
   // Listings — pass UID for write operations
@@ -74,6 +71,17 @@ export default function App() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [currentView, selectedListingId]);
+
+  // Navigate after sign-in once profile loading is complete
+  useEffect(() => {
+    if (currentUserUid && !profileLoading) {
+      if (currentView === 'home') {
+        if (!hasProfile) {
+          handleNavigate('profile-setup');
+        }
+      }
+    }
+  }, [currentUserUid, profileLoading, hasProfile]);
 
   // Wrap profile complete
   const onProfileComplete = async (profile: Parameters<typeof handleProfileComplete>[0]) => {
