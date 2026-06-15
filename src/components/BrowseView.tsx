@@ -197,7 +197,7 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
             Browse Partner Listings
           </h1>
           <p className="text-base text-slate-500 font-medium max-w-2xl mx-auto mt-3">
-            Find Erasmus+ organisations across Europe looking for KA1, KA210 and KA220 partners.
+            Find Erasmus+ listings from organisations across Europe looking for partners.
           </p>
           <div className="mt-4 bg-blue-50/70 text-brand-primary text-xs font-bold px-3.5 py-1.5 rounded-full shadow-xs">
             {filteredAndSorted.length} {filteredAndSorted.length === 1 ? 'listing' : 'listings'} found

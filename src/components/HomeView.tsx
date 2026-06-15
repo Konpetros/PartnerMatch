@@ -221,7 +221,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
 
           {/* Subheading below */}
           <p className="text-base sm:text-lg text-slate-500 font-medium text-center max-w-2xl mx-auto mt-4">
-            Browse organisations across Europe looking for KA1, KA210 and KA220 partners. Connect, share knowledge, and build consortia.
+            Browse organisations across Europe looking for Erasmus+ partners and submit your own listings. Connect, share knowledge, and build consortia.
           </p>
 
           {/* Search bar + CTA button in one row below */}

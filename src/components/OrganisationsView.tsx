@@ -120,32 +120,31 @@ export default function OrganisationsView({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in space-y-8 font-sans">
-      {/* 1. HERO SECTION WITH GRADIENT BACKGROUND */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100/30 rounded-[28px] p-6 sm:p-10 space-y-6 text-center shadow-xs">
-        <div className="space-y-3 max-w-3xl mx-auto">
-          <span className="bg-blue-600/10 text-brand-primary text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-            Consortium Database
-          </span>
+      {/* HERO SECTION */}
+      <div className="text-center space-y-4 py-8">
+        <div className="space-y-2 max-w-3xl mx-auto">
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-800">
             Erasmus+ Organisations
           </h1>
-          <p className="text-sm text-slate-500 leading-relaxed font-medium">
-            Discover all organisations registered on ErasmusMatch — from NGOs and schools to universities and VET providers across Europe
+          <p className="text-sm text-slate-500 font-medium">
+            Discover, filter, and connect with all organisations registered on ErasmusMatch
           </p>
         </div>
 
-        {/* Dynamic calculated state row */}
-        <div className="grid grid-cols-3 max-w-xl mx-auto bg-white rounded-2xl p-4 divide-x divide-slate-100 border border-blue-50/50 shadow-xs">
-          <div className="text-center px-1">
-            <p className="text-xl sm:text-2xl font-black text-brand-primary">{totalOrgs}</p>
+        {/* Stats row */}
+        <div className="flex items-center justify-center space-x-8 pt-2">
+          <div className="text-center">
+            <p className="text-2xl font-black text-brand-primary">{totalOrgs}</p>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Organisations</p>
           </div>
-          <div className="text-center px-1">
-            <p className="text-xl sm:text-2xl font-black text-brand-primary">{totalCountries}</p>
+          <div className="w-px h-8 bg-slate-200" />
+          <div className="text-center">
+            <p className="text-2xl font-black text-brand-primary">{totalCountries}</p>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Countries</p>
           </div>
-          <div className="text-center px-1">
-            <p className="text-xl sm:text-2xl font-black text-brand-primary">{totalTypes}</p>
+          <div className="w-px h-8 bg-slate-200" />
+          <div className="text-center">
+            <p className="text-2xl font-black text-brand-primary">{totalTypes}</p>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wide">Types</p>
           </div>
         </div>
