@@ -303,7 +303,8 @@ export default function OrganisationsView({
                 <div
                   key={org.uid}
                   id={`org-card-${org.uid}`}
-                  className="bg-white rounded-[20px] overflow-hidden border border-blue-50/80 shadow-sm hover:border-blue-200 transition-all flex flex-col group hover:shadow-md"
+                  onClick={() => onSelectOrganisation(org.uid)}
+                  className="bg-white rounded-[20px] overflow-hidden border border-blue-50/80 shadow-sm hover:border-blue-200 transition-all flex flex-col group hover:shadow-md cursor-pointer"
                 >
                   {/* Card image — logo if available, or initials avatar */}
                   <div className="relative h-44 bg-slate-50 overflow-hidden flex items-center justify-center">
@@ -356,13 +357,11 @@ export default function OrganisationsView({
                     </div>
 
                     {/* Button trigger profiles */}
-                    <button
-                      id={`btn-view-org-${org.uid}`}
-                      onClick={() => onSelectOrganisation(org.uid)}
-                      className="w-full py-2.5 border border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white rounded-brand font-bold text-xs transition-all duration-200 text-center cursor-pointer active:scale-95"
+                    <div
+                      className="w-full py-2.5 border border-brand-primary text-brand-primary group-hover:bg-brand-primary group-hover:text-white rounded-brand font-bold text-xs transition-all duration-200 text-center"
                     >
                       View Profile
-                    </button>
+                    </div>
                   </div>
                 </div>
               );
