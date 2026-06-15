@@ -136,7 +136,14 @@ export const upsertUser = async (
   data: { email: string | null; displayName: string | null; photoURL: string | null }
 ): Promise<void> => {
   const userRef = doc(db, 'users', uid);
-  const snap = await getDoc(userRef);
+  const adminRef = doc(db, 'admins', uid);
+
+  const [snap, adminSnap] = await Promise.all([
+    getDoc(userRef),
+    getDoc(adminRef),
+  ]);
+
+  const isAdmin = adminSnap.exists();
 
   if (!snap.exists()) {
     // First time — create full record
@@ -148,13 +155,14 @@ export const upsertUser = async (
       joinedAt: new Date().toISOString(),
       listingCount: 0,
       status: 'active',
-      isAdmin: false,
+      isAdmin,
     });
   } else {
-    // Returning user — update display info only
+    // Returning user — update display info and sync admin status
     await updateDoc(userRef, {
       displayName: data.displayName || '',
       email: data.email || '',
+      isAdmin,
     });
   }
 };
