@@ -121,7 +121,7 @@ export default function OrganisationsView({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in space-y-8 font-sans">
       {/* HERO SECTION */}
-      <section className="bg-brand-bg py-12 px-4">
+      <section className="bg-brand-bg py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl font-black tracking-tight text-slate-900">
             Erasmus+ Organisations
