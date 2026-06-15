@@ -1,59 +1,115 @@
-import { Listing, SearchFilters } from '../../types';
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+  query,
+  where,
+  orderBy,
+  increment,
+  setDoc,
+} from 'firebase/firestore';
+import { db } from './config';
+import { Listing } from '../../types';
 import { OrganisationProfile } from '../../types';
 
-// LISTINGS
+// ─── LISTINGS ────────────────────────────────────────────────
+
 export const getListings = async (): Promise<Listing[]> => {
-  // TODO: fetch all listings from Firestore collection 'listings'
-  throw new Error('Firestore not yet implemented');
+  const snapshot = await getDocs(
+    query(collection(db, 'listings'), orderBy('createdAt', 'desc'))
+  );
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Listing));
 };
 
 export const getListingById = async (id: string): Promise<Listing | null> => {
-  // TODO: fetch single listing by ID from Firestore
-  throw new Error('Firestore not yet implemented');
+  const snap = await getDoc(doc(db, 'listings', id));
+  if (!snap.exists()) return null;
+  return { id: snap.id, ...snap.data() } as Listing;
 };
 
-export const submitListing = async (listing: Omit<Listing, 'id'>, userId: string): Promise<string> => {
-  // TODO: add new listing to Firestore, return generated ID
-  // Status defaults to 'pending' until admin approves
-  throw new Error('Firestore not yet implemented');
+export const submitListing = async (
+  listing: Omit<Listing, 'id'>,
+  userId: string
+): Promise<string> => {
+  const ref = await addDoc(collection(db, 'listings'), {
+    ...listing,
+    submittedBy: userId,
+    status: 'pending',
+    views: 0,
+    createdAt: new Date().toISOString(),
+  });
+  return ref.id;
 };
 
-export const updateListing = async (id: string, data: Partial<Listing>): Promise<void> => {
-  // TODO: update listing fields in Firestore
-  throw new Error('Firestore not yet implemented');
+export const updateListing = async (
+  id: string,
+  data: Partial<Listing>
+): Promise<void> => {
+  await updateDoc(doc(db, 'listings', id), data as any);
 };
 
 export const deleteListing = async (id: string): Promise<void> => {
-  // TODO: delete listing from Firestore
-  throw new Error('Firestore not yet implemented');
+  await deleteDoc(doc(db, 'listings', id));
 };
 
 export const getUserListings = async (userId: string): Promise<Listing[]> => {
-  // TODO: fetch all listings where submittedBy === userId
-  throw new Error('Firestore not yet implemented');
+  const snapshot = await getDocs(
+    query(
+      collection(db, 'listings'),
+      where('submittedBy', '==', userId),
+      orderBy('createdAt', 'desc')
+    )
+  );
+  return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Listing));
 };
 
 export const updateListingStatus = async (
   id: string,
   status: 'active' | 'pending' | 'expired' | 'partnership-found'
 ): Promise<void> => {
-  // TODO: update listing status field in Firestore
-  throw new Error('Firestore not yet implemented');
+  await updateDoc(doc(db, 'listings', id), { status });
 };
 
-// ORGANISATION PROFILES
+// Real-time listener — returns unsubscribe function
+export const subscribeToListings = (
+  callback: (listings: Listing[]) => void
+): (() => void) => {
+  const q = query(collection(db, 'listings'), orderBy('createdAt', 'desc'));
+  return onSnapshot(q, (snapshot) => {
+    const listings = snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Listing));
+    callback(listings);
+  });
+};
+
+// ─── ORGANISATION PROFILES ───────────────────────────────────
+
 export const getProfile = async (userId: string): Promise<OrganisationProfile | null> => {
-  // TODO: fetch profile from Firestore collection 'profiles' by userId
-  throw new Error('Firestore not yet implemented');
+  const snap = await getDoc(doc(db, 'profiles', userId));
+  if (!snap.exists()) return null;
+  return snap.data() as OrganisationProfile;
 };
 
-export const saveProfile = async (userId: string, profile: OrganisationProfile): Promise<void> => {
-  // TODO: save or update profile in Firestore collection 'profiles'
-  throw new Error('Firestore not yet implemented');
+export const saveProfile = async (
+  userId: string,
+  profile: OrganisationProfile
+): Promise<void> => {
+  await setDoc(doc(db, 'profiles', userId), profile, { merge: true });
 };
 
-// VIEWS COUNTER
+// ─── ADMIN ───────────────────────────────────────────────────
+
+export const checkIsAdmin = async (userId: string): Promise<boolean> => {
+  const snap = await getDoc(doc(db, 'admins', userId));
+  return snap.exists();
+};
+
+// ─── VIEWS COUNTER ───────────────────────────────────────────
+
 export const incrementListingViews = async (id: string): Promise<void> => {
-  // TODO: increment views field on listing document using Firestore increment
-  throw new Error('Firestore not yet implemented');
+  await updateDoc(doc(db, 'listings', id), { views: increment(1) });
 };

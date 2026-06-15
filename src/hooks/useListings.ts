@@ -1,44 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Listing } from '../types';
-import { MOCK_LISTINGS } from '../data/mockListings';
+import {
+  subscribeToListings,
+  submitListing as firestoreSubmitListing,
+  deleteListing as firestoreDeleteListing,
+  updateListingStatus as firestoreUpdateListingStatus,
+  updateListing,
+} from '../services/firebase/firestore';
 
-export const useListings = () => {
-  const [listings, setListings] = useState<Listing[]>(MOCK_LISTINGS);
+export const useListings = (currentUserUid: string | null) => {
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [listingsLoading, setListingsLoading] = useState(true);
 
-  const handleSubmitListing = (newListing: Listing) => {
-    setListings(prev => [newListing, ...prev]);
+  useEffect(() => {
+    const unsubscribe = subscribeToListings((data) => {
+      setListings(data);
+      setListingsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleSubmitListing = async (newListing: Omit<Listing, 'id'>) => {
+    if (!currentUserUid) return;
+    await firestoreSubmitListing(newListing, currentUserUid);
   };
 
-  const handleDeleteListing = (id: string) => {
-    setListings(prev => prev.filter(item => item.id !== id));
+  const handleDeleteListing = async (id: string) => {
+    await firestoreDeleteListing(id);
   };
 
-  const handleUpdateListingStatus = (
+  const handleUpdateListingStatus = async (
     id: string,
     status: 'active' | 'pending' | 'expired' | 'partnership-found'
   ) => {
-    setListings(prev =>
-      prev.map(item => item.id === id ? { ...item, status } : item)
-    );
+    await firestoreUpdateListingStatus(id, status);
   };
 
-  const handleApproveListing = (id: string) => {
-    setListings(prev =>
-      prev.map(item => item.id === id ? { ...item, status: 'active' as const } : item)
-    );
+  const handleApproveListing = async (id: string) => {
+    await firestoreUpdateListingStatus(id, 'active');
   };
 
-  const handleRejectListing = (id: string, reason: string) => {
-    setListings(prev =>
-      prev.map(item => item.id === id
-        ? { ...item, status: 'expired' as const, rejectionReason: reason }
-        : item
-      )
-    );
+  const handleRejectListing = async (id: string, reason: string) => {
+    await updateListing(id, { status: 'expired', rejectionReason: reason });
   };
 
   return {
     listings,
+    listingsLoading,
     handleSubmitListing,
     handleDeleteListing,
     handleUpdateListingStatus,

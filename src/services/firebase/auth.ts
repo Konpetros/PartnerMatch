@@ -1,4 +1,13 @@
-import { OrganisationProfile } from '../../types';
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut as firebaseSignOut,
+  onAuthStateChanged as firebaseOnAuthStateChanged,
+} from 'firebase/auth';
+import { auth } from './config';
 
 export interface AuthUser {
   uid: string;
@@ -7,33 +16,42 @@ export interface AuthUser {
   photoURL: string | null;
 }
 
-// Sign in with Google
+const toAuthUser = (user: any): AuthUser => ({
+  uid: user.uid,
+  email: user.email,
+  displayName: user.displayName,
+  photoURL: user.photoURL,
+});
+
 export const signInWithGoogle = async (): Promise<AuthUser> => {
-  // TODO: implement Firebase Google Auth
-  throw new Error('Firebase Auth not yet implemented');
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(auth, provider);
+  return toAuthUser(result.user);
 };
 
-// Sign in with email and password
 export const signInWithEmail = async (email: string, password: string): Promise<AuthUser> => {
-  // TODO: implement Firebase Email Auth
-  throw new Error('Firebase Auth not yet implemented');
+  const result = await signInWithEmailAndPassword(auth, email, password);
+  return toAuthUser(result.user);
 };
 
-// Register with email and password
-export const registerWithEmail = async (email: string, password: string, displayName: string): Promise<AuthUser> => {
-  // TODO: implement Firebase Email Registration
-  throw new Error('Firebase Auth not yet implemented');
+export const registerWithEmail = async (
+  email: string,
+  password: string,
+  displayName: string
+): Promise<AuthUser> => {
+  const result = await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(result.user, { displayName });
+  return toAuthUser({ ...result.user, displayName });
 };
 
-// Sign out
 export const signOut = async (): Promise<void> => {
-  // TODO: implement Firebase Sign Out
-  throw new Error('Firebase Auth not yet implemented');
+  await firebaseSignOut(auth);
 };
 
-// Listen to auth state changes
-export const onAuthStateChanged = (callback: (user: AuthUser | null) => void): (() => void) => {
-  // TODO: implement Firebase onAuthStateChanged listener
-  // Returns unsubscribe function
-  return () => {};
+export const onAuthStateChanged = (
+  callback: (user: AuthUser | null) => void
+): (() => void) => {
+  return firebaseOnAuthStateChanged(auth, (user) => {
+    callback(user ? toAuthUser(user) : null);
+  });
 };

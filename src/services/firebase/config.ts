@@ -1,8 +1,9 @@
-// Firebase configuration
-// All values come from environment variables (VITE_ prefix for Vite)
-// These will be set as ENV variables in the Dockerfile for Cloud Run deployment
+import { initializeApp, getApps } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
-export const firebaseConfig = {
+const firebaseConfig = {
   apiKey: (import.meta as any).env.VITE_FIREBASE_API_KEY,
   authDomain: (import.meta as any).env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: (import.meta as any).env.VITE_FIREBASE_PROJECT_ID,
@@ -11,6 +12,9 @@ export const firebaseConfig = {
   appId: (import.meta as any).env.VITE_FIREBASE_APP_ID,
 };
 
-// TODO: Initialize Firebase app here when SDK is installed
-// import { initializeApp } from 'firebase/app';
-// export const firebaseApp = initializeApp(firebaseConfig);
+// Prevent duplicate initialisation during hot reload
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);

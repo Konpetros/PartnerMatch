@@ -1,19 +1,28 @@
-// LOGO UPLOAD
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
+import { storage } from './config';
+
 export const uploadLogo = async (userId: string, file: File): Promise<string> => {
-  // TODO: upload logo to Firebase Storage at path logos/{userId}/logo
-  // Return download URL
-  throw new Error('Firebase Storage not yet implemented');
+  const storageRef = ref(storage, `logos/${userId}/logo`);
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
 };
 
-// THUMBNAIL UPLOAD
-export const uploadThumbnail = async (userId: string, listingId: string, file: File): Promise<string> => {
-  // TODO: upload thumbnail to Firebase Storage at path thumbnails/{userId}/{listingId}
-  // Return download URL
-  throw new Error('Firebase Storage not yet implemented');
+export const uploadThumbnail = async (
+  userId: string,
+  listingId: string,
+  file: File
+): Promise<string> => {
+  const storageRef = ref(storage, `thumbnails/${userId}/${listingId}`);
+  await uploadBytes(storageRef, file);
+  return await getDownloadURL(storageRef);
 };
 
-// DELETE FILE
 export const deleteFile = async (url: string): Promise<void> => {
-  // TODO: delete file from Firebase Storage by download URL
-  throw new Error('Firebase Storage not yet implemented');
+  const storageRef = ref(storage, url);
+  await deleteObject(storageRef);
 };
