@@ -109,7 +109,7 @@ export default function ProfileSetupView({ onProfileComplete }: ProfileSetupView
   };
 
   return (
-    <div id="profile-setup-container" className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
+    <div id="profile-setup-container" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
       <div className="bg-white p-6 sm:p-8 rounded-[24px] border border-blue-50/80 shadow-md space-y-8">
         {/* Header */}
         <div className="border-b border-slate-100 pb-5 space-y-2">
