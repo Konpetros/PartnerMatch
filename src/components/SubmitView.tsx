@@ -6,6 +6,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { COUNTRIES, THEMATIC_AREAS } from '../data';
+import RichTextEditor from './RichTextEditor';
 import { 
   CloudUpload, 
   Sparkles, 
@@ -504,22 +505,19 @@ export default function SubmitView({
             </div>
 
             {/* Detailed Description */}
-            <div className="space-y-1">
-              <div className="flex justify-between items-center text-xs font-bold text-slate-600 uppercase tracking-wide">
-                <label htmlFor="form-listing-desc">Project Description & Partner Requirements *</label>
-                <span className={`text-[10px] ${description.length > 500 ? 'text-red-500 font-bold' : 'text-slate-400'}`}>
-                  {description.length} / 500 characters
-                </span>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-bold text-slate-605 uppercase tracking-wide">
+                  Project Description & Partner Requirements *
+                </label>
               </div>
-              <textarea
-                id="form-listing-desc"
-                rows={4}
-                maxLength={500}
-                required
-                placeholder="Describe your project idea, what kind of partner you are looking for, their expected role, and any specific requirements."
+              <p className="text-xs text-slate-400 font-medium">
+                Describe your project idea, what kind of partner you are looking for, their expected role, and any specific requirements.
+              </p>
+              <RichTextEditor
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400"
+                onChange={setDescription}
+                placeholder="Describe your project idea, what kind of partner you are looking for, their expected role, and any specific requirements."
               />
             </div>
 
@@ -606,7 +604,7 @@ export default function SubmitView({
               </h3>
 
               <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-3 h-[48px]">
-                {description || 'Provide a partner search description to preview the live rendering text of how potential European partners learn about your priorities and requirements...'}
+                {description.replace(/<[^>]*>/g, '').trim() || 'Provide a partner search description to preview the live rendering text of how potential European partners learn about your priorities and requirements...'}
               </p>
 
               {/* Tag row */}
