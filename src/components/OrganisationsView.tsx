@@ -121,16 +121,16 @@ export default function OrganisationsView({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in space-y-8 font-sans">
       {/* HERO SECTION */}
-      <div className="text-center space-y-4 py-8">
-        <div className="space-y-2 max-w-3xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-800">
+      <section className="bg-brand-bg py-12 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-4xl font-black tracking-tight text-slate-900">
             Erasmus+ Organisations
           </h1>
-          <p className="text-sm text-slate-500 font-medium">
+          <p className="text-base text-slate-500 font-medium max-w-2xl mx-auto mt-3">
             Discover, filter, and connect with all organisations registered on ErasmusMatch
           </p>
         </div>
-      </div>
+      </section>
 
       {/* 2. FILTER & SEARCH COMPRESSED CONTROL PANEL */}
       <div className="bg-white rounded-[24px] border border-blue-50/80 shadow-sm p-4 sm:p-6 space-y-4">

@@ -191,15 +191,14 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
   return (
     <div className="space-y-12 pb-16">
       {/* HEADER SECTION */}
-      <section className="bg-brand-bg py-12 px-4 shadow-xs">
-        <div className="max-w-7xl mx-auto text-center flex flex-col items-center">
+      <section className="bg-brand-bg py-12 px-4">
+        <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl font-black tracking-tight text-slate-900">
             Browse Partner Listings
           </h1>
           <p className="text-base text-slate-500 font-medium max-w-2xl mx-auto mt-3">
             Find Erasmus+ listings from organisations across Europe looking for partners.
           </p>
-
         </div>
       </section>
 
