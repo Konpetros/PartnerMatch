@@ -94,10 +94,10 @@ export default function App() {
     if (currentUserUid && !profileLoading && !hasNavigatedAfterLogin.current) {
       hasNavigatedAfterLogin.current = true;
       if (!hasProfile) {
+        // Only redirect to profile setup if genuinely no profile exists
         handleNavigate('profile-setup');
-      } else {
-        handleNavigate('home');
       }
+      // If profile exists, stay on whatever page the user is already on
     }
   }, [currentUserUid, profileLoading, hasProfile]);
 

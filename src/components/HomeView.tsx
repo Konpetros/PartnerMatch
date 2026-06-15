@@ -248,7 +248,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
           </div>
 
           {/* Trust row below the search bar */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-6 text-sm font-bold text-slate-500">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-6 text-base sm:text-lg text-slate-500 font-medium">
             <span>✓ Free to browse</span>
             <span>✓ Free to list</span>
             <span>✓ No subscription</span>
