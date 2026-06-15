@@ -38,9 +38,9 @@ export default function OrgProfileFromProfile({
     switch (action) {
       case 'KA1':
         return 'bg-blue-100 text-blue-800 border-blue-200 font-extrabold';
-      case 'KA210':
+      case 'KA2':
         return 'bg-indigo-100 text-indigo-800 border-indigo-200 font-extrabold';
-      case 'KA220':
+      case 'KA3':
         return 'bg-purple-100 text-purple-800 border-purple-200 font-extrabold';
       default:
         return 'bg-gray-100 text-gray-600 border border-gray-200';

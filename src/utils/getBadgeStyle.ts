@@ -3,8 +3,8 @@ import { KeyAction } from '../types';
 export const getKeyActionBadgeStyle = (action: KeyAction): string => {
   switch (action) {
     case 'KA1': return 'bg-blue-100 text-blue-700';
-    case 'KA210': return 'bg-green-100 text-green-700';
-    case 'KA220': return 'bg-purple-100 text-purple-700';
+    case 'KA2': return 'bg-green-100 text-green-700';
+    case 'KA3': return 'bg-purple-100 text-purple-700';
     default: return 'bg-gray-100 text-gray-600';
   }
 };

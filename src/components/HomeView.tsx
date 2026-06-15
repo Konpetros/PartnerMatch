@@ -180,9 +180,9 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
     switch (action) {
       case 'KA1':
         return 'ka1';
-      case 'KA210':
+      case 'KA2':
         return 'ka210';
-      case 'KA220':
+      case 'KA3':
         return 'ka220';
       default:
         return 'bg-gray-100 text-gray-600 border border-gray-200';
@@ -211,7 +211,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
           {/* Small pill badge at the top */}
           <div className="inline-flex items-center space-x-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 shadow-sm mb-6">
             <span className="w-2 h-2 rounded-full bg-brand-accent" />
-            <span>Free Erasmus+ Partner Search · KA1 · KA210 · KA220</span>
+            <span>Free Erasmus+ Partner Search · KA1 · KA2 · KA3</span>
           </div>
 
           {/* Large heading — two lines */}
@@ -398,7 +398,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             </div>
             <div>
               <p className="text-3xl font-black text-slate-800">3 Key Actions</p>
-              <p className="text-slate-500 text-xs font-semibold">KA1, KA210 & KA220 Supported</p>
+              <p className="text-slate-500 text-xs font-semibold">KA1, KA2 & KA3 Supported</p>
             </div>
           </div>
         </div>

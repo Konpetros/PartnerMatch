@@ -179,9 +179,9 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
     switch (action) {
       case 'KA1':
         return 'ka1';
-      case 'KA210':
+      case 'KA2':
         return 'ka210';
-      case 'KA220':
+      case 'KA3':
         return 'ka220';
       default:
         return 'bg-gray-100 text-gray-600 border border-gray-200';
@@ -189,7 +189,7 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
   };
 
   return (
-    <div className="space-y-6 pb-16">
+    <div className="space-y-6 pb-16 pt-8">
       {/* HEADER SECTION */}
       <section className="bg-brand-bg py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
@@ -363,8 +363,8 @@ export default function BrowseView({ listings, onNavigate, onSelectListing }: Br
                 >
                   <option value="">⚡ All Key Actions</option>
                   <option value="KA1">KA1 — Learning Mobility</option>
-                  <option value="KA210">KA210 — Small-Scale Partnerships</option>
-                  <option value="KA220">KA220 — Cooperation Partnerships</option>
+                  <option value="KA2">KA2 — Cooperation Partnerships</option>
+                  <option value="KA3">KA3 — Support for Policy Reform</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
                   <span className="text-xs">▼</span>

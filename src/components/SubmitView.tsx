@@ -43,7 +43,7 @@ export default function SubmitView({
   const [partnerSearchDeadline, setPartnerSearchDeadline] = useState('');
   const [description, setDescription] = useState('');
   const [contactEmail, setContactEmail] = useState('');
-  const [projectRole, setProjectRole] = useState<'Coordinator' | 'Partner' | ''>('');
+  const [projectRole, setProjectRole] = useState<'Coordinator' | 'Partner' | 'Both' | ''>('');
 
   // Pre-fill contact email once profile loads
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function SubmitView({
     }
 
     if (selectedKeyActions.length === 0) {
-      errors.push('Select at least one Key Action (e.g. KA1, KA210, KA220).');
+      errors.push('Select at least one Key Action (e.g. KA1, KA2, KA3).');
     }
     if (!projectRole) {
       errors.push('Please select your role in this project.');
@@ -160,7 +160,7 @@ export default function SubmitView({
       views: 0,
       createdAt: new Date().toISOString(),
       status: 'pending',
-      projectRole: projectRole as 'Coordinator' | 'Partner',
+      projectRole: projectRole as 'Coordinator' | 'Partner' | 'Both',
       submitterProfile: profile,
     };
 
@@ -189,9 +189,9 @@ export default function SubmitView({
     switch (action) {
       case 'KA1':
         return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'KA210':
+      case 'KA2':
         return 'bg-indigo-100 text-indigo-800 border-indigo-200';
-      case 'KA220':
+      case 'KA3':
         return 'bg-purple-100 text-purple-800 border-purple-200';
       default:
         return 'bg-gray-100 text-gray-600 border border-gray-200';
@@ -402,27 +402,47 @@ export default function SubmitView({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <button
                   type="button"
-                  onClick={() => setProjectRole('Coordinator')}
+                  onClick={() => {
+                    if (projectRole === 'Coordinator') setProjectRole('');
+                    else if (projectRole === 'Partner') setProjectRole('Both');
+                    else if (projectRole === 'Both') setProjectRole('Partner');
+                    else setProjectRole('Coordinator');
+                  }}
                   className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
-                    projectRole === 'Coordinator'
+                    projectRole === 'Coordinator' || projectRole === 'Both'
                       ? 'border-brand-primary bg-blue-50/50'
                       : 'border-slate-200 bg-white hover:border-slate-300'
                   }`}
                 >
-                  <div className="font-bold text-sm text-slate-800">🎯 Coordinator</div>
-                  <div className="text-[11px] text-slate-500 mt-1">I am leading a project and looking for partner organisations to join my consortium</div>
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${projectRole === 'Coordinator' || projectRole === 'Both' ? 'bg-brand-primary border-brand-primary' : 'border-slate-300'}`}>
+                      {(projectRole === 'Coordinator' || projectRole === 'Both') && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
+                    </div>
+                    <div className="font-bold text-sm text-slate-800">🎯 Coordinator</div>
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-2">I am leading a project and looking for partner organisations to join my consortium</div>
                 </button>
                 <button
                   type="button"
-                  onClick={() => setProjectRole('Partner')}
+                  onClick={() => {
+                    if (projectRole === 'Partner') setProjectRole('');
+                    else if (projectRole === 'Coordinator') setProjectRole('Both');
+                    else if (projectRole === 'Both') setProjectRole('Coordinator');
+                    else setProjectRole('Partner');
+                  }}
                   className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
-                    projectRole === 'Partner'
+                    projectRole === 'Partner' || projectRole === 'Both'
                       ? 'border-brand-primary bg-blue-50/50'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
+                      : 'border-slate-200 bg-white hover:border-slate-305'
                   }`}
                 >
-                  <div className="font-bold text-sm text-slate-800">🤝 Partner</div>
-                  <div className="text-[11px] text-slate-500 mt-1">I am open to joining another organisation's project as a partner in their consortium</div>
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${projectRole === 'Partner' || projectRole === 'Both' ? 'bg-brand-primary border-brand-primary' : 'border-slate-300'}`}>
+                      {(projectRole === 'Partner' || projectRole === 'Both') && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
+                    </div>
+                    <div className="font-bold text-sm text-slate-800">🤝 Partner</div>
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-2">I am open to joining another organisation's project as a partner in their consortium</div>
                 </button>
               </div>
             </div>
@@ -431,7 +451,7 @@ export default function SubmitView({
             <div className="space-y-2">
               <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Key Actions Target Projects * (Select at least 1)</span>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {['KA1', 'KA210', 'KA220'].map((action) => {
+                {['KA1', 'KA2', 'KA3'].map((action) => {
                   const isChecked = selectedKeyActions.includes(action as KeyAction);
                   return (
                     <button
@@ -447,9 +467,9 @@ export default function SubmitView({
                       <div className="flex flex-col">
                         <span>{action}</span>
                         <span className={`text-[10px] mt-0.5 font-normal opacity-80 ${isChecked ? 'text-slate-200' : 'text-slate-400'}`}>
-                          {action === 'KA1' && 'Mobility'}
-                          {action === 'KA210' && 'Small-Scale'}
-                          {action === 'KA220' && 'Cooperation'}
+                          {action === 'KA1' && 'Mobility Projects'}
+                          {action === 'KA2' && 'Cooperation Partnerships (Small-Scale)'}
+                          {action === 'KA3' && 'Cooperation with Cooperation Partnerships (Large-Scale)'}
                         </span>
                       </div>
                       <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${isChecked ? 'border-brand-accent bg-brand-accent text-white' : 'border-slate-350'}`}>

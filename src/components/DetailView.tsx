@@ -48,9 +48,9 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
     switch (action) {
       case 'KA1':
         return 'ka1';
-      case 'KA210':
+      case 'KA2':
         return 'ka210';
-      case 'KA220':
+      case 'KA3':
         return 'ka220';
       default:
         return 'bg-gray-100 text-gray-600 border border-gray-200';

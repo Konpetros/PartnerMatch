@@ -8,7 +8,7 @@ export type OrganisationType =
   | 'Youth Organisation'
   | 'Other';
 
-export type KeyAction = 'KA1' | 'KA210' | 'KA220';
+export type KeyAction = 'KA1' | 'KA2' | 'KA3';
 
 export interface Listing {
   id: string;
@@ -25,7 +25,7 @@ export interface Listing {
   views?: number;
   createdAt?: string;
   status?: 'active' | 'pending' | 'expired' | 'partnership-found';
-  projectRole?: 'Coordinator' | 'Partner';
+  projectRole?: 'Coordinator' | 'Partner' | 'Both';
   submitterProfile?: OrganisationProfile;
   rejectionReason?: string;
 }
