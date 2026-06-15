@@ -313,6 +313,21 @@ export default function DetailView({ listing, onBack }: DetailViewProps) {
                     </span>
                   ))}
                 </div>
+                {listing.sectors && listing.sectors.length > 0 && (
+                  <div className="space-y-2 pt-2 border-t border-slate-200">
+                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Erasmus+ Sectors</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {listing.sectors.map((sector) => (
+                        <span
+                          key={sector}
+                          className="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-200"
+                        >
+                          {sector}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Partner Search Deadline Info Box */}

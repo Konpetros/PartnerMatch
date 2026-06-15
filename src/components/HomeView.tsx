@@ -325,6 +325,14 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                           {action}
                         </span>
                       ))}
+                      {listing.sectors && listing.sectors.map((sector) => (
+                        <span
+                          key={sector}
+                          className="text-[10px] font-extrabold px-2 py-1 rounded-md bg-emerald-100 text-emerald-700"
+                        >
+                          {sector}
+                        </span>
+                      ))}
                     </div>
 
                     <h3 className="font-bold text-slate-800 text-lg leading-snug group-hover:text-brand-primary transition-colors line-clamp-1">

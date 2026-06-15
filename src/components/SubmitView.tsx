@@ -505,7 +505,7 @@ export default function SubmitView({
                       type="button"
                       title={sector}
                       onClick={() => handleSectorToggle(sector)}
-                      className={`px-3 py-2.5 rounded-lg text-xs font-semibold text-left flex items-center space-x-2 border transition-all cursor-pointer ${
+                      className={`px-3 py-2.5 rounded-lg text-xs font-semibold text-left flex items-center space-x-2 border transition-all cursor-pointer h-12 ${
                         isChecked
                           ? 'bg-brand-primary border-brand-primary text-white'
                           : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
@@ -676,6 +676,14 @@ export default function SubmitView({
                     className={`text-[9.5px] font-extrabold px-1.5 py-0.5 rounded-md ${getKeyActionBadgeStyle(action)}`}
                   >
                     {action}
+                  </span>
+                ))}
+                {selectedSectors.map((sector) => (
+                  <span
+                    key={sector}
+                    className="text-[9.5px] font-extrabold px-1.5 py-0.5 rounded-md bg-emerald-100 text-emerald-700"
+                  >
+                    {sector}
                   </span>
                 ))}
               </div>
