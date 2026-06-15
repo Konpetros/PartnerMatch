@@ -5,7 +5,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
-import { COUNTRIES, THEMATIC_AREAS } from '../data';
+import { COUNTRIES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import RichTextEditor from './RichTextEditor';
 import { 
   CloudUpload, 
@@ -39,6 +39,7 @@ export default function SubmitView({
 
   // Form values specific to listings
   const [selectedKeyActions, setSelectedKeyActions] = useState<KeyAction[]>([]);
+  const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
   const [selectedThematics, setSelectedThematics] = useState<string[]>([]);
   const [partnerSearchDeadline, setPartnerSearchDeadline] = useState('');
   const [description, setDescription] = useState('');
@@ -90,6 +91,12 @@ export default function SubmitView({
     );
   };
 
+  const handleSectorToggle = (sector: string) => {
+    setSelectedSectors((prev) =>
+      prev.includes(sector) ? prev.filter((x) => x !== sector) : [...prev, sector]
+    );
+  };
+
   const handleThematicToggle = (area: string) => {
     setSelectedThematics((prev) => 
       prev.includes(area) ? prev.filter((x) => x !== area) : [...prev, area]
@@ -112,6 +119,9 @@ export default function SubmitView({
     }
     if (!projectRole) {
       errors.push('Please select your role in this project.');
+    }
+    if (selectedSectors.length === 0) {
+      errors.push('Select at least one Erasmus+ Sector.');
     }
     if (selectedThematics.length === 0) {
       errors.push('Select at least one Thematic Area.');
@@ -152,6 +162,7 @@ export default function SubmitView({
       country: profile.country,
       countryFlag: profile.countryFlag,
       keyActions: selectedKeyActions,
+      sectors: selectedSectors,
       thematicAreas: selectedThematics,
       contactEmail: contactEmail.trim(),
       thumbnailUrl: previewUrl || `https://picsum.photos/800/600?random=${Date.now()}`,
@@ -171,6 +182,7 @@ export default function SubmitView({
 
   const resetFormState = () => {
     setSelectedKeyActions([]);
+    setSelectedSectors([]);
     setSelectedThematics([]);
     setDescription('');
     setPartnerSearchDeadline('');
@@ -475,6 +487,38 @@ export default function SubmitView({
                       <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${isChecked ? 'border-brand-accent bg-brand-accent text-white' : 'border-slate-350'}`}>
                         {isChecked && <Check className="w-3 h-3 text-slate-900 stroke-[4px]" />}
                       </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Erasmus+ Sectors */}
+            <div className="space-y-2">
+              <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Erasmus+ Sectors * (Select at least 1)</span>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {ERASMUS_SECTORS.map((sector) => {
+                  const isChecked = selectedSectors.includes(sector);
+                  return (
+                    <button
+                      key={sector}
+                      type="button"
+                      title={sector}
+                      onClick={() => handleSectorToggle(sector)}
+                      className={`px-3 py-2.5 rounded-lg text-xs font-semibold text-left flex items-center space-x-2 border transition-all cursor-pointer ${
+                        isChecked
+                          ? 'bg-brand-primary border-brand-primary text-white'
+                          : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                      }`}
+                    >
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
+                        isChecked ? 'bg-white border-white' : 'border-slate-300'
+                      }`}>
+                        {isChecked && (
+                          <Check className="w-2.5 h-2.5 text-brand-primary stroke-[3px]" />
+                        )}
+                      </div>
+                      <span>{sector}</span>
                     </button>
                   );
                 })}

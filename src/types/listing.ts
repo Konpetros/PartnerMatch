@@ -26,6 +26,7 @@ export interface Listing {
   createdAt?: string;
   status?: 'active' | 'pending' | 'expired' | 'partnership-found';
   projectRole?: 'Coordinator' | 'Partner' | 'Both';
+  sectors?: string[];
   submitterProfile?: OrganisationProfile;
   rejectionReason?: string;
 }
