@@ -22,6 +22,8 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
 
   if (!isOpen) return null;
 
@@ -31,6 +33,8 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
     setDisplayName('');
     setErrorMsg('');
     setShowPassword(false);
+    setAgreedToTerms(false);
+    setAgreedToPrivacy(false);
   };
 
   const switchMode = (newMode: Mode) => {
@@ -63,6 +67,11 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
       } else {
         if (!displayName.trim()) {
           setErrorMsg('Please enter your organisation or full name.');
+          setIsLoading(false);
+          return;
+        }
+        if (!agreedToPrivacy || !agreedToTerms) {
+          setErrorMsg('Please accept the Privacy Policy and Terms of Cooperation to continue.');
           setIsLoading(false);
           return;
         }
@@ -202,6 +211,76 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
                 </button>
               </div>
             </div>
+
+            {mode === 'register' && (
+              <div className="space-y-2.5">
+                <label className="flex items-start space-x-3 cursor-pointer group">
+                  <div className="relative mt-0.5 shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={agreedToPrivacy}
+                      onChange={(e) => setAgreedToPrivacy(e.target.checked)}
+                      className="sr-only"
+                    />
+                    <div
+                      onClick={() => setAgreedToPrivacy(!agreedToPrivacy)}
+                      className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all cursor-pointer ${
+                        agreedToPrivacy ? 'bg-brand-primary border-brand-primary' : 'border-slate-300 hover:border-brand-primary'
+                      }`}
+                    >
+                      {agreedToPrivacy && (
+                        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  <span className="text-xs text-slate-500 leading-relaxed">
+                    I have read and agree to the{' '}
+                    <button
+                      type="button"
+                      onClick={() => setAgreedToPrivacy(!agreedToPrivacy)}
+                      className="font-bold text-brand-primary hover:underline cursor-pointer"
+                    >
+                      Privacy Policy
+                    </button>
+                  </span>
+                </label>
+
+                <label className="flex items-start space-x-3 cursor-pointer group">
+                  <div className="relative mt-0.5 shrink-0">
+                    <input
+                      type="checkbox"
+                      checked={agreedToTerms}
+                      onChange={(e) => setAgreedToTerms(e.target.checked)}
+                      className="sr-only"
+                    />
+                    <div
+                      onClick={() => setAgreedToTerms(!agreedToTerms)}
+                      className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all cursor-pointer ${
+                        agreedToTerms ? 'bg-brand-primary border-brand-primary' : 'border-slate-300 hover:border-brand-primary'
+                      }`}
+                    >
+                      {agreedToTerms && (
+                        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  <span className="text-xs text-slate-500 leading-relaxed">
+                    I have read and agree to the{' '}
+                    <button
+                      type="button"
+                      onClick={() => setAgreedToTerms(!agreedToTerms)}
+                      className="font-bold text-brand-primary hover:underline cursor-pointer"
+                    >
+                      Terms of Cooperation
+                    </button>
+                  </span>
+                </label>
+              </div>
+            )}
 
             {errorMsg && (
               <div className="flex items-start space-x-2 p-3 bg-red-50 border border-red-200 rounded-xl">
