@@ -19,7 +19,8 @@ export type AppView =
   | 'privacy-policy'
   | 'terms'
   | 'settings'
-  | 'gdpr';
+  | 'gdpr'
+  | 'cookie-policy';
 
 export interface NavigationState {
   currentView: AppView;

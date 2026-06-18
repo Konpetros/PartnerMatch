@@ -17,6 +17,7 @@ import ListingOrgProfileView from '../components/ListingOrgProfileView';
 import PrivacyPolicyView from '../components/PrivacyPolicyView';
 import TermsAndConditionsView from '../components/TermsAndConditionsView';
 import GDPRView from '../components/GDPRView';
+import CookiePolicyView from '../components/CookiePolicyView';
 
 import {
   AdminLayout,
@@ -263,6 +264,10 @@ export default function AppRouter({
 
   if (currentView === 'gdpr') {
     return <GDPRView onNavigate={onNavigate} />;
+  }
+
+  if (currentView === 'cookie-policy') {
+    return <CookiePolicyView onNavigate={onNavigate} />;
   }
 
   if (currentView === 'my-listings' || currentView === 'settings') {

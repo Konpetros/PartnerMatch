@@ -199,6 +199,14 @@ export default function Footer({ onNavigate }: FooterProps) {
                   GDPR & Data Rights
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('cookie-policy')}
+                  className="hover:text-white hover:underline transition-colors cursor-pointer text-left"
+                >
+                  Cookie Policy
+                </button>
+              </li>
               <li className="flex items-center space-x-2 pt-2 text-xs text-slate-500">
                 <Mail className="w-4 h-4 text-slate-400" />
                 <span>support@erasmusmatch.org</span>
