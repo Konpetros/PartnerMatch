@@ -34,7 +34,7 @@ interface MyListingsViewProps {
   onSignOut: () => void;
 }
 
-export default function MyListingsView({ 
+export default function MyListingsDashboardView({ 
   onOpenSignIn, 
   onNavigate, 
   currentUser, 

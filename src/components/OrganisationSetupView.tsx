@@ -12,7 +12,7 @@ interface ProfileSetupViewProps {
   onProfileComplete: (profile: OrganisationProfile) => void;
 }
 
-export default function ProfileSetupView({ onProfileComplete }: ProfileSetupViewProps) {
+export default function OrganisationSetupView({ onProfileComplete }: ProfileSetupViewProps) {
   const [organisationName, setOrganisationName] = useState('');
   const [organisationType, setOrganisationType] = useState<OrganisationType>('NGO');
   const [country, setCountry] = useState('');

@@ -25,7 +25,7 @@ interface OrgProfileViewProps {
   onViewListing: (id: string) => void;
 }
 
-export default function OrgProfileView({
+export default function ListingOrgProfileView({
   listing,
   onBack,
   onViewListing,

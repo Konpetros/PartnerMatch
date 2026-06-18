@@ -26,7 +26,7 @@ interface DetailViewProps {
   onBack: () => void;
 }
 
-export default function DetailView({ listing, onBack }: DetailViewProps) {
+export default function ListingDetailView({ listing, onBack }: DetailViewProps) {
   // Graceful fallback helper to support migrated/sub-profile architecture gracefully
   const profile = listing.submitterProfile || {
     organisationName: listing.name,

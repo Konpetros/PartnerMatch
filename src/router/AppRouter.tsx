@@ -2,21 +2,20 @@ import React from 'react';
 import { AppView } from '../hooks/useNavigation';
 import { Listing, OrganisationProfile, AdminUser, ActivityLog } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
-import OrgProfileFromProfile from '../components/OrgProfileFromProfile';
-
+import OrganisationProfileView from '../components/OrganisationProfileView';
 import HomeView from '../components/HomeView';
-import BrowseView from '../components/BrowseView';
-import DetailView from '../components/DetailView';
-import SubmitView from '../components/SubmitView';
-import MyListingsView from '../components/MyListingsView';
+import BrowseDirectoryView from '../components/BrowseDirectoryView';
+import ListingDetailView from '../components/ListingDetailView';
+import PostListingView from '../components/PostListingView';
+import MyListingsDashboardView from '../components/MyListingsDashboardView';
 import AboutView from '../components/AboutView';
 import ContactView from '../components/ContactView';
-import ProfileSetupView from '../components/ProfileSetupView';
-import MyProfileView from '../components/MyProfileView';
-import OrganisationsView from '../components/OrganisationsView';
-import OrgProfileView from '../components/OrgProfileView';
+import OrganisationSetupView from '../components/OrganisationSetupView';
+import MyOrganisationProfileView from '../components/MyOrganisationProfileView';
+import OrganisationsDirectoryView from '../components/OrganisationsDirectoryView';
+import ListingOrgProfileView from '../components/ListingOrgProfileView';
 import PrivacyPolicyView from '../components/PrivacyPolicyView';
-import TermsView from '../components/TermsView';
+import TermsAndConditionsView from '../components/TermsAndConditionsView';
 
 import {
   AdminLayout,
@@ -162,7 +161,7 @@ export default function AppRouter({
 
   if (currentView === 'browse') {
     return (
-      <BrowseView
+      <BrowseDirectoryView
         listings={listings}
         onNavigate={onNavigate}
         onSelectListing={onSelectListing}
@@ -172,7 +171,7 @@ export default function AppRouter({
 
   if (currentView === 'organisations') {
     return (
-      <OrganisationsView
+      <OrganisationsDirectoryView
         listings={profiles}
         onSelectOrganisation={onSelectOrganisation}
         onNavigate={onNavigate}
@@ -184,7 +183,7 @@ export default function AppRouter({
     const activeProfile = profiles.find(p => p.uid === selectedOrgId);
     if (activeProfile) {
       return (
-        <OrgProfileFromProfile
+        <OrganisationProfileView
           profile={activeProfile}
           listings={listings}
           onBack={() => onNavigate('organisations')}
@@ -196,7 +195,7 @@ export default function AppRouter({
 
   if (currentView === 'profile-setup') {
     return (
-      <ProfileSetupView
+      <OrganisationSetupView
         onProfileComplete={onProfileComplete}
       />
     );
@@ -204,7 +203,7 @@ export default function AppRouter({
 
   if (currentView === 'my-profile') {
     return (
-      <MyProfileView
+      <MyOrganisationProfileView
         currentUser={currentUser}
         profile={organisationProfile}
         onUpdateProfile={onUpdateProfile}
@@ -219,7 +218,7 @@ export default function AppRouter({
     const activeItem = listings.find(item => item.id === selectedListingId);
     if (activeItem) {
       return (
-        <DetailView
+        <ListingDetailView
           listing={activeItem}
           onBack={() => onNavigate('home')}
         />
@@ -236,7 +235,7 @@ export default function AppRouter({
 
   if (currentView === 'submit') {
     return (
-      <SubmitView
+      <PostListingView
         organisationProfile={organisationProfile}
         onSubmitListing={onSubmitListing}
         onNavigate={onNavigate}
@@ -258,12 +257,12 @@ export default function AppRouter({
   }
 
   if (currentView === 'terms') {
-    return <TermsView onNavigate={onNavigate} />;
+    return <TermsAndConditionsView onNavigate={onNavigate} />;
   }
 
   if (currentView === 'my-listings') {
     return (
-      <MyListingsView
+      <MyListingsDashboardView
         onOpenSignIn={onOpenSignIn}
         onNavigate={onNavigate}
         currentUser={currentUser}

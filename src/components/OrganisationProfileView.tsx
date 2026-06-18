@@ -22,7 +22,7 @@ interface OrgProfileFromProfileProps {
   onViewListing: (id: string) => void;
 }
 
-export default function OrgProfileFromProfile({
+export default function OrganisationProfileView({
   profile,
   listings,
   onBack,

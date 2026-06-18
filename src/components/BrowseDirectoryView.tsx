@@ -21,7 +21,7 @@ interface BrowseViewProps {
 
 const LISTINGS_PER_PAGE = 15;
 
-export default function BrowseView({ listings, onNavigate, onSelectListing }: BrowseViewProps) {
+export default function BrowseDirectoryView({ listings, onNavigate, onSelectListing }: BrowseViewProps) {
   // Search & Filter State
   const [filters, setFilters] = useState<SearchFilters>({
     searchQuery: '',

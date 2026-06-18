@@ -28,7 +28,7 @@ interface SubmitViewProps {
   onSelectListing: (id: string) => void;
 }
 
-export default function SubmitView({ 
+export default function PostListingView({ 
   organisationProfile, 
   onSubmitListing, 
   onNavigate, 

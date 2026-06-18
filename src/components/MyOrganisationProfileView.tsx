@@ -30,7 +30,7 @@ interface MyProfileViewProps {
   listings: Listing[];
 }
 
-export default function MyProfileView({
+export default function MyOrganisationProfileView({
   currentUser,
   profile,
   onUpdateProfile,

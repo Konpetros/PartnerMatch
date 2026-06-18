@@ -15,7 +15,7 @@ interface OrganisationsViewProps {
   onNavigate: (view: string) => void;
 }
 
-export default function OrganisationsView({
+export default function OrganisationsDirectoryView({
   listings,
   onSelectOrganisation,
   onNavigate,
