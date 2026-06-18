@@ -224,7 +224,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             Browse organisations across Europe looking for Erasmus+ partners and submit your own listings. Connect, share knowledge, and build consortia.
           </p>
 
-          {/* Search bar + CTA button in one row below */}
+          {/* Search bar in one row below */}
           <div className="w-full mt-8">
             <div className="flex items-center bg-white border border-slate-200 rounded-full shadow-md px-4 py-2 max-w-2xl mx-auto gap-3">
               <Search className="text-slate-400 w-4 h-4 shrink-0" />
@@ -234,16 +234,8 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                 placeholder="Filter by organisation name, city, keywords..."
                 readOnly
                 onClick={() => onNavigate('browse')}
-                className="flex-1 bg-transparent实时 outline-none text-sm font-medium text-slate-705 placeholder:text-slate-400 cursor-pointer"
+                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 cursor-pointer"
               />
-              <button
-                id="hero-submit-cta"
-                onClick={() => onNavigate('submit')}
-                className="bg-brand-accent hover:bg-orange-500 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shrink-0 flex items-center space-x-1.5 cursor-pointer"
-              >
-                <span>Submit Your Listing</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
             </div>
           </div>
 
