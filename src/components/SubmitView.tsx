@@ -649,6 +649,7 @@ export default function SubmitView({
                 >
                   Privacy Policy
                 </a>
+                {' '}<span className="text-red-500 font-bold">*</span>
               </span>
             </label>
 
