@@ -48,59 +48,52 @@ export default function Footer({ onNavigate }: FooterProps) {
             </h3>
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
-                <button 
-                  onClick={() => onNavigate('home')} 
+                <button
+                  onClick={() => onNavigate('browse')}
                   className="hover:text-white hover:underline transition-colors text-left"
                 >
-                  Browse Organisations
+                  Browse Directory
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => onNavigate('submit')} 
+                <button
+                  onClick={() => onNavigate('organisations')}
                   className="hover:text-white hover:underline transition-colors text-left"
                 >
-                  Publish Listing
+                  Organisations
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => onNavigate('my-listings')} 
+                <button
+                  onClick={() => onNavigate('submit')}
                   className="hover:text-white hover:underline transition-colors text-left"
                 >
-                  Manage Listings
+                  Submit Listing
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => onNavigate('about')} 
+                <button
+                  onClick={() => onNavigate('my-listings')}
+                  className="hover:text-white hover:underline transition-colors text-left"
+                >
+                  Dashboard
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('about')}
                   className="hover:text-white hover:underline transition-colors text-left"
                 >
                   About
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => onNavigate('contact')} 
+                <button
+                  onClick={() => onNavigate('contact')}
                   className="hover:text-white hover:underline transition-colors text-left"
                 >
                   Contact
                 </button>
-              </li>
-              <li>
-                <a 
-                  href="#how-it-works-section" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onNavigate('home');
-                    setTimeout(() => {
-                      document.getElementById('how-it-works-section')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
-                  }}
-                  className="hover:text-white hover:underline transition-colors text-left block"
-                >
-                  How It Works
-                </a>
               </li>
             </ul>
           </div>
