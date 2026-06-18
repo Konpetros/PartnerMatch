@@ -339,7 +339,7 @@ export default function MyListingsDashboardView({
               className={`w-full flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'profile' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <User className="w-4 h-4 shrink-0" />
-              <span>My Profile</span>
+              <span>My Organisation</span>
             </button>
 
             <button
@@ -397,7 +397,7 @@ export default function MyListingsDashboardView({
           ) : activeSection === 'profile' ? (
             <div className="space-y-6 animate-fade-in">
               <div>
-                <h2 className="text-lg font-black text-slate-800">My Organisation Profile</h2>
+                <h2 className="text-lg font-black text-slate-800">My Organisation</h2>
                 <p className="text-xs text-slate-500 mt-1">Update your organisation details visible to potential partners.</p>
               </div>
               <form onSubmit={handleProfileSubmit} className="bg-white rounded-2xl border border-slate-100 p-6 space-y-5 shadow-sm">
