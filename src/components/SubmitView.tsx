@@ -61,6 +61,7 @@ export default function SubmitView({
   const [isSuccess, setIsSuccess] = useState(false);
   const [createdId, setCreatedId] = useState('');
   const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   // Local file change handler
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,6 +145,10 @@ export default function SubmitView({
       errors.push('A valid contact email is required.');
     }
 
+    if (!agreedToTerms) {
+      errors.push('Please agree to the Terms of Cooperation and Privacy Policy to submit your listing.');
+    }
+
     if (errors.length > 0) {
       setFormErrors(errors);
       document.getElementById('form-error-alert')?.scrollIntoView({ behavior: 'smooth' });
@@ -191,6 +196,7 @@ export default function SubmitView({
     setIsSuccess(false);
     setCreatedId('');
     setFormErrors([]);
+    setAgreedToTerms(false);
     if (profile) {
       setContactEmail(profile.contactEmail);
     }
@@ -608,13 +614,51 @@ export default function SubmitView({
             </div>
           </div>
 
-          <button
-            id="publish-listing-trigger"
-            type="submit"
-            className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-4 rounded-brand font-bold text-sm transition-all shadow-md active:scale-95 cursor-pointer"
-          >
-            <span>Submit Listing</span>
-          </button>
+            {/* Consent checkbox */}
+            <label className="flex items-start space-x-3 cursor-pointer">
+              <div className="relative mt-0.5 shrink-0">
+                <div
+                  onClick={() => setAgreedToTerms(!agreedToTerms)}
+                  className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all cursor-pointer ${
+                    agreedToTerms ? 'bg-brand-primary border-brand-primary' : 'border-slate-300 hover:border-brand-primary'
+                  }`}
+                >
+                  {agreedToTerms && (
+                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+              </div>
+              <span className="text-xs text-slate-500 leading-relaxed">
+                I agree to the{' '}
+                <a
+                  href="/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-brand-primary hover:underline hover:text-brand-primary-hover"
+                >
+                  Terms of Cooperation
+                </a>{' '}
+                and{' '}
+                <a
+                  href="/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-brand-primary hover:underline hover:text-brand-primary-hover"
+                >
+                  Privacy Policy
+                </a>
+              </span>
+            </label>
+
+            <button
+              id="publish-listing-trigger"
+              type="submit"
+              className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-4 rounded-brand font-bold text-sm transition-all shadow-md active:scale-95 cursor-pointer"
+            >
+              <span>Submit Listing</span>
+            </button>
         </form>
 
         {/* Live Card Preview Panel */}
