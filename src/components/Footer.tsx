@@ -163,9 +163,12 @@ export default function Footer({ onNavigate }: FooterProps) {
             </h3>
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
-                <a href="#privacy" className="hover:text-white hover:underline transition-colors">
+                <button
+                  onClick={() => onNavigate('privacy-policy')}
+                  className="hover:text-white hover:underline transition-colors cursor-pointer text-left"
+                >
                   Privacy Policy
-                </a>
+                </button>
               </li>
               <li>
                 <a href="#terms" className="hover:text-white hover:underline transition-colors">
