@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Listing, KeyAction } from '../types';
 import { 
   Search, 
@@ -22,6 +22,7 @@ interface HomeViewProps {
 }
 
 export default function HomeView({ listings, onNavigate, onSelectListing }: HomeViewProps) {
+  const [searchQuery, setSearchQuery] = useState('');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -191,7 +192,17 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
 
   // Filter listings where status === 'active', sort by createdAt descending, slice to 9
   const recentActiveListings = [...listings]
-    .filter(item => item.status === 'active')
+    .filter(l => l.status === 'active')
+    .filter(l => {
+      if (!searchQuery.trim()) return true;
+      const q = searchQuery.toLowerCase();
+      return (
+        l.name.toLowerCase().includes(q) ||
+        l.country.toLowerCase().includes(q) ||
+        l.description.replace(/<[^>]*>/g, '').toLowerCase().includes(q) ||
+        (l.submitterProfile?.city || (l as any).city || '').toLowerCase().includes(q)
+      );
+    })
     .sort((a, b) => {
       const dateA = a.createdAt || '';
       const dateB = b.createdAt || '';
@@ -232,10 +243,18 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                 id="search-input-field"
                 type="text"
                 placeholder="Filter by organisation name, city, keywords..."
-                readOnly
-                onClick={() => onNavigate('browse')}
-                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 cursor-pointer"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer shrink-0"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           </div>
 
