@@ -14,6 +14,7 @@ import { useUsers } from './hooks/useUsers';
 import { useNavigation } from './hooks/useNavigation';
 import { useToast } from './hooks/useToast';
 import { Listing } from './types';
+import { trackPageView } from './utils/analytics';
 
 export default function App() {
   const { toastMessage, showToast } = useToast(5000);
@@ -77,6 +78,7 @@ export default function App() {
   // Scroll to top on navigation
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    trackPageView(selectedListingId ? `${currentView}/${selectedListingId}` : currentView);
   }, [currentView, selectedListingId]);
 
   // Track whether we have already navigated after this login session
