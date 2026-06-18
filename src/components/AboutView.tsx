@@ -62,13 +62,13 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
       number: "01",
       icon: UserPlus,
       title: "Set your organisation profile",
-      description: "Create your free account and build your organisation profile so potential partners can learn who you are."
+      description: "Create your free account and build your organisation profile so potential partners can learn about you and reach out."
     },
     {
       number: "02",
       icon: FileText,
       title: "Submit your partner search listing",
-      description: "Post a listing describing your project idea, target Key Actions, thematic topics, and the partners you need."
+      description: "Post a listing describing your project idea, Key Actions, topics, and the type of partners you are looking for."
     },
     {
       number: "03",

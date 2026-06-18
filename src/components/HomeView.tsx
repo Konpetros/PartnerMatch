@@ -448,7 +448,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             </div>
             <h3 className="font-bold text-slate-800 text-base">Set your organisation profile</h3>
             <p className="text-slate-500 text-xs leading-relaxed">
-              Create your free account and build your organisation profile so potential partners can learn who you are and what you do.
+              Create your free account and build your organisation profile so potential partners can learn about you.
             </p>
           </div>
 
@@ -462,7 +462,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             </div>
             <h3 className="font-bold text-slate-800 text-base">Submit your partner search listing</h3>
             <p className="text-slate-500 text-xs leading-relaxed">
-              Post a listing describing your project idea, target Key Actions, thematic topics, and the type of partners you are looking for.
+              Post a listing describing your project idea, Key Actions, topics, and the type of partners you are looking for.
             </p>
           </div>
 
