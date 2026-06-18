@@ -92,7 +92,7 @@ export default function Navbar({
 
           {/* Sign In CTA or Profile Dropdown */}
           <div className="hidden md:flex items-center relative" ref={dropdownRef}>
-            {/* TEMP: Admin access button - remove before production */}
+            {/* Admin panel button — only visible to admin users */}
             {isAdmin && (
               <button
                 onClick={() => onNavigate('admin')}
