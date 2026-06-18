@@ -107,17 +107,17 @@ export default function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
                 <a 
-                  href="https://erasmus-plus.ec.europa.eu/" 
+                  href="https://erasmus-plus.ec.europa.eu/resources-and-tools/documents-and-guidelines/erasmus-programme-guide-2026" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="hover:text-white hover:underline transition-colors"
                 >
-                  Erasmus+ Programme Guide
+                  Erasmus+ Programme Guide 2026
                 </a>
               </li>
               <li>
                 <a 
-                  href="https://ec.europa.eu/programmes/erasmus-plus/opportunities/calls_en" 
+                  href="https://erasmus-plus.ec.europa.eu/opportunities/calls-for-proposals-and-tenders" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="hover:text-white hover:underline transition-colors"
@@ -127,22 +127,22 @@ export default function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <a 
-                  href="https://wikis.ec.europa.eu/display/erasmusplay" 
+                  href="https://epale.ec.europa.eu/en/content/partner-search" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="hover:text-white hover:underline transition-colors"
                 >
-                  Key Action 1 & 2 Overviews
+                  EPALE Partner Search
                 </a>
               </li>
               <li>
                 <a 
-                  href="https://european-union.europa.eu/index_en" 
+                  href="https://ec.europa.eu/info/index_en" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="hover:text-white hover:underline transition-colors"
                 >
-                  European Commission Page
+                  European Commission
                 </a>
               </li>
             </ul>
