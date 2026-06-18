@@ -145,6 +145,26 @@ export default function Footer({ onNavigate }: FooterProps) {
                   European Commission
                 </a>
               </li>
+              <li>
+                <a 
+                  href="https://webgate.ec.europa.eu/erasmus-esc/home/organisations/search-for-an-organisation" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-white hover:underline transition-colors"
+                >
+                  OID Registration
+                </a>
+              </li>
+              <li>
+                <a 
+                  href="https://erasmus-plus.ec.europa.eu/national-agencies" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-white hover:underline transition-colors"
+                >
+                  National Agencies
+                </a>
+              </li>
             </ul>
           </div>
 
