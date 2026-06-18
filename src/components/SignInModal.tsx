@@ -143,6 +143,28 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
             <span>Continue with Google</span>
           </button>
 
+          {/* Google consent note */}
+          <p className="text-center text-[11px] text-slate-400 leading-relaxed -mt-2">
+            By continuing with Google you agree to our{' '}
+            <a
+              href="/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-slate-500 hover:text-brand-primary hover:underline"
+            >
+              Terms of Cooperation
+            </a>{' '}
+            and{' '}
+            <a
+              href="/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-slate-500 hover:text-brand-primary hover:underline"
+            >
+              Privacy Policy
+            </a>
+          </p>
+
           {/* Divider */}
           <div className="relative flex items-center">
             <div className="flex-1 border-t border-slate-200" />
@@ -237,13 +259,14 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
                   </div>
                   <span className="text-xs text-slate-500 leading-relaxed">
                     I have read and agree to the{' '}
-                    <button
-                      type="button"
-                      onClick={() => setAgreedToPrivacy(!agreedToPrivacy)}
+                    <a
+                      href="/privacy-policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="font-bold text-brand-primary hover:underline cursor-pointer"
                     >
                       Privacy Policy
-                    </button>
+                    </a>
                   </span>
                 </label>
 
@@ -270,13 +293,14 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
                   </div>
                   <span className="text-xs text-slate-500 leading-relaxed">
                     I have read and agree to the{' '}
-                    <button
-                      type="button"
-                      onClick={() => setAgreedToTerms(!agreedToTerms)}
+                    <a
+                      href="/terms"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="font-bold text-brand-primary hover:underline cursor-pointer"
                     >
                       Terms of Cooperation
-                    </button>
+                    </a>
                   </span>
                 </label>
               </div>
