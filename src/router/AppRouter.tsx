@@ -15,6 +15,7 @@ import ProfileSetupView from '../components/ProfileSetupView';
 import MyProfileView from '../components/MyProfileView';
 import OrganisationsView from '../components/OrganisationsView';
 import OrgProfileView from '../components/OrgProfileView';
+import PrivacyPolicyView from '../components/PrivacyPolicyView';
 
 import {
   AdminLayout,
@@ -249,6 +250,10 @@ export default function AppRouter({
 
   if (currentView === 'contact') {
     return <ContactView onNavigate={onNavigate} />;
+  }
+
+  if (currentView === 'privacy-policy') {
+    return <PrivacyPolicyView onNavigate={onNavigate} />;
   }
 
   if (currentView === 'my-listings') {
