@@ -446,9 +446,9 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             <div className="mx-auto w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-brand-primary">
               <BookOpen className="w-7 h-7" />
             </div>
-            <h3 className="font-bold text-slate-800 text-base">Create your free account</h3>
+            <h3 className="font-bold text-slate-800 text-base">Set your organisation profile</h3>
             <p className="text-slate-500 text-xs leading-relaxed">
-              Register your institution profile, describe your credentials, previous experience, and general research mission statement.
+              Create your free account and build your organisation profile so potential partners can learn who you are and what you do.
             </p>
           </div>
 
@@ -460,9 +460,9 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             <div className="mx-auto w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
               <RefreshCcw className="w-7 h-7" />
             </div>
-            <h3 className="font-bold text-slate-800 text-base">Submit your organisation</h3>
+            <h3 className="font-bold text-slate-800 text-base">Submit your partner search listing</h3>
             <p className="text-slate-500 text-xs leading-relaxed">
-              Fill out our partnership form. Highlight the theme, key actions (KA1/2) you are targeting, and write down an informative summary.
+              Post a listing describing your project idea, target Key Actions, thematic topics, and the type of partners you are looking for.
             </p>
           </div>
 
@@ -474,9 +474,9 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             <div className="mx-auto w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600">
               <Globe2 className="w-7 h-7" />
             </div>
-            <h3 className="font-bold text-slate-800 text-base">Get discovered</h3>
+            <h3 className="font-bold text-slate-800 text-base">Get discovered by other organisations</h3>
             <p className="text-slate-500 text-xs leading-relaxed">
-              Consortium aggregators and project leaders can filter listings and reach out using secure email keys directly. Easy as that.
+              Other Erasmus+ organisations across Europe browse the directory, find your listing, and reach out to you directly.
             </p>
           </div>
         </div>

@@ -33,9 +33,9 @@ export default function Footer({ onNavigate }: FooterProps) {
             <p className="text-sm text-slate-400 leading-relaxed">
               Bridging opportunities and fostering cross-border alliances by simplifying partner-finding for Erasmus+ schools, universities, NGOs, and youth workers.
             </p>
-            <div className="flex space-x-3 pt-2">
-              <span className="inline-flex items-center text-xs bg-slate-800 text-slate-400 px-3 py-1 rounded-full">
-                🇪🇺 Funded by Hope & Innovation
+            <div className="mt-4">
+              <span className="inline-flex items-center space-x-1.5 bg-slate-800 border border-slate-700 text-slate-400 text-[11px] font-bold px-3 py-1.5 rounded-full">
+                <span>Built for Erasmus+ Organisations</span>
               </span>
             </div>
           </div>

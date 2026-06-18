@@ -61,20 +61,20 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
     {
       number: "01",
       icon: UserPlus,
-      title: "Create Your Account",
-      description: "Register with Google or email to get started"
+      title: "Set your organisation profile",
+      description: "Create your free account and build your organisation profile so potential partners can learn who you are."
     },
     {
       number: "02",
       icon: FileText,
-      title: "Submit Your Listing",
-      description: "Fill in your organisation details and what you are looking for"
+      title: "Submit your partner search listing",
+      description: "Post a listing describing your project idea, target Key Actions, thematic topics, and the partners you need."
     },
     {
       number: "03",
       icon: Compass,
-      title: "Get Discovered",
-      description: "Other organisations find you and reach out directly"
+      title: "Get discovered by other organisations",
+      description: "Other Erasmus+ organisations across Europe browse the directory, find your listing, and reach out directly."
     }
   ];
 
