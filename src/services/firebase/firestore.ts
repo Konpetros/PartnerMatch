@@ -175,3 +175,21 @@ export const subscribeToUsers = (
     callback(users);
   });
 };
+
+export const deleteUserData = async (userId: string): Promise<void> => {
+  // Delete profile
+  await deleteDoc(doc(db, 'profiles', userId));
+  // Delete user record
+  await deleteDoc(doc(db, 'users', userId));
+  // Note: listings are kept for data integrity but marked as deleted
+};
+
+export const saveUserSettings = async (userId: string, settings: { emailNotifications: boolean }): Promise<void> => {
+  await setDoc(doc(db, 'users', userId), { settings }, { merge: true });
+};
+
+export const getUserSettings = async (userId: string): Promise<{ emailNotifications: boolean }> => {
+  const snap = await getDoc(doc(db, 'users', userId));
+  if (!snap.exists()) return { emailNotifications: true };
+  return snap.data()?.settings || { emailNotifications: true };
+};

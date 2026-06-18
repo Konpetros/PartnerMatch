@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import SettingsPanel from './SettingsPanel';
 import { 
   Lock, 
   Sparkles, 
@@ -51,6 +52,9 @@ export default function MyListingsDashboardView({
   
   // Search bar query state
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Active section to toggle between 'listings' and 'settings'
+  const [activeSection, setActiveSection] = useState<'listings' | 'settings'>('listings');
 
   // Dropdown menus and deletion states
   const [menuOpenListingId, setMenuOpenListingId] = useState<string | null>(null);
@@ -214,14 +218,14 @@ export default function MyListingsDashboardView({
           {/* Nav menu items */}
           <nav className="space-y-1.5 flex flex-col">
             <button
-              onClick={() => {}}
-              className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold transition-all bg-blue-50 text-brand-primary"
+              onClick={() => setActiveSection('listings')}
+              className={`flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'listings' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <span className="flex items-center space-x-2.5">
                 <ClipboardList className="w-4 h-4 shrink-0" />
                 <span>My Listings</span>
               </span>
-              <span className="bg-brand-primary text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shrink-0">
+              <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full shrink-0 ${activeSection === 'listings' ? 'bg-brand-primary text-white' : 'bg-slate-100 text-slate-500'}`}>
                 {allCount}
               </span>
             </button>
@@ -235,10 +239,10 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
-              onClick={() => showToast('Coming soon')}
-              className="w-full flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-any text-left"
+              onClick={() => setActiveSection('settings')}
+              className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'settings' ? 'bg-blue-50 text-brand-primary' : 'text-slate-600 hover:bg-slate-50'}`}
             >
-              <Settings className="w-4 h-4 shrink-0 text-slate-450" />
+              <Settings className="w-4 h-4 shrink-0" />
               <span>Settings</span>
             </button>
           </nav>
@@ -266,8 +270,14 @@ export default function MyListingsDashboardView({
 
         {/* MAIN CONTENT AREA */}
         <main className="flex-1 w-full space-y-6">
-
-          {/* Mobile Profile bar wrapper (rendered on mobile since desktop sidebar is hidden) */}
+          {activeSection === 'settings' ? (
+            <SettingsPanel
+              currentUserUid={currentUser || ''}
+              onAccountDeleted={() => { onSignOut(); onNavigate('home'); }}
+            />
+          ) : (
+            <>
+              {/* Mobile Profile bar wrapper (rendered on mobile since desktop sidebar is hidden) */}
           <div className="block md:hidden bg-white rounded-[20px] p-5 border border-blue-50/80 shadow-xs space-y-4">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-full bg-brand-primary text-white font-extrabold text-sm flex items-center justify-center shadow-xs">
@@ -631,6 +641,8 @@ export default function MyListingsDashboardView({
               </div>
             )}
           </div>
+          </>
+          )}
 
         </main>
       </div>
