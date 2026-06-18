@@ -171,9 +171,12 @@ export default function Footer({ onNavigate }: FooterProps) {
                 </button>
               </li>
               <li>
-                <a href="#terms" className="hover:text-white hover:underline transition-colors">
+                <button
+                  onClick={() => onNavigate('terms')}
+                  className="hover:text-white hover:underline transition-colors cursor-pointer text-left"
+                >
                   Terms of Cooperation
-                </a>
+                </button>
               </li>
               <li className="flex items-center space-x-2 pt-2 text-xs text-slate-500">
                 <Mail className="w-4 h-4 text-slate-400" />

@@ -16,6 +16,7 @@ import MyProfileView from '../components/MyProfileView';
 import OrganisationsView from '../components/OrganisationsView';
 import OrgProfileView from '../components/OrgProfileView';
 import PrivacyPolicyView from '../components/PrivacyPolicyView';
+import TermsView from '../components/TermsView';
 
 import {
   AdminLayout,
@@ -254,6 +255,10 @@ export default function AppRouter({
 
   if (currentView === 'privacy-policy') {
     return <PrivacyPolicyView onNavigate={onNavigate} />;
+  }
+
+  if (currentView === 'terms') {
+    return <TermsView onNavigate={onNavigate} />;
   }
 
   if (currentView === 'my-listings') {
