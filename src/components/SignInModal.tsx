@@ -71,7 +71,7 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
           return;
         }
         if (!agreedToPrivacy || !agreedToTerms) {
-          setErrorMsg('Please accept the Privacy Policy and Terms of Cooperation to continue.');
+          setErrorMsg('Please accept the Privacy Policy and Terms & Conditions to continue.');
           setIsLoading(false);
           return;
         }
@@ -152,7 +152,7 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
               rel="noopener noreferrer"
               className="font-semibold text-slate-500 hover:text-brand-primary hover:underline"
             >
-              Terms of Cooperation
+              Terms & Conditions
             </a>{' '}
             and{' '}
             <a
@@ -299,7 +299,7 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
                       rel="noopener noreferrer"
                       className="font-bold text-brand-primary hover:underline cursor-pointer"
                     >
-                      Terms of Cooperation
+                      Terms & Conditions
                     </a>
                   </span>
                 </label>

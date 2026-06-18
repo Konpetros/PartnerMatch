@@ -146,7 +146,7 @@ export default function SubmitView({
     }
 
     if (!agreedToTerms) {
-      errors.push('Please agree to the Terms of Cooperation and Privacy Policy to submit your listing.');
+      errors.push('Please agree to the Terms & Conditions and Privacy Policy to submit your listing.');
     }
 
     if (errors.length > 0) {
@@ -638,7 +638,7 @@ export default function SubmitView({
                   rel="noopener noreferrer"
                   className="font-semibold text-brand-primary hover:underline hover:text-brand-primary-hover"
                 >
-                  Terms of Cooperation
+                  Terms & Conditions
                 </a>{' '}
                 and{' '}
                 <a

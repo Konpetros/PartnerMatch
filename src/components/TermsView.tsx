@@ -43,7 +43,7 @@ export default function TermsView({ onNavigate }: TermsViewProps) {
         <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-50 rounded-2xl mb-2">
           <FileText className="w-7 h-7 text-brand-primary" />
         </div>
-        <h1 className="text-4xl font-black tracking-tight text-slate-900">Terms of Cooperation</h1>
+        <h1 className="text-4xl font-black tracking-tight text-slate-900">Terms & Conditions</h1>
         <p className="text-base text-slate-500 font-medium max-w-2xl mx-auto">
           Please read these terms carefully before using ErasmusMatch. By creating an account or submitting a listing, you agree to these terms.
         </p>
@@ -190,7 +190,7 @@ export default function TermsView({ onNavigate }: TermsViewProps) {
 
         <Section title="12. Changes to These Terms">
           <p>
-            ErasmusMatch reserves the right to update these Terms of Cooperation at any time. When we make significant changes, we will update the "Last updated" date at the top of this page. Your continued use of the platform after any changes constitutes your acceptance of the updated terms.
+            ErasmusMatch reserves the right to update these Terms & Conditions at any time. When we make significant changes, we will update the "Last updated" date at the top of this page. Your continued use of the platform after any changes constitutes your acceptance of the updated terms.
           </p>
           <p>
             If you do not agree with any changes to these terms, you should stop using ErasmusMatch and may request deletion of your account by contacting us.
@@ -199,13 +199,13 @@ export default function TermsView({ onNavigate }: TermsViewProps) {
 
         <Section title="13. Governing Law">
           <p>
-            These Terms of Cooperation are governed by and construed in accordance with the laws of Greece. Any disputes arising from or relating to these terms or your use of ErasmusMatch shall be subject to the exclusive jurisdiction of the courts of Greece.
+            These Terms & Conditions are governed by and construed in accordance with the laws of Greece. Any disputes arising from or relating to these terms or your use of ErasmusMatch shall be subject to the exclusive jurisdiction of the courts of Greece.
           </p>
         </Section>
 
         <Section title="14. Contact Us">
           <p>
-            If you have any questions about these Terms of Cooperation, please contact us at:
+            If you have any questions about these Terms & Conditions, please contact us at:
           </p>
           <ul className="list-disc pl-5 space-y-1">
             <li><strong>Email:</strong> <a href="mailto:erasmusmatchinfo@gmail.com" className="text-brand-primary font-semibold hover:underline">erasmusmatchinfo@gmail.com</a></li>
@@ -221,7 +221,7 @@ export default function TermsView({ onNavigate }: TermsViewProps) {
         <FileText className="w-8 h-8 text-brand-primary mx-auto" />
         <h3 className="text-lg font-bold text-slate-800">Questions about these terms?</h3>
         <p className="text-sm text-slate-500 max-w-lg mx-auto">
-          If you have any questions about these Terms of Cooperation or how ErasmusMatch operates, please get in touch.
+          If you have any questions about these Terms & Conditions or how ErasmusMatch operates, please get in touch.
         </p>
         <a
           href="mailto:erasmusmatchinfo@gmail.com"

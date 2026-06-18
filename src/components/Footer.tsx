@@ -175,7 +175,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                   onClick={() => onNavigate('terms')}
                   className="hover:text-white hover:underline transition-colors cursor-pointer text-left"
                 >
-                  Terms of Cooperation
+                  Terms & Conditions
                 </button>
               </li>
               <li className="flex items-center space-x-2 pt-2 text-xs text-slate-500">
