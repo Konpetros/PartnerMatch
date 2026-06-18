@@ -98,7 +98,7 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-6">
       {/* Backdrop */}
       <div
         onClick={onClose}
@@ -106,7 +106,7 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
       />
 
       {/* Panel */}
-      <div className="relative bg-white rounded-[24px] max-w-md w-full mx-4 p-6 sm:p-8 shadow-2xl z-10 animate-fade-in">
+      <div className="relative bg-white rounded-[24px] max-w-xl w-full mx-4 p-6 shadow-2xl z-10 animate-fade-in max-h-[90vh] overflow-y-auto">
         {/* Close */}
         <button
           onClick={onClose}
@@ -115,7 +115,7 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
           <X className="w-5 h-5" />
         </button>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Header */}
           <div className="text-center space-y-1">
             <h2 className="text-xl font-extrabold text-slate-800">
