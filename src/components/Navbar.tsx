@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut } from 'lucide-react';
+import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut, Settings } from 'lucide-react';
 import ErasmusMatchLogo from '../assets/ErasmusMatchLogo';
 
 interface NavbarProps {
@@ -148,6 +148,17 @@ export default function Navbar({
                     >
                       <User className="w-4 h-4 text-slate-500" />
                       <span>My Profile</span>
+                    </button>
+                    <button
+                      id="dropdown-settings"
+                      onClick={() => {
+                        onNavigate('settings');
+                        setAvatarMenuOpen(false);
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
+                    >
+                      <Settings className="w-4 h-4 text-slate-500" />
+                      <span>Settings</span>
                     </button>
                     <div className="border-t border-slate-100 my-1" />
                     <button

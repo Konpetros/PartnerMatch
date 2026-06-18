@@ -33,6 +33,7 @@ interface MyListingsViewProps {
   onDeleteListing: (id: string) => void;
   onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found') => void;
   onSignOut: () => void;
+  initialSection?: 'listings' | 'settings';
 }
 
 export default function MyListingsDashboardView({ 
@@ -42,7 +43,8 @@ export default function MyListingsDashboardView({
   listings, 
   onDeleteListing, 
   onUpdateListingStatus, 
-  onSignOut 
+  onSignOut,
+  initialSection = 'listings'
 }: MyListingsViewProps) {
   // Local state for toast notification
   const [toast, setToast] = useState<string | null>(null);
@@ -54,7 +56,7 @@ export default function MyListingsDashboardView({
   const [searchQuery, setSearchQuery] = useState('');
 
   // Active section to toggle between 'listings' and 'settings'
-  const [activeSection, setActiveSection] = useState<'listings' | 'settings'>('listings');
+  const [activeSection, setActiveSection] = useState<'listings' | 'settings'>(initialSection);
 
   // Dropdown menus and deletion states
   const [menuOpenListingId, setMenuOpenListingId] = useState<string | null>(null);

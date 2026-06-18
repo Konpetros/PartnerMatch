@@ -260,7 +260,7 @@ export default function AppRouter({
     return <TermsAndConditionsView onNavigate={onNavigate} />;
   }
 
-  if (currentView === 'my-listings') {
+  if (currentView === 'my-listings' || currentView === 'settings') {
     return (
       <MyListingsDashboardView
         onOpenSignIn={onOpenSignIn}
@@ -270,6 +270,7 @@ export default function AppRouter({
         onDeleteListing={onDeleteListing}
         onUpdateListingStatus={onUpdateListingStatus}
         onSignOut={onSignOut}
+        initialSection={currentView === 'settings' ? 'settings' : 'listings'}
       />
     );
   }

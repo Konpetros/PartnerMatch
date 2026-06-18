@@ -17,7 +17,8 @@ export type AppView =
   | 'admin-listings'
   | 'admin-users'
   | 'privacy-policy'
-  | 'terms';
+  | 'terms'
+  | 'settings';
 
 export interface NavigationState {
   currentView: AppView;
