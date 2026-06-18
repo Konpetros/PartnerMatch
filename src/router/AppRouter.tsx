@@ -16,6 +16,7 @@ import OrganisationsDirectoryView from '../components/OrganisationsDirectoryView
 import ListingOrgProfileView from '../components/ListingOrgProfileView';
 import PrivacyPolicyView from '../components/PrivacyPolicyView';
 import TermsAndConditionsView from '../components/TermsAndConditionsView';
+import GDPRView from '../components/GDPRView';
 
 import {
   AdminLayout,
@@ -258,6 +259,10 @@ export default function AppRouter({
 
   if (currentView === 'terms') {
     return <TermsAndConditionsView onNavigate={onNavigate} />;
+  }
+
+  if (currentView === 'gdpr') {
+    return <GDPRView onNavigate={onNavigate} />;
   }
 
   if (currentView === 'my-listings' || currentView === 'settings') {

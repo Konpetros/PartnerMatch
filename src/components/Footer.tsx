@@ -147,12 +147,12 @@ export default function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <a 
-                  href="https://webgate.ec.europa.eu/erasmus-esc/home/organisations/search-for-an-organisation" 
+                  href="https://webgate.ec.europa.eu/erasmus-esc/index/organisations/search-for-an-organisation" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="hover:text-white hover:underline transition-colors"
                 >
-                  OID Registration
+                  Organisation Search (OID)
                 </a>
               </li>
               <li>
@@ -191,6 +191,14 @@ export default function Footer({ onNavigate }: FooterProps) {
                   Terms & Conditions
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('gdpr')}
+                  className="hover:text-white hover:underline transition-colors cursor-pointer text-left"
+                >
+                  GDPR & Data Rights
+                </button>
+              </li>
               <li className="flex items-center space-x-2 pt-2 text-xs text-slate-500">
                 <Mail className="w-4 h-4 text-slate-400" />
                 <span>support@erasmusmatch.org</span>
@@ -199,8 +207,15 @@ export default function Footer({ onNavigate }: FooterProps) {
           </div>
         </div>
 
+        {/* Disclaimer */}
+        <div className="py-6 border-t border-slate-800">
+          <p className="text-xs text-slate-400 leading-relaxed text-center max-w-4xl mx-auto">
+            <span className="font-semibold text-slate-300">Disclaimer:</span> ErasmusMatch is an independent platform and is not affiliated with, endorsed by, or connected to the European Commission, any National Agency, or any other official Erasmus+ body. All trademarks and official programme names belong to their respective owners.
+          </p>
+        </div>
+
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
+        <div className="pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
           <p>© {currentYear} ErasmusMatch. Designed to empower European collaborations.</p>
           <p className="mt-2 sm:mt-0">
             For academic and educational exchange networks only.
