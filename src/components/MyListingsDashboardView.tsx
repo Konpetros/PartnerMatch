@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SettingsPanel from './SettingsPanel';
 import { 
   Lock, 
@@ -22,9 +22,11 @@ import {
   CheckCircle, 
   X,
   AlertCircle,
-  Megaphone
+  Megaphone,
+  Upload
 } from 'lucide-react';
-import { Listing } from '../types';
+import { Listing, OrganisationProfile, OrganisationType } from '../types';
+import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
 import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements } from '../services/firebase/firestore';
 
 interface MyListingsViewProps {
@@ -35,7 +37,9 @@ interface MyListingsViewProps {
   onDeleteListing: (id: string) => void;
   onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found') => void;
   onSignOut: () => void;
-  initialSection?: 'listings' | 'settings' | 'announcements';
+  initialSection?: 'listings' | 'settings' | 'announcements' | 'profile';
+  organisationProfile?: OrganisationProfile | null;
+  onUpdateProfile?: (profile: OrganisationProfile) => void;
 }
 
 export default function MyListingsDashboardView({ 
@@ -46,7 +50,9 @@ export default function MyListingsDashboardView({
   onDeleteListing, 
   onUpdateListingStatus, 
   onSignOut,
-  initialSection = 'listings'
+  initialSection = 'listings',
+  organisationProfile,
+  onUpdateProfile
 }: MyListingsViewProps) {
   // Local state for toast notification
   const [toast, setToast] = useState<string | null>(null);
@@ -58,7 +64,7 @@ export default function MyListingsDashboardView({
   const [searchQuery, setSearchQuery] = useState('');
 
   // Active section to toggle between 'listings', 'settings' and 'announcements'
-  const [activeSection, setActiveSection] = useState<'listings' | 'settings' | 'announcements'>(initialSection);
+  const [activeSection, setActiveSection] = useState<'listings' | 'settings' | 'announcements' | 'profile'>(initialSection);
 
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
@@ -86,6 +92,73 @@ export default function MyListingsDashboardView({
   };
 
   const visibleAnnouncements = announcements.filter(a => !dismissedIds.includes(a.id));
+
+  // Profile form state
+  const [profileName, setProfileName] = useState(organisationProfile?.organisationName || '');
+  const [profileType, setProfileType] = useState<OrganisationType>(organisationProfile?.organisationType || 'NGO');
+  const [profileCountry, setProfileCountry] = useState(organisationProfile?.country || '');
+  const [profileCity, setProfileCity] = useState(organisationProfile?.city || '');
+  const [profileWebsite, setProfileWebsite] = useState(organisationProfile?.website || '');
+  const [profileFoundedYear, setProfileFoundedYear] = useState(organisationProfile?.foundedYear || '');
+  const [profileOid, setProfileOid] = useState(organisationProfile?.oid || '');
+  const [profileExperience, setProfileExperience] = useState(organisationProfile?.experienceLevel || 'First-timer');
+  const [profilePreviousProjects, setProfilePreviousProjects] = useState(organisationProfile?.previousProjects || '0');
+  const [profileLanguages, setProfileLanguages] = useState<string[]>(organisationProfile?.languagesSpoken || []);
+  const [profileContactEmail, setProfileContactEmail] = useState(organisationProfile?.contactEmail || '');
+  const [profileSector, setProfileSector] = useState(organisationProfile?.sector || 'Youth');
+  const [profileDescription, setProfileDescription] = useState(organisationProfile?.description || '');
+  const [profileLogoPreview, setProfileLogoPreview] = useState<string | null>(organisationProfile?.logoUrl || null);
+  const [profileFormErrors, setProfileFormErrors] = useState<string[]>([]);
+  const profileLogoInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleProfileLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => setProfileLogoPreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const handleProfileLanguageToggle = (lang: string) => {
+    setProfileLanguages((prev) =>
+      prev.includes(lang) ? prev.filter((x) => x !== lang) : [...prev, lang]
+    );
+  };
+
+  const handleProfileSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const errors: string[] = [];
+    if (!profileName.trim()) errors.push('Organisation Name is required.');
+    if (!profileCountry) errors.push('Please select a country.');
+    if (!profileCity.trim()) errors.push('City is required.');
+    if (!profileContactEmail.trim() || !profileContactEmail.includes('@')) errors.push('A valid Contact Email is required.');
+    if (profileLanguages.length === 0) errors.push('Please select at least one language.');
+    if (!profileSector) errors.push('Please select your Erasmus+ sector.');
+    if (!profileDescription.trim()) errors.push('Please add a description of your organisation.');
+    if (errors.length > 0) { setProfileFormErrors(errors); return; }
+    setProfileFormErrors([]);
+    const selectedCountryObj = COUNTRIES.find((c) => c.name === profileCountry);
+    const flag = selectedCountryObj ? selectedCountryObj.flag : '🇪🇺';
+    const updatedProfile: OrganisationProfile = {
+      organisationName: profileName.trim(),
+      organisationType: profileType,
+      country: profileCountry,
+      countryFlag: flag,
+      city: profileCity.trim(),
+      website: profileWebsite.trim(),
+      foundedYear: profileFoundedYear.trim(),
+      oid: profileOid.trim(),
+      experienceLevel: profileExperience,
+      previousProjects: profilePreviousProjects,
+      languagesSpoken: profileLanguages,
+      contactEmail: profileContactEmail.trim(),
+      sector: profileSector,
+      logoUrl: profileLogoPreview || '',
+      description: profileDescription.trim(),
+    };
+    if (onUpdateProfile) onUpdateProfile(updatedProfile);
+    showToast('Profile updated successfully!');
+  };
 
   // Dropdown menus and deletion states
   const [menuOpenListingId, setMenuOpenListingId] = useState<string | null>(null);
@@ -262,10 +335,10 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
-              onClick={() => onNavigate('my-profile')}
-              className="w-full flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-any text-left"
+              onClick={() => setActiveSection('profile')}
+              className={`w-full flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'profile' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
-              <User className="w-4 h-4 shrink-0 text-slate-450" />
+              <User className="w-4 h-4 shrink-0" />
               <span>My Profile</span>
             </button>
 
@@ -321,6 +394,119 @@ export default function MyListingsDashboardView({
               currentUserUid={currentUser || ''}
               onAccountDeleted={() => { onSignOut(); onNavigate('home'); }}
             />
+          ) : activeSection === 'profile' ? (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h2 className="text-lg font-black text-slate-800">My Organisation Profile</h2>
+                <p className="text-xs text-slate-500 mt-1">Update your organisation details visible to potential partners.</p>
+              </div>
+              <form onSubmit={handleProfileSubmit} className="bg-white rounded-2xl border border-slate-100 p-6 space-y-5 shadow-sm">
+                {profileFormErrors.length > 0 && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs space-y-1">
+                    <ul className="list-disc pl-4 space-y-1">
+                      {profileFormErrors.map((err, i) => <li key={i}>{err}</li>)}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Logo */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Logo <span className="text-slate-400 font-normal normal-case">(optional)</span></label>
+                  <div className="flex items-center space-x-4">
+                    {profileLogoPreview ? (
+                      <img src={profileLogoPreview} alt="Logo" className="w-16 h-16 rounded-xl object-contain border border-slate-200 p-1" />
+                    ) : (
+                      <div className="w-16 h-16 rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300">
+                        <Upload className="w-6 h-6" />
+                      </div>
+                    )}
+                    <button type="button" onClick={() => profileLogoInputRef.current?.click()} className="text-xs font-bold text-brand-primary hover:underline cursor-pointer">
+                      {profileLogoPreview ? 'Change Logo' : 'Upload Logo'}
+                    </button>
+                    <input ref={profileLogoInputRef} type="file" accept="image/*" onChange={handleProfileLogoChange} className="hidden" />
+                  </div>
+                </div>
+
+                {/* Organisation Name */}
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Name *</label>
+                  <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+                </div>
+
+                {/* Organisation Type */}
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Type *</label>
+                  <select value={profileType} onChange={(e) => setProfileType(e.target.value as OrganisationType)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
+                    {ORGANISATION_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+                  </select>
+                </div>
+
+                {/* Country & City */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Country *</label>
+                    <select value={profileCountry} onChange={(e) => setProfileCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
+                      <option value="">Select country</option>
+                      {COUNTRIES.map((c) => <option key={c.name} value={c.name}>{c.flag} {c.name}</option>)}
+                    </select>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">City *</label>
+                    <input type="text" value={profileCity} onChange={(e) => setProfileCity(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+                  </div>
+                </div>
+
+                {/* Website & OID */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Website</label>
+                    <input type="text" value={profileWebsite} onChange={(e) => setProfileWebsite(e.target.value)} placeholder="https://" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">OID</label>
+                    <input type="text" value={profileOid} onChange={(e) => setProfileOid(e.target.value)} placeholder="E10012345" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+                  </div>
+                </div>
+
+                {/* Contact Email */}
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Contact Email *</label>
+                  <input type="email" value={profileContactEmail} onChange={(e) => setProfileContactEmail(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+                </div>
+
+                {/* Sector */}
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Erasmus+ Sector *</label>
+                  <select value={profileSector} onChange={(e) => setProfileSector(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
+                    {ERASMUS_SECTORS.map((s) => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+
+                {/* Languages */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Languages Spoken *</label>
+                  <div className="flex flex-wrap gap-2">
+                    {LANGUAGES.map((lang) => (
+                      <button key={lang} type="button" onClick={() => handleProfileLanguageToggle(lang)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer ${profileLanguages.includes(lang) ? 'bg-brand-primary border-brand-primary text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}`}>
+                        {lang}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">About Your Organisation *</label>
+                  <textarea value={profileDescription} onChange={(e) => setProfileDescription(e.target.value)} rows={5} maxLength={800} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all resize-none" />
+                  <p className="text-[10px] text-slate-400 text-right">{profileDescription.length}/800</p>
+                </div>
+
+                <button type="submit" className="w-full bg-brand-primary hover:bg-brand-primary-hover text-white py-3 rounded-xl text-sm font-bold transition-all cursor-pointer shadow-sm">
+                  Save Profile
+                </button>
+              </form>
+            </div>
           ) : activeSection === 'announcements' ? (
             <div className="space-y-4 animate-fade-in">
               <div>
@@ -391,7 +577,7 @@ export default function MyListingsDashboardView({
                 <span>Submit New</span>
               </button>
               <button
-                onClick={() => onNavigate('my-profile')}
+                onClick={() => setActiveSection('profile')}
                 className="flex-1 border border-slate-205 text-slate-700 bg-slate-50 hover:bg-slate-100 py-2.5 rounded-xl font-bold text-[11px]"
               >
                 Profile Settings

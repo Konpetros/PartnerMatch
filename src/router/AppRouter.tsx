@@ -209,18 +209,7 @@ export default function AppRouter({
     );
   }
 
-  if (currentView === 'my-profile') {
-    return (
-      <MyOrganisationProfileView
-        currentUser={currentUser}
-        profile={organisationProfile}
-        onUpdateProfile={onUpdateProfile}
-        onNavigate={onNavigate}
-        onSignOut={onSignOut}
-        listings={listings}
-      />
-    );
-  }
+
 
   if (currentView === 'detail' && selectedListingId) {
     const activeItem = listings.find(item => item.id === selectedListingId);
@@ -276,7 +265,7 @@ export default function AppRouter({
     return <CookiePolicyView onNavigate={onNavigate} />;
   }
 
-  if (currentView === 'my-listings' || currentView === 'settings') {
+  if (currentView === 'my-listings' || currentView === 'settings' || currentView === 'my-profile') {
     return (
       <MyListingsDashboardView
         onOpenSignIn={onOpenSignIn}
@@ -286,7 +275,13 @@ export default function AppRouter({
         onDeleteListing={onDeleteListing}
         onUpdateListingStatus={onUpdateListingStatus}
         onSignOut={onSignOut}
-        initialSection={currentView === 'settings' ? 'settings' : 'listings'}
+        organisationProfile={organisationProfile}
+        onUpdateProfile={onUpdateProfile}
+        initialSection={
+          currentView === 'settings' ? 'settings' :
+          currentView === 'my-profile' ? 'profile' :
+          'listings'
+        }
       />
     );
   }
