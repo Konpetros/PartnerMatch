@@ -165,7 +165,7 @@ export default function App() {
       )}
 
       {/* Navbar */}
-      {!['admin', 'admin-pending', 'admin-listings', 'admin-users'].includes(currentView) && (
+      {!['admin', 'admin-pending', 'admin-listings', 'admin-users', 'admin-announcements'].includes(currentView) && (
         <Navbar
           currentView={currentView}
           onNavigate={handleNavigate}
@@ -210,7 +210,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      {!['admin', 'admin-pending', 'admin-listings', 'admin-users'].includes(currentView) && (
+      {!['admin', 'admin-pending', 'admin-listings', 'admin-users', 'admin-announcements'].includes(currentView) && (
         <Footer onNavigate={handleNavigate} />
       )}
 

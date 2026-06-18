@@ -193,3 +193,62 @@ export const getUserSettings = async (userId: string): Promise<{ emailNotificati
   if (!snap.exists()) return { emailNotifications: true };
   return snap.data()?.settings || { emailNotifications: true };
 };
+
+// ─── ANNOUNCEMENTS ───────────────────────────────────────────
+
+export const subscribeToAnnouncements = (
+  callback: (announcements: any[]) => void
+): (() => void) => {
+  const q = query(
+    collection(db, 'announcements'),
+    orderBy('createdAt', 'desc')
+  );
+  return onSnapshot(q, (snapshot) => {
+    const announcements = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+    callback(announcements);
+  });
+};
+
+export const createAnnouncement = async (
+  title: string,
+  message: string,
+  adminUid: string
+): Promise<void> => {
+  await addDoc(collection(db, 'announcements'), {
+    title,
+    message,
+    createdAt: new Date().toISOString(),
+    createdBy: adminUid,
+  });
+};
+
+export const updateAnnouncement = async (
+  id: string,
+  title: string,
+  message: string
+): Promise<void> => {
+  await updateDoc(doc(db, 'announcements', id), {
+    title,
+    message,
+    updatedAt: new Date().toISOString(),
+  });
+};
+
+export const deleteAnnouncement = async (id: string): Promise<void> => {
+  await deleteDoc(doc(db, 'announcements', id));
+};
+
+export const saveDismissedAnnouncements = async (
+  userId: string,
+  dismissedIds: string[]
+): Promise<void> => {
+  await setDoc(doc(db, 'users', userId), { dismissedAnnouncements: dismissedIds }, { merge: true });
+};
+
+export const getDismissedAnnouncements = async (
+  userId: string
+): Promise<string[]> => {
+  const snap = await getDoc(doc(db, 'users', userId));
+  if (!snap.exists()) return [];
+  return snap.data()?.dismissedAnnouncements || [];
+};

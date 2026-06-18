@@ -8,7 +8,8 @@ import {
   Users,
   LogOut,
   ChevronRight,
-  Shield
+  Shield,
+  Megaphone
 } from 'lucide-react';
 
 interface AdminLayoutProps {
@@ -33,6 +34,7 @@ export default function AdminLayout({
     { id: 'admin-pending', label: 'Pending', icon: Clock, badge: pendingCount },
     { id: 'admin-listings', label: 'All Listings', icon: List },
     { id: 'admin-users', label: 'Users', icon: Users },
+    { id: 'admin-announcements', label: 'Announcements', icon: Megaphone },
   ];
 
   return (

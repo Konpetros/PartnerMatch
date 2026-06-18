@@ -24,7 +24,8 @@ import {
   AdminDashboard,
   AdminPendingListings,
   AdminAllListings,
-  AdminUsers
+  AdminUsers,
+  AdminAnnouncements
 } from '../features/admin';
 
 interface AppRouterProps {
@@ -90,7 +91,7 @@ export default function AppRouter({
 }: AppRouterProps) {
 
   // Admin Views Switch Routing Guard
-  const adminViews: AppView[] = ['admin', 'admin-pending', 'admin-listings', 'admin-users'];
+  const adminViews: AppView[] = ['admin', 'admin-pending', 'admin-listings', 'admin-users', 'admin-announcements'];
 
   if (adminViews.includes(currentView)) {
     if (!isAdmin) {
@@ -144,6 +145,11 @@ export default function AppRouter({
             onBanUser={onBanUser}
             onUnbanUser={onUnbanUser}
             onPromoteToAdmin={onPromoteToAdmin}
+          />
+        )}
+        {currentView === 'admin-announcements' && (
+          <AdminAnnouncements
+            currentAdminUid={currentUser || ''}
           />
         )}
       </AdminLayout>

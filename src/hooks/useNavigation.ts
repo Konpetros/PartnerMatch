@@ -16,6 +16,7 @@ export type AppView =
   | 'admin-pending'
   | 'admin-listings'
   | 'admin-users'
+  | 'admin-announcements'
   | 'privacy-policy'
   | 'terms'
   | 'settings'
@@ -38,7 +39,7 @@ export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSi
       openSignIn();
       return;
     }
-    if ((view === 'admin' || view === 'admin-pending' || view === 'admin-listings' || view === 'admin-users') && !isAuthenticated) {
+    if ((view === 'admin' || view === 'admin-pending' || view === 'admin-listings' || view === 'admin-users' || view === 'admin-announcements') && !isAuthenticated) {
       return; // silent redirect — don't expose admin panel exists
     }
     if (view === 'home') {
