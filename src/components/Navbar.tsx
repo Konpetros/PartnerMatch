@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut, Settings } from 'lucide-react';
+import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut, Settings, Megaphone } from 'lucide-react';
 import ErasmusMatchLogo from '../assets/ErasmusMatchLogo';
 
 interface NavbarProps {
@@ -147,7 +147,18 @@ export default function Navbar({
                       className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
                     >
                       <User className="w-4 h-4 text-slate-500" />
-                      <span>My Profile</span>
+                      <span>My Organisation</span>
+                    </button>
+                    <button
+                      id="dropdown-announcements"
+                      onClick={() => {
+                        onNavigate('announcements');
+                        setAvatarMenuOpen(false);
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
+                    >
+                      <Megaphone className="w-4 h-4 text-slate-500" />
+                      <span>Announcements</span>
                     </button>
                     <button
                       id="dropdown-settings"
