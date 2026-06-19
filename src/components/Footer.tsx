@@ -225,9 +225,6 @@ export default function Footer({ onNavigate }: FooterProps) {
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
           <p>© {currentYear} PartnerMatch. Designed to empower European collaborations.</p>
-          <p className="mt-2 sm:mt-0">
-            For academic and educational exchange networks only.
-          </p>
         </div>
       </div>
     </footer>
