@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AppView } from '../../hooks/useNavigation';
-import PartnerMatchLogo from '../../assets/ErasmusMatchLogo';
+import PartnerMatchLogo from '../../assets/PartnerMatchLogo';
 import {
   LayoutDashboard,
   Clock,

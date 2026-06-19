@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut, Settings, Megaphone } from 'lucide-react';
-import PartnerMatchLogo from '../assets/ErasmusMatchLogo';
+import PartnerMatchLogo from '../assets/PartnerMatchLogo';
 
 interface NavbarProps {
   currentView: string;

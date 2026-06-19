@@ -140,7 +140,7 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
             <span>Connecting European Education</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-800 leading-tight">
-            About <span className="text-brand-primary">Erasmus</span><span className="text-brand-accent">Match</span>
+            About <span className="text-brand-primary">Partner</span><span className="text-brand-accent">Match</span>
           </h1>
           <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
             The free partner search directory built exclusively for Erasmus+ organisations across Europe

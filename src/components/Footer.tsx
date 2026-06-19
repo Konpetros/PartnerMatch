@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Globe, Mail, BookOpen, ShieldCheck } from 'lucide-react';
-import PartnerMatchLogo from '../assets/ErasmusMatchLogo';
+import PartnerMatchLogo from '../assets/PartnerMatchLogo';
 
 interface FooterProps {
   onNavigate: (view: string) => void;
