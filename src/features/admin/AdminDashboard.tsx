@@ -37,7 +37,7 @@ export default function AdminDashboard({
   // 2. Relative time helper
   const getRelativeTime = (dateStr: string) => {
     const d = new Date(dateStr);
-    const now = new Date('2026-06-14T12:45:30Z'); // Consistent relative mock-time anchor
+    const now = new Date();
     const diffMs = now.getTime() - d.getTime();
     const diffMins = Math.floor(diffMs / (1000 * 60));
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));

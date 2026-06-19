@@ -78,7 +78,7 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
               <strong>Usage data</strong> — we use Google Analytics and Firebase Analytics to collect anonymised data about how users interact with the platform, including page views, session duration, and device type. This data does not identify you personally.
             </li>
             <li>
-              <strong>Technical data</strong> — standard technical data such as IP address, browser type, and operating system may be collected automatically by our hosting infrastructure (Google Cloud Run and Firebase).
+              <strong>Technical data</strong> — standard technical data such as IP address, browser type, and operating system may be collected automatically by our hosting infrastructure (Hostinger and Firebase).
             </li>
           </ul>
         </Section>
@@ -127,7 +127,7 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
               <strong>Google Analytics</strong> — used to collect anonymised usage statistics. You can opt out of Google Analytics tracking by using the Google Analytics Opt-out Browser Add-on.
             </li>
             <li>
-              <strong>Google Cloud Run</strong> — used to host and serve the PartnerMatch web application.
+              <strong>Hostinger and Firebase</strong> — used to host and serve the PartnerMatch web application.
             </li>
           </ul>
           <p>
