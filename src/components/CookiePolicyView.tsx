@@ -45,7 +45,7 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
         </div>
         <h1 className="text-4xl font-black tracking-tight text-slate-900">Cookie Policy</h1>
         <p className="text-base text-slate-500 font-medium max-w-2xl mx-auto">
-          This Cookie Policy explains what cookies and similar technologies ErasmusMatch uses, why we use them, and how you can control them.
+          This Cookie Policy explains what cookies and similar technologies PartnerMatch uses, why we use them, and how you can control them.
         </p>
         <p className="text-xs text-slate-400 font-semibold">Last updated: June 2026</p>
       </div>
@@ -78,13 +78,13 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
             Cookies are small text files that are placed on your device when you visit a website. They are widely used to make websites work efficiently and to provide information to website owners.
           </p>
           <p>
-            In addition to traditional cookies, ErasmusMatch also uses similar browser storage technologies such as <strong>localStorage</strong> and <strong>IndexedDB</strong>, which serve similar purposes but store data differently in your browser.
+            In addition to traditional cookies, PartnerMatch also uses similar browser storage technologies such as <strong>localStorage</strong> and <strong>IndexedDB</strong>, which serve similar purposes but store data differently in your browser.
           </p>
         </Section>
 
         <Section title="2. Essential Cookies and Storage">
           <p>
-            These are strictly necessary for ErasmusMatch to function and cannot be disabled. They do not require your consent under GDPR as they are essential to provide the service you have requested.
+            These are strictly necessary for PartnerMatch to function and cannot be disabled. They do not require your consent under GDPR as they are essential to provide the service you have requested.
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-xs border-collapse mt-2">
@@ -122,7 +122,7 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
 
         <Section title="3. Analytics Cookies">
           <p>
-            We plan to use Google Analytics to help us understand how visitors use ErasmusMatch. This allows us to improve the platform based on real usage data. Google Analytics uses cookies to collect anonymised information about your interactions with the platform.
+            We plan to use Google Analytics to help us understand how visitors use PartnerMatch. This allows us to improve the platform based on real usage data. Google Analytics uses cookies to collect anonymised information about your interactions with the platform.
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-xs border-collapse mt-2">
@@ -156,7 +156,7 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
           <div className="flex items-start space-x-2 p-3 bg-amber-50 border border-amber-100 rounded-xl mt-2">
             <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
             <p className="text-xs text-amber-700 font-semibold">
-              Google Analytics has not yet been activated on ErasmusMatch. When it is enabled, a cookie consent banner will appear allowing you to accept or decline analytics cookies before they are set.
+              Google Analytics has not yet been activated on PartnerMatch. When it is enabled, a cookie consent banner will appear allowing you to accept or decline analytics cookies before they are set.
             </p>
           </div>
         </Section>
@@ -167,7 +167,7 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>
-              <strong>Browser settings</strong> — most browsers allow you to refuse or delete cookies through their settings. Note that disabling essential cookies may prevent ErasmusMatch from functioning correctly.
+              <strong>Browser settings</strong> — most browsers allow you to refuse or delete cookies through their settings. Note that disabling essential cookies may prevent PartnerMatch from functioning correctly.
             </li>
             <li>
               <strong>Google Analytics opt-out</strong> — you can prevent Google Analytics from collecting your data by installing the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" className="text-brand-primary font-semibold hover:underline">Google Analytics Opt-out Browser Add-on</a>.
@@ -180,20 +180,20 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
 
         <Section title="5. Cookie Consent Banner">
           <p>
-            When Google Analytics is activated on ErasmusMatch, a cookie consent banner will appear at the bottom of the screen on your first visit. The banner will allow you to:
+            When Google Analytics is activated on PartnerMatch, a cookie consent banner will appear at the bottom of the screen on your first visit. The banner will allow you to:
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li><strong>Accept all cookies</strong> — enables both essential and analytics cookies.</li>
             <li><strong>Decline optional cookies</strong> — only essential cookies will be set. Analytics will not be activated.</li>
           </ul>
           <p>
-            Your choice will be saved and respected on future visits. You can change your preference at any time by contacting us at <a href="mailto:support@erasmusmatch.eu" className="text-brand-primary font-semibold hover:underline">support@erasmusmatch.eu</a>.
+            Your choice will be saved and respected on future visits. You can change your preference at any time by contacting us at <a href="mailto:support@partnermatch.eu" className="text-brand-primary font-semibold hover:underline">support@partnermatch.eu</a>.
           </p>
         </Section>
 
         <Section title="6. Third-Party Cookies">
           <p>
-            ErasmusMatch does not use any third-party advertising cookies or tracking cookies beyond those described in this policy. We do not sell or share cookie data with advertisers.
+            PartnerMatch does not use any third-party advertising cookies or tracking cookies beyond those described in this policy. We do not sell or share cookie data with advertisers.
           </p>
           <p>
             Our platform may contain links to third-party websites. We are not responsible for the cookie practices of those websites and encourage you to review their individual cookie policies.
@@ -208,7 +208,7 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
 
         <Section title="8. Contact Us">
           <p>
-            If you have any questions about our use of cookies or this Cookie Policy, please contact us at <a href="mailto:support@erasmusmatch.eu" className="text-brand-primary font-semibold hover:underline">support@erasmusmatch.eu</a>.
+            If you have any questions about our use of cookies or this Cookie Policy, please contact us at <a href="mailto:support@partnermatch.eu" className="text-brand-primary font-semibold hover:underline">support@partnermatch.eu</a>.
           </p>
         </Section>
 
@@ -219,14 +219,14 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
         <Cookie className="w-8 h-8 text-brand-primary mx-auto" />
         <h3 className="text-lg font-bold text-slate-800">Questions about cookies?</h3>
         <p className="text-sm text-slate-500 max-w-lg mx-auto">
-          If you have any questions about how ErasmusMatch uses cookies or browser storage, please get in touch.
+          If you have any questions about how PartnerMatch uses cookies or browser storage, please get in touch.
         </p>
         <a
-          href="mailto:support@erasmusmatch.eu"
+          href="mailto:support@partnermatch.eu"
           className="inline-flex items-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white px-6 py-3 rounded-xl font-bold text-sm transition-all cursor-pointer"
         >
           <Mail className="w-4 h-4" />
-          <span>support@erasmusmatch.eu</span>
+          <span>support@partnermatch.eu</span>
         </a>
       </div>
 

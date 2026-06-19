@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AppView } from '../../hooks/useNavigation';
-import ErasmusMatchLogo from '../../assets/ErasmusMatchLogo';
+import PartnerMatchLogo from '../../assets/ErasmusMatchLogo';
 import {
   LayoutDashboard,
   Clock,
@@ -44,9 +44,9 @@ export default function AdminLayout({
         {/* Logo */}
         <div className="p-6 border-b border-slate-700/50">
           <div className="flex items-center space-x-2">
-            <ErasmusMatchLogo size={28} />
+            <PartnerMatchLogo size={28} />
             <div>
-              <p className="text-white font-black text-sm">ErasmusMatch</p>
+              <p className="text-white font-black text-sm">PartnerMatch</p>
               <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Admin Panel</p>
             </div>
           </div>

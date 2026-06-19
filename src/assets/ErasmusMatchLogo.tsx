@@ -5,7 +5,7 @@ interface LogoProps {
   className?: string;
 }
 
-export default function ErasmusMatchLogo({ size = 32, className = '' }: LogoProps) {
+export default function PartnerMatchLogo({ size = 32, className = '' }: LogoProps) {
   return (
     <svg
       width={size}

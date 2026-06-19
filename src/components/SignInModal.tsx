@@ -124,7 +124,7 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
             <p className="text-sm text-slate-500">
               {mode === 'signin'
                 ? 'Sign in to manage your listings and find partners.'
-                : 'Join ErasmusMatch and start finding Erasmus+ partners.'}
+                : 'Join PartnerMatch and start finding Erasmus+ partners.'}
             </p>
           </div>
 

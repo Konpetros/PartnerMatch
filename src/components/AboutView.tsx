@@ -108,7 +108,7 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
 
   const faqs = [
     {
-      question: "Is ErasmusMatch free?",
+      question: "Is PartnerMatch free?",
       answer: "Yes, completely free. Browsing listings and submitting your organisation profile costs nothing."
     },
     {
@@ -124,8 +124,8 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
       answer: "Until the partner search deadline you selected when submitting. After that date your listing expires automatically."
     },
     {
-      question: "Is ErasmusMatch affiliated with the European Commission?",
-      answer: "No. ErasmusMatch is an independent directory. It is not affiliated with the European Commission, Erasmus+ programme, or any National Agency."
+      question: "Is PartnerMatch affiliated with the European Commission?",
+      answer: "No. PartnerMatch is an independent directory. It is not affiliated with the European Commission, Erasmus+ programme, or any National Agency."
     }
   ];
 
@@ -148,16 +148,16 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
         </div>
       </section>
 
-      {/* What is ErasmusMatch Section */}
+      {/* What is PartnerMatch Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-6">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
-              What is ErasmusMatch?
+              What is PartnerMatch?
             </h2>
             <div className="text-slate-600 space-y-4 leading-relaxed text-sm sm:text-base font-medium">
               <p>
-                ErasmusMatch is a free directory where Erasmus+ organisations — NGOs, schools, VET providers, universities, and youth organisations — can list themselves and find partners for KA1, KA210, and KA220 projects.
+                PartnerMatch is a free directory where Erasmus+ organisations — NGOs, schools, VET providers, universities, and youth organisations — can list themselves and find partners for KA1, KA210, and KA220 projects.
               </p>
               <p>
                 It is not affiliated with the European Commission or any National Agency. It is an independent tool built to make partner search easier.
@@ -232,14 +232,14 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
         </div>
       </section>
 
-      {/* Who Can Use ErasmusMatch Section */}
+      {/* Who Can Use PartnerMatch Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-10">
         <div className="text-center space-y-4">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
-            Who Can Use ErasmusMatch?
+            Who Can Use PartnerMatch?
           </h2>
           <p className="text-sm sm:text-base text-slate-500 max-w-2xl mx-auto font-medium">
-            ErasmusMatch is designed specifically for eligible participating institutions in the Erasmus+ framework.
+            PartnerMatch is designed specifically for eligible participating institutions in the Erasmus+ framework.
           </p>
         </div>
 

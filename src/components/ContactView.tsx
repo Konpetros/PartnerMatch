@@ -240,7 +240,7 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
               <div className="space-y-1">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wide">Email Support</h3>
                 <p className="text-indigo-600 font-extrabold text-sm sm:text-base selection:bg-indigo-50">
-                  support@erasmusmatch.eu
+                  support@partnermatch.eu
                 </p>
                 <p className="text-[11px] text-slate-500 font-medium">We respond within 48 hours</p>
               </div>

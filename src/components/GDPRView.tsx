@@ -45,7 +45,7 @@ export default function GDPRView({ onNavigate }: GDPRViewProps) {
         </div>
         <h1 className="text-4xl font-black tracking-tight text-slate-900">GDPR & Data Rights</h1>
         <p className="text-base text-slate-500 font-medium max-w-2xl mx-auto">
-          ErasmusMatch is committed to protecting your personal data in full compliance with the General Data Protection Regulation (GDPR). This page explains your rights and how to exercise them.
+          PartnerMatch is committed to protecting your personal data in full compliance with the General Data Protection Regulation (GDPR). This page explains your rights and how to exercise them.
         </p>
         <p className="text-xs text-slate-400 font-semibold">Last updated: June 2026</p>
       </div>
@@ -101,10 +101,10 @@ export default function GDPRView({ onNavigate }: GDPRViewProps) {
 
         <Section title="1. Who is the Data Controller?">
           <p>
-            The data controller for ErasmusMatch is <strong>ErasmusMatch</strong>, operated from Corfu, Greece. For all data protection enquiries, please contact us at <a href="mailto:support@erasmusmatch.eu" className="text-brand-primary font-semibold hover:underline">support@erasmusmatch.eu</a>.
+            The data controller for PartnerMatch is <strong>PartnerMatch</strong>, operated from Corfu, Greece. For all data protection enquiries, please contact us at <a href="mailto:support@partnermatch.eu" className="text-brand-primary font-semibold hover:underline">support@partnermatch.eu</a>.
           </p>
           <p>
-            ErasmusMatch is subject to the General Data Protection Regulation (EU) 2016/679 (GDPR) as an operator based in an EU member state.
+            PartnerMatch is subject to the General Data Protection Regulation (EU) 2016/679 (GDPR) as an operator based in an EU member state.
           </p>
         </Section>
 
@@ -122,7 +122,7 @@ export default function GDPRView({ onNavigate }: GDPRViewProps) {
         <Section title="3. Legal Basis for Processing">
           <p>We process your personal data on the following legal bases under GDPR Article 6:</p>
           <ul className="list-disc pl-5 space-y-2">
-            <li><strong>Contract performance (Art. 6(1)(b))</strong> — processing your account and profile data is necessary to provide you with the ErasmusMatch service.</li>
+            <li><strong>Contract performance (Art. 6(1)(b))</strong> — processing your account and profile data is necessary to provide you with the PartnerMatch service.</li>
             <li><strong>Legitimate interests (Art. 6(1)(f))</strong> — we use anonymised analytics to improve the platform.</li>
             <li><strong>Consent (Art. 6(1)(a))</strong> — where you have explicitly agreed to specific processing activities.</li>
           </ul>
@@ -130,7 +130,7 @@ export default function GDPRView({ onNavigate }: GDPRViewProps) {
 
         <Section title="4. Data Retention">
           <p>
-            We retain your personal data for as long as your account remains active on ErasmusMatch. Specifically:
+            We retain your personal data for as long as your account remains active on PartnerMatch. Specifically:
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li><strong>Account and profile data</strong> — retained until you delete your account.</li>
@@ -164,7 +164,7 @@ export default function GDPRView({ onNavigate }: GDPRViewProps) {
 
         <Section title="7. Data Breach Notification">
           <p>
-            In the event of a personal data breach that poses a risk to your rights and freedoms, ErasmusMatch will notify the relevant supervisory authority within <strong>72 hours</strong> of becoming aware of the breach, in accordance with GDPR Article 33.
+            In the event of a personal data breach that poses a risk to your rights and freedoms, PartnerMatch will notify the relevant supervisory authority within <strong>72 hours</strong> of becoming aware of the breach, in accordance with GDPR Article 33.
           </p>
           <p>
             If the breach is likely to result in a high risk to your rights and freedoms, we will also notify you directly without undue delay.
@@ -180,7 +180,7 @@ export default function GDPRView({ onNavigate }: GDPRViewProps) {
             <li><strong>Erasure</strong> — delete your account via Settings in your dashboard.</li>
           </ul>
           <p>
-            For all other requests — including access, portability, restriction, and objection — please contact us at <a href="mailto:support@erasmusmatch.eu" className="text-brand-primary font-semibold hover:underline">support@erasmusmatch.eu</a>. We will respond within <strong>30 days</strong>.
+            For all other requests — including access, portability, restriction, and objection — please contact us at <a href="mailto:support@partnermatch.eu" className="text-brand-primary font-semibold hover:underline">support@partnermatch.eu</a>. We will respond within <strong>30 days</strong>.
           </p>
           <p>
             Please include your registered email address and a clear description of your request. We may need to verify your identity before processing your request.
@@ -220,11 +220,11 @@ export default function GDPRView({ onNavigate }: GDPRViewProps) {
           To submit a data request or ask any questions about your personal data, contact us directly. We respond to all requests within 30 days.
         </p>
         <a
-          href="mailto:support@erasmusmatch.eu"
+          href="mailto:support@partnermatch.eu"
           className="inline-flex items-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white px-6 py-3 rounded-xl font-bold text-sm transition-all cursor-pointer"
         >
           <Mail className="w-4 h-4" />
-          <span>support@erasmusmatch.eu</span>
+          <span>support@partnermatch.eu</span>
         </a>
       </div>
 

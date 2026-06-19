@@ -382,7 +382,7 @@ export default function ListingOrgProfileView({
               {/* Secure mailto action link */}
               <div className="pt-4 border-t border-slate-200/65">
                 <a
-                  href={`mailto:${profile.contactEmail}?subject=Partnership Inquiry on ErasmusMatch`}
+                  href={`mailto:${profile.contactEmail}?subject=Partnership Inquiry on PartnerMatch`}
                   className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-3 rounded-brand font-bold text-xs transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer text-center"
                 >
                   <Mail className="w-4 h-4 text-brand-accent shrink-0" />

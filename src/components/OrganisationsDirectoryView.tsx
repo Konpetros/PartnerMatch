@@ -127,7 +127,7 @@ export default function OrganisationsDirectoryView({
             Erasmus+ Organisations
           </h1>
           <p className="text-base text-slate-500 font-medium max-w-2xl mx-auto mt-3">
-            Discover, filter, and connect with all organisations registered on ErasmusMatch
+            Discover, filter, and connect with all organisations registered on PartnerMatch
           </p>
         </div>
       </section>

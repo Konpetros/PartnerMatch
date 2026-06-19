@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Globe, Mail, BookOpen, ShieldCheck } from 'lucide-react';
-import ErasmusMatchLogo from '../assets/ErasmusMatchLogo';
+import PartnerMatchLogo from '../assets/ErasmusMatchLogo';
 
 interface FooterProps {
   onNavigate: (view: string) => void;
@@ -25,9 +25,9 @@ export default function Footer({ onNavigate }: FooterProps) {
               className="flex items-center space-x-2 cursor-pointer group"
               onClick={() => onNavigate('home')}
             >
-              <ErasmusMatchLogo size={32} className="brightness-0 invert" />
+              <PartnerMatchLogo size={32} className="brightness-0 invert" />
               <span className="text-xl font-extrabold tracking-tight text-white">
-                Erasmus<span className="text-white">Match</span>
+                Partner<span className="text-white">Match</span>
               </span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed">
@@ -209,7 +209,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               </li>
               <li className="flex items-center space-x-2 pt-2 text-xs text-slate-500">
                 <Mail className="w-4 h-4 text-slate-400" />
-                <span>support@erasmusmatch.org</span>
+                <span>support@partnermatch.eu</span>
               </li>
             </ul>
           </div>
@@ -218,13 +218,13 @@ export default function Footer({ onNavigate }: FooterProps) {
         {/* Disclaimer */}
         <div className="py-6 border-t border-slate-800">
           <p className="text-xs text-slate-400 leading-relaxed text-center max-w-4xl mx-auto">
-            <span className="font-semibold text-slate-300">Disclaimer:</span> ErasmusMatch is an independent platform and is not affiliated with, endorsed by, or connected to the European Commission, any National Agency, or any other official Erasmus+ body. All trademarks and official programme names belong to their respective owners.
+            <span className="font-semibold text-slate-300">Disclaimer:</span> PartnerMatch is an independent platform and is not affiliated with, endorsed by, or connected to the European Commission, any National Agency, or any other official Erasmus+ body. All trademarks and official programme names belong to their respective owners.
           </p>
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
-          <p>© {currentYear} ErasmusMatch. Designed to empower European collaborations.</p>
+          <p>© {currentYear} PartnerMatch. Designed to empower European collaborations.</p>
           <p className="mt-2 sm:mt-0">
             For academic and educational exchange networks only.
           </p>

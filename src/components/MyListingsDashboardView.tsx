@@ -511,13 +511,13 @@ export default function MyListingsDashboardView({
             <div className="space-y-4 animate-fade-in">
               <div>
                 <h2 className="text-lg font-black text-slate-800">Announcements</h2>
-                <p className="text-xs text-slate-500 mt-1">Latest updates and news from ErasmusMatch.</p>
+                <p className="text-xs text-slate-500 mt-1">Latest updates and news from PartnerMatch.</p>
               </div>
               {visibleAnnouncements.length === 0 ? (
                 <div className="bg-white rounded-2xl border border-slate-100 p-10 text-center space-y-3">
                   <Megaphone className="w-10 h-10 text-slate-300 mx-auto" />
                   <p className="text-sm font-bold text-slate-500">No announcements</p>
-                  <p className="text-xs text-slate-400">Check back later for updates from ErasmusMatch.</p>
+                  <p className="text-xs text-slate-400">Check back later for updates from PartnerMatch.</p>
                 </div>
               ) : (
                 <div className="space-y-3">

@@ -145,7 +145,7 @@ export default function App() {
       <div className="min-h-screen bg-brand-bg flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
           <div className="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-semibold text-slate-500">Loading ErasmusMatch...</p>
+          <p className="text-sm font-semibold text-slate-500">Loading PartnerMatch...</p>
         </div>
       </div>
     );

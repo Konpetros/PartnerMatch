@@ -45,7 +45,7 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
         </div>
         <h1 className="text-4xl font-black tracking-tight text-slate-900">Privacy Policy</h1>
         <p className="text-base text-slate-500 font-medium max-w-2xl mx-auto">
-          ErasmusMatch is committed to protecting your privacy and handling your data transparently and responsibly.
+          PartnerMatch is committed to protecting your privacy and handling your data transparently and responsibly.
         </p>
         <p className="text-xs text-slate-400 font-semibold">Last updated: June 2026</p>
       </div>
@@ -55,10 +55,10 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
 
         <Section title="1. Who We Are">
           <p>
-            ErasmusMatch is a free partner search directory for Erasmus+ organisations across Europe. The platform is operated by <strong>ErasmusMatch</strong>, based in Corfu, Greece. ErasmusMatch is not affiliated with or endorsed by the European Commission or any National Agency.
+            PartnerMatch is a free partner search directory for Erasmus+ organisations across Europe. The platform is operated by <strong>PartnerMatch</strong>, based in Corfu, Greece. PartnerMatch is not affiliated with or endorsed by the European Commission or any National Agency.
           </p>
           <p>
-            For all privacy-related enquiries, you can contact us at: <a href="mailto:erasmusmatchinfo@gmail.com" className="text-brand-primary font-semibold hover:underline">erasmusmatchinfo@gmail.com</a>
+            For all privacy-related enquiries, you can contact us at: <a href="mailto:support@partnermatch.eu" className="text-brand-primary font-semibold hover:underline">support@partnermatch.eu</a>
           </p>
         </Section>
 
@@ -86,7 +86,7 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
         <Section title="3. How We Use Your Data">
           <p>We use the data we collect for the following purposes:</p>
           <ul className="list-disc pl-5 space-y-2">
-            <li>To create and manage your account on ErasmusMatch</li>
+            <li>To create and manage your account on PartnerMatch</li>
             <li>To display your organisation profile and partner search listings publicly on the platform</li>
             <li>To enable other Erasmus+ organisations to find and contact you for partnership opportunities</li>
             <li>To administer and moderate the platform and ensure compliance with our Terms of Use</li>
@@ -100,11 +100,11 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
 
         <Section title="4. Legal Basis for Processing (GDPR)">
           <p>
-            As ErasmusMatch operates from Greece, an EU member state, we are subject to the General Data Protection Regulation (GDPR). Our legal basis for processing your personal data is as follows:
+            As PartnerMatch operates from Greece, an EU member state, we are subject to the General Data Protection Regulation (GDPR). Our legal basis for processing your personal data is as follows:
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>
-              <strong>Contract performance</strong> — processing your account and profile data is necessary to provide you with the ErasmusMatch service.
+              <strong>Contract performance</strong> — processing your account and profile data is necessary to provide you with the PartnerMatch service.
             </li>
             <li>
               <strong>Legitimate interests</strong> — we use anonymised analytics data to improve the platform, which serves the legitimate interest of providing a better service to all users.
@@ -127,7 +127,7 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
               <strong>Google Analytics</strong> — used to collect anonymised usage statistics. You can opt out of Google Analytics tracking by using the Google Analytics Opt-out Browser Add-on.
             </li>
             <li>
-              <strong>Google Cloud Run</strong> — used to host and serve the ErasmusMatch web application.
+              <strong>Google Cloud Run</strong> — used to host and serve the PartnerMatch web application.
             </li>
           </ul>
           <p>
@@ -137,7 +137,7 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
 
         <Section title="6. Public Data">
           <p>
-            Please be aware that the following information you provide on ErasmusMatch is displayed <strong>publicly</strong> to all visitors of the platform, including non-registered users:
+            Please be aware that the following information you provide on PartnerMatch is displayed <strong>publicly</strong> to all visitors of the platform, including non-registered users:
           </p>
           <ul className="list-disc pl-5 space-y-2">
             <li>Your organisation name, type, country, city, and description</li>
@@ -146,13 +146,13 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
             <li>Your partner search listings and their contents</li>
           </ul>
           <p>
-            By submitting this information, you consent to it being displayed publicly on ErasmusMatch for the purpose of Erasmus+ partner search.
+            By submitting this information, you consent to it being displayed publicly on PartnerMatch for the purpose of Erasmus+ partner search.
           </p>
         </Section>
 
         <Section title="7. Data Retention">
           <p>
-            We retain your personal data for as long as your account is active on ErasmusMatch. If you request deletion of your account, we will delete your profile, listings, and associated personal data within <strong>30 days</strong> of receiving your request.
+            We retain your personal data for as long as your account is active on PartnerMatch. If you request deletion of your account, we will delete your profile, listings, and associated personal data within <strong>30 days</strong> of receiving your request.
           </p>
           <p>
             Anonymised analytics data may be retained for longer periods as it does not identify you personally.
@@ -170,7 +170,7 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
             <li><strong>Right to object</strong> — you can object to our processing of your data where we rely on legitimate interests.</li>
           </ul>
           <p>
-            To exercise any of these rights, please contact us at <a href="mailto:erasmusmatchinfo@gmail.com" className="text-brand-primary font-semibold hover:underline">erasmusmatchinfo@gmail.com</a>. We will respond within <strong>30 days</strong>.
+            To exercise any of these rights, please contact us at <a href="mailto:support@partnermatch.eu" className="text-brand-primary font-semibold hover:underline">support@partnermatch.eu</a>. We will respond within <strong>30 days</strong>.
           </p>
           <p>
             You also have the right to lodge a complaint with the Hellenic Data Protection Authority (HDPA) at <a href="https://www.dpa.gr" target="_blank" rel="noopener noreferrer" className="text-brand-primary font-semibold hover:underline">www.dpa.gr</a>.
@@ -179,7 +179,7 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
 
         <Section title="9. Cookies">
           <p>
-            ErasmusMatch uses essential cookies required for authentication and session management. These cookies are necessary for the platform to function and cannot be disabled.
+            PartnerMatch uses essential cookies required for authentication and session management. These cookies are necessary for the platform to function and cannot be disabled.
           </p>
           <p>
             We also use Google Analytics cookies to collect anonymised usage data. These are non-essential cookies. You can opt out at any time using the Google Analytics Opt-out Browser Add-on or by adjusting your browser settings.
@@ -197,7 +197,7 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
 
         <Section title="11. Children's Privacy">
           <p>
-            ErasmusMatch is intended for use by organisations and their representatives. It is not directed at individuals under the age of 16. We do not knowingly collect personal data from anyone under 16 years of age.
+            PartnerMatch is intended for use by organisations and their representatives. It is not directed at individuals under the age of 16. We do not knowingly collect personal data from anyone under 16 years of age.
           </p>
         </Section>
 
@@ -217,11 +217,11 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
           If you have any questions about this Privacy Policy or how we handle your data, please do not hesitate to get in touch.
         </p>
         <a
-          href="mailto:erasmusmatchinfo@gmail.com"
+          href="mailto:support@partnermatch.eu"
           className="inline-flex items-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white px-6 py-3 rounded-xl font-bold text-sm transition-all cursor-pointer"
         >
           <Mail className="w-4 h-4" />
-          <span>erasmusmatchinfo@gmail.com</span>
+          <span>support@partnermatch.eu</span>
         </a>
       </div>
 

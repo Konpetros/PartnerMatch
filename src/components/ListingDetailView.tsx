@@ -352,7 +352,7 @@ export default function ListingDetailView({ listing, onBack }: DetailViewProps) 
               <div className="pt-4 border-t border-slate-200">
                 <a
                   id="contact-mailto-button"
-                  href={`mailto:${listing.contactEmail}?subject=Erasmus+ Partnership Enquiry via ErasmusMatch`}
+                  href={`mailto:${listing.contactEmail}?subject=Erasmus+ Partnership Enquiry via PartnerMatch`}
                   className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-3.5 rounded-brand font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 text-center cursor-pointer"
                 >
                   <Mail className="w-4 h-4 text-brand-accent shrink-0" />
