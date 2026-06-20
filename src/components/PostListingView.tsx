@@ -605,7 +605,7 @@ export default function PostListingView({
                 required
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
-                placeholder=" erasmus@yourinstitution.org"
+                placeholder="partners@yourinstitution.org"
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all"
               />
               <p className="text-[11px] text-slate-400 font-medium">
