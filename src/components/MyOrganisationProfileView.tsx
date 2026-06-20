@@ -525,7 +525,7 @@ export default function MyOrganisationProfileView({
             {/* Erasmus+ Sector */}
             <div className="space-y-1">
               <label htmlFor="modal-org-sector" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                Erasmus+ Sector *
+                Primary Erasmus+ Sector *
               </label>
               <div className="relative">
                 <select

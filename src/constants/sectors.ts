@@ -3,5 +3,6 @@ export const ERASMUS_SECTORS = [
   'School Education',
   'Vocational Education & Training',
   'Adult Education',
-  'Sport'
+  'Sport',
+  'Other'
 ];
