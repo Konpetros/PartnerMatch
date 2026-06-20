@@ -56,6 +56,13 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
       return;
     }
 
+    // Build and open a pre-filled mailto link so the message actually reaches support
+    const mailtoSubject = encodeURIComponent(`[PartnerMatch Contact] ${subject} — from ${fullName}`);
+    const mailtoBody = encodeURIComponent(
+      `Name: ${fullName}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`
+    );
+    window.location.href = `mailto:support@partnermatch.eu?subject=${mailtoSubject}&body=${mailtoBody}`;
+
     // Success
     setErrors([]);
     setIsSuccess(true);
@@ -106,7 +113,7 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold text-slate-850">Thank You!</h3>
                   <p className="text-sm text-slate-600 font-semibold">
-                    Thank you! We'll get back to you within 48 hours.
+                    Thank you! Your email client should have opened with this message pre-filled to support@partnermatch.eu. If it didn't open, please email us directly. We'll get back to you within 48 hours.
                   </p>
                 </div>
                 <button
