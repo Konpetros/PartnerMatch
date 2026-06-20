@@ -2,7 +2,7 @@ import React from 'react';
 import { AppView } from '../hooks/useNavigation';
 import { Listing, OrganisationProfile, AdminUser, ActivityLog } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
-import OrganisationProfileView from '../components/OrganisationProfileView';
+import OrgProfileView from '../components/OrgProfileView';
 import HomeView from '../components/HomeView';
 import BrowseDirectoryView from '../components/BrowseDirectoryView';
 import ListingDetailView from '../components/ListingDetailView';
@@ -13,7 +13,6 @@ import ContactView from '../components/ContactView';
 import OrganisationSetupView from '../components/OrganisationSetupView';
 import MyOrganisationProfileView from '../components/MyOrganisationProfileView';
 import OrganisationsDirectoryView from '../components/OrganisationsDirectoryView';
-import ListingOrgProfileView from '../components/ListingOrgProfileView';
 import PrivacyPolicyView from '../components/PrivacyPolicyView';
 import TermsAndConditionsView from '../components/TermsAndConditionsView';
 import GDPRView from '../components/GDPRView';
@@ -187,17 +186,30 @@ export default function AppRouter({
     );
   }
 
-  if (currentView === 'org-profile' && selectedOrgId) {
-    const activeProfile = profiles.find(p => p.uid === selectedOrgId);
-    if (activeProfile) {
-      return (
-        <OrganisationProfileView
-          profile={activeProfile}
-          listings={listings}
-          onBack={() => onNavigate('organisations')}
-          onViewListing={onViewListingFromOrg}
-        />
-      );
+  if (currentView === 'org-profile') {
+    if (selectedOrgId) {
+      const activeProfile = profiles.find(p => p.uid === selectedOrgId);
+      if (activeProfile) {
+        return (
+          <OrgProfileView
+            profile={activeProfile}
+            listings={listings}
+            onBack={() => onNavigate('organisations')}
+            onViewListing={onViewListingFromOrg}
+          />
+        );
+      }
+    } else if (selectedListingId) {
+      const activeListing = listings.find(l => l.id === selectedListingId);
+      if (activeListing) {
+        return (
+          <OrgProfileView
+            listing={activeListing}
+            onBack={() => onNavigate('browse')}
+            onViewListing={onViewListingFromOrg}
+          />
+        );
+      }
     }
   }
 
