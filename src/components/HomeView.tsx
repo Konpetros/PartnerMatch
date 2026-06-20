@@ -232,7 +232,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
 
           {/* Subheading below */}
           <p className="text-base sm:text-lg text-slate-500 font-medium text-center max-w-2xl mx-auto mt-4">
-            Browse organisations across Europe looking for Erasmus+ partners and submit your own listings. Connect, share knowledge, and build consortia.
+            Free directory for Erasmus+ organisations across Europe. Find partners for KA1, KA2, and KA3 projects, or list your organisation in minutes.
           </p>
 
           {/* Search bar in one row below */}
