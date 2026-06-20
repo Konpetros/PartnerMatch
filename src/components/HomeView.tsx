@@ -213,7 +213,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
   return (
     <div className="space-y-12 pb-16">
       {/* 1. HERO SECTION */}
-      <section ref={heroRef} className="bg-brand-bg py-20 px-4 relative overflow-hidden">
+      <section ref={heroRef} className="bg-brand-bg min-h-screen flex items-center px-4 relative overflow-hidden">
         <canvas
           ref={canvasRef}
           className="absolute top-0 left-0 w-full h-full pointer-events-none z-0"
@@ -262,7 +262,6 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
           <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-6 text-base sm:text-lg text-slate-500 font-medium">
             <span>✓ Free to browse</span>
             <span>✓ Free to list</span>
-            <span>✓ No subscription</span>
             <span>✓ Pan-European</span>
           </div>
         </div>
