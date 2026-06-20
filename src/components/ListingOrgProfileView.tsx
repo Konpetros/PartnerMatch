@@ -142,15 +142,28 @@ export default function ListingOrgProfileView({
             {profile.organisationType}
           </div>
 
-          {/* Bottom aligned Overlay headings */}
-          <div className={`absolute bottom-6 left-6 right-6 text-white flex flex-col md:flex-row md:items-end justify-between gap-4 ${profile.logoUrl ? 'pl-0 md:pl-[120px] lg:pl-[150px]' : ''}`}>
-            <div className="space-y-2 max-w-2xl">
-              <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wide border ${renderStatusBadgeClass(activeStatus)} shadow-xs`}>
-                {renderStatusLabel(activeStatus)}
-              </span>
-              <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-                {profile.organisationName}
-              </h1>
+          {/* Bottom aligned Overlay headings — logo on the left, text content alongside it */}
+          <div className="absolute bottom-6 left-6 right-6 text-white flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="flex items-end gap-4">
+              {/* Organisation Logo box sitting inside the banner, left of the text */}
+              {profile.logoUrl && (
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white border-[3px] border-white shadow-xl flex items-center justify-center overflow-hidden p-2.5 shrink-0 ring-1 ring-slate-200/60">
+                  <img
+                    src={profile.logoUrl}
+                    alt={`${profile.organisationName} logo`}
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              )}
+
+              <div className="space-y-2 max-w-2xl">
+                <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wide border ${renderStatusBadgeClass(activeStatus)} shadow-xs`}>
+                  {renderStatusLabel(activeStatus)}
+                </span>
+                <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
+                  {profile.organisationName}
+                </h1>
+              </div>
             </div>
 
             {/* Submitter specific website block shortcut layout */}
@@ -166,21 +179,10 @@ export default function ListingOrgProfileView({
               </a>
             )}
           </div>
-
-          {/* Organisation Logo box overlapping the bottom edge of the hero cover image */}
-          {profile.logoUrl && (
-            <div className="absolute -bottom-10 left-6 sm:left-10 w-24 h-24 sm:w-32 sm:h-32 rounded-[24px] bg-white border-4 border-white shadow-md flex items-center justify-center overflow-hidden p-3 z-10">
-              <img
-                src={profile.logoUrl}
-                alt={`${profile.organisationName} logo`}
-                className="max-w-full max-h-full object-contain"
-              />
-            </div>
-          )}
         </div>
 
         {/* 3. TWO-COLUMN GRID SEPARATION BELOW HERO */}
-        <div className={`grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 sm:p-8 ${profile.logoUrl ? 'pt-12 sm:pt-14' : ''}`}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 sm:p-8">
           {/* Main Left Columns (2/3 width) */}
           <div className="lg:col-span-2 space-y-8">
             {/* Description */}
