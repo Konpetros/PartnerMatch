@@ -136,9 +136,9 @@ export default function AdminUsers({
           <p className="text-sm font-bold text-slate-500">No users found matching your query.</p>
         </div>
       ) : (
-        <div className="bg-white rounded-[20px] border border-slate-200 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+        <div className="bg-white rounded-[20px] border border-slate-200 shadow-sm">
+          <div className="overflow-x-auto rounded-[20px]">
+            <table className="w-full text-left border-collapse min-w-[900px]">
               <thead>
                 <tr className="bg-slate-50/75 border-b border-slate-200 text-slate-400 text-[10px] uppercase font-black tracking-wider">
                   <th className="py-4 px-6">User</th>
