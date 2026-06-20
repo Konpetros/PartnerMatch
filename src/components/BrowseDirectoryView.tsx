@@ -512,12 +512,16 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                   >
                     {/* Card Header Image */}
                     <div className="relative h-44 bg-slate-100 overflow-hidden">
-                      <img
-                        src={listing.thumbnailUrl}
-                        alt={listing.name}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                      {listing.thumbnailUrl ? (
+                        <img
+                          src={listing.thumbnailUrl}
+                          alt={listing.name}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-brand-primary to-blue-700" />
+                      )}
                       <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-slate-800 flex items-center space-x-1.5 shadow-sm">
                         <span>{flag}</span>
                         <span>{listing.country}</span>

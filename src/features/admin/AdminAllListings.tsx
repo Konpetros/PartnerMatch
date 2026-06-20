@@ -256,12 +256,16 @@ export default function AdminAllListings({
 
                       {/* Thumbnail */}
                       <td className="py-4.5 px-6">
-                        <img
-                          src={item.thumbnailUrl || 'https://picsum.photos/800/600'}
-                          alt={item.name}
-                          referrerPolicy="no-referrer"
-                          className="w-12 h-8.5 object-cover rounded-lg border border-slate-200 shrink-0"
-                        />
+                        {item.thumbnailUrl ? (
+                          <img
+                            src={item.thumbnailUrl}
+                            alt={item.name}
+                            referrerPolicy="no-referrer"
+                            className="w-12 h-8.5 object-cover rounded-lg border border-slate-200 shrink-0"
+                          />
+                        ) : (
+                          <div className="w-12 h-8.5 rounded-lg border border-slate-200 shrink-0 bg-gradient-to-br from-brand-primary to-blue-700" />
+                        )}
                       </td>
 
                       {/* Organisation */}

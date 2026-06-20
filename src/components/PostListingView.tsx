@@ -170,7 +170,7 @@ export default function PostListingView({
       sectors: selectedSectors,
       thematicAreas: selectedThematics,
       contactEmail: contactEmail.trim(),
-      thumbnailUrl: previewUrl || `https://picsum.photos/800/600?random=${Date.now()}`,
+      thumbnailUrl: previewUrl || '',
       description: description.trim(),
       partnerSearchDeadline: partnerSearchDeadline,
       views: 0,

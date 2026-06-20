@@ -108,12 +108,16 @@ export default function ListingDetailView({ listing, onBack }: DetailViewProps) 
       <div className="bg-white rounded-[24px] border border-blue-50/80 shadow-sm overflow-hidden">
         {/* Full-width Image top banner */}
         <div className="relative h-64 sm:h-96 w-full bg-slate-100">
-          <img
-            src={listing.thumbnailUrl}
-            alt={listing.name}
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover"
-          />
+          {listing.thumbnailUrl ? (
+            <img
+              src={listing.thumbnailUrl}
+              alt={listing.name}
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-brand-primary to-blue-700" />
+          )}
           {/* Cover gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
           
