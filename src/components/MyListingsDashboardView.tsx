@@ -763,7 +763,7 @@ export default function MyListingsDashboardView({
                                         setMenuOpenListingId(null);
                                         showToast('Status changed to Actively Seeking');
                                       }}
-                                      className="w-full px-3 py-2 text-xs font-bold text-slate-755 hover:bg-slate-50/70 text-left flex items-center space-x-2"
+                                      className="w-full px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50/70 text-left flex items-center space-x-2"
                                     >
                                       <div className="w-2 h-2 rounded-full bg-green-500 shrink-0 animate-pulse" />
                                       <span>Mark as Actively Seeking</span>
@@ -774,7 +774,7 @@ export default function MyListingsDashboardView({
                                         setMenuOpenListingId(null);
                                         showToast('Status changed to Partnership Found');
                                       }}
-                                      className="w-full px-3 py-2 text-xs font-bold text-slate-755 hover:bg-slate-50/70 text-left flex items-center space-x-2"
+                                      className="w-full px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50/70 text-left flex items-center space-x-2"
                                     >
                                       <div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
                                       <span>Mark as Partnership Found</span>
@@ -809,7 +809,7 @@ export default function MyListingsDashboardView({
                             <h4 className="font-bold text-slate-800 text-xs line-clamp-2 leading-snug">
                               {listing.name}
                             </h4>
-                            <p className="text-[10px] text-slate-505 font-semibold mt-0.5 flex items-center space-x-1">
+                            <p className="text-[10px] text-slate-500 font-semibold mt-0.5 flex items-center space-x-1">
                               <span>{listing.countryFlag}</span>
                               <span>{listing.submitterProfile?.city || (listing as any).city ? `${listing.submitterProfile?.city || (listing as any).city}, ` : ''}{listing.country}</span>
                             </p>

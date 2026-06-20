@@ -406,7 +406,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Step 1 */}
           <div className="bg-white rounded-[24px] p-6 border border-slate-100 text-center space-y-4 hover:shadow-lg transition-all relative">
-            <div className="absolute -top-4 left-1/2 -transtype-x-1/2 transform translate-x-3/4 bg-brand-accent text-white font-black text-sm w-8 h-8 rounded-full flex items-center justify-center">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 transform translate-x-3/4 bg-brand-accent text-white font-black text-sm w-8 h-8 rounded-full flex items-center justify-center">
               1
             </div>
             <div className="mx-auto w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-brand-primary">
@@ -420,7 +420,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
 
           {/* Step 2 */}
           <div className="bg-white rounded-[24px] p-6 border border-slate-100 text-center space-y-4 hover:shadow-lg transition-all relative">
-            <div className="absolute -top-4 left-1/2 -transtype-x-1/2 transform translate-x-3/4 bg-brand-accent text-white font-black text-sm w-8 h-8 rounded-full flex items-center justify-center">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 transform translate-x-3/4 bg-brand-accent text-white font-black text-sm w-8 h-8 rounded-full flex items-center justify-center">
               2
             </div>
             <div className="mx-auto w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
@@ -434,7 +434,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
 
           {/* Step 3 */}
           <div className="bg-white rounded-[24px] p-6 border border-slate-100 text-center space-y-4 hover:shadow-lg transition-all relative">
-            <div className="absolute -top-4 left-1/2 -transtype-x-1/2 transform translate-x-3/4 bg-brand-accent text-white font-black text-sm w-8 h-8 rounded-full flex items-center justify-center">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 transform translate-x-3/4 bg-brand-accent text-white font-black text-sm w-8 h-8 rounded-full flex items-center justify-center">
               3
             </div>
             <div className="mx-auto w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600">
