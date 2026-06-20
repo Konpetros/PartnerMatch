@@ -75,7 +75,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
   // Determine standard cover/banner image
   const bannerImage = props.listing
     ? props.listing.thumbnailUrl
-    : (orgListings[0]?.thumbnailUrl || 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1200&q=80');
+    : orgListings[0]?.thumbnailUrl;
 
   // Badge styler helper for Key Actions
   const getKeyActionBadgeStyle = (action: KeyAction) => {
@@ -127,7 +127,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
       case 'pending':
         return 'bg-amber-500 border-amber-600 text-white';
       case 'expired':
-        return 'bg-slate-500 border-slate-650 text-white';
+        return 'bg-slate-500 border-slate-600 text-white';
       default:
         return 'bg-emerald-500 border-emerald-600 text-white';
     }
@@ -172,12 +172,16 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
       <div className="bg-white rounded-[24px] border border-blue-50/80 shadow-sm overflow-hidden" id="org-profile-card">
         {/* Dynamic Image Hero Banner */}
         <div className="relative h-72 sm:h-96 w-full bg-slate-100">
-          <img
-            src={bannerImage}
-            alt={activeProfile.organisationName}
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover"
-          />
+          {bannerImage ? (
+            <img
+              src={bannerImage}
+              alt={activeProfile.organisationName}
+              referrerPolicy="no-referrer"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-brand-primary to-blue-700" />
+          )}
           {/* Cover gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
 
@@ -384,17 +388,17 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
           {/* Right sidebar column (1/3 width) */}
           <div className="space-y-6">
             {/* Quick Facts Details Card */}
-            <div className="bg-slate-50 rounded-[22px] p-6 border border-slate-150 space-y-6 shadow-2xs">
+            <div className="bg-slate-50 rounded-[22px] p-6 border border-slate-100 space-y-6 shadow-2xs">
               <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider border-b border-slate-200 pb-3">
                 Organisation Details
               </h3>
 
               {/* Dynamic sidebar stats */}
-              <div className="space-y-4 text-sm font-medium text-slate-605">
+              <div className="space-y-4 text-sm font-medium text-slate-600">
                 {/* Org Type */}
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <Building2 className="w-4 h-4 text-slate-450" />
+                    <Building2 className="w-4 h-4 text-slate-400" />
                   </div>
                   <div>
                     <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Type</span>
@@ -405,7 +409,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                 {/* Sector */}
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <FileText className="w-4 h-4 text-slate-450" />
+                    <FileText className="w-4 h-4 text-slate-400" />
                   </div>
                   <div>
                     <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Primary Erasmus+ Sector</span>
@@ -416,7 +420,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                 {/* City + Country */}
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <MapPin className="w-4 h-4 text-slate-450" />
+                    <MapPin className="w-4 h-4 text-slate-400" />
                   </div>
                   <div>
                     <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Location</span>
@@ -430,7 +434,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                 {activeProfile.foundedYear && (
                   <div className="flex items-center space-x-3">
                     <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                      <Calendar className="w-4 h-4 text-slate-450" />
+                      <Calendar className="w-4 h-4 text-slate-400" />
                     </div>
                     <div>
                       <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Founded In</span>
@@ -442,7 +446,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                 {/* OID identifier */}
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <Hash className="w-4 h-4 text-slate-450" />
+                    <Hash className="w-4 h-4 text-slate-400" />
                   </div>
                   <div>
                     <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">OID Number</span>
@@ -455,7 +459,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                 {/* Experience rating */}
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <Award className="w-4 h-4 text-slate-450" />
+                    <Award className="w-4 h-4 text-slate-400" />
                   </div>
                   <div>
                     <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Experience</span>
@@ -466,7 +470,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                 {/* Past operations projects */}
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <FolderOpen className="w-4 h-4 text-slate-450" />
+                    <FolderOpen className="w-4 h-4 text-slate-400" />
                   </div>
                   <div>
                     <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Past Projects</span>
@@ -478,7 +482,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
 
             {/* Languages Sidebar Card */}
             {activeProfile.languagesSpoken && activeProfile.languagesSpoken.length > 0 && (
-              <div className="bg-slate-50 rounded-[22px] p-6 border border-slate-150 space-y-4 shadow-2xs">
+              <div className="bg-slate-50 rounded-[22px] p-6 border border-slate-100 space-y-4 shadow-2xs">
                 <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-3 flex items-center space-x-2">
                   <Languages className="w-4 h-4 text-emerald-500 shrink-0" />
                   <span>Working Languages</span>
@@ -487,7 +491,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                   {activeProfile.languagesSpoken.map((lang) => (
                     <span
                       key={lang}
-                      className="text-xs font-bold bg-white border border-slate-200 text-slate-705 px-3 py-1.5 rounded-xl shadow-3xs"
+                      className="text-xs font-bold bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-xl shadow-xs"
                     >
                       {lang}
                     </span>
@@ -498,7 +502,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
 
             {/* Contact Organisation Secure mailto action link */}
             {activeProfile.contactEmail && (
-              <div className="bg-slate-50 rounded-[22px] p-6 border border-slate-150 space-y-4 shadow-2xs">
+              <div className="bg-slate-50 rounded-[22px] p-6 border border-slate-100 space-y-4 shadow-2xs">
                 <a
                   id="btn-contact-organisation"
                   href={`mailto:${activeProfile.contactEmail}?subject=Partnership Inquiry on PartnerMatch`}
