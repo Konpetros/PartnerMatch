@@ -578,7 +578,7 @@ export default function MyListingsDashboardView({
               </button>
               <button
                 onClick={() => setActiveSection('profile')}
-                className="flex-1 border border-slate-205 text-slate-700 bg-slate-50 hover:bg-slate-100 py-2.5 rounded-xl font-bold text-[11px]"
+                className="flex-1 border border-slate-200 text-slate-700 bg-slate-50 hover:bg-slate-100 py-2.5 rounded-xl font-bold text-[11px]"
               >
                 Profile Settings
               </button>
@@ -745,7 +745,7 @@ export default function MyListingsDashboardView({
                               <div className="relative">
                                 <button
                                   onClick={() => setMenuOpenListingId(menuOpenListingId === listing.id ? null : listing.id)}
-                                  className="p-2 text-slate-550 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                                  className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
                                   title="Change Status"
                                 >
                                   <MoreVertical className="w-4 h-4" />

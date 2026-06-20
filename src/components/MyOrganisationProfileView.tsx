@@ -251,7 +251,7 @@ export default function MyOrganisationProfileView({
           <div className="flex gap-2">
             <button
               onClick={() => onNavigate('my-listings')}
-              className="flex-1 inline-flex items-center justify-center bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-205 py-2.5 rounded-xl font-bold text-[11px]"
+              className="flex-1 inline-flex items-center justify-center bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 py-2.5 rounded-xl font-bold text-[11px]"
             >
               My Listings
             </button>

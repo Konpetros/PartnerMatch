@@ -309,7 +309,7 @@ export default function PostListingView({
               <span>Submitting As</span>
             </h2>
 
-            <div className="bg-slate-50 border border-slate-205 rounded-[16px] p-5 space-y-3">
+            <div className="bg-slate-50 border border-slate-200 rounded-[16px] p-5 space-y-3">
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="font-extrabold text-slate-850 text-base">{profile.organisationName}</h3>
