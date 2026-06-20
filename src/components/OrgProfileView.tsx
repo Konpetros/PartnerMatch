@@ -72,10 +72,12 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
   // Derive active listing status in Mode A
   const activeStatus = props.listing ? (props.listing.status || 'active') : 'active';
 
-  // Determine standard cover/banner image
+  // Determine standard cover/banner image — only listings have a photo banner;
+  // the organisation profile itself always uses the brand gradient so it's
+  // visually distinct from any individual listing's page.
   const bannerImage = props.listing
     ? props.listing.thumbnailUrl
-    : orgListings[0]?.thumbnailUrl;
+    : undefined;
 
   // Badge styler helper for Key Actions
   const getKeyActionBadgeStyle = (action: KeyAction) => {
@@ -171,7 +173,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
       {/* 2. DEDICATED PROFILE CARD CONTAINER */}
       <div className="bg-white rounded-[24px] border border-blue-50/80 shadow-sm overflow-hidden" id="org-profile-card">
         {/* Dynamic Image Hero Banner */}
-        <div className="relative h-72 sm:h-96 w-full bg-slate-100">
+        <div className="relative h-56 sm:h-64 w-full bg-slate-100">
           {bannerImage ? (
             <img
               src={bannerImage}
