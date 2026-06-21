@@ -510,34 +510,29 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                     onClick={() => onSelectListing(listing.id)}
                     className="group bg-white rounded-[20px] border border-blue-50/50 hover:border-blue-300 hover:shadow-md overflow-hidden card-shadow flex flex-col cursor-pointer"
                   >
-                    {/* Card Header Image */}
-                    <div className="relative h-44 bg-gradient-to-br from-brand-primary to-blue-700 overflow-hidden flex items-center justify-center">
-                      {listing.submitterProfile?.logoUrl ? (
-                        <img
-                          src={listing.submitterProfile.logoUrl}
-                          alt={`${listing.name} logo`}
-                          referrerPolicy="no-referrer"
-                          className="max-w-[55%] max-h-[55%] object-contain bg-white rounded-2xl p-3 shadow-md"
-                        />
-                      ) : (
-                        <span className="text-white font-black text-4xl">
-                          {listing.name.charAt(0).toUpperCase()}
-                        </span>
-                      )}
-                      <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-slate-800 flex items-center space-x-1.5 shadow-sm">
-                        <span>{flag}</span>
-                        <span>{listing.country}</span>
-                      </div>
-
-                      {(listing.submitterProfile?.city || (listing as any).city) && (
-                        <div className="absolute bottom-3 left-3 bg-slate-900/40 backdrop-blur-sm px-2.5 py-1 rounded-md text-[10px] font-bold text-white tracking-wide">
-                          📍 {listing.submitterProfile?.city || (listing as any).city || ''}
-                        </div>
-                      )}
-                    </div>
-
                     {/* Body Details */}
                     <div className="p-5 flex-1 flex flex-col space-y-3.5">
+                      <div className="flex items-center gap-2.5">
+                        {listing.submitterProfile?.logoUrl ? (
+                          <img
+                            src={listing.submitterProfile.logoUrl}
+                            alt={`${listing.name} logo`}
+                            referrerPolicy="no-referrer"
+                            className="w-9 h-9 rounded-lg object-contain border border-slate-100 bg-white p-1 shrink-0"
+                          />
+                        ) : (
+                          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-xs shrink-0">
+                            {listing.name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        <span className="text-xs font-bold text-slate-500 flex items-center space-x-1 min-w-0">
+                          <span>{flag}</span>
+                          <span className="truncate">
+                            {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
+                          </span>
+                        </span>
+                      </div>
+
                       <div className="flex flex-wrap gap-1.5 items-center">
                         <span className="bg-slate-100 text-slate-700 text-[10px] font-extrabold uppercase px-2 py-1 rounded-md tracking-wider">
                           {listing.type}
