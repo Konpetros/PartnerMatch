@@ -288,16 +288,18 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                   className="group bg-white rounded-[20px] border border-blue-50/50 hover:border-blue-300 hover:shadow-md overflow-hidden card-shadow flex flex-col cursor-pointer"
                 >
                   {/* Card Header Image */}
-                  <div className="relative h-44 bg-slate-100 overflow-hidden">
-                    {listing.thumbnailUrl ? (
+                  <div className="relative h-44 bg-gradient-to-br from-brand-primary to-blue-700 overflow-hidden flex items-center justify-center">
+                    {listing.submitterProfile?.logoUrl ? (
                       <img
-                        src={listing.thumbnailUrl}
-                        alt={listing.name}
+                        src={listing.submitterProfile.logoUrl}
+                        alt={`${listing.name} logo`}
                         referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="max-w-[55%] max-h-[55%] object-contain bg-white rounded-2xl p-3 shadow-md"
                       />
                     ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-brand-primary to-blue-700" />
+                      <span className="text-white font-black text-4xl">
+                        {listing.name.charAt(0).toUpperCase()}
+                      </span>
                     )}
                     <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-slate-800 flex items-center space-x-1.5 shadow-sm">
                       <span>{flag}</span>

@@ -673,15 +673,17 @@ export default function MyListingsDashboardView({
                           {/* Organisation metadata col */}
                           <td className="py-4 pl-2">
                             <div className="flex items-center space-x-3.5">
-                              {listing.thumbnailUrl ? (
+                              {listing.submitterProfile?.logoUrl ? (
                                 <img 
-                                  src={listing.thumbnailUrl} 
-                                  className="w-12 h-12 object-cover rounded-xl shrink-0 border border-slate-100 shadow-xs" 
+                                  src={listing.submitterProfile.logoUrl} 
+                                  className="w-12 h-12 object-contain rounded-xl shrink-0 border border-slate-100 shadow-xs bg-white p-1" 
                                   alt={listing.name} 
                                   referrerPolicy="no-referrer" 
                                 />
                               ) : (
-                                <div className="w-12 h-12 rounded-xl shrink-0 border border-slate-100 shadow-xs bg-gradient-to-br from-brand-primary to-blue-700" />
+                                <div className="w-12 h-12 rounded-xl shrink-0 border border-slate-100 shadow-xs bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm">
+                                  {listing.name.charAt(0).toUpperCase()}
+                                </div>
                               )}
                               <div className="space-y-0.5">
                                 <h4 className="font-bold text-slate-800 text-xs sm:text-sm line-clamp-1 group-hover:text-brand-primary transition-colors">
@@ -804,14 +806,16 @@ export default function MyListingsDashboardView({
                         className="p-4 bg-slate-50/70 rounded-2xl border border-slate-150/40 space-y-3.5 relative"
                       >
                         <div className="flex items-start space-x-3">
-                          {listing.thumbnailUrl ? (
+                          {listing.submitterProfile?.logoUrl ? (
                             <img 
-                              src={listing.thumbnailUrl} 
-                              className="w-11 h-11 object-cover rounded-xl border border-slate-100" 
+                              src={listing.submitterProfile.logoUrl} 
+                              className="w-11 h-11 object-contain rounded-xl border border-slate-100 bg-white p-1" 
                               alt={listing.name} 
                             />
                           ) : (
-                            <div className="w-11 h-11 rounded-xl border border-slate-100 bg-gradient-to-br from-brand-primary to-blue-700" />
+                            <div className="w-11 h-11 rounded-xl border border-slate-100 bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm">
+                              {listing.name.charAt(0).toUpperCase()}
+                            </div>
                           )}
                           <div className="flex-1 min-w-0">
                             <h4 className="font-bold text-slate-800 text-xs line-clamp-2 leading-snug">

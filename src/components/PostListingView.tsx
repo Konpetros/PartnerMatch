@@ -170,7 +170,7 @@ export default function PostListingView({
       sectors: selectedSectors,
       thematicAreas: selectedThematics,
       contactEmail: contactEmail.trim(),
-      thumbnailUrl: previewUrl || '',
+      thumbnailUrl: '',
       description: description.trim(),
       partnerSearchDeadline: partnerSearchDeadline,
       views: 0,
@@ -351,61 +351,10 @@ export default function PostListingView({
             </div>
           </div>
 
-          {/* Section 2 — Listing Visual */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">1</span>
-              <span>Banner Visual Thumbnail</span>
-            </h2>
-
-            <div className="space-y-2">
-              <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Landscape Thumbnail Image</span>
-              
-              <div
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-slate-200 hover:border-brand-primary rounded-[20px] p-8 text-center bg-slate-50 hover:bg-blue-50/10 cursor-pointer transition-all duration-300 group"
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-
-                {previewUrl ? (
-                  <div className="relative max-w-xs mx-auto rounded-lg overflow-hidden border shadow-sm">
-                    <img
-                      src={previewUrl}
-                      alt="Uploaded Preview"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-32 object-cover"
-                    />
-                    <div className="absolute inset-0 bg-slate-900/40 hover:bg-slate-900/60 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                      <span className="text-white text-xs font-bold">Replace Image</span>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <div className="mx-auto w-12 h-12 bg-white text-slate-400 rounded-xl flex items-center justify-center shadow-xs group-hover:text-brand-primary group-hover:scale-110 transition-transform">
-                      <CloudUpload className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-700">Drag & drop your files, or <span className="text-brand-primary hover:underline">browse</span></p>
-                      <p className="text-[10px] text-slate-400 mt-1">Supports PNG, JPG landscapes up to 5MB. Self-generated fallback used if left blank.</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Section 3 — Partner Search Details */}
+          {/* Section 1 — Partner Search Details */}
           <div className="space-y-6">
             <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">2</span>
+              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">1</span>
               <span>Partner Search Details</span>
             </h2>
 
@@ -670,19 +619,18 @@ export default function PostListingView({
 
           <div className="bg-white rounded-[20px] overflow-hidden shadow-lg border-2 border-brand-primary max-w-sm mx-auto">
             {/* Visual Header */}
-            <div className="relative h-44 bg-slate-150">
-              {previewUrl ? (
+            <div className="relative h-44 bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center">
+              {profile.logoUrl ? (
                 <img
-                  src={previewUrl}
-                  alt="Live Preview"
+                  src={profile.logoUrl}
+                  alt="Organisation logo"
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover"
+                  className="max-w-[60%] max-h-[60%] object-contain bg-white rounded-2xl p-3 shadow-md"
                 />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-slate-100 to-slate-200 text-slate-400">
-                  <CloudUpload className="w-10 h-10 mb-1" />
-                  <span className="text-[10px] font-bold">Image Preview Placed Here</span>
-                </div>
+                <span className="text-white font-black text-4xl">
+                  {profile.organisationName.charAt(0).toUpperCase()}
+                </span>
               )}
               {/* Flag Overlay */}
               <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-0.5 rounded-full text-[10px] font-bold text-slate-800 flex items-center space-x-1 shadow-sm">
