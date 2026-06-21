@@ -19,9 +19,10 @@ import {
 interface DetailViewProps {
   listing: Listing;
   onBack: () => void;
+  onViewOrganisation: (id: string) => void;
 }
 
-export default function ListingDetailView({ listing, onBack }: DetailViewProps) {
+export default function ListingDetailView({ listing, onBack, onViewOrganisation }: DetailViewProps) {
   const profile = listing.submitterProfile || {
     organisationName: listing.name,
     organisationType: listing.type,
@@ -235,6 +236,7 @@ export default function ListingDetailView({ listing, onBack }: DetailViewProps) 
                 </a>
                 <button
                   type="button"
+                  onClick={() => onViewOrganisation(listing.id)}
                   className="w-full inline-flex items-center justify-center py-3 rounded-brand font-bold text-sm text-slate-600 border border-slate-200 hover:bg-white transition-all cursor-pointer"
                 >
                   View Full Profile

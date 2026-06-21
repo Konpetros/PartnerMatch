@@ -67,6 +67,12 @@ export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSi
     setCurrentView('detail');
   };
 
+  const handleViewOrgProfile = (listingId: string) => {
+    setSelectedListingId(listingId);
+    setSelectedOrgId(null);
+    setCurrentView('org-profile');
+  };
+
   return {
     currentView,
     selectedListingId,
@@ -75,5 +81,6 @@ export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSi
     handleSelectListing,
     handleSelectOrganisation,
     handleViewListingFromOrg,
+    handleViewOrgProfile,
   };
 };

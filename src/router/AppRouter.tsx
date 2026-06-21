@@ -39,6 +39,7 @@ interface AppRouterProps {
   onSelectListing: (id: string) => void;
   onSelectOrganisation: (id: string) => void;
   onViewListingFromOrg: (id: string) => void;
+  onViewOrgProfile: (id: string) => void;
   onSubmitListing: (listing: Listing) => void;
   onDeleteListing: (id: string) => void;
   onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found') => void;
@@ -70,6 +71,7 @@ export default function AppRouter({
   onSelectListing,
   onSelectOrganisation,
   onViewListingFromOrg,
+  onViewOrgProfile,
   onSubmitListing,
   onDeleteListing,
   onUpdateListingStatus,
@@ -230,6 +232,7 @@ export default function AppRouter({
         <ListingDetailView
           listing={activeItem}
           onBack={() => onNavigate('home')}
+          onViewOrganisation={onViewOrgProfile}
         />
       );
     }

@@ -70,6 +70,7 @@ export default function App() {
     handleSelectListing,
     handleSelectOrganisation,
     handleViewListingFromOrg,
+    handleViewOrgProfile,
   } = useNavigation(!!currentUser, isAdmin, handleOpenSignIn);
 
   // Activity log — kept in local state for now
@@ -190,6 +191,7 @@ export default function App() {
           onSelectListing={handleSelectListing}
           onSelectOrganisation={handleSelectOrganisation}
           onViewListingFromOrg={handleViewListingFromOrg}
+          onViewOrgProfile={handleViewOrgProfile}
           onSubmitListing={onSubmitListing}
           onDeleteListing={handleDeleteListing}
           onUpdateListingStatus={handleUpdateListingStatus}
