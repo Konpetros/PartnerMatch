@@ -72,12 +72,10 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
   // Derive active listing status in Mode A
   const activeStatus = props.listing ? (props.listing.status || 'active') : 'active';
 
-  // Determine standard cover/banner image — only listings have a photo banner;
-  // the organisation profile itself always uses the brand gradient so it's
-  // visually distinct from any individual listing's page.
-  const bannerImage = props.listing
-    ? props.listing.thumbnailUrl
-    : undefined;
+  // The organisation profile banner always uses the brand gradient, regardless
+  // of which entry path was used to reach it, so every organisation has one
+  // consistent visual identity rather than borrowing a specific listing's photo.
+  const bannerImage = undefined;
 
   // Badge styler helper for Key Actions
   const getKeyActionBadgeStyle = (action: KeyAction) => {
