@@ -24,7 +24,7 @@ export default function PartnerMatchLogo({ size = 32, className = '', isWhite = 
       {/* Overlap Diamond */}
       <polygon
         points="274,500 500,274 726,500 500,726"
-        fill={isWhite ? "#ffffff" : "#CA812C"}
+        fill={isWhite ? "#ffffff" : "#8E7364"}
         opacity={isWhite ? 0.5 : 1}
       />
     </svg>
