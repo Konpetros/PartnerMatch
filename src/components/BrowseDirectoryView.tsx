@@ -10,7 +10,10 @@ import {
   Search, 
   RefreshCcw, 
   Layers, 
-  Inbox 
+  Inbox,
+  LayoutGrid,
+  List,
+  ChevronRight
 } from 'lucide-react';
 
 interface BrowseViewProps {
@@ -35,6 +38,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
 
   const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const isAnyFilterActive = 
     filters.country !== '' ||
@@ -215,14 +219,34 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                   {filteredAndSorted.length} {filteredAndSorted.length === 1 ? 'listing' : 'listings'} found
                 </span>
               </h2>
-              <button
-                id="clear-filters-btn"
-                onClick={handleClearFilters}
-                className="flex items-center space-x-1.5 text-xs font-bold text-slate-500 hover:text-brand-primary transition-colors cursor-pointer"
-              >
-                <RefreshCcw className="w-3.5 h-3.5" />
-                <span>Clear Filters</span>
-              </button>
+              <div className="flex items-center space-x-4">
+                <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 gap-1">
+                  <button
+                    id="view-mode-grid-btn"
+                    onClick={() => setViewMode('grid')}
+                    className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'grid' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    aria-label="Grid view"
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                  </button>
+                  <button
+                    id="view-mode-list-btn"
+                    onClick={() => setViewMode('list')}
+                    className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'list' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                    aria-label="List view"
+                  >
+                    <List className="w-4 h-4" />
+                  </button>
+                </div>
+                <button
+                  id="clear-filters-btn"
+                  onClick={handleClearFilters}
+                  className="flex items-center space-x-1.5 text-xs font-bold text-slate-500 hover:text-brand-primary transition-colors cursor-pointer"
+                >
+                  <RefreshCcw className="w-3.5 h-3.5" />
+                  <span>Clear Filters</span>
+                </button>
+              </div>
             </div>
 
             {/* Search bar */}
@@ -500,6 +524,64 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
         ) : (
           /* LISTING CARDS GRID */
           <>
+            {viewMode === 'list' && (
+              <div className="space-y-3">
+                {paginatedListings.map((listing) => {
+                  const flag = listing.countryFlag || '🇪🇺';
+                  return (
+                    <div
+                      key={listing.id}
+                      onClick={() => onSelectListing(listing.id)}
+                      className="group bg-white rounded-2xl border border-blue-50/50 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer p-4 flex items-center gap-4"
+                    >
+                      {listing.submitterProfile?.logoUrl ? (
+                        <img
+                          src={listing.submitterProfile.logoUrl}
+                          alt={`${listing.name} logo`}
+                          referrerPolicy="no-referrer"
+                          className="w-12 h-12 rounded-lg object-contain border border-slate-100 bg-white p-1.5 shrink-0"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-base shrink-0">
+                          {listing.name.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
+                          <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-brand-primary transition-colors">
+                            {listing.name}
+                          </h3>
+                          <span className="bg-slate-100 text-slate-700 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider shrink-0">
+                            {listing.type}
+                          </span>
+                          {listing.keyActions.map((action) => (
+                            <span
+                              key={action}
+                              className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded ${getKeyActionBadgeStyle(action)} shrink-0`}
+                            >
+                              {action}
+                            </span>
+                          ))}
+                        </div>
+                        <p className="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-1.5 truncate">
+                          <span>{flag}</span>
+                          <span className="truncate">
+                            {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="hidden sm:flex flex-col items-end text-right shrink-0">
+                        <span className="text-orange-600 font-bold text-[11px]">
+                          🗓 {formatDate(listing.partnerSearchDeadline)}
+                        </span>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-primary transition-colors shrink-0" />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {viewMode === 'grid' && (
             <div id="listings-real-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {paginatedListings.map((listing) => {
                 const flag = listing.countryFlag || '🇪🇺';
@@ -605,6 +687,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                 );
               })}
             </div>
+            )}
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
