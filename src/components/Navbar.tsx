@@ -61,7 +61,7 @@ export default function Navbar({
             onClick={() => { onNavigate('home'); setMobileMenuOpen(false); }}
             className="flex items-center space-x-2 cursor-pointer group"
           >
-            <PartnerMatchLogo size={32} />
+            <PartnerMatchLogo size={40} />
             <span className="text-xl sm:text-2xl font-extrabold tracking-tight text-brand-primary">
               Partner<span className="text-brand-accent">Match</span>
             </span>

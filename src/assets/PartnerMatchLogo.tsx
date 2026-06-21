@@ -1,56 +1,32 @@
 import React from 'react';
 
-interface LogoProps {
-  size?: number;
-  className?: string;
-}
-
-export default function PartnerMatchLogo({ size = 32, className = '' }: LogoProps) {
+export default function PartnerMatchLogo({ size = 32, className = '', isWhite = false }: { size?: number; className?: string; isWhite?: boolean }) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 500 500"
+      viewBox="0 0 1000 1000"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      <defs>
-        <clipPath id="or-base"><path d="M0 0 H500 V500 H0 Z M187 0 H313 V500 H187 Z" fillRule="evenodd"/></clipPath>
-        <clipPath id="or-top"><rect x="187" y="0" width="126" height="250"/></clipPath>
-        <clipPath id="bl-bot"><rect x="187" y="250" width="126" height="250"/></clipPath>
-      </defs>
-
-      {/* BLUE RING (full, sits behind) */}
-      <path fill="#2b5ac7" fillRule="evenodd" d="
-        M172 89
-        a161 161 0 1 0 0.001 0 Z
-        M172 131
-        a119 119 0 1 1 -0.001 0 Z
-      "/>
-
-      {/* ORANGE RING — outside the overlap zone */}
-      <path fill="#f48c06" fillRule="evenodd" clipPath="url(#or-base)" d="
-        M328 89
-        a161 161 0 1 0 0.001 0 Z
-        M328 131
-        a119 119 0 1 1 -0.001 0 Z
-      "/>
-
-      {/* ORANGE RING — top half of overlap (orange in front) */}
-      <path fill="#f48c06" fillRule="evenodd" clipPath="url(#or-top)" d="
-        M328 89
-        a161 161 0 1 0 0.001 0 Z
-        M328 131
-        a119 119 0 1 1 -0.001 0 Z
-      "/>
-
-      {/* BLUE RING — bottom half of overlap (blue in front) */}
-      <path fill="#2b5ac7" fillRule="evenodd" clipPath="url(#bl-bot)" d="
-        M172 89
-        a161 161 0 1 0 0.001 0 Z
-        M172 131
-        a119 119 0 1 1 -0.001 0 Z
-      "/>
+      {/* Left Blue Diamond */}
+      <polygon
+        points="120,500 423,197 726,500 423,803"
+        fill={isWhite ? "#ffffff" : "#2B5AC6"}
+        opacity={isWhite ? 0.9 : 1}
+      />
+      {/* Right Orange Diamond */}
+      <polygon
+        points="274,500 577,197 880,500 577,803"
+        fill={isWhite ? "#ffffff" : "#F48B05"}
+        opacity={isWhite ? 0.75 : 1}
+      />
+      {/* Overlap Diamond */}
+      <polygon
+        points="274,500 500,274 726,500 500,726"
+        fill={isWhite ? "#ffffff" : "#CA812C"}
+        opacity={isWhite ? 0.5 : 1}
+      />
     </svg>
   );
 }
