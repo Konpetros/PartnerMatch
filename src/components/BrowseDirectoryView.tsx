@@ -512,25 +512,30 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                   >
                     {/* Body Details */}
                     <div className="p-5 flex-1 flex flex-col space-y-3.5">
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-3">
                         {listing.submitterProfile?.logoUrl ? (
                           <img
                             src={listing.submitterProfile.logoUrl}
                             alt={`${listing.name} logo`}
                             referrerPolicy="no-referrer"
-                            className="w-9 h-9 rounded-lg object-contain border border-slate-100 bg-white p-1 shrink-0"
+                            className="w-12 h-12 rounded-lg object-contain border border-slate-100 bg-white p-1.5 shrink-0"
                           />
                         ) : (
-                          <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-xs shrink-0">
+                          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-base shrink-0">
                             {listing.name.charAt(0).toUpperCase()}
                           </div>
                         )}
-                        <span className="text-xs font-bold text-slate-500 flex items-center space-x-1 min-w-0">
-                          <span>{flag}</span>
-                          <span className="truncate">
-                            {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
+                        <div className="min-w-0">
+                          <h3 className="font-bold text-slate-800 text-base leading-snug line-clamp-1 group-hover:text-brand-primary transition-colors">
+                            {listing.name}
+                          </h3>
+                          <span className="text-xs font-bold text-slate-500 flex items-center space-x-1">
+                            <span>{flag}</span>
+                            <span className="truncate">
+                              {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
+                            </span>
                           </span>
-                        </span>
+                        </div>
                       </div>
 
                       <div className="flex flex-wrap gap-1.5 items-center">
@@ -568,10 +573,6 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           </span>
                         ))}
                       </div>
-
-                      <h3 className="font-bold text-slate-800 text-lg leading-snug group-hover:text-brand-primary transition-colors line-clamp-1 font-sans">
-                        {listing.name}
-                      </h3>
 
                       <div className="flex flex-wrap gap-2">
                         <span className="bg-orange-50 text-orange-600 font-bold text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1 shrink-0">
