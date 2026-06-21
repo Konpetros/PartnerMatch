@@ -25,7 +25,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               className="flex items-center space-x-2 cursor-pointer group"
               onClick={() => onNavigate('home')}
             >
-              <PartnerMatchLogo size={32} isWhite={true} />
+              <PartnerMatchLogo size={32} className="brightness-0 invert" />
               <span className="text-xl font-extrabold tracking-tight text-white">
                 Partner<span className="text-white">Match</span>
               </span>
