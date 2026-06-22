@@ -217,14 +217,14 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
   return (
     <div className="space-y-12 pb-16">
       {/* 1. HERO SECTION */}
-      <section ref={heroRef} className="bg-brand-bg min-h-[calc(100vh-72px)] flex items-center px-4 relative overflow-hidden">
+      <section ref={heroRef} className="bg-brand-bg pt-20 pb-16 sm:pt-28 sm:pb-20 px-4 relative overflow-hidden">
         <canvas
           ref={canvasRef}
           className="absolute top-0 left-0 w-full h-full pointer-events-none z-0"
         />
         <div className="relative z-10 max-w-7xl mx-auto text-center flex flex-col items-center">
           {/* Small pill badge at the top */}
-          <div className="inline-flex items-center space-x-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 shadow-sm mb-6">
+          <div className="inline-flex items-center space-x-2 bg-white border border-slate-200 rounded-full px-4 py-1.5 text-xs font-bold text-slate-600 shadow-sm mb-10">
             <span className="w-2 h-2 rounded-full bg-brand-accent" />
             <span>Free Erasmus+ Partner Search · KA1 · KA2 · KA3</span>
           </div>
@@ -235,12 +235,12 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
           </h1>
 
           {/* Subheading below */}
-          <p className="text-base sm:text-lg text-slate-500 font-medium text-center max-w-2xl mx-auto mt-4">
+          <p className="text-base sm:text-lg text-slate-500 font-medium text-center max-w-2xl mx-auto mt-8">
             Free directory for Erasmus+ organisations across Europe. Find partners for KA1, KA2, and KA3 projects, or list your organisation in minutes.
           </p>
 
           {/* Search bar in one row below */}
-          <div className="w-full mt-8">
+          <div className="w-full mt-10">
             <div className="flex items-center bg-white border border-slate-200 rounded-full shadow-md px-4 py-2 max-w-2xl mx-auto gap-3">
               <Search className="text-slate-400 w-4 h-4 shrink-0" />
               <input
@@ -263,7 +263,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
           </div>
 
           {/* Trust row below the search bar */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-6 text-base sm:text-lg text-slate-500 font-medium">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 mt-10 text-base sm:text-lg text-slate-500 font-medium">
             <span>✓ Free to browse</span>
             <span>✓ Free to list</span>
             <span>✓ Pan-European</span>
