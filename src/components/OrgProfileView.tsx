@@ -154,6 +154,25 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
     }
   };
 
+  if (activeProfile.profilePublic === false) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 animate-fade-in font-sans text-center space-y-4">
+        <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mx-auto">
+          <Building2 className="w-6 h-6 text-slate-400" />
+        </div>
+        <h2 className="text-xl font-extrabold text-slate-800">Profile is Private</h2>
+        <p className="text-sm text-slate-500 max-w-sm mx-auto">This organisation has set their profile to private and it is not publicly visible.</p>
+        <button
+          onClick={onBack}
+          className="inline-flex items-center space-x-2 text-sm font-bold text-brand-primary hover:underline cursor-pointer mt-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Go Back</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in font-sans" id="org-profile-view-root">
       {/* 1. BACK BUTTON */}
