@@ -16,4 +16,7 @@ export interface OrganisationProfile {
   sector: string;
   logoUrl?: string;
   description: string;
+  showEmailOnProfile?: boolean;
+  showLocationOnProfile?: boolean;
+  profilePublic?: boolean;
 }

@@ -215,6 +215,17 @@ export const getUserSettings = async (userId: string): Promise<{
   };
 };
 
+export const saveProfilePrivacySettings = async (
+  userId: string,
+  settings: {
+    showEmailOnProfile?: boolean;
+    showLocationOnProfile?: boolean;
+    profilePublic?: boolean;
+  }
+): Promise<void> => {
+  await setDoc(doc(db, 'profiles', userId), settings, { merge: true });
+};
+
 // ─── ANNOUNCEMENTS ───────────────────────────────────────────
 
 export const subscribeToAnnouncements = (
