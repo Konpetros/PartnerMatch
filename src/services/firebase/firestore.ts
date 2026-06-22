@@ -184,14 +184,35 @@ export const deleteUserData = async (userId: string): Promise<void> => {
   // Note: listings are kept for data integrity but marked as deleted
 };
 
-export const saveUserSettings = async (userId: string, settings: { emailNotifications: boolean }): Promise<void> => {
+export const saveUserSettings = async (userId: string, settings: {
+  emailNotifications?: boolean;
+  showEmailOnProfile?: boolean;
+  showLocationOnProfile?: boolean;
+  profilePublic?: boolean;
+}): Promise<void> => {
   await setDoc(doc(db, 'users', userId), { settings }, { merge: true });
 };
 
-export const getUserSettings = async (userId: string): Promise<{ emailNotifications: boolean }> => {
+export const getUserSettings = async (userId: string): Promise<{
+  emailNotifications: boolean;
+  showEmailOnProfile: boolean;
+  showLocationOnProfile: boolean;
+  profilePublic: boolean;
+}> => {
   const snap = await getDoc(doc(db, 'users', userId));
-  if (!snap.exists()) return { emailNotifications: true };
-  return snap.data()?.settings || { emailNotifications: true };
+  if (!snap.exists()) return {
+    emailNotifications: true,
+    showEmailOnProfile: true,
+    showLocationOnProfile: true,
+    profilePublic: true,
+  };
+  const settings = snap.data()?.settings || {};
+  return {
+    emailNotifications: settings.emailNotifications ?? true,
+    showEmailOnProfile: settings.showEmailOnProfile ?? true,
+    showLocationOnProfile: settings.showLocationOnProfile ?? true,
+    profilePublic: settings.profilePublic ?? true,
+  };
 };
 
 // ─── ANNOUNCEMENTS ───────────────────────────────────────────

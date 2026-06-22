@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check } from 'lucide-react';
+import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield } from 'lucide-react';
 import { updateUserPassword, deleteUserAccount, isEmailPasswordUser } from '../services/firebase/auth';
 import { deleteUserData, saveUserSettings, getUserSettings } from '../services/firebase/firestore';
 
@@ -34,9 +34,18 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
   const [notifLoading, setNotifLoading] = useState(false);
   const [notifSaved, setNotifSaved] = useState(false);
 
+  // Privacy preferences state
+  const [showEmailOnProfile, setShowEmailOnProfile] = useState(true);
+  const [showLocationOnProfile, setShowLocationOnProfile] = useState(true);
+  const [profilePublic, setProfilePublic] = useState(true);
+  const [privacySaved, setPrivacySaved] = useState(false);
+
   useEffect(() => {
     getUserSettings(currentUserUid).then(settings => {
       setEmailNotifications(settings.emailNotifications);
+      setShowEmailOnProfile(settings.showEmailOnProfile);
+      setShowLocationOnProfile(settings.showLocationOnProfile);
+      setProfilePublic(settings.profilePublic);
     });
   }, [currentUserUid]);
 
@@ -123,6 +132,72 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
       <div>
         <h2 className="text-lg font-black text-slate-800 font-sans tracking-tight">Account Settings</h2>
         <p className="text-xs text-slate-500 mt-1">Manage your account preferences and security.</p>
+      </div>
+
+      {/* Privacy & Visibility */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4 shadow-sm">
+        <div className="flex items-center space-x-2">
+          <Shield className="w-4 h-4 text-brand-primary" />
+          <h3 className="text-sm font-bold text-slate-800">Privacy & Visibility</h3>
+          {privacySaved && <span className="text-xs text-emerald-600 font-bold flex items-center space-x-1"><Check className="w-3 h-3" /><span>Saved</span></span>}
+        </div>
+        <p className="text-xs text-slate-500">Control what information is visible to other organisations on PartnerMatch.</p>
+        <div className="space-y-3 divide-y divide-slate-50">
+          <div className="flex items-center justify-between pt-1">
+            <div>
+              <p className="text-xs font-semibold text-slate-700">Show email on listings & profile</p>
+              <p className="text-[11px] text-slate-400">Your contact email will be visible to other users</p>
+            </div>
+            <button
+              onClick={async () => {
+                const val = !showEmailOnProfile;
+                setShowEmailOnProfile(val);
+                await saveUserSettings(currentUserUid, { showEmailOnProfile: val });
+                setPrivacySaved(true);
+                setTimeout(() => setPrivacySaved(false), 2000);
+              }}
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer shrink-0 ${showEmailOnProfile ? 'bg-brand-primary' : 'bg-slate-200'}`}
+            >
+              <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${showEmailOnProfile ? 'translate-x-4' : 'translate-x-0.5'}`} />
+            </button>
+          </div>
+          <div className="flex items-center justify-between pt-3">
+            <div>
+              <p className="text-xs font-semibold text-slate-700">Show city/location on profile</p>
+              <p className="text-[11px] text-slate-400">Your city will be shown alongside your country</p>
+            </div>
+            <button
+              onClick={async () => {
+                const val = !showLocationOnProfile;
+                setShowLocationOnProfile(val);
+                await saveUserSettings(currentUserUid, { showLocationOnProfile: val });
+                setPrivacySaved(true);
+                setTimeout(() => setPrivacySaved(false), 2000);
+              }}
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer shrink-0 ${showLocationOnProfile ? 'bg-brand-primary' : 'bg-slate-200'}`}
+            >
+              <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${showLocationOnProfile ? 'translate-x-4' : 'translate-x-0.5'}`} />
+            </button>
+          </div>
+          <div className="flex items-center justify-between pt-3">
+            <div>
+              <p className="text-xs font-semibold text-slate-700">Make organisation profile public</p>
+              <p className="text-[11px] text-slate-400">Your organisation page will be discoverable by others</p>
+            </div>
+            <button
+              onClick={async () => {
+                const val = !profilePublic;
+                setProfilePublic(val);
+                await saveUserSettings(currentUserUid, { profilePublic: val });
+                setPrivacySaved(true);
+                setTimeout(() => setPrivacySaved(false), 2000);
+              }}
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer shrink-0 ${profilePublic ? 'bg-brand-primary' : 'bg-slate-200'}`}
+            >
+              <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${profilePublic ? 'translate-x-4' : 'translate-x-0.5'}`} />
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Email Notifications */}
