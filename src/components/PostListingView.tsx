@@ -45,6 +45,7 @@ export default function PostListingView({
   const [description, setDescription] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [projectRole, setProjectRole] = useState<'Coordinator' | 'Partner' | 'Both' | ''>('');
+  const [title, setTitle] = useState('');
 
   // Pre-fill contact email once profile loads
   useEffect(() => {
@@ -138,6 +139,9 @@ export default function PostListingView({
         errors.push('Partner search deadline must be a future date.');
       }
     }
+    if (!title.trim()) {
+      errors.push('Please provide a title for your partner search listing.');
+    }
     if (!description.trim()) {
       errors.push('Please provide a partner search description.');
     }
@@ -163,6 +167,7 @@ export default function PostListingView({
     const newListing: Listing = {
       id: newId,
       name: profile.organisationName,
+      title: title.trim(),
       type: profile.organisationType,
       country: profile.country,
       countryFlag: profile.countryFlag,
@@ -192,6 +197,7 @@ export default function PostListingView({
     setDescription('');
     setPartnerSearchDeadline('');
     setProjectRole('');
+    setTitle('');
     setPreviewUrl(null);
     setIsSuccess(false);
     setCreatedId('');
@@ -523,6 +529,25 @@ export default function PostListingView({
               />
               <p className="text-[11px] text-slate-400 font-medium">
                 The date you need to find a partner by. Your listing will expire automatically on this date.
+              </p>
+            </div>
+
+            {/* Partner Call Title */}
+            <div className="space-y-1">
+              <label htmlFor="form-listing-title" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                Partner Call Title *
+              </label>
+              <input
+                id="form-listing-title"
+                type="text"
+                required
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="e.g. Seeking VET partners for KA220 project on green skills"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all"
+              />
+              <p className="text-[11px] text-slate-400 font-medium">
+                A short, descriptive title that tells potential partners what your project is about.
               </p>
             </div>
 
