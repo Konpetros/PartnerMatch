@@ -554,12 +554,34 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           <span className="bg-slate-100 text-slate-700 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider shrink-0">
                             {listing.type}
                           </span>
+                          {listing.projectRole && (
+                            <>
+                              {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
+                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700 shrink-0">
+                                  🎯 Coordinator
+                                </span>
+                              )}
+                              {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
+                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-teal-100 text-teal-700 shrink-0">
+                                  🤝 Partner
+                                </span>
+                              )}
+                            </>
+                          )}
                           {listing.keyActions.map((action) => (
                             <span
                               key={action}
                               className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded ${getKeyActionBadgeStyle(action)} shrink-0`}
                             >
                               {action}
+                            </span>
+                          ))}
+                          {listing.sectors && listing.sectors.map((sector) => (
+                            <span
+                              key={sector}
+                              className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 shrink-0"
+                            >
+                              {sector}
                             </span>
                           ))}
                         </div>
@@ -620,6 +642,15 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                         </div>
                       </div>
 
+                      {listing.title && (
+                        <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-brand-primary transition-colors">
+                          {listing.title}
+                        </h3>
+                      )}
+                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 flex-1">
+                        {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
+                      </p>
+
                       <div className="flex flex-wrap gap-1.5 items-center">
                         <span className="bg-slate-100 text-slate-700 text-[10px] font-extrabold uppercase px-2 py-1 rounded-md tracking-wider">
                           {listing.type}
@@ -664,15 +695,6 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           {listing.submitterProfile?.experienceLevel || ''}
                         </span>
                       </div>
-
-                      {listing.title && (
-                        <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-brand-primary transition-colors -mb-1">
-                          {listing.title}
-                        </h3>
-                      )}
-                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 flex-1">
-                        {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
-                      </p>
 
                       {/* Highly aesthetic metadata snippet */}
                       <div className="pt-2.5 border-t border-gray-100 flex flex-wrap gap-1">
