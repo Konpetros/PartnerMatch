@@ -13,6 +13,7 @@ export type KeyAction = 'KA1' | 'KA2' | 'KA3';
 export interface Listing {
   id: string;
   name: string;
+  title: string;
   type: OrganisationType;
   country: string;
   countryFlag: string;
