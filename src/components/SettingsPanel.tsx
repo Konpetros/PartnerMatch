@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield } from 'lucide-react';
 import { updateUserPassword, deleteUserAccount, isEmailPasswordUser } from '../services/firebase/auth';
-import { deleteUserData, saveUserSettings, getUserSettings } from '../services/firebase/firestore';
+import { deleteUserData, saveUserSettings, getUserSettings, saveProfilePrivacySettings } from '../services/firebase/firestore';
 
 interface SettingsPanelProps {
   currentUserUid: string;
@@ -153,6 +153,7 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
                 const val = !showEmailOnProfile;
                 setShowEmailOnProfile(val);
                 await saveUserSettings(currentUserUid, { showEmailOnProfile: val });
+                await saveProfilePrivacySettings(currentUserUid, { showEmailOnProfile: val });
                 setPrivacySaved(true);
                 setTimeout(() => setPrivacySaved(false), 2000);
               }}
@@ -171,6 +172,7 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
                 const val = !showLocationOnProfile;
                 setShowLocationOnProfile(val);
                 await saveUserSettings(currentUserUid, { showLocationOnProfile: val });
+                await saveProfilePrivacySettings(currentUserUid, { showLocationOnProfile: val });
                 setPrivacySaved(true);
                 setTimeout(() => setPrivacySaved(false), 2000);
               }}
@@ -189,6 +191,7 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
                 const val = !profilePublic;
                 setProfilePublic(val);
                 await saveUserSettings(currentUserUid, { profilePublic: val });
+                await saveProfilePrivacySettings(currentUserUid, { profilePublic: val });
                 setPrivacySaved(true);
                 setTimeout(() => setPrivacySaved(false), 2000);
               }}
