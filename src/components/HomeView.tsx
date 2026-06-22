@@ -442,7 +442,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                     <div className="flex flex-col">
                       {listing.keyActions.length > 0 && (
                         <div className="flex items-center gap-2 py-1.5">
-                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">KA</span>
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Key Action</span>
                           <div className="flex flex-wrap gap-1">
                             {listing.keyActions.map((action) => (
                               <span key={action} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">

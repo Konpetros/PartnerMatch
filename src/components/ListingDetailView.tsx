@@ -124,7 +124,7 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation 
             <div className="bg-slate-50 rounded-2xl border border-slate-100 px-4 py-1 flex flex-col">
               {listing.keyActions.length > 0 && (
                 <div className="flex items-center gap-3 py-2.5">
-                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[52px] shrink-0">KA</span>
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[52px] shrink-0">Key Action</span>
                   <div className="flex flex-wrap gap-1.5">
                     {listing.keyActions.map((action) => (
                       <span key={action} className="text-[9px] font-extrabold px-2.5 py-1 rounded-md bg-blue-100 text-blue-800">
