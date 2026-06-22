@@ -38,6 +38,9 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation 
     contactEmail: listing.contactEmail,
     logoUrl: '',
     description: '',
+    showEmailOnProfile: true,
+    showLocationOnProfile: true,
+    profilePublic: true,
   };
 
   const formatDate = (dateStr: string) => {
@@ -210,10 +213,12 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation 
               </div>
 
               <div className="space-y-2 text-xs text-slate-600 font-medium">
-                <div className="flex items-center space-x-2">
-                  <Mail className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                  <span className="truncate">{listing.contactEmail}</span>
-                </div>
+                {(profile.showEmailOnProfile ?? true) && (
+                  <div className="flex items-center space-x-2">
+                    <Mail className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <span className="truncate">{listing.contactEmail}</span>
+                  </div>
+                )}
                 {profile.website && (
                   <div className="flex items-center space-x-2">
                     <Globe className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -230,14 +235,20 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation 
               </div>
 
               <div className="space-y-2 pt-1">
-                <a
-                  id="contact-mailto-button"
-                  href={`mailto:${listing.contactEmail}?subject=Erasmus+ Partnership Enquiry via PartnerMatch`}
-                  className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-3 rounded-brand font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 text-center cursor-pointer"
-                >
-                  <Mail className="w-4 h-4 text-brand-accent shrink-0" />
-                  <span>Contact Organisation</span>
-                </a>
+                {(profile.showEmailOnProfile ?? true) ? (
+                  <a
+                    id="contact-mailto-button"
+                    href={`mailto:${listing.contactEmail}?subject=Erasmus+ Partnership Enquiry via PartnerMatch`}
+                    className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-3 rounded-brand font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 text-center cursor-pointer"
+                  >
+                    <Mail className="w-4 h-4 text-brand-accent shrink-0" />
+                    <span>Contact Organisation</span>
+                  </a>
+                ) : (
+                  <div className="w-full flex items-center justify-center py-3 rounded-xl text-sm text-slate-400 border border-dashed border-slate-200 font-medium">
+                    Contact details hidden by organisation
+                  </div>
+                )}
                 <button
                   type="button"
                   onClick={() => onViewOrganisation(listing.id)}
@@ -279,7 +290,9 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation 
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400 text-xs font-bold uppercase tracking-wide">Location</span>
                   <span className="text-slate-800 font-bold text-xs">
-                    {profile.city ? `${profile.city}, ${listing.country}` : listing.country}
+                    {(profile.showLocationOnProfile ?? true) && profile.city
+                      ? `${profile.city}, ${listing.country}`
+                      : listing.country}
                   </span>
                 </div>
                 {profile.experienceLevel && (
