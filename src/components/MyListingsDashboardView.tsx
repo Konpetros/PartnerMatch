@@ -686,9 +686,14 @@ export default function MyListingsDashboardView({
                                 </div>
                               )}
                               <div className="space-y-0.5">
-                                <h4 className="font-bold text-slate-800 text-xs sm:text-sm line-clamp-1 group-hover:text-brand-primary transition-colors">
+                                {listing.title && (
+                                  <h4 className="font-bold text-slate-800 text-xs sm:text-sm line-clamp-1 group-hover:text-brand-primary transition-colors">
+                                    {listing.title}
+                                  </h4>
+                                )}
+                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider line-clamp-1">
                                   {listing.name}
-                                </h4>
+                                </p>
                                 <p className="text-[11px] text-slate-500 font-medium flex items-center space-x-1">
                                   <span>{listing.countryFlag}</span>
                                   <span>{listing.submitterProfile?.city || (listing as any).city ? `${listing.submitterProfile?.city || (listing as any).city}, ` : ''}{listing.country}</span>
@@ -818,9 +823,14 @@ export default function MyListingsDashboardView({
                             </div>
                           )}
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-bold text-slate-800 text-xs line-clamp-2 leading-snug">
+                            {listing.title && (
+                              <h4 className="font-bold text-slate-800 text-xs line-clamp-2 leading-snug">
+                                {listing.title}
+                              </h4>
+                            )}
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                               {listing.name}
-                            </h4>
+                            </p>
                             <p className="text-[10px] text-slate-500 font-semibold mt-0.5 flex items-center space-x-1">
                               <span>{listing.countryFlag}</span>
                               <span>{listing.submitterProfile?.city || (listing as any).city ? `${listing.submitterProfile?.city || (listing as any).city}, ` : ''}{listing.country}</span>
