@@ -278,7 +278,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             <div className="space-y-1 flex-1 text-center">
               <h2 className="text-3xl font-black text-slate-850">Recent Partner Calls</h2>
               <p className="text-slate-500 text-sm font-semibold">
-                The latest organisations looking for Erasmus+ partners
+                The latest Erasmus+ partner calls from organisations across Europe
               </p>
             </div>
             <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 gap-1 shrink-0">
