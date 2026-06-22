@@ -275,7 +275,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
       {recentActiveListings.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex items-center justify-between">
-            <div className="space-y-1">
+            <div className="space-y-1 flex-1 text-center">
               <h2 className="text-3xl font-black text-slate-850">Recent Partner Calls</h2>
               <p className="text-slate-500 text-sm font-semibold">
                 The latest organisations looking for Erasmus+ partners
