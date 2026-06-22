@@ -267,6 +267,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
             <span>✓ Free to browse</span>
             <span>✓ Free to list</span>
             <span>✓ Pan-European</span>
+            <span>✓ Independent</span>
           </div>
         </div>
       </section>
