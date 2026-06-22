@@ -407,16 +407,26 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                           {listing.name.charAt(0).toUpperCase()}
                         </div>
                       )}
-                      <div className="min-w-0">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                           {listing.name}
                         </span>
-                        <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1">
+                        <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1 mt-0.5">
                           <span>{flag}</span>
                           <span className="truncate">
                             {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
                           </span>
                         </span>
+                      </div>
+                      <div className="flex flex-col items-end gap-1 shrink-0">
+                        <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wide">
+                          {listing.type}
+                        </span>
+                        {listing.submitterProfile?.experienceLevel && (
+                          <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
+                            {listing.submitterProfile.experienceLevel}
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -429,49 +439,50 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                       {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
                     </p>
 
-                    <div className="flex flex-wrap gap-1.5 items-center">
-                      <span className="bg-slate-100 text-slate-700 text-[10px] font-extrabold uppercase px-2 py-1 rounded-md tracking-wider">
-                        {listing.type}
-                      </span>
-                      {listing.projectRole && (
-                        <>
-                          {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
-                            <span className="text-[10px] font-extrabold px-2 py-1 rounded-md bg-purple-100 text-purple-700">
-                              🎯 Coordinator
-                            </span>
-                          )}
-                          {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
-                            <span className="text-[10px] font-extrabold px-2 py-1 rounded-md bg-teal-100 text-teal-700">
-                              🤝 Partner
-                            </span>
-                          )}
-                        </>
+                    <div className="flex flex-col">
+                      {listing.keyActions.length > 0 && (
+                        <div className="flex items-center gap-2 py-1.5">
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">KA</span>
+                          <div className="flex flex-wrap gap-1">
+                            {listing.keyActions.map((action) => (
+                              <span key={action} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
+                                {action}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
                       )}
-                      {listing.keyActions.map((action) => (
-                        <span
-                          key={action}
-                          className={`text-[10px] font-extrabold px-2 py-1 rounded-md ${getKeyActionBadgeStyle(action)}`}
-                        >
-                          {action}
+                      {listing.projectRole && (
+                        <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Role</span>
+                          <div className="flex flex-wrap gap-1">
+                            {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
+                              <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Coordinator</span>
+                            )}
+                            {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
+                              <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Partner</span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      {listing.sectors && listing.sectors.length > 0 && (
+                        <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Sector</span>
+                          <div className="flex flex-wrap gap-1">
+                            {listing.sectors.map((sector) => (
+                              <span key={sector} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                                {sector}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Deadline</span>
+                        <span className="text-[9px] font-extrabold bg-orange-50 text-orange-600 px-2 py-0.5 rounded-full">
+                          {formatDate(listing.partnerSearchDeadline)}
                         </span>
-                      ))}
-                      {listing.sectors && listing.sectors.map((sector) => (
-                        <span
-                          key={sector}
-                          className="text-[10px] font-extrabold px-2 py-1 rounded-md bg-emerald-100 text-emerald-700"
-                        >
-                          {sector}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="flex flex-wrap gap-2">
-                      <span className="bg-orange-50 text-orange-600 font-bold text-[11px] px-2.5 py-1 rounded-full flex items-center gap-1 shrink-0">
-                        🗓 Deadline: {formatDate(listing.partnerSearchDeadline)}
-                      </span>
-                      <span className="bg-slate-100 text-slate-600 font-bold text-[11px] px-2.5 py-1 rounded-full shrink-0">
-                        {listing.submitterProfile?.experienceLevel || ''}
-                      </span>
+                      </div>
                     </div>
 
                     {/* Highly aesthetic metadata snippet */}
