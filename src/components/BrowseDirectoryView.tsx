@@ -549,7 +549,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
                           <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-brand-primary transition-colors">
-                            {listing.name}
+                            {listing.title || listing.name}
                           </h3>
                           <span className="bg-slate-100 text-slate-700 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider shrink-0">
                             {listing.type}
@@ -608,10 +608,10 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           </div>
                         )}
                         <div className="min-w-0">
-                          <h3 className="font-bold text-slate-800 text-base leading-snug line-clamp-1 group-hover:text-brand-primary transition-colors">
+                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
                             {listing.name}
-                          </h3>
-                          <span className="text-xs font-bold text-slate-500 flex items-center space-x-1">
+                          </span>
+                          <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1">
                             <span>{flag}</span>
                             <span className="truncate">
                               {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
@@ -665,7 +665,12 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                         </span>
                       </div>
 
-                      <p className="text-slate-500 text-xs leading-relaxed flex-1 line-clamp-3 font-sans">
+                      {listing.title && (
+                        <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-brand-primary transition-colors -mb-1">
+                          {listing.title}
+                        </h3>
+                      )}
+                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 flex-1">
                         {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
                       </p>
 

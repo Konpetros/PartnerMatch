@@ -304,10 +304,10 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                         </div>
                       )}
                       <div className="min-w-0">
-                        <h3 className="font-bold text-slate-800 text-base leading-snug line-clamp-1 group-hover:text-brand-primary transition-colors">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
                           {listing.name}
-                        </h3>
-                        <span className="text-xs font-bold text-slate-500 flex items-center space-x-1">
+                        </span>
+                        <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1">
                           <span>{flag}</span>
                           <span className="truncate">
                             {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
@@ -361,6 +361,11 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                       </span>
                     </div>
 
+                    {listing.title && (
+                      <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-brand-primary transition-colors -mb-1">
+                        {listing.title}
+                      </h3>
+                    )}
                     <p className="text-slate-500 text-xs leading-relaxed flex-1 line-clamp-3">
                       {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
                     </p>
