@@ -642,19 +642,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                             </span>
                           </span>
                         </div>
-                        <div className="flex flex-col items-end gap-1 shrink-0">
-                          <div className="flex items-center gap-1">
-                            <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wide">
-                              {listing.type}
-                            </span>
-                            <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} />
-                          </div>
-                          {listing.submitterProfile?.experienceLevel && (
-                            <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
-                              {listing.submitterProfile.experienceLevel}
-                            </span>
-                          )}
-                        </div>
+                        <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} />
                       </div>
 
                       {listing.title && (
