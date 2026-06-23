@@ -97,26 +97,26 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in font-sans">
-        <div className="flex items-center justify-between">
-          <button
-            id="detail-back-button"
-            onClick={onBack}
-            className="inline-flex items-center space-x-2 text-sm font-bold text-slate-600 hover:text-brand-primary bg-white px-4 py-2.5 rounded-xl border border-blue-50 hover:border-blue-150 shadow-sm transition-all cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Directory</span>
-          </button>
-          <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} size="md" />
-        </div>
+        <button
+          id="detail-back-button"
+          onClick={onBack}
+          className="inline-flex items-center space-x-2 text-sm font-bold text-slate-600 hover:text-brand-primary bg-white px-4 py-2.5 rounded-xl border border-blue-50 hover:border-blue-150 shadow-sm transition-all cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Directory</span>
+        </button>
 
       <div className="bg-white rounded-[24px] border border-blue-50/80 shadow-sm overflow-hidden p-6 sm:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
           <div className="lg:col-span-2 space-y-8">
             <div className="space-y-3">
-              <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-                {listing.title || listing.name}
-              </h1>
+              <div className="flex items-start justify-between gap-3">
+                <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+                  {listing.title || listing.name}
+                </h1>
+                <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} size="md" />
+              </div>
               <p className="text-xs text-slate-400 font-semibold">
                 {getRelativeTime(listing.createdAt)}
                 {listing.createdAt && listing.partnerSearchDeadline ? ' · ' : ''}
