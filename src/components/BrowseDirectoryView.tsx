@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Listing, SearchFilters, KeyAction } from '../types';
+import FavouriteButton from './FavouriteButton';
 import { COUNTRIES, ORGANISATION_TYPES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import { 
   Search, 
@@ -20,11 +21,12 @@ interface BrowseViewProps {
   listings: Listing[];
   onNavigate: (view: string) => void;
   onSelectListing: (id: string) => void;
+  currentUserUid?: string | null;
 }
 
 const LISTINGS_PER_PAGE = 15;
 
-export default function BrowseDirectoryView({ listings, onNavigate, onSelectListing }: BrowseViewProps) {
+export default function BrowseDirectoryView({ listings, onNavigate, onSelectListing, currentUserUid }: BrowseViewProps) {
   // Search & Filter State
   const [filters, setFilters] = useState<SearchFilters>({
     searchQuery: '',
@@ -641,9 +643,12 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           </span>
                         </div>
                         <div className="flex flex-col items-end gap-1 shrink-0">
-                          <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wide">
-                            {listing.type}
-                          </span>
+                          <div className="flex items-center gap-1">
+                            <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wide">
+                              {listing.type}
+                            </span>
+                            <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} />
+                          </div>
                           {listing.submitterProfile?.experienceLevel && (
                             <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
                               {listing.submitterProfile.experienceLevel}

@@ -5,6 +5,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Listing, KeyAction } from '../types';
+import FavouriteButton from './FavouriteButton';
 import { 
   Search, 
   ArrowRight, 
@@ -22,9 +23,10 @@ interface HomeViewProps {
   listings: Listing[];
   onNavigate: (view: string) => void;
   onSelectListing: (id: string) => void;
+  currentUserUid?: string | null;
 }
 
-export default function HomeView({ listings, onNavigate, onSelectListing }: HomeViewProps) {
+export default function HomeView({ listings, onNavigate, onSelectListing, currentUserUid }: HomeViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -420,9 +422,12 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                         </span>
                       </div>
                       <div className="flex flex-col items-end gap-1 shrink-0">
-                        <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wide">
-                          {listing.type}
-                        </span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wide">
+                            {listing.type}
+                          </span>
+                          <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} />
+                        </div>
                         {listing.submitterProfile?.experienceLevel && (
                           <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
                             {listing.submitterProfile.experienceLevel}
