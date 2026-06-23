@@ -174,7 +174,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-4 animate-fade-in font-sans" id="org-profile-view-root">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-4 animate-fade-in font-sans" id="org-profile-view-root">
 
       {/* Back button */}
       <button
