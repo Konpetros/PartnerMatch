@@ -219,7 +219,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
   return (
     <div className="space-y-12 pb-16">
       {/* 1. HERO SECTION */}
-      <section ref={heroRef} className="bg-brand-bg pt-8 pb-16 sm:pt-12 sm:pb-20 px-4 relative overflow-hidden">
+      <section ref={heroRef} className="bg-brand-bg pt-8 pb-16 sm:pt-12 sm:pb-20 px-4 relative overflow-hidden min-h-[calc(90vh-72px)]">
         <canvas
           ref={canvasRef}
           className="absolute top-0 left-0 w-full h-full pointer-events-none z-0"
