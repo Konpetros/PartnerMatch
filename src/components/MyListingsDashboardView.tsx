@@ -18,7 +18,6 @@ import {
   Search, 
   Pencil, 
   Trash2, 
-  MoreVertical, 
   CheckCircle, 
   X,
   AlertCircle,
@@ -173,8 +172,7 @@ export default function MyListingsDashboardView({
     showToast('Profile updated successfully!');
   };
 
-  // Dropdown menus and deletion states
-  const [menuOpenListingId, setMenuOpenListingId] = useState<string | null>(null);
+
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const showToast = (message: string) => {
@@ -307,13 +305,7 @@ export default function MyListingsDashboardView({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in relative">
       
-      {/* Click-away backdrop to close open status dropdowns */}
-      {menuOpenListingId && (
-        <div 
-          className="fixed inset-0 z-10 bg-transparent" 
-          onClick={() => setMenuOpenListingId(null)} 
-        />
-      )}
+
 
       {/* Main Grid Wrapper */}
       <div className="flex flex-col lg:flex-row gap-8 items-start">
@@ -898,47 +890,7 @@ export default function MyListingsDashboardView({
                                 <Trash2 className="w-4 h-4" />
                               </button>
 
-                              {/* Dropdown status toggler */}
-                              <div className="relative">
-                                <button
-                                  onClick={() => setMenuOpenListingId(menuOpenListingId === listing.id ? null : listing.id)}
-                                  className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-                                  title="Change Status"
-                                >
-                                  <MoreVertical className="w-4 h-4" />
-                                </button>
 
-                                {/* Dropdown menu container */}
-                                {menuOpenListingId === listing.id && (
-                                  <div className="absolute right-0 mt-1.5 w-52 bg-white border border-slate-150 rounded-xl shadow-2xl py-1.5 z-20 text-left border border-slate-100/80 animate-fade-in">
-                                    <div className="px-3 py-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100/80 pb-1.5 mb-1 select-none">
-                                      Toggle State
-                                    </div>
-                                    <button
-                                      onClick={() => {
-                                        onUpdateListingStatus(listing.id, 'active');
-                                        setMenuOpenListingId(null);
-                                        showToast('Status changed to Actively Seeking');
-                                      }}
-                                      className="w-full px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50/70 text-left flex items-center space-x-2"
-                                    >
-                                      <div className="w-2 h-2 rounded-full bg-green-500 shrink-0 animate-pulse" />
-                                      <span>Mark as Actively Seeking</span>
-                                    </button>
-                                    <button
-                                      onClick={() => {
-                                        onUpdateListingStatus(listing.id, 'partnership-found');
-                                        setMenuOpenListingId(null);
-                                        showToast('Status changed to Partnership Found');
-                                      }}
-                                      className="w-full px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50/70 text-left flex items-center space-x-2"
-                                    >
-                                      <div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
-                                      <span>Mark as Partnership Found</span>
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
                             </div>
                           </td>
                         </tr>
@@ -1034,43 +986,7 @@ export default function MyListingsDashboardView({
                             <span>Delete</span>
                           </button>
                           
-                          <div className="relative">
-                            <button
-                              onClick={() => setMenuOpenListingId(menuOpenListingId === listing.id ? null : listing.id)}
-                              className="p-1 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-105 flex items-center"
-                              title="More Options"
-                            >
-                              <MoreVertical className="w-3 h-3" />
-                            </button>
 
-                            {/* Dropdown position in mobile cards layout */}
-                            {menuOpenListingId === listing.id && (
-                              <div className="absolute right-0 bottom-full mb-1.5 w-48 bg-white border border-slate-150 rounded-xl shadow-2xl py-1 z-25 text-left animate-fade-in text-xs font-bold">
-                                <button
-                                  onClick={() => {
-                                    onUpdateListingStatus(listing.id, 'active');
-                                    setMenuOpenListingId(null);
-                                    showToast('Status updated to Active');
-                                  }}
-                                  className="w-full px-3 py-2 hover:bg-slate-50 text-left flex items-center space-x-2 border-b border-slate-100"
-                                >
-                                  <div className="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" />
-                                  <span>Actively Seeking</span>
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    onUpdateListingStatus(listing.id, 'partnership-found');
-                                    setMenuOpenListingId(null);
-                                    showToast('Status updated to Partnership Found');
-                                  }}
-                                  className="w-full px-3 py-2 hover:bg-slate-50 text-left flex items-center space-x-2"
-                                >
-                                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
-                                  <span>Partnership Found</span>
-                                </button>
-                              </div>
-                            )}
-                          </div>
                         </div>
 
                       </div>
