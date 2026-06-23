@@ -164,6 +164,7 @@ export default function AppRouter({
         listings={listings}
         onNavigate={onNavigate}
         onSelectListing={onSelectListing}
+        currentUserUid={currentUser}
       />
     );
   }
@@ -174,6 +175,7 @@ export default function AppRouter({
         listings={listings}
         onNavigate={onNavigate}
         onSelectListing={onSelectListing}
+        currentUserUid={currentUser}
       />
     );
   }
@@ -233,6 +235,7 @@ export default function AppRouter({
           listing={activeItem}
           onBack={() => onNavigate('home')}
           onViewOrganisation={onViewOrgProfile}
+          currentUserUid={currentUser}
         />
       );
     }
