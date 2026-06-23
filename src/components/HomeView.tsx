@@ -335,13 +335,13 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                         {listing.projectRole && (
                           <>
                             {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
-                              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700 shrink-0">
-                                🎯 Coordinator
+                              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-violet-100 text-violet-800 shrink-0">
+                                Coordinator
                               </span>
                             )}
                             {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
-                              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-teal-100 text-teal-700 shrink-0">
-                                🤝 Partner
+                              <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-violet-100 text-violet-800 shrink-0">
+                                Partner
                               </span>
                             )}
                           </>
@@ -349,7 +349,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                         {listing.keyActions.map((action) => (
                           <span
                             key={action}
-                            className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded ${getKeyActionBadgeStyle(action)} shrink-0`}
+                            className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 shrink-0"
                           >
                             {action}
                           </span>
@@ -357,7 +357,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing }: Home
                         {listing.sectors && listing.sectors.map((sector) => (
                           <span
                             key={sector}
-                            className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 shrink-0"
+                            className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0"
                           >
                             {sector}
                           </span>

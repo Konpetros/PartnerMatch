@@ -551,19 +551,19 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-brand-primary transition-colors">
                             {listing.title || listing.name}
                           </h3>
-                          <span className="bg-slate-100 text-slate-700 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider shrink-0">
+                          <span className="bg-slate-100 text-slate-600 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider shrink-0">
                             {listing.type}
                           </span>
                           {listing.projectRole && (
                             <>
                               {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
-                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700 shrink-0">
-                                  🎯 Coordinator
+                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-violet-100 text-violet-800 shrink-0">
+                                  Coordinator
                                 </span>
                               )}
                               {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
-                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-teal-100 text-teal-700 shrink-0">
-                                  🤝 Partner
+                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-violet-100 text-violet-800 shrink-0">
+                                  Partner
                                 </span>
                               )}
                             </>
@@ -571,7 +571,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           {listing.keyActions.map((action) => (
                             <span
                               key={action}
-                              className={`text-[9px] font-extrabold px-1.5 py-0.5 rounded ${getKeyActionBadgeStyle(action)} shrink-0`}
+                              className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 shrink-0"
                             >
                               {action}
                             </span>
@@ -579,7 +579,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           {listing.sectors && listing.sectors.map((sector) => (
                             <span
                               key={sector}
-                              className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 shrink-0"
+                              className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0"
                             >
                               {sector}
                             </span>
