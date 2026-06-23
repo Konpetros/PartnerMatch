@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Listing, KeyAction } from '../types';
+import FavouriteButton from './FavouriteButton';
 import { 
   ArrowLeft, 
   Mail, 
@@ -16,13 +17,14 @@ import {
   Target
 } from 'lucide-react';
 
-interface DetailViewProps {
+interface ListingDetailProps {
   listing: Listing;
   onBack: () => void;
-  onViewOrganisation: (id: string) => void;
+  onViewOrganisation: (listingId: string) => void;
+  currentUserUid?: string | null;
 }
 
-export default function ListingDetailView({ listing, onBack, onViewOrganisation }: DetailViewProps) {
+export default function ListingDetailView({ listing, onBack, onViewOrganisation, currentUserUid }: ListingDetailProps) {
   const profile = listing.submitterProfile || {
     organisationName: listing.name,
     organisationType: listing.type,
@@ -95,16 +97,17 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation 
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in font-sans">
-      <div>
-        <button
-          id="detail-back-button"
-          onClick={onBack}
-          className="inline-flex items-center space-x-2 text-sm font-bold text-slate-600 hover:text-brand-primary bg-white px-4 py-2.5 rounded-xl border border-blue-50 hover:border-blue-150 shadow-sm transition-all cursor-pointer"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Directory</span>
-        </button>
-      </div>
+        <div className="flex items-center justify-between">
+          <button
+            id="detail-back-button"
+            onClick={onBack}
+            className="inline-flex items-center space-x-2 text-sm font-bold text-slate-600 hover:text-brand-primary bg-white px-4 py-2.5 rounded-xl border border-blue-50 hover:border-blue-150 shadow-sm transition-all cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Directory</span>
+          </button>
+          <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} size="md" />
+        </div>
 
       <div className="bg-white rounded-[24px] border border-blue-50/80 shadow-sm overflow-hidden p-6 sm:p-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
