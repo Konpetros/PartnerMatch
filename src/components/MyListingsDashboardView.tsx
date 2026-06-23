@@ -415,7 +415,7 @@ export default function MyListingsDashboardView({
                   <p className="text-xs text-slate-400">Press the heart icon on any listing to save it here.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                   {listings
                     .filter(l => favouriteIds.includes(l.id) && (l.status === 'active' || !l.status))
                     .map(listing => {
