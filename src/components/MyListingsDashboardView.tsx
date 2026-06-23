@@ -23,11 +23,13 @@ import {
   X,
   AlertCircle,
   Megaphone,
-  Upload
+  Upload,
+  Heart
 } from 'lucide-react';
 import { Listing, OrganisationProfile, OrganisationType } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
-import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements } from '../services/firebase/firestore';
+import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites } from '../services/firebase/firestore';
+import FavouriteButton from './FavouriteButton';
 
 interface MyListingsViewProps {
   onOpenSignIn: () => void;
@@ -64,10 +66,17 @@ export default function MyListingsDashboardView({
   const [searchQuery, setSearchQuery] = useState('');
 
   // Active section to toggle between 'listings', 'settings' and 'announcements'
-  const [activeSection, setActiveSection] = useState<'listings' | 'settings' | 'announcements' | 'profile'>(initialSection);
+  const [activeSection, setActiveSection] = useState<'listings' | 'settings' | 'announcements' | 'profile' | 'favourites'>(initialSection);
+  const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
 
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (currentUser) {
+      getFavourites(currentUser).then(setFavouriteIds);
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     const unsubscribe = subscribeToAnnouncements((data) => {
@@ -343,6 +352,14 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
+              onClick={() => setActiveSection('favourites')}
+              className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left cursor-pointer ${activeSection === 'favourites' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
+            >
+              <Heart className="w-4 h-4 shrink-0" />
+              <span>Favourites</span>
+            </button>
+
+            <button
               onClick={() => setActiveSection('settings')}
               className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'settings' ? 'bg-blue-50 text-brand-primary' : 'text-slate-600 hover:bg-slate-50'}`}
             >
@@ -389,7 +406,62 @@ export default function MyListingsDashboardView({
 
         {/* MAIN CONTENT AREA */}
         <main className="flex-1 w-full space-y-6">
-          {activeSection === 'settings' ? (
+          {activeSection === 'favourites' ? (
+            <div className="space-y-4 animate-fade-in">
+              <div className="border-b border-slate-100 pb-4">
+                <h2 className="text-xl font-extrabold text-slate-800">Saved Listings</h2>
+                <p className="text-sm text-slate-500 mt-1">Partner calls you've saved for later.</p>
+              </div>
+              {favouriteIds.length === 0 ? (
+                <div className="text-center py-16 space-y-3">
+                  <Heart className="w-10 h-10 text-slate-200 mx-auto" />
+                  <p className="text-sm font-semibold text-slate-400">No saved listings yet</p>
+                  <p className="text-xs text-slate-400">Press the heart icon on any listing to save it here.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {listings
+                    .filter(l => favouriteIds.includes(l.id) && (l.status === 'active' || !l.status))
+                    .map(listing => {
+                      const flag = listing.countryFlag || '🇪🇺';
+                      return (
+                        <div
+                          key={listing.id}
+                          className="bg-white rounded-2xl border border-slate-100 p-4 flex flex-col space-y-3 hover:border-blue-200 hover:shadow-sm transition-all"
+                        >
+                          <div className="flex items-center gap-3">
+                            {listing.submitterProfile?.logoUrl ? (
+                              <img src={listing.submitterProfile.logoUrl} alt={listing.name} className="w-10 h-10 rounded-lg object-contain border border-slate-100 bg-white p-1 shrink-0" referrerPolicy="no-referrer" />
+                            ) : (
+                              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
+                                {listing.name.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider truncate">{listing.name}</p>
+                              <p className="text-xs text-slate-500 flex items-center gap-1"><span>{flag}</span><span className="truncate">{listing.country}{listing.submitterProfile?.city ? `, ${listing.submitterProfile.city}` : ''}</span></p>
+                            </div>
+                            <FavouriteButton listingId={listing.id} currentUserUid={currentUser} />
+                          </div>
+                          {listing.title && (
+                            <p className="text-sm font-bold text-slate-800 line-clamp-2">{listing.title}</p>
+                          )}
+                          <div className="flex flex-wrap gap-1">
+                            {listing.keyActions.map(ka => (
+                              <span key={ka} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">{ka}</span>
+                            ))}
+                            {listing.projectRole && (
+                              <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">{listing.projectRole === 'Both' ? 'Coordinator & Partner' : listing.projectRole}</span>
+                            )}
+                          </div>
+                          <p className="text-[10px] font-bold text-orange-600">Deadline: {listing.partnerSearchDeadline}</p>
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
+            </div>
+          ) : activeSection === 'settings' ? (
             <SettingsPanel
               currentUserUid={currentUser || ''}
               onAccountDeleted={() => { onSignOut(); onNavigate('home'); }}
