@@ -371,6 +371,20 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
                           {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
                         </span>
                       </p>
+                      {listing.thematicAreas && listing.thematicAreas.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1.5">
+                          {listing.thematicAreas.slice(0, 2).map((area) => (
+                            <span key={area} className="text-[9px] font-bold text-brand-primary/80 bg-blue-50/40 px-2 py-0.5 rounded-full">
+                              #{area}
+                            </span>
+                          ))}
+                          {listing.thematicAreas.length > 2 && (
+                            <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">
+                              +{listing.thematicAreas.length - 2} more
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <div className="hidden sm:flex flex-col items-end text-right shrink-0">
                       <span className="text-orange-600 font-bold text-[11px]">
