@@ -291,6 +291,7 @@ export default function AppRouter({
         onOpenSignIn={onOpenSignIn}
         onNavigate={onNavigate}
         currentUser={currentUser}
+        currentUserUid={currentUserUid}
         listings={listings}
         onDeleteListing={onDeleteListing}
         onUpdateListingStatus={onUpdateListingStatus}

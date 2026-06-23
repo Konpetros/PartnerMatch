@@ -35,6 +35,7 @@ interface MyListingsViewProps {
   onOpenSignIn: () => void;
   onNavigate: (view: string) => void;
   currentUser: string | null;
+  currentUserUid?: string | null;
   listings: Listing[];
   onDeleteListing: (id: string) => void;
   onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found') => void;
@@ -48,6 +49,7 @@ export default function MyListingsDashboardView({
   onOpenSignIn, 
   onNavigate, 
   currentUser, 
+  currentUserUid,
   listings, 
   onDeleteListing, 
   onUpdateListingStatus, 
@@ -73,10 +75,10 @@ export default function MyListingsDashboardView({
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
 
   useEffect(() => {
-    if (currentUser) {
-      getFavourites(currentUser).then(setFavouriteIds);
+    if (currentUserUid) {
+      getFavourites(currentUserUid).then(setFavouriteIds);
     }
-  }, [currentUser]);
+  }, [currentUserUid]);
 
   useEffect(() => {
     const unsubscribe = subscribeToAnnouncements((data) => {
@@ -441,7 +443,7 @@ export default function MyListingsDashboardView({
                               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider truncate">{listing.name}</p>
                               <p className="text-xs text-slate-500 flex items-center gap-1"><span>{flag}</span><span className="truncate">{listing.country}{listing.submitterProfile?.city ? `, ${listing.submitterProfile.city}` : ''}</span></p>
                             </div>
-                            <FavouriteButton listingId={listing.id} currentUserUid={currentUser} />
+                            <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} />
                           </div>
                           {listing.title && (
                             <p className="text-sm font-bold text-slate-800 line-clamp-2">{listing.title}</p>
