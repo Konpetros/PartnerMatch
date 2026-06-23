@@ -34,6 +34,7 @@ interface AppRouterProps {
   listings: Listing[];
   profiles: ProfileWithUid[];
   currentUser: string | null;
+  currentUserUid: string | null;
   organisationProfile: OrganisationProfile | null;
   onNavigate: (view: string) => void;
   onSelectListing: (id: string) => void;
@@ -66,6 +67,7 @@ export default function AppRouter({
   listings,
   profiles,
   currentUser,
+  currentUserUid,
   organisationProfile,
   onNavigate,
   onSelectListing,
@@ -164,7 +166,7 @@ export default function AppRouter({
         listings={listings}
         onNavigate={onNavigate}
         onSelectListing={onSelectListing}
-        currentUserUid={currentUser}
+        currentUserUid={currentUserUid}
       />
     );
   }
@@ -175,7 +177,7 @@ export default function AppRouter({
         listings={listings}
         onNavigate={onNavigate}
         onSelectListing={onSelectListing}
-        currentUserUid={currentUser}
+        currentUserUid={currentUserUid}
       />
     );
   }
@@ -235,7 +237,7 @@ export default function AppRouter({
           listing={activeItem}
           onBack={() => onNavigate('home')}
           onViewOrganisation={onViewOrgProfile}
-          currentUserUid={currentUser}
+          currentUserUid={currentUserUid}
         />
       );
     }

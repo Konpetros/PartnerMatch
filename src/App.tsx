@@ -186,6 +186,7 @@ export default function App() {
           listings={listings}
           profiles={profiles}
           currentUser={currentUser}
+          currentUserUid={currentUserUid}
           organisationProfile={organisationProfile}
           onNavigate={handleNavigate}
           onSelectListing={handleSelectListing}
