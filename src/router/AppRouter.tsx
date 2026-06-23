@@ -285,7 +285,7 @@ export default function AppRouter({
     return <CookiePolicyView onNavigate={onNavigate} />;
   }
 
-  if (currentView === 'my-listings' || currentView === 'settings' || currentView === 'my-profile' || currentView === 'announcements') {
+  if (currentView === 'my-listings' || currentView === 'settings' || currentView === 'my-profile' || currentView === 'announcements' || currentView === 'favourites') {
     return (
       <MyListingsDashboardView
         onOpenSignIn={onOpenSignIn}
@@ -302,6 +302,7 @@ export default function AppRouter({
           currentView === 'settings' ? 'settings' :
           currentView === 'my-profile' ? 'profile' :
           currentView === 'announcements' ? 'announcements' :
+          currentView === 'favourites' ? 'favourites' :
           'listings'
         }
       />

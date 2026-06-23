@@ -40,7 +40,7 @@ interface MyListingsViewProps {
   onDeleteListing: (id: string) => void;
   onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found') => void;
   onSignOut: () => void;
-  initialSection?: 'listings' | 'settings' | 'announcements' | 'profile';
+  initialSection?: 'listings' | 'settings' | 'announcements' | 'profile' | 'favourites';
   organisationProfile?: OrganisationProfile | null;
   onUpdateProfile?: (profile: OrganisationProfile) => void;
 }

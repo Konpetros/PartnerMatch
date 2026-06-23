@@ -22,7 +22,8 @@ export type AppView =
   | 'settings'
   | 'gdpr'
   | 'cookie-policy'
-  | 'announcements';
+  | 'announcements'
+  | 'favourites';
 
 export interface NavigationState {
   currentView: AppView;
