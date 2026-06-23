@@ -38,22 +38,22 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
     {
       icon: Globe,
       title: "Pan-European Directory",
-      description: "Organisations from all Erasmus+ Programme Countries"
+      description: "Discover partner organisations from all 35+ Erasmus+ Programme Countries in one place"
     },
     {
       icon: Filter,
-      title: "Smart Filtering",
-      description: "Filter by country, organisation type, Key Action and thematic area"
+      title: "Powerful Filtering",
+      description: "Filter by country, organisation type, Key Action, sector, and thematic area"
     },
     {
       icon: Calendar,
       title: "Deadline Tracking",
-      description: "Every listing shows its partner search deadline"
+      description: "Every listing shows its partner search deadline so you never miss a collaboration window"
     },
     {
       icon: Sparkles,
-      title: "Always Free",
-      description: "Free to browse and free to list your organisation"
+      title: "Free — No Subscription Ever",
+      description: "Browsing the directory and listing your organisation is completely free, with no hidden fees"
     }
   ];
 
@@ -109,23 +109,31 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
   const faqs = [
     {
       question: "Is PartnerMatch free?",
-      answer: "Yes, completely free. Browsing listings and submitting your organisation profile costs nothing."
-    },
-    {
-      question: "Do I need an OID to register?",
-      answer: "No. OID is optional. However we recommend adding it as it builds trust with potential partners."
-    },
-    {
-      question: "Can I submit more than one listing?",
-      answer: "Yes. If you represent multiple organisations you can submit a separate listing for each one."
-    },
-    {
-      question: "How long does my listing stay active?",
-      answer: "Until the partner search deadline you selected when submitting. After that date your listing expires automatically."
+      answer: "Yes, completely free — both for browsing and for listing your organisation. There are no subscription fees, no premium tiers, and no hidden costs."
     },
     {
       question: "Is PartnerMatch affiliated with the European Commission?",
-      answer: "No. PartnerMatch is an independent directory. It is not affiliated with the European Commission, Erasmus+ programme, or any National Agency."
+      answer: "No. PartnerMatch is an independent platform. It is not affiliated with, endorsed by, or connected to the European Commission, the Erasmus+ programme, or any National Agency."
+    },
+    {
+      question: "Do I need an OID to register?",
+      answer: "No. An OID (Organisation ID) is optional when creating your profile. However, we strongly recommend adding it as it builds trust with potential partners and confirms your organisation's eligibility."
+    },
+    {
+      question: "What Key Actions does PartnerMatch support?",
+      answer: "PartnerMatch supports partner searches for KA1 (Learning Mobility), KA2 (Cooperation Partnerships including KA210 and KA220), and KA3 (Support for Policy Development). You can filter listings by Key Action when browsing."
+    },
+    {
+      question: "How long does my listing stay active?",
+      answer: "Until the partner search deadline you set when submitting. After that date your listing expires automatically. You can also manually mark a listing as 'Partnership Found' from your dashboard once you have found a suitable partner."
+    },
+    {
+      question: "Can I submit more than one listing?",
+      answer: "Yes. If your organisation is looking for partners across multiple projects or Key Actions, you can submit a separate listing for each one."
+    },
+    {
+      question: "How do I contact an organisation I found on PartnerMatch?",
+      answer: "Each active listing includes the organisation's contact email. Simply click 'Contact Organisation' on the listing detail page to send them an email directly. No intermediary, no forms — just direct contact."
     }
   ];
 
@@ -320,7 +328,7 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
               Ready to Find Your Partner?
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
-              Join hundreds of Erasmus+ schools, universities and NGOs already collaborating in our community.
+              Be among the first Erasmus+ organisations to list your partner search and get discovered by organisations across Europe.
             </p>
           </div>
 
