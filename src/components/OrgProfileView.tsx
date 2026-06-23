@@ -174,370 +174,273 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fade-in font-sans" id="org-profile-view-root">
-      {/* 1. BACK BUTTON */}
-      <div>
-        <button
-          onClick={onBack}
-          className="inline-flex items-center space-x-2 text-sm font-bold text-slate-600 hover:text-brand-primary bg-white px-4 py-2.5 rounded-xl border border-blue-50 hover:border-blue-150 shadow-sm transition-all cursor-pointer"
-          id="btn-back-to-orgs"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Organisations</span>
-        </button>
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-4 animate-fade-in font-sans" id="org-profile-view-root">
+
+      {/* Back button */}
+      <button
+        onClick={onBack}
+        className="inline-flex items-center space-x-2 text-sm font-bold text-slate-600 hover:text-brand-primary bg-white px-4 py-2.5 rounded-xl border border-slate-200 hover:border-blue-200 shadow-sm transition-all cursor-pointer"
+        id="btn-back-to-orgs"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        <span>Back to Organisations</span>
+      </button>
+
+      {/* 1. Identity card */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+        <div className="flex items-center gap-4">
+          {activeProfile.logoUrl ? (
+            <div className="w-16 h-16 rounded-xl border border-slate-100 bg-white flex items-center justify-center shrink-0 overflow-hidden p-1.5">
+              <img
+                src={activeProfile.logoUrl}
+                alt={`${activeProfile.organisationName} logo`}
+                className="max-w-full max-h-full object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+          ) : (
+            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-2xl shrink-0">
+              {activeProfile.organisationName.charAt(0).toUpperCase()}
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap mb-1.5">
+              <h1 className="text-xl font-extrabold text-slate-900">
+                {activeProfile.organisationName}
+              </h1>
+              {renderStatusBadge()}
+            </div>
+            <p className="text-sm text-slate-500 font-medium">
+              {activeProfile.countryFlag || '🇪🇺'} {activeProfile.country}{activeProfile.city ? `, ${activeProfile.city}` : ''}
+            </p>
+          </div>
+          {activeProfile.website && (
+            <a
+              href={activeProfile.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-1.5 text-sm font-bold text-brand-primary bg-slate-50 hover:bg-blue-50 border border-slate-200 px-4 py-2 rounded-xl transition-all shrink-0"
+            >
+              <span>Visit Website</span>
+              <Globe className="w-4 h-4" />
+            </a>
+          )}
+        </div>
       </div>
 
-      {/* 2. DEDICATED PROFILE CARD CONTAINER */}
-      <div className="bg-white rounded-[24px] border border-blue-50/80 shadow-sm overflow-hidden" id="org-profile-card">
-        {/* Dynamic Image Hero Banner */}
-        <div className="relative h-56 sm:h-64 w-full bg-slate-100">
-          {bannerImage ? (
-            <img
-              src={bannerImage}
-              alt={activeProfile.organisationName}
-              referrerPolicy="no-referrer"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-brand-primary to-blue-700" />
-          )}
-          {/* Cover gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-
-          {/* Floating tags overlay */}
-          <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-xs px-3 py-1 rounded-full text-xs font-bold text-slate-800 flex items-center space-x-1.5 shadow-sm">
-            <span>{activeProfile.countryFlag || '🇪🇺'}</span>
-            <span>{activeProfile.country}</span>
+      {/* 2. Organisation Details */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+        <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-4 pb-3 border-b border-slate-100">
+          Organisation Details
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex items-center gap-3">
+            <Building2 className="w-4 h-4 text-slate-400 shrink-0" />
+            <div>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Type</p>
+              <p className="text-sm font-bold text-slate-800">{activeProfile.organisationType}</p>
+            </div>
           </div>
-
-          <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-xs px-3 py-1 rounded-full text-xs font-bold text-white uppercase tracking-wider">
-            {activeProfile.organisationType}
+          <div className="flex items-center gap-3">
+            <FileText className="w-4 h-4 text-slate-400 shrink-0" />
+            <div>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Primary Erasmus+ Sector</p>
+              <p className="text-sm font-bold text-slate-800">{activeProfile.sector}</p>
+            </div>
           </div>
-
-          {/* Bottom aligned Overlay headings — logo on the left, text content alongside it */}
-          <div className="absolute bottom-6 left-6 right-6 text-white flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div className="flex items-end gap-4">
-              {/* Organisation Logo box sitting inside the banner, left of the text */}
-              {activeProfile.logoUrl && (
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white border-[3px] border-white shadow-xl flex items-center justify-center overflow-hidden p-2.5 shrink-0 ring-1 ring-slate-200/60">
-                  <img
-                    src={activeProfile.logoUrl}
-                    alt={`${activeProfile.organisationName} logo`}
-                    className="max-w-full max-h-full object-contain"
-                  />
-                </div>
-              )}
-
-              <div className="space-y-2 max-w-2xl">
-                {renderStatusBadge()}
-                <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-                  {activeProfile.organisationName}
-                </h1>
+          <div className="flex items-center gap-3">
+            <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+            <div>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Location</p>
+              <p className="text-sm font-bold text-slate-800">{activeProfile.city ? `${activeProfile.city}, ` : ''}{activeProfile.country}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Award className="w-4 h-4 text-slate-400 shrink-0" />
+            <div>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Experience</p>
+              <p className="text-sm font-bold text-slate-800">{activeProfile.experienceLevel}</p>
+            </div>
+          </div>
+          {activeProfile.foundedYear && (
+            <div className="flex items-center gap-3">
+              <Calendar className="w-4 h-4 text-slate-400 shrink-0" />
+              <div>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Founded</p>
+                <p className="text-sm font-bold text-slate-800">{activeProfile.foundedYear}</p>
               </div>
             </div>
-
-            {/* Submitter specific website block shortcut layout */}
-            {activeProfile.website && (
-              <a
-                href={activeProfile.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-1.5 bg-white/20 hover:bg-white/30 text-white text-xs font-bold px-4 py-2.5 rounded-xl backdrop-blur-xs transition-all w-max shrink-0"
-              >
-                <span>Visit Website</span>
-                <Globe className="w-4 h-4" />
-              </a>
-            )}
+          )}
+          <div className="flex items-center gap-3">
+            <FolderOpen className="w-4 h-4 text-slate-400 shrink-0" />
+            <div>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Past Projects</p>
+              <p className="text-sm font-bold text-slate-800">{activeProfile.previousProjects}</p>
+            </div>
           </div>
-        </div>
-
-        {/* 3. TWO-COLUMN GRID SEPARATION BELOW HERO */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 sm:p-8">
-          {/* Main Left Columns (2/3 width) */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Description */}
-            <div className="space-y-4">
-              <h2 className="text-xl font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-                <Building2 className="w-5 h-5 text-brand-primary shrink-0" />
-                <span>About This Organisation</span>
-              </h2>
-              <p className="text-slate-600 text-sm leading-relaxed whitespace-pre-line">
-                {activeProfile.description}
+          <div className="flex items-center gap-3">
+            <Hash className="w-4 h-4 text-slate-400 shrink-0" />
+            <div>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">OID Number</p>
+              <p className={activeProfile.oid ? "text-sm font-bold text-slate-800" : "text-sm italic text-slate-400 font-medium"}>
+                {activeProfile.oid || 'Not provided'}
               </p>
             </div>
-
-            {/* Render Mode A features: Thematic Areas, Deadlines and Call partner CTA */}
-            {props.listing && (
-              <>
-                {/* Thematics focus block */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-bold text-slate-800 flex items-center space-x-2">
-                    <FileText className="w-5 h-5 text-indigo-500 shrink-0" />
-                    <span>Thematic Focus Areas</span>
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {props.listing.thematicAreas.map((area) => (
-                      <span
-                        key={area}
-                        className="bg-blue-50/70 hover:bg-blue-100/70 text-brand-primary text-xs font-bold px-4 py-2 rounded-xl transition-colors border border-blue-100/40 shadow-2xs"
-                      >
-                        {area}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Interactive Call to action container */}
-                <div className="pt-2">
-                  {activeStatus === 'active' ? (
-                    <div className="bg-blue-50 border border-blue-200 rounded-[20px] p-6 space-y-4 shadow-2xs animate-fade-in">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div className="space-y-1">
-                          <h4 className="text-base font-extrabold text-blue-900 flex items-center space-x-2">
-                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-                            <span>This organisation is actively looking for partners</span>
-                          </h4>
-                          <p className="text-xs text-blue-700 font-semibold">
-                            Expiring Soon. Submit your partnership inquiry to secure a matching role.
-                          </p>
-                        </div>
-
-                        <div className="flex flex-wrap gap-1.5">
-                          {props.listing.keyActions.map((action) => (
-                            <span
-                              key={action}
-                              className={`text-[10px] uppercase font-black px-2.5 py-1 rounded-md border ${getKeyActionBadgeStyle(action)}`}
-                            >
-                              {action}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-blue-200/40 text-xs">
-                        <div className="text-blue-700 font-bold flex items-center space-x-1.5">
-                          <Calendar className="w-4 h-4 text-blue-500 shrink-0" />
-                          <span>
-                            Partner search deadline: <strong className="text-blue-900 font-black">{formatDate(props.listing.partnerSearchDeadline)}</strong>
-                          </span>
-                        </div>
-
-                        <button
-                          onClick={() => onViewListing(props.listing!.id)}
-                          className="inline-flex items-center justify-center space-x-1 bg-brand-primary hover:bg-brand-primary-hover text-white px-5 py-2.5 rounded-xl font-bold text-xs transition-all shrink-0 cursor-pointer shadow-sm active:scale-95"
-                        >
-                          <span>View Full Partner Call</span>
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="bg-slate-50 border border-slate-200 rounded-[20px] p-6 text-center shadow-2xs animate-fade-in">
-                      <p className="text-sm font-semibold text-slate-500">
-                        🔒 This organisation is not currently seeking partners
-                      </p>
-                      <p className="text-xs text-slate-404 mt-1">
-                        Their consortium status is offline or partner vacancies are full.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-
-            {/* Render Mode B features: Full list of other active partner calls */}
-            {props.profile && (
-              <div className="space-y-4">
-                <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-                  <FileText className="w-5 h-5 text-indigo-500 shrink-0" />
-                  <span>Active Partner Searches</span>
-                  {orgListings.length > 0 && (
-                    <span className="ml-auto text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">
-                      {orgListings.length} active
-                    </span>
-                  )}
-                </h2>
-
-                {orgListings.length === 0 ? (
-                  <div className="text-center py-8 text-slate-400 text-sm font-medium bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                    No active partner searches at the moment.
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {orgListings.map((listing) => (
-                      <div
-                        key={listing.id}
-                        onClick={() => onViewListing(listing.id)}
-                        className="p-4 bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 rounded-xl cursor-pointer transition-all group"
-                        id={`active-listing-card-${listing.id}`}
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="space-y-1 flex-1">
-                            <p className="text-sm font-bold text-slate-800 group-hover:text-brand-primary transition-colors">
-                              {(() => {
-                                const plain = listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-                                return plain.length > 100 ? plain.slice(0, 100) + '...' : plain;
-                              })()}
-                            </p>
-                            <div className="flex flex-wrap gap-1.5 mt-1">
-                              {listing.keyActions.map((ka) => (
-                                <span
-                                  key={ka}
-                                  className={`text-[10px] px-2 py-0.5 rounded-full border ${getKeyActionBadgeStyle(ka)}`}
-                                >
-                                  {ka}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                          {listing.partnerSearchDeadline && (
-                            <div className="flex items-center space-x-1 text-xs text-slate-400 shrink-0">
-                              <Calendar className="w-3 h-3" />
-                              <span>{formatDate(listing.partnerSearchDeadline)}</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
           </div>
-
-          {/* Right sidebar column (1/3 width) */}
-          <div className="space-y-6">
-            {/* Quick Facts Details Card */}
-            <div className="bg-slate-50 rounded-[22px] p-6 border border-slate-100 space-y-6 shadow-2xs">
-              <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider border-b border-slate-200 pb-3">
-                Organisation Details
-              </h3>
-
-              {/* Dynamic sidebar stats */}
-              <div className="space-y-4 text-sm font-medium text-slate-600">
-                {/* Org Type */}
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <Building2 className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <div>
-                    <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Type</span>
-                    <span className="text-slate-800 font-bold text-xs">{activeProfile.organisationType}</span>
-                  </div>
-                </div>
-
-                {/* Sector */}
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <FileText className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <div>
-                    <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Primary Erasmus+ Sector</span>
-                    <span className="text-slate-800 font-bold text-xs">{activeProfile.sector}</span>
-                  </div>
-                </div>
-
-                {/* City + Country */}
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <MapPin className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <div>
-                    <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Location</span>
-                    <span className="text-slate-800 font-bold text-xs">
-                      {activeProfile.city ? `${activeProfile.city}, ` : ''}{activeProfile.country}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Founded */}
-                {activeProfile.foundedYear && (
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                      <Calendar className="w-4 h-4 text-slate-400" />
-                    </div>
-                    <div>
-                      <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Founded In</span>
-                      <span className="text-slate-800 font-bold text-xs">{activeProfile.foundedYear}</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* OID identifier */}
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <Hash className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <div>
-                    <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">OID Number</span>
-                    <span className={activeProfile.oid ? "text-slate-800 font-bold text-xs" : "text-slate-400 italic text-xs font-semibold"}>
-                      {activeProfile.oid || 'Not provided'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Experience rating */}
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <Award className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <div>
-                    <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Experience</span>
-                    <span className="text-slate-800 font-bold text-xs">{activeProfile.experienceLevel}</span>
-                  </div>
-                </div>
-
-                {/* Past operations projects */}
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-white text-slate-400 rounded-lg shadow-2xs">
-                    <FolderOpen className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <div>
-                    <span className="block text-[9px] text-slate-400 font-bold uppercase tracking-wider">Past Projects</span>
-                    <span className="text-slate-800 font-bold text-xs">{activeProfile.previousProjects}</span>
-                  </div>
-                </div>
+          {(activeProfile.showEmailOnProfile ?? true) && activeProfile.contactEmail && (
+            <div className="flex items-center gap-3">
+              <Mail className="w-4 h-4 text-slate-400 shrink-0" />
+              <div>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Email</p>
+                <a href={`mailto:${activeProfile.contactEmail}`} className="text-sm font-bold text-brand-primary hover:underline">
+                  {activeProfile.contactEmail}
+                </a>
               </div>
             </div>
+          )}
+        </div>
+      </div>
 
-            {/* Languages Sidebar Card */}
-            {activeProfile.languagesSpoken && activeProfile.languagesSpoken.length > 0 && (
-              <div className="bg-slate-50 rounded-[22px] p-6 border border-slate-100 space-y-4 shadow-2xs">
-                <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-3 flex items-center space-x-2">
-                  <Languages className="w-4 h-4 text-emerald-500 shrink-0" />
-                  <span>Working Languages</span>
-                </h3>
+      {/* 3. About */}
+      {activeProfile.description && (
+        <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 pb-3 border-b border-slate-100 flex items-center gap-2">
+            <Building2 className="w-3.5 h-3.5" />
+            About This Organisation
+          </h3>
+          <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+            {activeProfile.description}
+          </p>
+        </div>
+      )}
+
+      {/* 4. Working Languages */}
+      {activeProfile.languagesSpoken && activeProfile.languagesSpoken.length > 0 && (
+        <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 pb-3 border-b border-slate-100 flex items-center gap-2">
+            <Languages className="w-3.5 h-3.5" />
+            Working Languages
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {activeProfile.languagesSpoken.map((lang) => (
+              <span key={lang} className="text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-100 px-3 py-1.5 rounded-lg">
+                {lang}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 5. Mode A: Thematic Areas + CTA (viewed from a listing) */}
+      {props.listing && (
+        <>
+          {props.listing.thematicAreas && props.listing.thematicAreas.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+              <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 pb-3 border-b border-slate-100 flex items-center gap-2">
+                <FileText className="w-3.5 h-3.5" />
+                Thematic Focus Areas
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {props.listing.thematicAreas.map((area) => (
+                  <span key={area} className="bg-blue-50/70 text-brand-primary text-xs font-bold px-4 py-2 rounded-xl border border-blue-100/40">
+                    {area}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          {activeStatus === 'active' ? (
+            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-1">
+                  <h4 className="text-sm font-extrabold text-blue-900 flex items-center space-x-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                    <span>This organisation is actively looking for partners</span>
+                  </h4>
+                  <p className="text-xs text-blue-700 font-semibold">
+                    Expiring Soon. Submit your partnership inquiry to secure a matching role.
+                  </p>
+                </div>
                 <div className="flex flex-wrap gap-1.5">
-                  {activeProfile.languagesSpoken.map((lang) => (
-                    <span
-                      key={lang}
-                      className="text-xs font-bold bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-xl shadow-xs"
-                    >
-                      {lang}
+                  {props.listing.keyActions.map((action) => (
+                    <span key={action} className={`text-[10px] uppercase font-black px-2.5 py-1 rounded-md border ${getKeyActionBadgeStyle(action)}`}>
+                      {action}
                     </span>
                   ))}
                 </div>
               </div>
-            )}
-
-            {/* Contact Organisation Secure mailto action link */}
-            {activeProfile.contactEmail && (
-              <div className="bg-slate-50 rounded-[22px] p-6 border border-slate-100 space-y-4 shadow-2xs">
-                <a
-                  id="btn-contact-organisation"
-                  href={`mailto:${activeProfile.contactEmail}?subject=Partnership Inquiry on PartnerMatch`}
-                  className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-3.5 rounded-xl font-bold text-xs transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer text-center"
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-blue-200/40 text-xs">
+                <div className="text-blue-700 font-bold flex items-center space-x-1.5">
+                  <Calendar className="w-4 h-4 text-blue-500 shrink-0" />
+                  <span>Partner search deadline: <strong className="text-blue-900 font-black">{formatDate(props.listing.partnerSearchDeadline)}</strong></span>
+                </div>
+                <button
+                  onClick={() => onViewListing(props.listing!.id)}
+                  className="inline-flex items-center justify-center space-x-1 bg-brand-primary hover:bg-brand-primary-hover text-white px-5 py-2.5 rounded-xl font-bold text-xs transition-all shrink-0 cursor-pointer shadow-sm active:scale-95"
                 >
-                  <Mail className="w-4 h-4 text-brand-accent shrink-0" />
-                  <span>Contact Organisation</span>
-                </a>
-                <p className="text-center text-[10px] text-slate-400 mt-1 truncate">
-                  Email: <span className="font-semibold">{activeProfile.contactEmail}</span>
-                </p>
+                  <span>View Full Partner Call</span>
+                </button>
               </div>
+            </div>
+          ) : (
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 text-center">
+              <p className="text-sm font-semibold text-slate-500">🔒 This organisation is not currently seeking partners</p>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* 5. Mode B: Active Partner Searches (viewed from org directory) */}
+      {props.listings && (
+        <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
+            <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+              <FileText className="w-3.5 h-3.5" />
+              Active Partner Searches
+            </h3>
+            {orgListings.length > 0 && (
+              <span className="text-xs font-bold bg-blue-50 text-brand-primary px-2.5 py-0.5 rounded-full">
+                {orgListings.length} active
+              </span>
             )}
           </div>
+          {orgListings.length === 0 ? (
+            <p className="text-sm text-slate-400 text-center py-4 font-medium">No active partner searches at the moment.</p>
+          ) : (
+            <div className="space-y-3">
+              {orgListings.map((listing) => {
+                return (
+                  <div
+                    key={listing.id}
+                    onClick={() => onViewListing(listing.id)}
+                    className="bg-slate-50 hover:bg-blue-50/40 border border-slate-100 hover:border-blue-200 rounded-xl p-4 cursor-pointer transition-all flex items-center justify-between gap-3"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-slate-800 line-clamp-1 mb-1">
+                        {listing.title || listing.name}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {listing.keyActions.map((ka) => (
+                          <span key={ka} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
+                            {ka}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    {listing.partnerSearchDeadline && (
+                      <div className="flex items-center space-x-1 text-xs text-slate-400 shrink-0">
+                        <Calendar className="w-3 h-3" />
+                        <span>{formatDate(listing.partnerSearchDeadline)}</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
-      </div>
+      )}
+
     </div>
   );
 }
