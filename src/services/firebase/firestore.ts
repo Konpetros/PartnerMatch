@@ -215,6 +215,23 @@ export const getUserSettings = async (userId: string): Promise<{
   };
 };
 
+export const getFavourites = async (userId: string): Promise<string[]> => {
+  const snap = await getDoc(doc(db, 'users', userId));
+  if (!snap.exists()) return [];
+  return snap.data()?.favourites || [];
+};
+
+export const toggleFavourite = async (userId: string, listingId: string): Promise<string[]> => {
+  const userRef = doc(db, 'users', userId);
+  const snap = await getDoc(userRef);
+  const current: string[] = snap.exists() ? (snap.data()?.favourites || []) : [];
+  const updated = current.includes(listingId)
+    ? current.filter((id: string) => id !== listingId)
+    : [...current, listingId];
+  await setDoc(userRef, { favourites: updated }, { merge: true });
+  return updated;
+};
+
 export const saveProfilePrivacySettings = async (
   userId: string,
   settings: {
