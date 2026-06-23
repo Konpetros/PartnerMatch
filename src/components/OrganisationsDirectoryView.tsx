@@ -317,62 +317,83 @@ export default function OrganisationsDirectoryView({
                   onClick={() => onSelectOrganisation(org.uid)}
                   className="bg-white rounded-[20px] overflow-hidden border border-blue-50/80 shadow-sm hover:border-blue-200 transition-all flex flex-col group hover:shadow-md cursor-pointer"
                 >
-                  {/* Card image — logo if available, or initials avatar */}
-                  <div className="relative h-44 bg-slate-50 overflow-hidden flex items-center justify-center">
-                    {org.logoUrl ? (
-                      <img
-                        src={org.logoUrl}
-                        alt={`${org.organisationName} logo`}
-                        className="w-28 h-28 object-contain p-2"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 rounded-[20px] bg-brand-primary flex items-center justify-center shadow-sm">
-                        <span className="text-white font-black text-3xl">
+                  <div className="p-5 flex flex-col space-y-3.5">
+
+                    <div className="flex items-center gap-3">
+                      {org.logoUrl ? (
+                        <img
+                          src={org.logoUrl}
+                          alt={`${org.organisationName} logo`}
+                          className="w-12 h-12 rounded-lg object-contain border border-slate-100 bg-white p-1.5 shrink-0"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-base shrink-0">
                           {org.organisationName.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block truncate group-hover:text-brand-primary transition-colors">
+                          {org.organisationName}
+                        </h3>
+                        <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1 mt-0.5">
+                          <span>{org.countryFlag || '🇪🇺'}</span>
+                          <span className="truncate">{org.country}{cityValue ? `, ${cityValue}` : ''}</span>
                         </span>
                       </div>
-                    )}
-
-                    {/* Status badge Overlay */}
-                    <div className="absolute top-3 right-3">
-                      {renderStatusBadge('active')}
-                    </div>
-
-                    {/* Flag and country Overlay */}
-                    <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-xs px-2.5 py-0.5 rounded-full text-[10px] font-bold text-slate-800 flex items-center space-x-1 shadow-xs">
-                      <span>{org.countryFlag || '🇪🇺'}</span>
-                      <span>{org.country}</span>
-                    </div>
-                  </div>
-
-                  {/* Body Text portion */}
-                  <div className="p-5 flex flex-col flex-1 justify-between space-y-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center">
-                        <span className="bg-slate-100 text-slate-600 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md tracking-wider">
+                      <div className="flex flex-col items-end gap-1 shrink-0">
+                        <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wide">
                           {org.organisationType}
                         </span>
-                      </div>
-
-                      <h3 className="font-bold text-slate-850 text-base leading-snug line-clamp-1 group-hover:text-brand-primary transition-colors">
-                        {org.organisationName}
-                      </h3>
-
-                      <div className="flex items-center space-x-1 text-[11px] text-slate-500 font-medium">
-                        <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span>
-                          {cityValue}, {org.country}
-                        </span>
+                        {org.experienceLevel && (
+                          <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
+                            {org.experienceLevel}
+                          </span>
+                        )}
                       </div>
                     </div>
 
-                    {/* Button trigger profiles */}
-                    <div
-                      className="w-full py-2.5 border border-brand-primary text-brand-primary group-hover:bg-brand-primary group-hover:text-white rounded-brand font-bold text-xs transition-all duration-200 text-center"
-                    >
-                      View Profile
+                    {org.description && (
+                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-2">
+                        {org.description}
+                      </p>
+                    )}
+
+                    <div className="flex flex-col">
+                      {org.sector && (
+                        <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Sector</span>
+                          <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                            {org.sector}
+                          </span>
+                        </div>
+                      )}
+                      {org.languagesSpoken && org.languagesSpoken.length > 0 && (
+                        <div className="flex items-center gap-2 py-1.5">
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Languages</span>
+                          <div className="flex flex-wrap gap-1">
+                            {org.languagesSpoken.slice(0, 3).map((lang) => (
+                              <span key={lang} className="text-[9px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-100">
+                                {lang}
+                              </span>
+                            ))}
+                            {org.languagesSpoken.length > 3 && (
+                              <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-md border border-slate-100">
+                                +{org.languagesSpoken.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                      {renderStatusBadge('active')}
+                      <span className="text-xs font-bold text-brand-primary group-hover:underline">
+                        View Profile →
+                      </span>
+                    </div>
+
                   </div>
                 </div>
               );
