@@ -298,6 +298,7 @@ export default function AppRouter({
         onSignOut={onSignOut}
         organisationProfile={organisationProfile}
         onUpdateProfile={onUpdateProfile}
+        onSelectListing={onSelectListing}
         initialSection={
           currentView === 'settings' ? 'settings' :
           currentView === 'my-profile' ? 'profile' :
