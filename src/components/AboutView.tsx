@@ -333,39 +333,7 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
         </div>
       </section>
 
-      {/* Bottom CTA Section */}
-      <section className="bg-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-[24px] px-8 py-12 sm:py-16 text-center space-y-6 shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-505/10 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="space-y-2 max-w-xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Ready to Find Your Partner?
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 font-medium leading-relaxed">
-              Be among the first Erasmus+ organisations to list your partner search and get discovered by organisations across Europe.
-            </p>
-          </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <button
-              id="cta-browse-directory"
-              onClick={() => onNavigate('home')}
-              className="w-full sm:w-auto px-7 py-3.5 bg-brand-primary hover:bg-brand-primary-hover text-white rounded-xl font-bold text-xs sm:text-sm transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center space-x-1"
-            >
-              <span>Browse Directory</span>
-              <ArrowRight className="w-4 h-4 text-brand-accent shrink-0" />
-            </button>
-            <button
-              id="cta-submit-listing"
-              onClick={() => onNavigate('submit')}
-              className="w-full sm:w-auto px-7 py-3.5 border border-slate-700 hover:border-slate-500 hover:bg-white/5 text-white bg-transparent rounded-xl font-bold text-xs sm:text-sm transition-all focus:outline-none cursor-pointer"
-            >
-              Submit Your Listing
-            </button>
-          </div>
-        </div>
-      </section>
 
     </div>
   );
