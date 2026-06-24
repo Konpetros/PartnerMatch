@@ -19,7 +19,11 @@ import {
   BookOpen,
   Users,
   Briefcase,
-  HelpCircle
+  HelpCircle,
+  Heart,
+  Mail,
+  Building2,
+  Shield
 } from 'lucide-react';
 import PartnerMatchLogo from '../assets/PartnerMatchLogo';
 
@@ -55,6 +59,26 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
       icon: Sparkles,
       title: "Free — No Subscription Ever",
       description: "Browsing the directory and listing your organisation is completely free, with no hidden fees"
+    },
+    {
+      icon: Heart,
+      title: "Save Favourite Listings",
+      description: "Bookmark interesting partner calls to your Favourites and revisit them from your dashboard"
+    },
+    {
+      icon: Mail,
+      title: "Direct Contact",
+      description: "Reach out to any organisation directly via email — no intermediary, no forms, no delays"
+    },
+    {
+      icon: Building2,
+      title: "Organisation Profiles",
+      description: "Every registered organisation gets a public profile page with their details, sector, and active partner calls"
+    },
+    {
+      icon: Shield,
+      title: "Privacy Controls",
+      description: "Control what information is visible to others — email, city, and profile visibility are all configurable"
     }
   ];
 
@@ -157,33 +181,43 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
         </div>
       </section>
 
-      {/* What is PartnerMatch Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div className="space-y-6">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
-              What is PartnerMatch?
-            </h2>
-            <div className="text-slate-600 space-y-4 leading-relaxed text-sm sm:text-base font-medium">
-              <p>
-                PartnerMatch is a free directory where Erasmus+ organisations — NGOs, schools, VET providers, universities, and youth organisations — can list themselves and find partners for KA1, KA210, and KA220 projects.
-              </p>
-              <p>
-                It is not affiliated with the European Commission or any National Agency. It is an independent tool built to make partner search easier.
-              </p>
-              <p>
-                By providing a transparent, well-structured portal where organisations can expose their competence, specific requirements, previous project history, and precise partner search deadlines, we eliminate the endless email chains and unstructured social media postings.
-              </p>
-            </div>
+      {/* What is PartnerMatch Section — full width */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="space-y-6">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
+            What is PartnerMatch?
+          </h2>
+          <div className="text-slate-600 space-y-4 leading-relaxed text-sm sm:text-base font-medium">
+            <p>
+              PartnerMatch is a free directory where Erasmus+ organisations — NGOs, schools, VET providers, universities, and youth organisations — can list themselves and find partners for KA1, KA210, and KA220 projects.
+            </p>
+            <p>
+              It is not affiliated with the European Commission or any National Agency. It is an independent tool built to make partner search easier.
+            </p>
+            <p>
+              By providing a transparent, well-structured portal where organisations can expose their competence, specific requirements, previous project history, and precise partner search deadlines, we eliminate the endless email chains and unstructured social media postings.
+            </p>
           </div>
+        </div>
+      </section>
 
-          {/* Right Column Grid Highlights */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* Features Section */}
+      <section className="bg-slate-50/50 border-t border-slate-100 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="text-center space-y-2">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
+              Features
+            </h2>
+            <p className="text-sm sm:text-base text-slate-500 max-w-xl mx-auto font-medium">
+              Everything you need to find the right Erasmus+ partner, all in one place.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {featureHighlights.map((feat, idx) => {
               const IconComp = feat.icon;
               return (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className="bg-white rounded-[20px] border border-blue-50/80 p-5 shadow-sm space-y-3 flex flex-col items-start transition-all hover:border-blue-200/50"
                   id={`feature-highlight-${idx}`}
                 >
