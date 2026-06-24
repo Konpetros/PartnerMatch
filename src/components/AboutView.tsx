@@ -189,7 +189,7 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
           </h2>
           <div className="text-slate-600 space-y-4 leading-relaxed text-sm sm:text-base font-medium">
             <p>
-              PartnerMatch is a free directory where Erasmus+ organisations — NGOs, schools, VET providers, universities, and youth organisations — can list themselves and find partners for KA1, KA210, and KA220 projects.
+              PartnerMatch is a free directory where Erasmus+ organisations — NGOs, schools, VET providers, universities, and youth organisations — can list themselves, post partner calls and find relevant and suitable partners for their Erasmus+ projects.
             </p>
             <p>
               It is not affiliated with the European Commission or any National Agency. It is an independent tool built to make partner search easier.
