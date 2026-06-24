@@ -30,7 +30,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 Partner<span className="text-white">Match</span>
               </span>
             </div>
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm text-slate-300 leading-relaxed">
               Bridging opportunities and fostering cross-border alliances by simplifying partner-finding for Erasmus+ schools, universities, NGOs, and youth workers.
             </p>
             <div className="mt-4">
@@ -46,7 +46,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               <Globe className="w-4 h-4 text-brand-primary" />
               <span>Platform</span>
             </h3>
-            <ul className="space-y-2 text-sm text-slate-400">
+            <ul className="space-y-2 text-sm text-slate-300">
               <li>
                 <button
                   onClick={() => onNavigate('browse')}
@@ -104,7 +104,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               <BookOpen className="w-4 h-4 text-green-500" />
               <span>Official Resources</span>
             </h3>
-            <ul className="space-y-2 text-sm text-slate-400">
+            <ul className="space-y-3 text-sm text-slate-300">
               <li>
                 <a 
                   href="https://erasmus-plus.ec.europa.eu/resources-and-tools/documents-and-guidelines/erasmus-programme-guide-2026" 
@@ -174,7 +174,7 @@ export default function Footer({ onNavigate }: FooterProps) {
               <ShieldCheck className="w-4 h-4 text-brand-accent" />
               <span>Support & Safety</span>
             </h3>
-            <ul className="space-y-2 text-sm text-slate-400">
+            <ul className="space-y-3 text-sm text-slate-300">
               <li>
                 <button
                   onClick={() => onNavigate('privacy-policy')}
@@ -217,14 +217,14 @@ export default function Footer({ onNavigate }: FooterProps) {
 
         {/* Disclaimer */}
         <div className="py-6 border-t border-slate-800">
-          <p className="text-xs text-slate-400 leading-relaxed text-center max-w-4xl mx-auto">
+          <p className="text-xs text-slate-300 leading-relaxed text-center max-w-4xl mx-auto">
             <span className="font-semibold text-slate-300">Disclaimer:</span> PartnerMatch is an independent platform and is not affiliated with, endorsed by, or connected to the European Commission, any National Agency, or any other official Erasmus+ body. All trademarks and official programme names belong to their respective owners.
           </p>
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
-          <p>© {currentYear} PartnerMatch. Designed to empower European collaborations.</p>
+          <p className="text-slate-400">© {currentYear} PartnerMatch. Designed to empower European collaborations.</p>
         </div>
       </div>
     </footer>
