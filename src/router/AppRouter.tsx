@@ -208,13 +208,20 @@ export default function AppRouter({
     } else if (selectedListingId) {
       const activeListing = listings.find(l => l.id === selectedListingId);
       if (activeListing) {
-        return (
-          <OrgProfileView
-            listing={activeListing}
-            onBack={() => onNavigate('browse')}
-            onViewListing={onViewListingFromOrg}
-          />
-        );
+        const submittedBy = (activeListing as any).submittedBy;
+        const orgProfile = submittedBy ? profiles.find(p => p.uid === submittedBy) : null;
+        if (orgProfile) {
+          return (
+            <OrgProfileView
+              profile={orgProfile}
+              listings={listings}
+              onBack={() => onNavigate('browse')}
+              onViewListing={onViewListingFromOrg}
+            />
+          );
+        }
+        onNavigate('browse');
+        return null;
       }
     }
   }
