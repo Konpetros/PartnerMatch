@@ -318,6 +318,21 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
         </div>
       </section>
 
+      {/* Who is Behind PartnerMatch Section */}
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-indigo-100 rounded-[24px] p-8 sm:p-10 space-y-4">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight">
+            Who is Behind PartnerMatch?
+          </h2>
+          <p className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+            I'm an Erasmus+ consultant and solo developer based in Greece, and I built PartnerMatch because I kept seeing the same frustration in my work — organisations searching for partners through scattered Facebook posts and endless email chains with no real structure. If you have feedback, ideas, or want to explore a collaboration, I'd love to hear from you at{' '}
+            <a href="mailto:support@partnermatch.eu" className="text-brand-primary font-bold hover:underline">
+              support@partnermatch.eu
+            </a>
+          </p>
+        </div>
+      </section>
+
       {/* Bottom CTA Section */}
       <section className="bg-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-[24px] px-8 py-12 sm:py-16 text-center space-y-6 shadow-xl relative overflow-hidden">
