@@ -6,19 +6,7 @@
 import React from 'react';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
-import {
-  ArrowLeft,
-  Mail,
-  MapPin,
-  Globe,
-  Calendar,
-  Languages,
-  Building2,
-  Hash,
-  Award,
-  FolderOpen,
-  FileText
-} from 'lucide-react';
+import { ArrowLeft, Mail, MapPin, Globe, Calendar, Languages, Building2, Hash, Award, FolderOpen, FileText, Linkedin, Facebook, Instagram, Twitter } from 'lucide-react';
 
 interface BaseProps {
   onBack: () => void;
@@ -214,17 +202,39 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
               {activeProfile.countryFlag || '🇪🇺'} {activeProfile.country}{activeProfile.city ? `, ${activeProfile.city}` : ''}
             </p>
           </div>
-          {activeProfile.website && (
-            <a
-              href={activeProfile.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center space-x-1.5 text-sm font-bold text-brand-primary bg-slate-50 hover:bg-blue-50 border border-slate-200 px-4 py-2 rounded-xl transition-all shrink-0"
-            >
-              <span>Visit Website</span>
-              <Globe className="w-4 h-4" />
-            </a>
-          )}
+          <div className="flex items-center gap-2 flex-wrap">
+            {activeProfile.website && (
+              <a
+                href={activeProfile.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-1.5 text-sm font-bold text-brand-primary bg-slate-50 hover:bg-blue-50 border border-slate-200 px-4 py-2 rounded-xl transition-all shrink-0"
+              >
+                <span>Visit Website</span>
+                <Globe className="w-4 h-4" />
+              </a>
+            )}
+            {activeProfile.linkedinUrl && (
+              <a href={activeProfile.linkedinUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-500 hover:text-blue-700 border border-slate-200 transition-all" title="LinkedIn">
+                <Linkedin className="w-4 h-4" />
+              </a>
+            )}
+            {activeProfile.facebookUrl && (
+              <a href={activeProfile.facebookUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-500 hover:text-blue-600 border border-slate-200 transition-all" title="Facebook">
+                <Facebook className="w-4 h-4" />
+              </a>
+            )}
+            {activeProfile.instagramUrl && (
+              <a href={activeProfile.instagramUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl bg-slate-50 hover:bg-pink-50 text-slate-500 hover:text-pink-600 border border-slate-200 transition-all" title="Instagram">
+                <Instagram className="w-4 h-4" />
+              </a>
+            )}
+            {activeProfile.twitterUrl && (
+              <a href={activeProfile.twitterUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-800 border border-slate-200 transition-all" title="X (Twitter)">
+                <Twitter className="w-4 h-4" />
+              </a>
+            )}
+          </div>
         </div>
       </div>
 
