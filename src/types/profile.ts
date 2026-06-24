@@ -19,4 +19,8 @@ export interface OrganisationProfile {
   showEmailOnProfile?: boolean;
   showLocationOnProfile?: boolean;
   profilePublic?: boolean;
+  linkedinUrl?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+  twitterUrl?: string;
 }
