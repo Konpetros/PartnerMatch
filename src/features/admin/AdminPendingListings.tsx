@@ -87,7 +87,7 @@ export default function AdminPendingListings({
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50/70 border-b border-slate-200 text-slate-400 text-[10px] uppercase font-black tracking-wider">
-                  <th className="py-4 px-6">Thumbnail</th>
+                  <th className="py-4 px-6">Org. Logo</th>
                   <th className="py-4 px-6">Organisation Name</th>
                   <th className="py-4 px-6">Country</th>
                   <th className="py-4 px-6">Type</th>
@@ -99,17 +99,19 @@ export default function AdminPendingListings({
               <tbody className="divide-y divide-slate-100 text-slate-700 text-sm font-semibold">
                 {listings.map((item) => (
                   <tr key={item.id} className="hover:bg-slate-50/40 transition-colors">
-                    {/* Thumbnail */}
+                    {/* Org Logo */}
                     <td className="py-4.5 px-6">
-                      {item.thumbnailUrl ? (
+                      {item.submitterProfile?.logoUrl ? (
                         <img
-                          src={item.thumbnailUrl}
+                          src={item.submitterProfile.logoUrl}
                           alt={item.name}
                           referrerPolicy="no-referrer"
-                          className="w-14 h-10 object-cover rounded-lg border border-slate-200 shrink-0"
+                          className="w-10 h-10 object-contain rounded-lg border border-slate-200 bg-white p-1 shrink-0"
                         />
                       ) : (
-                        <div className="w-14 h-10 rounded-lg border border-slate-200 shrink-0 bg-gradient-to-br from-brand-primary to-blue-700" />
+                        <div className="w-10 h-10 rounded-lg border border-slate-200 shrink-0 bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm">
+                          {item.name.charAt(0).toUpperCase()}
+                        </div>
                       )}
                     </td>
 
