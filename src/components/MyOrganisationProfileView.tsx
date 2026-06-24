@@ -18,6 +18,7 @@ import {
   Sparkles,
   Upload
 } from 'lucide-react';
+import PartnerMatchLogo from '../assets/PartnerMatchLogo';
 import { OrganisationProfile, OrganisationType, Listing } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
 
@@ -631,8 +632,8 @@ export default function MyOrganisationProfileView({
       {/* TOAST PANEL */}
       {toast && (
         <div className="fixed bottom-6 right-6 z-50 max-w-sm w-full bg-slate-900 text-white rounded-2xl p-4 shadow-2xl border border-white/10 flex items-start space-x-3.5 animate-fade-in animate-slide-in">
-          <div className="p-1.5 bg-brand-primary/10 text-brand-accent rounded-lg shrink-0">
-            <Sparkles className="w-5 h-5 text-brand-accent animate-pulse" />
+          <div className="p-1.5 bg-brand-primary/10 rounded-lg shrink-0">
+            <PartnerMatchLogo size={20} />
           </div>
           <div className="flex-1 space-y-0.5">
             <p className="text-sm font-bold">Success</p>
