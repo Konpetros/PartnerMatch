@@ -119,6 +119,10 @@ export default function MyListingsDashboardView({
   const [profileContactEmail, setProfileContactEmail] = useState(organisationProfile?.contactEmail || '');
   const [profileSector, setProfileSector] = useState(organisationProfile?.sector || 'Youth');
   const [profileDescription, setProfileDescription] = useState(organisationProfile?.description || '');
+  const [profileLinkedin, setProfileLinkedin] = useState(organisationProfile?.linkedinUrl || '');
+  const [profileFacebook, setProfileFacebook] = useState(organisationProfile?.facebookUrl || '');
+  const [profileInstagram, setProfileInstagram] = useState(organisationProfile?.instagramUrl || '');
+  const [profileTwitter, setProfileTwitter] = useState(organisationProfile?.twitterUrl || '');
   const [profileLogoPreview, setProfileLogoPreview] = useState<string | null>(organisationProfile?.logoUrl || null);
   const [profileFormErrors, setProfileFormErrors] = useState<string[]>([]);
   const profileLogoInputRef = useRef<HTMLInputElement | null>(null);
@@ -167,6 +171,10 @@ export default function MyListingsDashboardView({
       sector: profileSector,
       logoUrl: profileLogoPreview || '',
       description: profileDescription.trim(),
+      linkedinUrl: profileLinkedin.trim(),
+      facebookUrl: profileFacebook.trim(),
+      instagramUrl: profileInstagram.trim(),
+      twitterUrl: profileTwitter.trim(),
     };
     if (onUpdateProfile) onUpdateProfile(updatedProfile);
     showToast('Profile updated successfully!');
@@ -638,6 +646,53 @@ export default function MyListingsDashboardView({
                   <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">About Your Organisation *</label>
                   <textarea value={profileDescription} onChange={(e) => setProfileDescription(e.target.value)} rows={5} maxLength={800} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all resize-none" />
                   <p className="text-[10px] text-slate-400 text-right">{profileDescription.length}/800</p>
+                </div>
+
+                {/* Social Media */}
+                <div className="space-y-3">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Social Media <span className="text-slate-400 font-normal normal-case">(optional)</span></label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+                      <span className="text-xs font-bold text-blue-700 shrink-0">in</span>
+                      <input
+                        type="url"
+                        value={profileLinkedin}
+                        onChange={(e) => setProfileLinkedin(e.target.value)}
+                        placeholder="https://linkedin.com/company/your-org"
+                        className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+                      <span className="text-xs font-bold text-blue-600 shrink-0">f</span>
+                      <input
+                        type="url"
+                        value={profileFacebook}
+                        onChange={(e) => setProfileFacebook(e.target.value)}
+                        placeholder="https://facebook.com/your-org"
+                        className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+                      <span className="text-xs font-bold text-pink-600 shrink-0">ig</span>
+                      <input
+                        type="url"
+                        value={profileInstagram}
+                        onChange={(e) => setProfileInstagram(e.target.value)}
+                        placeholder="https://instagram.com/your-org"
+                        className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+                      <span className="text-xs font-bold text-slate-800 shrink-0">𝕏</span>
+                      <input
+                        type="url"
+                        value={profileTwitter}
+                        onChange={(e) => setProfileTwitter(e.target.value)}
+                        placeholder="https://x.com/your-org"
+                        className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <button type="submit" className="w-full bg-brand-primary hover:bg-brand-primary-hover text-white py-3 rounded-xl text-sm font-bold transition-all cursor-pointer shadow-sm">
