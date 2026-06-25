@@ -190,7 +190,14 @@ export const deleteUserData = async (userId: string): Promise<void> => {
   await deleteDoc(doc(db, 'profiles', userId));
   // Delete user record
   await deleteDoc(doc(db, 'users', userId));
-  // Note: listings are kept for data integrity but marked as deleted
+  // Mark all user's listings as expired so they are no longer publicly visible
+  const userListings = await getDocs(
+    query(collection(db, 'listings'), where('submittedBy', '==', userId))
+  );
+  const expirePromises = userListings.docs.map((d) =>
+    updateDoc(doc(db, 'listings', d.id), { status: 'expired' })
+  );
+  await Promise.all(expirePromises);
 };
 
 export const saveUserSettings = async (userId: string, settings: {
