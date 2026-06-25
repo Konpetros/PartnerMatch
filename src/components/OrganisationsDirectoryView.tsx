@@ -38,8 +38,8 @@ export default function OrganisationsDirectoryView({
     return () => clearTimeout(timer);
   }, [searchQuery, selectedCountry, selectedType, selectedLetter]);
 
-  // Derive unique organisations list based on name to avoid duplicate registry profiles
-  const uniqueOrganisations = listings;
+  // Derive unique organisations list — only show public profiles
+  const uniqueOrganisations = listings.filter(org => org.profilePublic !== false);
 
   // Dynamic stats calculation from underlying lists
   const totalOrgs = uniqueOrganisations.length;
