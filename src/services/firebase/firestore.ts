@@ -83,6 +83,9 @@ export const subscribeToListings = (
   return onSnapshot(q, (snapshot) => {
     const listings = snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as Listing));
     callback(listings);
+  }, (error) => {
+    console.error('subscribeToListings error:', error);
+    callback([]);
   });
 };
 
@@ -126,6 +129,9 @@ export const subscribeToProfiles = (
   return onSnapshot(collection(db, 'profiles'), (snapshot) => {
     const profiles = snapshot.docs.map((d) => ({ uid: d.id, ...d.data() } as OrganisationProfile & { uid: string }));
     callback(profiles);
+  }, (error) => {
+    console.error('subscribeToProfiles error:', error);
+    callback([]);
   });
 };
 
@@ -173,6 +179,9 @@ export const subscribeToUsers = (
   return onSnapshot(collection(db, 'users'), (snapshot) => {
     const users = snapshot.docs.map((d) => ({ ...d.data() }));
     callback(users);
+  }, (error) => {
+    console.error('subscribeToUsers error:', error);
+    callback([]);
   });
 };
 
@@ -255,6 +264,9 @@ export const subscribeToAnnouncements = (
   return onSnapshot(q, (snapshot) => {
     const announcements = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
     callback(announcements);
+  }, (error) => {
+    console.error('subscribeToAnnouncements error:', error);
+    callback([]);
   });
 };
 
