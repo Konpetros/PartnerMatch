@@ -11,30 +11,24 @@ export interface ListingOptimisation {
   suggestions: string[];
 }
 
-// AI Partner Matching — suggest compatible listings based on user profile
+// AI Partner Matching — not yet implemented
 export const getPartnerSuggestions = async (
-  profile: OrganisationProfile,
-  listings: Listing[]
+  _profile: OrganisationProfile,
+  _listings: Listing[]
 ): Promise<PartnerSuggestion[]> => {
-  // TODO: call Gemini API via backend proxy
-  // Send profile + listings summary, receive ranked suggestions
-  throw new Error('Gemini AI not yet implemented');
+  return [];
 };
 
-// AI Listing Optimiser — improve a listing description
+// AI Listing Optimiser — not yet implemented
 export const optimiseListing = async (
-  listing: Partial<Listing>
+  _listing: Partial<Listing>
 ): Promise<ListingOptimisation> => {
-  // TODO: call Gemini API via backend proxy
-  // Send listing data, receive improved description + suggestions
-  throw new Error('Gemini AI not yet implemented');
+  return { improvedDescription: '', suggestions: [] };
 };
 
-// AI Proposal Outline — generate a basic project outline from listing data
+// AI Proposal Outline — not yet implemented
 export const generateProposalOutline = async (
-  listing: Listing
+  _listing: Listing
 ): Promise<string> => {
-  // TODO: call Gemini API via backend proxy
-  // Send listing data, receive a structured project outline
-  throw new Error('Gemini AI not yet implemented');
+  return '';
 };
