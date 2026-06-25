@@ -526,6 +526,42 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
 
 
 
+      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 border-t border-b border-indigo-100/50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white p-6 rounded-[20px] shadow-sm flex items-center space-x-4 border border-blue-100/30">
+            <div className="p-3 bg-blue-100 text-brand-primary rounded-xl">
+              <Users className="w-8 h-8" />
+            </div>
+            <div>
+              <p className="text-3xl font-black text-slate-800">{listings.filter(l => l.status === 'active').length}</p>
+              <p className="text-slate-500 text-xs font-semibold">Active Partner Calls</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-[20px] shadow-sm flex items-center space-x-4 border border-blue-100/30">
+            <div className="p-3 bg-green-100 text-green-600 rounded-xl">
+              <Globe2 className="w-8 h-8" />
+            </div>
+            <div>
+              <p className="text-3xl font-black text-slate-800">{new Set(listings.filter(l => l.status === 'active').map(l => l.country)).size}</p>
+              <p className="text-slate-500 text-xs font-semibold">Countries Represented</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-[20px] shadow-sm flex items-center space-x-4 border border-blue-100/30">
+            <div className="p-3 bg-purple-100 text-purple-600 rounded-xl">
+              <Layers className="w-8 h-8" />
+            </div>
+            <div>
+              <p className="text-3xl font-black text-slate-800">3 Key Actions</p>
+              <p className="text-slate-500 text-xs font-semibold">KA1, KA2 & KA3 Supported</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
       {/* 4. "HOW IT WORKS" SECTION */}
       <section id="how-it-works-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-2 mb-10">
