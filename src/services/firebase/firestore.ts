@@ -126,7 +126,7 @@ export const getProfiles = async (): Promise<(OrganisationProfile & { uid: strin
 export const subscribeToProfiles = (
   callback: (profiles: (OrganisationProfile & { uid: string })[]) => void
 ): (() => void) => {
-  const q = query(collection(db, 'profiles'), orderBy('name', 'asc'));
+  const q = query(collection(db, 'profiles'), orderBy('organisationName', 'asc'));
   return onSnapshot(q, (snapshot) => {
     const profiles = snapshot.docs.map((d) => ({ uid: d.id, ...d.data() } as OrganisationProfile & { uid: string }));
     callback(profiles);
