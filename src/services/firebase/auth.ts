@@ -10,6 +10,7 @@ import {
   deleteUser as firebaseDeleteUser,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth } from './config';
 
@@ -81,6 +82,10 @@ export const deleteUserAccount = async (password?: string): Promise<void> => {
   }
 
   await firebaseDeleteUser(user);
+};
+
+export const resetPassword = async (email: string): Promise<void> => {
+  await sendPasswordResetEmail(auth, email);
 };
 
 export const isEmailPasswordUser = (): boolean => {

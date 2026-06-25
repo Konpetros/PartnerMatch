@@ -4,6 +4,7 @@ import {
   signInWithGoogle,
   signInWithEmail,
   registerWithEmail,
+  resetPassword,
 } from '../services/firebase/auth';
 
 interface SignInModalProps {
@@ -24,6 +25,25 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
   const [showPassword, setShowPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [agreedToPrivacy, setAgreedToPrivacy] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+
+  const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      setErrorMsg('Please enter your email address first.');
+      return;
+    }
+    setResetLoading(true);
+    setErrorMsg('');
+    try {
+      await resetPassword(email.trim());
+      setResetSent(true);
+    } catch {
+      setErrorMsg('Could not send reset email. Please check the address and try again.');
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -35,6 +55,8 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
     setShowPassword(false);
     setAgreedToTerms(false);
     setAgreedToPrivacy(false);
+    setResetSent(false);
+    setResetLoading(false);
   };
 
   const switchMode = (newMode: Mode) => {
@@ -326,30 +348,47 @@ export default function SignInModal({ isOpen, onClose, onSuccessSignIn }: SignIn
             </button>
           </form>
 
-          {/* Mode switch */}
-          <p className="text-center text-xs text-slate-500">
-            {mode === 'signin' ? (
-              <>
+          {mode === 'signin' && (
+            <>
+              {resetSent ? (
+                <p className="text-center text-xs text-emerald-600 font-semibold bg-emerald-50 rounded-xl px-4 py-3">
+                  ✓ Password reset email sent. Check your inbox.
+                </p>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  disabled={resetLoading}
+                  className="text-center text-xs text-slate-400 hover:text-brand-primary font-semibold w-full cursor-pointer transition-colors"
+                >
+                  {resetLoading ? 'Sending...' : 'Forgot your password?'}
+                </button>
+              )}
+              <p className="text-center text-xs text-slate-500 font-medium">
                 Don't have an account?{' '}
                 <button
+                  type="button"
                   onClick={() => switchMode('register')}
                   className="font-bold text-brand-primary hover:underline cursor-pointer"
                 >
-                  Create one free
+                  Create one
                 </button>
-              </>
-            ) : (
-              <>
-                Already have an account?{' '}
-                <button
-                  onClick={() => switchMode('signin')}
-                  className="font-bold text-brand-primary hover:underline cursor-pointer"
-                >
-                  Sign in
-                </button>
-              </>
-            )}
-          </p>
+              </p>
+            </>
+          )}
+
+          {mode === 'register' && (
+            <p className="text-center text-xs text-slate-500 font-medium">
+              Already have an account?{' '}
+              <button
+                type="button"
+                onClick={() => switchMode('signin')}
+                className="font-bold text-brand-primary hover:underline cursor-pointer"
+              >
+                Sign in
+              </button>
+            </p>
+          )}
         </div>
       </div>
     </div>
