@@ -83,6 +83,10 @@ export default function MyListingsDashboardView({
   }, [currentUserUid]);
 
   useEffect(() => {
+    setActiveSection(initialSection as any);
+  }, [initialSection]);
+
+  useEffect(() => {
     const unsubscribe = subscribeToAnnouncements((data) => {
       setAnnouncements(data);
     });
