@@ -542,7 +542,7 @@ export default function MyListingsDashboardView({
             </div>
           ) : activeSection === 'settings' ? (
             <SettingsPanel
-              currentUserUid={currentUser || ''}
+              currentUserUid={currentUserUid || ''}
               onAccountDeleted={() => { onSignOut(); onNavigate('home'); }}
             />
           ) : activeSection === 'profile' ? (
