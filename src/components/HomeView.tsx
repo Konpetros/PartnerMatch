@@ -6,6 +6,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Listing, KeyAction } from '../types';
 import FavouriteButton from './FavouriteButton';
+import { getFavourites } from '../services/firebase/firestore';
 import { 
   Search, 
   ArrowRight, 
@@ -29,6 +30,21 @@ interface HomeViewProps {
 export default function HomeView({ listings, onNavigate, onSelectListing, currentUserUid }: HomeViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (currentUserUid) {
+      getFavourites(currentUserUid).then(setFavouriteIds);
+    }
+  }, [currentUserUid]);
+
+  const handleToggleFavourite = (listingId: string) => {
+    setFavouriteIds(prev =>
+      prev.includes(listingId)
+        ? prev.filter(id => id !== listingId)
+        : [...prev, listingId]
+    );
+  };
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -435,7 +451,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
                           </span>
                         </span>
                       </div>
-                      <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} />
+                      <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} isFavourited={favouriteIds.includes(listing.id)} onToggle={handleToggleFavourite} />
                     </div>
 
                     {listing.title && (

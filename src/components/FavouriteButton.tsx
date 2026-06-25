@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
-import { getFavourites, toggleFavourite } from '../services/firebase/firestore';
+import { toggleFavourite } from '../services/firebase/firestore';
 
 interface FavouriteButtonProps {
   listingId: string;
   currentUserUid: string | null;
   size?: 'sm' | 'md';
+  isFavourited?: boolean;
+  onToggle?: (listingId: string) => void;
 }
 
-export default function FavouriteButton({ listingId, currentUserUid, size = 'sm' }: FavouriteButtonProps) {
-  const [isFavourited, setIsFavourited] = useState(false);
+export default function FavouriteButton({ listingId, currentUserUid, size = 'sm', isFavourited: controlledFavourited, onToggle }: FavouriteButtonProps) {
+  const isControlled = controlledFavourited !== undefined;
+  const [localFavourited, setLocalFavourited] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!currentUserUid) return;
-    getFavourites(currentUserUid).then((favs) => {
-      setIsFavourited(favs.includes(listingId));
-    });
-  }, [currentUserUid, listingId]);
+  const isFavourited = isControlled ? controlledFavourited : localFavourited;
 
   const handleToggle = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -25,7 +23,11 @@ export default function FavouriteButton({ listingId, currentUserUid, size = 'sm'
     setLoading(true);
     try {
       const updated = await toggleFavourite(currentUserUid, listingId);
-      setIsFavourited(updated.includes(listingId));
+      if (isControlled) {
+        onToggle?.(listingId);
+      } else {
+        setLocalFavourited(updated.includes(listingId));
+      }
     } finally {
       setLoading(false);
     }

@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Listing, SearchFilters, KeyAction } from '../types';
 import FavouriteButton from './FavouriteButton';
+import { getFavourites } from '../services/firebase/firestore';
 import { COUNTRIES, ORGANISATION_TYPES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import { 
   Search, 
@@ -41,6 +42,21 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
   const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (currentUserUid) {
+      getFavourites(currentUserUid).then(setFavouriteIds);
+    }
+  }, [currentUserUid]);
+
+  const handleToggleFavourite = (listingId: string) => {
+    setFavouriteIds(prev =>
+      prev.includes(listingId)
+        ? prev.filter(id => id !== listingId)
+        : [...prev, listingId]
+    );
+  };
 
   const isAnyFilterActive = 
     filters.country !== '' ||
@@ -656,7 +672,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                             </span>
                           </span>
                         </div>
-                        <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} />
+                        <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} isFavourited={favouriteIds.includes(listing.id)} onToggle={handleToggleFavourite} />
                       </div>
 
                       {listing.title && (
