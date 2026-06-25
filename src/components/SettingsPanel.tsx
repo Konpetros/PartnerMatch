@@ -205,22 +205,16 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
 
       {/* Email Notifications */}
       <div className="bg-white rounded-2xl border border-slate-100 p-5 space-y-3 shadow-sm">
-        <div className="flex items-center space-x-2">
-          <Bell className="w-4 h-4 text-brand-primary" />
-          <h3 className="text-sm font-bold text-slate-800">Email Notifications</h3>
-          {notifSaved && <span className="text-xs text-emerald-600 font-bold flex items-center space-x-1"><Check className="w-3 h-3" /><span>Saved</span></span>}
-        </div>
-        <p className="text-xs text-slate-500">Receive email updates about your listings and new partner matches.</p>
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold text-slate-600">
-            {emailNotifications ? 'Notifications enabled' : 'Notifications disabled'}
-          </span>
+        <div className="flex items-center justify-between opacity-50 cursor-not-allowed">
+          <div>
+            <p className="text-sm font-bold text-slate-700">Email Notifications <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full ml-1">Coming Soon</span></p>
+            <p className="text-xs text-slate-500 font-medium">Receive email updates when someone contacts you</p>
+          </div>
           <button
-            onClick={() => handleToggleNotifications(!emailNotifications)}
-            disabled={notifLoading}
-            className={`relative w-10 h-5.5 rounded-full transition-colors cursor-pointer ${emailNotifications ? 'bg-brand-primary' : 'bg-slate-200'}`}
+            disabled
+            className="relative w-11 h-6 rounded-full bg-slate-200 cursor-not-allowed focus:outline-none"
           >
-            <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${emailNotifications ? 'translate-x-4.5' : 'translate-x-0'}`} />
+            <span className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow" />
           </button>
         </div>
       </div>
