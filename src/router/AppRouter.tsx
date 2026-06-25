@@ -152,7 +152,7 @@ export default function AppRouter({
         )}
         {currentView === 'admin-announcements' && (
           <AdminAnnouncements
-            currentAdminUid={currentUser || ''}
+            currentAdminUid={currentUserUid || ''}
           />
         )}
       </AdminLayout>
