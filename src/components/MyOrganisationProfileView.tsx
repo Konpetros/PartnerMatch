@@ -15,7 +15,6 @@ import {
   PlusCircle, 
   LogOut, 
   X, 
-  Sparkles,
   Upload
 } from 'lucide-react';
 import PartnerMatchLogo from '../assets/PartnerMatchLogo';

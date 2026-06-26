@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+// PostListingView - Submits or edits partner search calls for Erasmus+ projects
 import React, { useState, useRef, useEffect } from 'react';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { COUNTRIES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
