@@ -8,17 +8,12 @@ import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { COUNTRIES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import RichTextEditor from './RichTextEditor';
 import { 
-  CloudUpload, 
-  Sparkles, 
-  MapPin, 
   Mail, 
   Check, 
-  PlusCircle, 
   ArrowRight, 
   FileCheck,
   Building,
-  AlertCircle,
-  Info
+  AlertCircle
 } from 'lucide-react';
 
 interface SubmitViewProps {
@@ -54,37 +49,10 @@ export default function PostListingView({
     }
   }, [profile]);
 
-  // Image upload
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   // Success states
   const [isSuccess, setIsSuccess] = useState(false);
-  const [createdId, setCreatedId] = useState('');
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-
-  // Local file change handler
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-    }
-  };
 
   // Checkbox state toggles
   const handleKeyActionToggle = (action: KeyAction) => {
@@ -193,9 +161,7 @@ export default function PostListingView({
     setPartnerSearchDeadline('');
     setProjectRole('');
     setTitle('');
-    setPreviewUrl(null);
     setIsSuccess(false);
-    setCreatedId('');
     setFormErrors([]);
     setAgreedToTerms(false);
     if (profile) {
