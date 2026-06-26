@@ -94,17 +94,17 @@ export default function MyListingsDashboardView({
   }, []);
 
   useEffect(() => {
-    if (!currentUser) return;
-    getDismissedAnnouncements(currentUser).then((ids) => {
+    if (!currentUserUid) return;
+    getDismissedAnnouncements(currentUserUid).then((ids) => {
       setDismissedIds(ids);
     });
-  }, [currentUser]);
+  }, [currentUserUid]);
 
   const handleDismiss = async (id: string) => {
     const updated = [...dismissedIds, id];
     setDismissedIds(updated);
-    if (currentUser) {
-      await saveDismissedAnnouncements(currentUser, updated);
+    if (currentUserUid) {
+      await saveDismissedAnnouncements(currentUserUid, updated);
     }
   };
 
@@ -112,7 +112,7 @@ export default function MyListingsDashboardView({
 
   // Profile form state
   const [profileName, setProfileName] = useState(organisationProfile?.organisationName || '');
-  const [profileType, setProfileType] = useState<OrganisationType>(organisationProfile?.organisationType || 'NGO');
+  const [profileType, setProfileType] = useState<OrganisationType>(organisationProfile?.organisationType || 'NGO / Association');
   const [profileCountry, setProfileCountry] = useState(organisationProfile?.country || '');
   const [profileCity, setProfileCity] = useState(organisationProfile?.city || '');
   const [profileWebsite, setProfileWebsite] = useState(organisationProfile?.website || '');
