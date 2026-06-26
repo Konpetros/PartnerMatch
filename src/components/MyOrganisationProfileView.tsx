@@ -41,7 +41,7 @@ export default function MyOrganisationProfileView({
 }: MyProfileViewProps) {
   // Form fields
   const [organisationName, setOrganisationName] = useState(profile?.organisationName || '');
-  const [organisationType, setOrganisationType] = useState<OrganisationType>(profile?.organisationType || 'NGO');
+  const [organisationType, setOrganisationType] = useState<OrganisationType>(profile?.organisationType || 'NGO / Association');
   const [country, setCountry] = useState(profile?.country || '');
   const [city, setCity] = useState(profile?.city || '');
   const [website, setWebsite] = useState(profile?.website || '');

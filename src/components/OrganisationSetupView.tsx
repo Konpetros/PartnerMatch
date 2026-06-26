@@ -14,7 +14,7 @@ interface ProfileSetupViewProps {
 
 export default function OrganisationSetupView({ onProfileComplete }: ProfileSetupViewProps) {
   const [organisationName, setOrganisationName] = useState('');
-  const [organisationType, setOrganisationType] = useState<OrganisationType>('NGO');
+  const [organisationType, setOrganisationType] = useState<OrganisationType>('NGO / Association');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
   const [website, setWebsite] = useState('');
