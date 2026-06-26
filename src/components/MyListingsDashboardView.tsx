@@ -180,6 +180,9 @@ export default function MyListingsDashboardView({
       facebookUrl: profileFacebook.trim(),
       instagramUrl: profileInstagram.trim(),
       twitterUrl: profileTwitter.trim(),
+      profilePublic: organisationProfile?.profilePublic ?? true,
+      showEmailOnProfile: organisationProfile?.showEmailOnProfile ?? true,
+      showLocationOnProfile: organisationProfile?.showLocationOnProfile ?? true,
     };
     if (onUpdateProfile) onUpdateProfile(updatedProfile);
     showToast('Profile updated successfully!');
