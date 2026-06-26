@@ -619,6 +619,42 @@ export default function MyListingsDashboardView({
                   </div>
                 </div>
 
+                {/* Experience Level & Previous Projects */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Experience Level *</label>
+                    <div className="relative">
+                      <select
+                        value={profileExperience}
+                        onChange={(e) => setProfileExperience(e.target.value)}
+                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
+                      >
+                        <option value="First-timer">First-timer</option>
+                        <option value="Experienced">Experienced</option>
+                        <option value="Advanced">Advanced</option>
+                        <option value="Expert Coordinator">Expert Coordinator</option>
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                        <span className="text-xs">▼</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Past Erasmus+ Projects</label>
+                    <select
+                      value={profilePreviousProjects}
+                      onChange={(e) => setProfilePreviousProjects(e.target.value)}
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="0">0</option>
+                      <option value="1-2">1–2</option>
+                      <option value="3-5">3–5</option>
+                      <option value="6-10">6–10</option>
+                      <option value="10+">10+</option>
+                    </select>
+                  </div>
+                </div>
+
                 {/* Contact Email */}
                 <div className="space-y-1">
                   <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Contact Email *</label>
