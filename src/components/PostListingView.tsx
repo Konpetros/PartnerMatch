@@ -161,11 +161,7 @@ export default function PostListingView({
 
     setFormErrors([]);
 
-    const newId = `user-org-${Date.now()}`;
-
-    // Construct listing matching specs in Part 4
-    const newListing: Listing = {
-      id: newId,
+    const newListing: Omit<Listing, 'id'> = {
       name: profile.organisationName,
       title: title.trim(),
       type: profile.organisationType,
@@ -185,8 +181,7 @@ export default function PostListingView({
       submitterProfile: profile,
     };
 
-    onSubmitListing(newListing);
-    setCreatedId(newId);
+    onSubmitListing(newListing as Listing);
     setIsSuccess(true);
   };
 
@@ -240,10 +235,10 @@ export default function PostListingView({
         <div className="bg-white p-6 rounded-[24px] border border-blue-10/40 shadow-sm flex flex-col sm:flex-row gap-4 justify-center items-center">
           <button
             id="success-view-proposal"
-            onClick={() => onSelectListing(createdId)}
+            onClick={() => onNavigate('my-listings')}
             className="flex items-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white px-6 py-3 rounded-brand font-bold text-sm transition-all cursor-pointer"
           >
-            <span>View Partner Call</span>
+            <span>View My Listings</span>
             <ArrowRight className="w-4 h-4" />
           </button>
           
