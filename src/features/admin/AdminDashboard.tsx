@@ -88,12 +88,21 @@ export default function AdminDashboard({
 
   // 5. Chart 3 — Organisation Types
   const orgTypeCounts: Record<string, number> = {
-    NGO: 0,
-    School: 0,
-    'VET Provider': 0,
-    University: 0,
+    'NGO / Association': 0,
+    'Foundation': 0,
     'Youth Organisation': 0,
-    Other: 0
+    'National Youth Council': 0,
+    'Higher Education Institution': 0,
+    'School': 0,
+    'Educational Centre': 0,
+    'Research Institute / Centre': 0,
+    'Public Body': 0,
+    'Private Enterprise': 0,
+    'Social Partner': 0,
+    'Representative Body': 0,
+    'Sport Organisation': 0,
+    'Public Service Provider': 0,
+    'Other': 0
   };
   listings.forEach(l => {
     if (l.type && l.type in orgTypeCounts) {
