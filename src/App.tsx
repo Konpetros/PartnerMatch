@@ -73,9 +73,6 @@ export default function App() {
     handleViewOrgProfile,
   } = useNavigation(!!currentUser, isAdmin, handleOpenSignIn);
 
-  // Activity log — kept in local state for now
-  const [activityLog] = useState<any[]>([]);
-
   // Scroll to top on navigation
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -135,10 +132,10 @@ export default function App() {
     showToast('Listing rejected.');
   };
 
-  const handleBanUser = (uid: string) => showToast('User management coming soon.');
-  const handleUnbanUser = (uid: string) => showToast('User management coming soon.');
-  const handleDeleteUser = (uid: string) => showToast('User management coming soon.');
-  const handlePromoteToAdmin = (uid: string) => showToast('User management coming soon.');
+  const handleBanUser = (_uid: string) => showToast('User management is not yet implemented.');
+  const handleUnbanUser = (_uid: string) => showToast('User management is not yet implemented.');
+  const handleDeleteUser = (_uid: string) => showToast('User management is not yet implemented.');
+  const handlePromoteToAdmin = (_uid: string) => showToast('User management is not yet implemented.');
 
   // Show full-screen loading spinner while Firebase checks auth state
   if (authLoading) {
@@ -202,7 +199,6 @@ export default function App() {
           onSignOut={onSignOut}
           isAdmin={isAdmin}
           adminUsers={adminUsers}
-          activityLog={activityLog}
           onApproveListing={onApproveListing}
           onRejectListing={onRejectListing}
           onBanUser={handleBanUser}

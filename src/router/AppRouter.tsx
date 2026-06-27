@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppView } from '../hooks/useNavigation';
-import { Listing, OrganisationProfile, AdminUser, ActivityLog } from '../types';
+import { Listing, OrganisationProfile, AdminUser } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import OrgProfileView from '../components/OrgProfileView';
 import HomeView from '../components/HomeView';
@@ -51,7 +51,6 @@ interface AppRouterProps {
 
   isAdmin: boolean;
   adminUsers: AdminUser[];
-  activityLog: ActivityLog[];
   onApproveListing: (id: string) => void;
   onRejectListing: (id: string, reason: string) => void;
   onBanUser: (uid: string) => void;
@@ -84,7 +83,6 @@ export default function AppRouter({
 
   isAdmin,
   adminUsers,
-  activityLog,
   onApproveListing,
   onRejectListing,
   onBanUser,
@@ -122,7 +120,7 @@ export default function AppRouter({
           <AdminDashboard
             listings={listings}
             users={adminUsers}
-            activityLog={activityLog}
+            activityLog={[]}
           />
         )}
         {currentView === 'admin-pending' && (
@@ -253,6 +251,7 @@ export default function AppRouter({
         listings={listings}
         onNavigate={onNavigate}
         onSelectListing={onSelectListing}
+        currentUserUid={currentUserUid}
       />
     );
   }

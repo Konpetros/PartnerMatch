@@ -8,7 +8,6 @@ import SettingsPanel from './SettingsPanel';
 import PartnerMatchLogo from '../assets/PartnerMatchLogo';
 import { 
   Lock, 
-  Sparkles, 
   LogIn, 
   LayoutDashboard, 
   PlusCircle, 
