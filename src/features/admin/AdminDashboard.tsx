@@ -207,7 +207,7 @@ export default function AdminDashboard({
           </div>
           <div>
             <p className="text-2xl font-black text-slate-800">{countryCount}</p>
-            <p className="text-[11px] text-slate-400 font-semibold mt-0.5">EU Member States</p>
+            <p className="text-[11px] text-slate-400 font-semibold mt-0.5">Erasmus+ Countries</p>
           </div>
         </div>
       </div>
