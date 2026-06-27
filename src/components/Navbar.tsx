@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut, Settings, Megaphone, Heart } from 'lucide-react';
+import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut, Settings, Megaphone, Heart, Handshake } from 'lucide-react';
 import PartnerMatchLogo from '../assets/PartnerMatchLogo';
 
 interface NavbarProps {
@@ -161,6 +161,17 @@ export default function Navbar({
                       <span>Favourites</span>
                     </button>
                     <button
+                      id="dropdown-partner-requests"
+                      onClick={() => {
+                        onNavigate('partner-requests');
+                        setAvatarMenuOpen(false);
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
+                    >
+                      <Handshake className="w-4 h-4 text-slate-500" />
+                      <span>Partner Requests</span>
+                    </button>
+                    <button
                       id="dropdown-announcements"
                       onClick={() => {
                         onNavigate('announcements');
@@ -297,6 +308,17 @@ export default function Navbar({
                 >
                   <Heart className="w-5 h-5 text-gray-400" />
                   <span>Favourites</span>
+                </button>
+                <button
+                  id="mobile-partner-requests"
+                  onClick={() => {
+                    onNavigate('partner-requests');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+                >
+                  <Handshake className="w-5 h-5 text-gray-400" />
+                  <span>Partner Requests</span>
                 </button>
                 <button
                   id="mobile-signout"
