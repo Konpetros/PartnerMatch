@@ -4,8 +4,10 @@
  */
 
 import React from 'react';
-import { Listing, KeyAction } from '../types';
+import { Listing, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
+import ExpressInterestModal from './ExpressInterestModal';
+import { checkExistingRequest } from '../services/firebase/firestore';
 import { 
   ArrowLeft, 
   Mail, 
@@ -22,9 +24,20 @@ interface ListingDetailProps {
   onBack: () => void;
   onViewOrganisation: (listingId: string) => void;
   currentUserUid?: string | null;
+  currentUserProfile?: OrganisationProfile | null;
 }
 
-export default function ListingDetailView({ listing, onBack, onViewOrganisation, currentUserUid }: ListingDetailProps) {
+export default function ListingDetailView({ listing, onBack, onViewOrganisation, currentUserUid, currentUserProfile }: ListingDetailProps) {
+  const [interestModalOpen, setInterestModalOpen] = React.useState(false);
+  const [alreadySent, setAlreadySent] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!currentUserUid || !listing.id) return;
+    checkExistingRequest(listing.id, currentUserUid).then(setAlreadySent);
+  }, [currentUserUid, listing.id]);
+
+  const isOwnListing = currentUserUid && (listing as any).submittedBy === currentUserUid;
+  const canExpressInterest = currentUserUid && currentUserProfile && !isOwnListing && listing.status === 'active';
   const profile = listing.submitterProfile || {
     organisationName: listing.name,
     organisationType: listing.type,
@@ -252,6 +265,38 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
                     Contact details hidden by organisation
                   </div>
                 )}
+            {canExpressInterest && (
+              <button
+                onClick={() => setInterestModalOpen(true)}
+                disabled={alreadySent}
+                className={`w-full flex items-center justify-center space-x-2 py-3 rounded-xl font-bold text-sm transition-all cursor-pointer border-2 ${
+                  alreadySent
+                    ? 'border-emerald-200 bg-emerald-50 text-emerald-600 cursor-not-allowed'
+                    : 'border-brand-primary bg-white text-brand-primary hover:bg-blue-50'
+                }`}
+              >
+                {alreadySent ? (
+                  <span>✓ Interest Already Sent</span>
+                ) : (
+                  <span>🤝 Express Interest</span>
+                )}
+              </button>
+            )}
+
+            {interestModalOpen && currentUserProfile && (
+              <ExpressInterestModal
+                isOpen={interestModalOpen}
+                onClose={() => { setInterestModalOpen(false); setAlreadySent(true); }}
+                listingId={listing.id}
+                listingTitle={listing.title || listing.name}
+                toOrgUid={(listing as any).submittedBy || ''}
+                toOrgName={listing.name}
+                toOrgEmail={listing.contactEmail}
+                fromOrgUid={currentUserUid!}
+                fromProfile={currentUserProfile}
+              />
+            )}
+
                 <button
                   type="button"
                   onClick={() => onViewOrganisation(listing.id)}
