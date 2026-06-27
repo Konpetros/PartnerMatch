@@ -4,9 +4,10 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Listing, SearchFilters, KeyAction } from '../types';
+import { Listing, SearchFilters, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
 import { getFavourites } from '../services/firebase/firestore';
+import ExpressInterestButton from './ExpressInterestButton';
 import { COUNTRIES, ORGANISATION_TYPES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import { 
   Search, 
@@ -23,11 +24,12 @@ interface BrowseViewProps {
   onNavigate: (view: string) => void;
   onSelectListing: (id: string) => void;
   currentUserUid?: string | null;
+  currentUserProfile?: OrganisationProfile | null;
 }
 
 const LISTINGS_PER_PAGE = 15;
 
-export default function BrowseDirectoryView({ listings, onNavigate, onSelectListing, currentUserUid }: BrowseViewProps) {
+export default function BrowseDirectoryView({ listings, onNavigate, onSelectListing, currentUserUid, currentUserProfile }: BrowseViewProps) {
   // Search & Filter State
   const [filters, setFilters] = useState<SearchFilters>({
     searchQuery: '',
@@ -743,6 +745,11 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           </span>
                         )}
                       </div>
+                      <ExpressInterestButton
+                        listing={listing}
+                        currentUserUid={currentUserUid ?? null}
+                        currentUserProfile={currentUserProfile ?? null}
+                      />
                     </div>
                   </div>
                 );

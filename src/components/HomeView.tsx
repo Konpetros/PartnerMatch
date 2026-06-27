@@ -4,9 +4,10 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { Listing, KeyAction } from '../types';
+import { Listing, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
 import { getFavourites } from '../services/firebase/firestore';
+import ExpressInterestButton from './ExpressInterestButton';
 import { 
   Search, 
   ArrowRight, 
@@ -25,9 +26,10 @@ interface HomeViewProps {
   onNavigate: (view: string) => void;
   onSelectListing: (id: string) => void;
   currentUserUid?: string | null;
+  currentUserProfile?: OrganisationProfile | null;
 }
 
-export default function HomeView({ listings, onNavigate, onSelectListing, currentUserUid }: HomeViewProps) {
+export default function HomeView({ listings, onNavigate, onSelectListing, currentUserUid, currentUserProfile }: HomeViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
@@ -522,6 +524,11 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
                         </span>
                       )}
                     </div>
+                    <ExpressInterestButton
+                      listing={listing}
+                      currentUserUid={currentUserUid ?? null}
+                      currentUserProfile={currentUserProfile ?? null}
+                    />
                   </div>
                 </div>
               );
