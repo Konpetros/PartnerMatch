@@ -110,9 +110,13 @@ export default function App() {
 
   // Wrap submit listing — strip local ID before sending to Firestore
   const onSubmitListing = async (listing: Listing) => {
-    const { id, ...listingWithoutId } = listing;
-    await handleSubmitListing(listingWithoutId);
-    showToast('Listing submitted! It will appear after admin approval.');
+    const { id: _id, ...listingWithoutId } = listing;
+    try {
+      await handleSubmitListing(listingWithoutId);
+      showToast('Listing submitted! It will appear after admin approval.');
+    } catch {
+      showToast('Failed to submit listing. Please try again.');
+    }
   };
 
   // Wrap sign out

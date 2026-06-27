@@ -11,7 +11,6 @@ import MyListingsDashboardView from '../components/MyListingsDashboardView';
 import AboutView from '../components/AboutView';
 import ContactView from '../components/ContactView';
 import OrganisationSetupView from '../components/OrganisationSetupView';
-import MyOrganisationProfileView from '../components/MyOrganisationProfileView';
 import OrganisationsDirectoryView from '../components/OrganisationsDirectoryView';
 import PrivacyPolicyView from '../components/PrivacyPolicyView';
 import TermsAndConditionsView from '../components/TermsAndConditionsView';

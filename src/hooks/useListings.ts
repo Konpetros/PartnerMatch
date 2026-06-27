@@ -23,26 +23,51 @@ export const useListings = (currentUserUid: string | null) => {
 
   const handleSubmitListing = async (newListing: Omit<Listing, 'id'>) => {
     if (!currentUserUid) return;
-    await firestoreSubmitListing(newListing, currentUserUid);
+    try {
+      await firestoreSubmitListing(newListing, currentUserUid);
+    } catch (error) {
+      console.error('submitListing error:', error);
+      throw error;
+    }
   };
 
   const handleDeleteListing = async (id: string) => {
-    await firestoreDeleteListing(id);
+    try {
+      await firestoreDeleteListing(id);
+    } catch (error) {
+      console.error('deleteListing error:', error);
+      throw error;
+    }
   };
 
   const handleUpdateListingStatus = async (
     id: string,
     status: 'active' | 'pending' | 'expired' | 'partnership-found'
   ) => {
-    await firestoreUpdateListingStatus(id, status);
+    try {
+      await firestoreUpdateListingStatus(id, status);
+    } catch (error) {
+      console.error('updateListingStatus error:', error);
+      throw error;
+    }
   };
 
   const handleApproveListing = async (id: string) => {
-    await firestoreUpdateListingStatus(id, 'active');
+    try {
+      await firestoreUpdateListingStatus(id, 'active');
+    } catch (error) {
+      console.error('approveListing error:', error);
+      throw error;
+    }
   };
 
   const handleRejectListing = async (id: string, reason: string) => {
-    await updateListing(id, { status: 'expired', rejectionReason: reason });
+    try {
+      await updateListing(id, { status: 'expired', rejectionReason: reason });
+    } catch (error) {
+      console.error('rejectListing error:', error);
+      throw error;
+    }
   };
 
   return {
