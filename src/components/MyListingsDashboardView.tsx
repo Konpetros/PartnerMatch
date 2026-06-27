@@ -305,12 +305,15 @@ export default function MyListingsDashboardView({
   // 2. AUTHENTICATED DASHBOARD STATE
   const initials = currentUser.trim().charAt(0).toUpperCase() || 'E';
 
+  // Only show current user's own listings
+  const userListings = listings.filter(l => (l as any).submittedBy === currentUserUid);
+
   // Compute stats for listing items
-  const allCount = listings.length;
-  const activeCount = listings.filter(l => l.status === 'active' || !l.status).length; // fallback to active if not set
-  const pendingCount = listings.filter(l => l.status === 'pending').length;
-  const expiredCount = listings.filter(l => l.status === 'expired').length;
-  const partnershipFoundCount = listings.filter(l => l.status === 'partnership-found').length;
+  const allCount = userListings.length;
+  const activeCount = userListings.filter(l => l.status === 'active' || !l.status).length; // fallback to active if not set
+  const pendingCount = userListings.filter(l => l.status === 'pending').length;
+  const expiredCount = userListings.filter(l => l.status === 'expired').length;
+  const partnershipFoundCount = userListings.filter(l => l.status === 'partnership-found').length;
 
   const tabCounts = {
     'All': allCount,
@@ -321,7 +324,7 @@ export default function MyListingsDashboardView({
   };
 
   // Perform filtering
-  const filteredListings = listings.filter(listing => {
+  const filteredListings = userListings.filter(listing => {
     // Search query matches organisation name index
     const matchesSearch = listing.name.toLowerCase().includes(searchQuery.toLowerCase());
     
