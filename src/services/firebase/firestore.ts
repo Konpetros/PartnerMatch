@@ -16,6 +16,7 @@ import {
 import { db } from './config';
 import { Listing } from '../../types';
 import { OrganisationProfile } from '../../types';
+import { PartnerRequest } from '../../types/partnerRequest';
 
 // ─── LISTINGS ────────────────────────────────────────────────
 
@@ -230,6 +231,75 @@ export const getUserSettings = async (userId: string): Promise<{
     showLocationOnProfile: settings.showLocationOnProfile ?? true,
     profilePublic: settings.profilePublic ?? true,
   };
+};
+
+// ─── PARTNER REQUESTS ────────────────────────────────────────
+
+export const submitPartnerRequest = async (
+  request: Omit<PartnerRequest, 'id'>
+): Promise<string> => {
+  const ref = await addDoc(collection(db, 'partnerRequests'), request);
+  return ref.id;
+};
+
+export const getRequestsForListing = async (
+  listingId: string
+): Promise<PartnerRequest[]> => {
+  const snapshot = await getDocs(
+    query(
+      collection(db, 'partnerRequests'),
+      where('listingId', '==', listingId),
+      orderBy('createdAt', 'desc')
+    )
+  );
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() } as PartnerRequest));
+};
+
+export const getIncomingRequests = async (
+  toOrgUid: string
+): Promise<PartnerRequest[]> => {
+  const snapshot = await getDocs(
+    query(
+      collection(db, 'partnerRequests'),
+      where('toOrgUid', '==', toOrgUid),
+      orderBy('createdAt', 'desc')
+    )
+  );
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() } as PartnerRequest));
+};
+
+export const getSentRequests = async (
+  fromOrgUid: string
+): Promise<PartnerRequest[]> => {
+  const snapshot = await getDocs(
+    query(
+      collection(db, 'partnerRequests'),
+      where('fromOrgUid', '==', fromOrgUid),
+      orderBy('createdAt', 'desc')
+    )
+  );
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() } as PartnerRequest));
+};
+
+export const updateRequestStatus = async (
+  requestId: string,
+  status: 'accepted' | 'declined'
+): Promise<void> => {
+  await updateDoc(doc(db, 'partnerRequests', requestId), { status });
+};
+
+export const checkExistingRequest = async (
+  listingId: string,
+  fromOrgUid: string
+): Promise<boolean> => {
+  const snapshot = await getDocs(
+    query(
+      collection(db, 'partnerRequests'),
+      where('listingId', '==', listingId),
+      where('fromOrgUid', '==', fromOrgUid)
+    )
+  );
+  return !snapshot.empty;
 };
 
 export const getFavourites = async (userId: string): Promise<string[]> => {
