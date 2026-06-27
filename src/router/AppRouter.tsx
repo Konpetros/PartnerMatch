@@ -242,6 +242,7 @@ export default function AppRouter({
           onBack={() => onNavigate('home')}
           onViewOrganisation={onViewOrgProfile}
           currentUserUid={currentUserUid}
+          currentUserProfile={organisationProfile}
         />
       );
     }
