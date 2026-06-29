@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { checkExistingRequest } from '../services/firebase/firestore';
+import React, { useState } from 'react';
 import ExpressInterestModal from './ExpressInterestModal';
 import { Listing, OrganisationProfile } from '../types';
 
@@ -7,19 +6,21 @@ interface ExpressInterestButtonProps {
   listing: Listing;
   currentUserUid: string | null;
   currentUserProfile: OrganisationProfile | null;
+  alreadySent?: boolean;
+  onSent?: (listingId: string) => void;
 }
 
-export default function ExpressInterestButton({ listing, currentUserUid, currentUserProfile }: ExpressInterestButtonProps) {
+export default function ExpressInterestButton({
+  listing,
+  currentUserUid,
+  currentUserProfile,
+  alreadySent = false,
+  onSent,
+}: ExpressInterestButtonProps) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [alreadySent, setAlreadySent] = useState(false);
 
   const isOwnListing = currentUserUid && (listing as any).submittedBy === currentUserUid;
   const canShow = currentUserUid && currentUserProfile && !isOwnListing && listing.status === 'active';
-
-  useEffect(() => {
-    if (!currentUserUid || !canShow) return;
-    checkExistingRequest(listing.id, currentUserUid).then(setAlreadySent);
-  }, [currentUserUid, listing.id]);
 
   if (!canShow) return null;
 
@@ -43,7 +44,10 @@ export default function ExpressInterestButton({ listing, currentUserUid, current
       {modalOpen && (
         <ExpressInterestModal
           isOpen={modalOpen}
-          onClose={() => { setModalOpen(false); setAlreadySent(true); }}
+          onClose={() => {
+            setModalOpen(false);
+            onSent?.(listing.id);
+          }}
           listingId={listing.id}
           listingTitle={listing.title || listing.name}
           toOrgUid={(listing as any).submittedBy || ''}

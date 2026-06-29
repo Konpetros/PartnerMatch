@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Listing, SearchFilters, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
-import { getFavourites } from '../services/firebase/firestore';
+import { getFavourites, getSentRequests } from '../services/firebase/firestore';
 import ExpressInterestButton from './ExpressInterestButton';
 import { COUNTRIES, ORGANISATION_TYPES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import { 
@@ -45,12 +45,20 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
+  const [sentListingIds, setSentListingIds] = useState<string[]>([]);
 
   useEffect(() => {
     if (currentUserUid) {
       getFavourites(currentUserUid).then(setFavouriteIds);
+      getSentRequests(currentUserUid).then(requests =>
+        setSentListingIds(requests.map(r => r.listingId))
+      );
     }
   }, [currentUserUid]);
+
+  const handleInterestSent = (listingId: string) => {
+    setSentListingIds(prev => [...prev, listingId]);
+  };
 
   const handleToggleFavourite = (listingId: string) => {
     setFavouriteIds(prev =>
@@ -637,6 +645,8 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           listing={listing}
                           currentUserUid={currentUserUid ?? null}
                           currentUserProfile={currentUserProfile ?? null}
+                          alreadySent={sentListingIds.includes(listing.id)}
+                          onSent={handleInterestSent}
                         />
                         <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-primary transition-colors shrink-0" />
                       </div>
@@ -757,6 +767,8 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                         listing={listing}
                         currentUserUid={currentUserUid ?? null}
                         currentUserProfile={currentUserProfile ?? null}
+                        alreadySent={sentListingIds.includes(listing.id)}
+                        onSent={handleInterestSent}
                       />
                     </div>
                   </div>
