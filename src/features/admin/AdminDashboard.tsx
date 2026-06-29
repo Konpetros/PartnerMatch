@@ -213,7 +213,7 @@ export default function AdminDashboard({
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         {/* Chart 1: Listings by Month */}
         <div className="bg-white p-6 rounded-[20px] border border-slate-200 shadow-sm flex flex-col justify-between">
           <div>
