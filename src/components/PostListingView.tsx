@@ -193,9 +193,9 @@ export default function PostListingView({
         </div>
         
         <div className="space-y-3">
-          <h1 className="text-3xl font-black text-slate-800">Partner Call Published!</h1>
+          <h1 className="text-3xl font-black text-slate-800">Partner Call Submitted!</h1>
           <p className="text-slate-500 text-sm max-w-sm mx-auto">
-            Your Erasmus+ partner search listing has been successfully generated and compiled into our client directory. Other partners can locate you now.
+            Your partner search listing has been submitted and is <span className="font-bold text-amber-600">pending admin review</span>. It will appear in the directory once approved — usually within 24 hours.
           </p>
         </div>
 

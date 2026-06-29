@@ -61,6 +61,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
   };
 
   const isAnyFilterActive = 
+    filters.searchQuery !== '' ||
     filters.country !== '' ||
     filters.organisationType !== '' ||
     filters.thematicArea !== '' ||

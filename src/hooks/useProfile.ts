@@ -35,13 +35,21 @@ export const useProfile = (currentUserUid: string | null) => {
   const handleProfileComplete = async (profile: OrganisationProfile) => {
     if (!currentUserUid) return;
     setOrganisationProfile(profile);
-    await saveProfile(currentUserUid, profile);
+    try {
+      await saveProfile(currentUserUid, profile);
+    } catch (error) {
+      console.error('saveProfile error (handleProfileComplete):', error);
+    }
   };
 
   const handleUpdateProfile = async (profile: OrganisationProfile) => {
     if (!currentUserUid) return;
     setOrganisationProfile(profile);
-    await saveProfile(currentUserUid, profile);
+    try {
+      await saveProfile(currentUserUid, profile);
+    } catch (error) {
+      console.error('saveProfile error (handleUpdateProfile):', error);
+    }
   };
 
   const hasProfile = organisationProfile !== null;
