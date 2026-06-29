@@ -29,13 +29,8 @@ export default function OrganisationsDirectoryView({
   const [selectedType, setSelectedType] = useState('');
   const [selectedLetter, setSelectedLetter] = useState('All');
 
-  // Trigger loading state briefly whenever filters change to show beautiful skeleton loading animation
   useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 450);
-    return () => clearTimeout(timer);
+    setIsLoading(false);
   }, [searchQuery, selectedCountry, selectedType, selectedLetter]);
 
   // Derive unique organisations list — only show public profiles

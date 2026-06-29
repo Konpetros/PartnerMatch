@@ -15,8 +15,7 @@ import {
   Globe, 
   Calendar, 
   Languages, 
-  Tags, 
-  Target
+  Tags
 } from 'lucide-react';
 
 interface ListingDetailProps {

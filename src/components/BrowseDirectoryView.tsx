@@ -631,7 +631,14 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           🗓 {formatDate(listing.partnerSearchDeadline)}
                         </span>
                       </div>
-                      <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-primary transition-colors shrink-0" />
+                      <div className="flex items-center gap-2 shrink-0">
+                        <ExpressInterestButton
+                          listing={listing}
+                          currentUserUid={currentUserUid ?? null}
+                          currentUserProfile={currentUserProfile ?? null}
+                        />
+                        <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-primary transition-colors shrink-0" />
+                      </div>
                     </div>
                   );
                 })}
