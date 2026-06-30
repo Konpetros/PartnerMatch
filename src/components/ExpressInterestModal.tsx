@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Send, CheckCircle } from 'lucide-react';
 import { submitPartnerRequest, checkExistingRequest } from '../services/firebase/firestore';
 import { OrganisationProfile } from '../types';
@@ -70,7 +71,7 @@ export default function ExpressInterestModal({
     }
   };
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={onClose} />
       <div className="relative bg-white rounded-[24px] shadow-2xl w-full max-w-md p-6 space-y-5 animate-fade-in">
@@ -162,6 +163,7 @@ export default function ExpressInterestModal({
           </>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
