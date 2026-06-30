@@ -44,10 +44,8 @@ export default function ExpressInterestButton({
       {modalOpen && (
         <ExpressInterestModal
           isOpen={modalOpen}
-          onClose={() => {
-            setModalOpen(false);
-            onSent?.(listing.id);
-          }}
+          onClose={() => setModalOpen(false)}
+          onSuccess={() => onSent?.(listing.id)}
           listingId={listing.id}
           listingTitle={listing.title || listing.name}
           toOrgUid={(listing as any).submittedBy || ''}

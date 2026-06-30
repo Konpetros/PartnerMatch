@@ -8,6 +8,7 @@ import { PartnerRequest } from '../types/partnerRequest';
 interface ExpressInterestModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
   listingId: string;
   listingTitle: string;
   toOrgUid: string;
@@ -20,6 +21,7 @@ interface ExpressInterestModalProps {
 export default function ExpressInterestModal({
   isOpen,
   onClose,
+  onSuccess,
   listingId,
   listingTitle,
   toOrgUid,
@@ -64,6 +66,7 @@ export default function ExpressInterestModal({
 
       await submitPartnerRequest(request);
       setSuccess(true);
+      onSuccess?.();
     } catch (err) {
       setError('Failed to send request. Please try again.');
     } finally {
