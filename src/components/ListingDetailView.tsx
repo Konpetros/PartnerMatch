@@ -285,7 +285,8 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
             {interestModalOpen && currentUserProfile && (
               <ExpressInterestModal
                 isOpen={interestModalOpen}
-                onClose={() => { setInterestModalOpen(false); setAlreadySent(true); }}
+                onClose={() => setInterestModalOpen(false)}
+                onSuccess={() => setAlreadySent(true)}
                 listingId={listing.id}
                 listingTitle={listing.title || listing.name}
                 toOrgUid={(listing as any).submittedBy || ''}
