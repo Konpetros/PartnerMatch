@@ -1,27 +1,22 @@
 import React from 'react';
-import { Listing, AdminUser, ActivityLog } from '../../types';
+import { Listing, AdminUser } from '../../types';
 import {
   Users,
   FileText,
   Clock,
   CheckCircle,
   XCircle,
-  Globe2,
-  Trash,
-  Plus,
-  ArrowUpRight
+  Globe2
 } from 'lucide-react';
 
 interface AdminDashboardProps {
   listings: Listing[];
   users: AdminUser[];
-  activityLog: ActivityLog[];
 }
 
 export default function AdminDashboard({
   listings,
   users,
-  activityLog,
 }: AdminDashboardProps) {
 
   // 1. Calculate Stats
@@ -34,23 +29,7 @@ export default function AdminDashboard({
   const uniqueCountries = new Set(listings.map(l => l.country).filter(Boolean));
   const countryCount = uniqueCountries.size;
 
-  // 2. Relative time helper
-  const getRelativeTime = (dateStr: string) => {
-    const d = new Date(dateStr);
-    const now = new Date();
-    const diffMs = now.getTime() - d.getTime();
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffMins < 60) {
-      return `${Math.max(1, diffMins)}m ago`;
-    } else if (diffHours < 24) {
-      return `${diffHours}h ago`;
-    } else {
-      return `${diffDays}d ago`;
-    }
-  };
 
   // 3. Chart 1 — Listings by Month
   const monthsList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
@@ -304,77 +283,7 @@ export default function AdminDashboard({
         </div>
       </div>
 
-      {/* Recent Activity Log Feed */}
-      <div className="bg-white p-6 rounded-[20px] border border-slate-200 shadow-sm">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-sm font-black text-slate-800 uppercase tracking-wider">System Audit Trail</h2>
-            <p className="text-xs text-slate-400">Chronological list of platform events and user flows</p>
-          </div>
-          <p className="text-xs font-bold text-brand-primary flex items-center space-x-1 select-none">
-            <span>Scroll & Audit</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </p>
-        </div>
 
-        <div className="divide-y divide-slate-100">
-          {activityLog.slice(0, 10).map((log) => {
-            let iconBg = 'bg-slate-100 text-slate-600';
-            let Icon = FileText;
-            let actionText = '';
-
-            switch (log.action) {
-              case 'submitted':
-                iconBg = 'bg-blue-50 text-blue-600';
-                Icon = FileText;
-                actionText = `submitted new listing "${log.listingName}"`;
-                break;
-              case 'approved':
-                iconBg = 'bg-emerald-50 text-emerald-600';
-                Icon = CheckCircle;
-                actionText = `approved listing "${log.listingName}"`;
-                break;
-              case 'rejected':
-                iconBg = 'bg-red-50 text-red-600';
-                Icon = XCircle;
-                actionText = `rejected listing "${log.listingName}"`;
-                break;
-              case 'deleted':
-                iconBg = 'bg-slate-100 text-slate-600';
-                Icon = Trash;
-                actionText = `deleted listing "${log.listingName}"`;
-                break;
-              case 'signup':
-                iconBg = 'bg-purple-50 text-purple-600';
-                Icon = Users;
-                actionText = 'created a new agency account';
-                break;
-            }
-
-            return (
-              <div key={log.id} className="py-3.5 flex items-center justify-between gap-4">
-                <div className="flex items-center space-x-3.5">
-                  <div className={`p-2 rounded-xl ${iconBg} shrink-0`}>
-                    <Icon className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-slate-700">
-                      <span className="text-slate-900 mr-1">{log.userName || 'System'}</span>
-                      <span className="text-slate-500 font-medium">{actionText}</span>
-                    </p>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">
-                      Type: {log.action}
-                    </p>
-                  </div>
-                </div>
-                <span className="text-xs text-slate-400 font-bold shrink-0">
-                  {getRelativeTime(log.timestamp)}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
     </div>
   );
 }

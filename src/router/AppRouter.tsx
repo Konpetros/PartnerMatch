@@ -101,6 +101,8 @@ export default function AppRouter({
           listings={listings}
           onNavigate={onNavigate}
           onSelectListing={onSelectListing}
+          currentUserUid={currentUserUid}
+          currentUserProfile={organisationProfile}
         />
       );
     }
@@ -119,7 +121,6 @@ export default function AppRouter({
           <AdminDashboard
             listings={listings}
             users={adminUsers}
-            activityLog={[]}
           />
         )}
         {currentView === 'admin-pending' && (
@@ -127,7 +128,7 @@ export default function AppRouter({
             listings={listings.filter(l => l.status === 'pending')}
             onApprove={onApproveListing}
             onReject={onRejectListing}
-            onEdit={(id) => alert(`Edit is coming soon for listing: ${id}`)}
+            onEdit={(id) => onSelectListing(id)}
             onDelete={onDeleteListing}
           />
         )}
