@@ -327,6 +327,8 @@ export default function AppRouter({
       listings={listings}
       onNavigate={onNavigate}
       onSelectListing={onSelectListing}
+      currentUserUid={currentUserUid}
+      currentUserProfile={organisationProfile}
     />
   );
 }
