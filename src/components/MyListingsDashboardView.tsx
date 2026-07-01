@@ -494,7 +494,7 @@ export default function MyListingsDashboardView({
                 ) : (
                   <div className="space-y-3">
                     {incomingRequests.map(req => (
-                      <div key={req.id} className={`bg-white rounded-2xl border p-5 space-y-4 transition-all ${req.status === 'pending' ? 'border-blue-100 shadow-sm' : 'border-slate-100'}`}>
+                      <div key={req.id} onClick={() => onSelectListing?.(req.listingId)} className={`bg-white rounded-2xl border p-5 space-y-4 transition-all cursor-pointer hover:border-blue-300 hover:shadow-md ${req.status === 'pending' ? 'border-blue-100 shadow-sm' : 'border-slate-100'}`}>
                         <div className="flex items-center gap-3">
                           {req.fromOrgLogo ? (
                             <img src={req.fromOrgLogo} alt={req.fromOrgName} className="w-11 h-11 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" referrerPolicy="no-referrer" />
@@ -533,7 +533,7 @@ export default function MyListingsDashboardView({
                             <p className="text-[10px] font-bold text-emerald-700 uppercase tracking-wide flex items-center gap-1.5">
                               <Mail className="w-3 h-3" /> Contact Details Revealed
                             </p>
-                            <a href={`mailto:${req.fromOrgEmail}`} className="text-sm font-bold text-brand-primary hover:underline block">
+                            <a href={`mailto:${req.fromOrgEmail}`} onClick={(e) => e.stopPropagation()} className="text-sm font-bold text-brand-primary hover:underline block">
                               {req.fromOrgEmail}
                             </a>
                           </div>
@@ -542,7 +542,8 @@ export default function MyListingsDashboardView({
                         {req.status === 'pending' && (
                           <div className="flex gap-2 pt-1">
                             <button
-                              onClick={async () => {
+                              onClick={async (e) => {
+                                e.stopPropagation();
                                 await updateRequestStatus(req.id, 'accepted');
                                 setIncomingRequests(prev => prev.map(r => r.id === req.id ? { ...r, status: 'accepted' } : r));
                                 showToast('Request accepted! Contact details revealed.');
@@ -553,7 +554,8 @@ export default function MyListingsDashboardView({
                               Accept
                             </button>
                             <button
-                              onClick={async () => {
+                              onClick={async (e) => {
+                                e.stopPropagation();
                                 await updateRequestStatus(req.id, 'declined');
                                 setIncomingRequests(prev => prev.map(r => r.id === req.id ? { ...r, status: 'declined' } : r));
                                 showToast('Request declined.');
@@ -579,7 +581,7 @@ export default function MyListingsDashboardView({
                 ) : (
                   <div className="space-y-3">
                     {sentRequests.map(req => (
-                      <div key={req.id} className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4">
+                      <div key={req.id} onClick={() => onSelectListing?.(req.listingId)} className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all">
                         <div className="flex items-center gap-3">
                           {req.toOrgLogo ? (
                             <img src={req.toOrgLogo} alt={req.toOrgName} className="w-11 h-11 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" referrerPolicy="no-referrer" />
@@ -616,7 +618,7 @@ export default function MyListingsDashboardView({
                               <CheckCircle className="w-3.5 h-3.5" /> Partnership Interest Accepted
                             </p>
                             <p className="text-[10px] text-emerald-600 font-medium">Contact them directly:</p>
-                            <a href={`mailto:${req.toOrgEmail}`} className="text-sm font-bold text-brand-primary hover:underline block">
+                            <a href={`mailto:${req.toOrgEmail}`} onClick={(e) => e.stopPropagation()} className="text-sm font-bold text-brand-primary hover:underline block">
                               {req.toOrgEmail}
                             </a>
                           </div>
