@@ -581,11 +581,18 @@ export default function MyListingsDashboardView({
                     {sentRequests.map(req => (
                       <div key={req.id} className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
-                            {req.toOrgName.charAt(0).toUpperCase()}
-                          </div>
+                          {req.toOrgLogo ? (
+                            <img src={req.toOrgLogo} alt={req.toOrgName} className="w-11 h-11 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" referrerPolicy="no-referrer" />
+                          ) : (
+                            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
+                              {req.toOrgName.charAt(0).toUpperCase()}
+                            </div>
+                          )}
                           <div className="flex-1 min-w-0">
-                            <span className="text-sm font-bold text-slate-800 truncate block">{req.toOrgName}</span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-sm font-bold text-slate-800 truncate">{req.toOrgName}</span>
+                              {req.toOrgCountry && <span className="text-xs text-slate-400 font-medium shrink-0">· {req.toOrgCountry}</span>}
+                            </div>
                             <p className="text-xs text-slate-500 font-medium mt-0.5">
                               you applied to <span className="text-brand-primary font-bold">{req.listingTitle}</span>
                             </p>

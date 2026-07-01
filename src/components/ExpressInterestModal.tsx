@@ -14,6 +14,8 @@ interface ExpressInterestModalProps {
   toOrgUid: string;
   toOrgName: string;
   toOrgEmail: string;
+  toOrgLogo?: string;
+  toOrgCountry?: string;
   fromOrgUid: string;
   fromProfile: OrganisationProfile;
 }
@@ -27,6 +29,8 @@ export default function ExpressInterestModal({
   toOrgUid,
   toOrgName,
   toOrgEmail,
+  toOrgLogo,
+  toOrgCountry,
   fromOrgUid,
   fromProfile,
 }: ExpressInterestModalProps) {
@@ -54,6 +58,8 @@ export default function ExpressInterestModal({
         toOrgUid,
         toOrgName,
         toOrgEmail,
+        toOrgLogo: toOrgLogo || '',
+        toOrgCountry: toOrgCountry || '',
         fromOrgUid,
         fromOrgName: fromProfile.organisationName,
         fromOrgLogo: fromProfile.logoUrl || '',

@@ -292,6 +292,8 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
                 toOrgUid={(listing as any).submittedBy || ''}
                 toOrgName={listing.name}
                 toOrgEmail={listing.contactEmail}
+                toOrgLogo={listing.submitterProfile?.logoUrl || ''}
+                toOrgCountry={listing.country}
                 fromOrgUid={currentUserUid!}
                 fromProfile={currentUserProfile}
               />

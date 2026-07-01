@@ -4,6 +4,8 @@ export interface PartnerRequest {
   listingTitle: string;
   toOrgUid: string;
   toOrgName: string;
+  toOrgLogo: string;
+  toOrgCountry: string;
   fromOrgUid: string;
   fromOrgName: string;
   fromOrgLogo: string;
