@@ -495,19 +495,22 @@ export default function MyListingsDashboardView({
                   <div className="space-y-3">
                     {incomingRequests.map(req => (
                       <div key={req.id} className={`bg-white rounded-2xl border p-5 space-y-4 transition-all ${req.status === 'pending' ? 'border-blue-100 shadow-sm' : 'border-slate-100'}`}>
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-center gap-3">
-                            {req.fromOrgLogo ? (
-                              <img src={req.fromOrgLogo} alt={req.fromOrgName} className="w-10 h-10 rounded-lg object-contain border border-slate-100 bg-white p-1 shrink-0" referrerPolicy="no-referrer" />
-                            ) : (
-                              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
-                                {req.fromOrgName.charAt(0).toUpperCase()}
-                              </div>
-                            )}
-                            <div>
-                              <p className="text-sm font-bold text-slate-800">{req.fromOrgName}</p>
-                              <p className="text-xs text-slate-500 font-medium">{req.fromOrgCountry}</p>
+                        <div className="flex items-center gap-3">
+                          {req.fromOrgLogo ? (
+                            <img src={req.fromOrgLogo} alt={req.fromOrgName} className="w-11 h-11 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" referrerPolicy="no-referrer" />
+                          ) : (
+                            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
+                              {req.fromOrgName.charAt(0).toUpperCase()}
                             </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-sm font-bold text-slate-800 truncate">{req.fromOrgName}</span>
+                              <span className="text-xs text-slate-400 font-medium shrink-0">· {req.fromOrgCountry}</span>
+                            </div>
+                            <p className="text-xs text-slate-500 font-medium mt-0.5">
+                              interested in <span className="text-brand-primary font-bold">{req.listingTitle}</span>
+                            </p>
                           </div>
                           <span className={`text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wide shrink-0 ${
                             req.status === 'pending' ? 'bg-amber-100 text-amber-700' :
@@ -516,11 +519,6 @@ export default function MyListingsDashboardView({
                           }`}>
                             {req.status}
                           </span>
-                        </div>
-
-                        <div className="bg-slate-50 rounded-xl px-4 py-2.5">
-                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-0.5">Interested in</p>
-                          <p className="text-xs font-bold text-brand-primary">{req.listingTitle}</p>
                         </div>
 
                         {req.message && (
@@ -581,12 +579,16 @@ export default function MyListingsDashboardView({
                 ) : (
                   <div className="space-y-3">
                     {sentRequests.map(req => (
-                      <div key={req.id} className="bg-white rounded-2xl border border-slate-100 p-5 space-y-3">
-                        <div className="flex items-center justify-between gap-3">
-                          <div>
-                            <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">Applied to</p>
-                            <p className="text-sm font-bold text-slate-800 mt-0.5">{req.listingTitle}</p>
-                            <p className="text-xs text-slate-500 font-medium">{req.toOrgName}</p>
+                      <div key={req.id} className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
+                            {req.toOrgName.charAt(0).toUpperCase()}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-sm font-bold text-slate-800 truncate block">{req.toOrgName}</span>
+                            <p className="text-xs text-slate-500 font-medium mt-0.5">
+                              you applied to <span className="text-brand-primary font-bold">{req.listingTitle}</span>
+                            </p>
                           </div>
                           <span className={`text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wide shrink-0 ${
                             req.status === 'pending' ? 'bg-amber-100 text-amber-700' :
