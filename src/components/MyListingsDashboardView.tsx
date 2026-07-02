@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import { Listing, OrganisationProfile, OrganisationType } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
-import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, updateRequestStatus } from '../services/firebase/firestore';
+import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, updateRequestStatus, hideRequestForUser, withdrawPartnerRequest } from '../services/firebase/firestore';
 import { PartnerRequest } from '../types/partnerRequest';
 import FavouriteButton from './FavouriteButton';
 
@@ -98,8 +98,8 @@ export default function MyListingsDashboardView({
         getIncomingRequests(currentUserUid),
         getSentRequests(currentUserUid),
       ]).then(([incoming, sent]) => {
-        setIncomingRequests(incoming);
-        setSentRequests(sent);
+        setIncomingRequests(incoming.filter(r => !(r.hiddenBy || []).includes(currentUserUid)));
+        setSentRequests(sent.filter(r => !(r.hiddenBy || []).includes(currentUserUid)));
         setRequestsLoading(false);
       });
     }
@@ -567,6 +567,23 @@ export default function MyListingsDashboardView({
                             </button>
                           </div>
                         )}
+
+                        {req.status !== 'pending' && (
+                          <div className="flex justify-end pt-1">
+                            <button
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                if (!currentUserUid) return;
+                                await hideRequestForUser(req.id, currentUserUid);
+                                setIncomingRequests(prev => prev.filter(r => r.id !== req.id));
+                                showToast('Request cleared.');
+                              }}
+                              className="text-[10px] font-bold text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
+                            >
+                              Clear
+                            </button>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -621,6 +638,39 @@ export default function MyListingsDashboardView({
                             <a href={`mailto:${req.toOrgEmail}`} onClick={(e) => e.stopPropagation()} className="text-sm font-bold text-brand-primary hover:underline block">
                               {req.toOrgEmail}
                             </a>
+                          </div>
+                        )}
+
+                        {req.status === 'pending' && (
+                          <div className="flex justify-end pt-1">
+                            <button
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                await withdrawPartnerRequest(req.id);
+                                setSentRequests(prev => prev.filter(r => r.id !== req.id));
+                                showToast('Interest withdrawn.');
+                              }}
+                              className="text-[10px] font-bold text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
+                            >
+                              Withdraw Interest
+                            </button>
+                          </div>
+                        )}
+
+                        {req.status !== 'pending' && (
+                          <div className="flex justify-end pt-1">
+                            <button
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                if (!currentUserUid) return;
+                                await hideRequestForUser(req.id, currentUserUid);
+                                setSentRequests(prev => prev.filter(r => r.id !== req.id));
+                                showToast('Request cleared.');
+                              }}
+                              className="text-[10px] font-bold text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
+                            >
+                              Clear
+                            </button>
                           </div>
                         )}
                       </div>

@@ -15,4 +15,5 @@ export interface PartnerRequest {
   message: string;
   status: 'pending' | 'accepted' | 'declined';
   createdAt: string;
+  hiddenBy?: string[];
 }

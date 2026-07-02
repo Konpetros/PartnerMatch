@@ -12,6 +12,7 @@ import {
   orderBy,
   increment,
   setDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 import { db } from './config';
 import { Listing } from '../../types';
@@ -286,6 +287,21 @@ export const updateRequestStatus = async (
   status: 'accepted' | 'declined'
 ): Promise<void> => {
   await updateDoc(doc(db, 'partnerRequests', requestId), { status });
+};
+
+export const hideRequestForUser = async (
+  requestId: string,
+  userUid: string
+): Promise<void> => {
+  await updateDoc(doc(db, 'partnerRequests', requestId), {
+    hiddenBy: arrayUnion(userUid)
+  });
+};
+
+export const withdrawPartnerRequest = async (
+  requestId: string
+): Promise<void> => {
+  await deleteDoc(doc(db, 'partnerRequests', requestId));
 };
 
 export const checkExistingRequest = async (
