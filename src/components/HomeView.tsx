@@ -4,6 +4,7 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
+import { formatDate } from '../utils/formatDate';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
 import { getFavourites, getSentRequests } from '../services/firebase/firestore';
@@ -196,17 +197,6 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
     };
   }, []);
 
-  // Helper to format date
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    if (isNaN(date.getTime())) return dateStr;
-    const day = date.getDate();
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  };
 
   // Badge styler helper for Key Actions
   const getKeyActionBadgeStyle = (action: KeyAction) => {

@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
+import { formatDate } from '../utils/formatDate';
 import { Listing, SearchFilters, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
 import { getFavourites, getSentRequests } from '../services/firebase/firestore';
@@ -77,16 +78,6 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
     filters.keyActions.length > 0 ||
     filters.projectRole !== '';
 
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    if (isNaN(date.getTime())) return dateStr;
-    const day = date.getDate();
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  };
 
   // Filter & Sort Logic on-the-fly using useMemo
   const filteredAndSorted = useMemo(() => {
