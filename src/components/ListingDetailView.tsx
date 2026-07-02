@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import DOMPurify from 'dompurify';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
 import { formatDate } from '../utils/formatDate';
@@ -172,7 +173,12 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
               </h2>
               <div
                 className="text-slate-600 text-sm leading-relaxed prose prose-sm max-w-none prose-headings:text-slate-800 prose-a:text-brand-primary prose-strong:text-slate-800 font-medium"
-                dangerouslySetInnerHTML={{ __html: listing.description }}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(listing.description, {
+                    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a', 'h2', 'h3', 'ul', 'ol', 'li', 'mark', 'span'],
+                    ALLOWED_ATTR: ['href', 'target', 'rel', 'style', 'class'],
+                  }),
+                }}
               />
             </div>
 
