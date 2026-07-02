@@ -113,6 +113,18 @@ export const checkIsAdmin = async (userId: string): Promise<boolean> => {
   return snap.exists();
 };
 
+export const updateUserBanStatus = async (
+  uid: string,
+  status: 'active' | 'banned'
+): Promise<void> => {
+  await updateDoc(doc(db, 'users', uid), { status });
+};
+
+export const promoteUserToAdmin = async (uid: string): Promise<void> => {
+  await setDoc(doc(db, 'admins', uid), { grantedAt: new Date().toISOString() });
+  await updateDoc(doc(db, 'users', uid), { isAdmin: true });
+};
+
 // ─── VIEWS COUNTER ───────────────────────────────────────────
 
 export const incrementListingViews = async (id: string): Promise<void> => {

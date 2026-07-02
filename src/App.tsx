@@ -15,6 +15,7 @@ import { useNavigation } from './hooks/useNavigation';
 import { useToast } from './hooks/useToast';
 import { Listing } from './types';
 import { trackPageView } from './utils/analytics';
+import { updateUserBanStatus, promoteUserToAdmin } from './services/firebase/firestore';
 
 export default function App() {
   const { toastMessage, showToast } = useToast(5000);
@@ -136,10 +137,41 @@ export default function App() {
     showToast('Listing rejected.');
   };
 
-  const handleBanUser = (_uid: string) => showToast('User management is not yet implemented.');
-  const handleUnbanUser = (_uid: string) => showToast('User management is not yet implemented.');
+  const handleBanUser = async (uid: string) => {
+    if (uid === currentUserUid) {
+      showToast('You cannot ban your own account.');
+      return;
+    }
+    try {
+      await updateUserBanStatus(uid, 'banned');
+      showToast('User banned.');
+    } catch (error) {
+      console.error('Failed to ban user:', error);
+      showToast('Failed to ban user. Please try again.');
+    }
+  };
+
+  const handleUnbanUser = async (uid: string) => {
+    try {
+      await updateUserBanStatus(uid, 'active');
+      showToast('User unbanned.');
+    } catch (error) {
+      console.error('Failed to unban user:', error);
+      showToast('Failed to unban user. Please try again.');
+    }
+  };
+
   const handleDeleteUser = (_uid: string) => showToast('User management is not yet implemented.');
-  const handlePromoteToAdmin = (_uid: string) => showToast('User management is not yet implemented.');
+
+  const handlePromoteToAdmin = async (uid: string) => {
+    try {
+      await promoteUserToAdmin(uid);
+      showToast('User promoted to admin.');
+    } catch (error) {
+      console.error('Failed to promote user:', error);
+      showToast('Failed to promote user. Please try again.');
+    }
+  };
 
   // Show full-screen loading spinner while Firebase checks auth state
   if (authLoading) {
