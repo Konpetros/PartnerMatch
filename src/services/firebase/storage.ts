@@ -26,3 +26,16 @@ export const deleteFile = async (url: string): Promise<void> => {
   const storageRef = ref(storage, url);
   await deleteObject(storageRef);
 };
+
+export const deleteUserLogo = async (userId: string): Promise<void> => {
+  try {
+    const storageRef = ref(storage, `logos/${userId}/logo`);
+    await deleteObject(storageRef);
+  } catch (error: any) {
+    if (error?.code !== 'storage/object-not-found') {
+      console.error('Failed to delete user logo:', error);
+    }
+    // Silently ignore if the user never uploaded a logo
+  }
+};
+

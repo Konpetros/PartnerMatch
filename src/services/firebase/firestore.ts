@@ -18,6 +18,7 @@ import { db } from './config';
 import { Listing } from '../../types';
 import { OrganisationProfile } from '../../types';
 import { PartnerRequest } from '../../types/partnerRequest';
+import { deleteUserLogo } from './storage';
 
 // ─── LISTINGS ────────────────────────────────────────────────
 
@@ -213,6 +214,19 @@ export const deleteUserData = async (userId: string): Promise<void> => {
     updateDoc(doc(db, 'listings', d.id), { status: 'expired' })
   );
   await Promise.all(expirePromises);
+
+  // Delete partner requests where this user is either party (sent or received)
+  const [sentRequests, receivedRequests] = await Promise.all([
+    getDocs(query(collection(db, 'partnerRequests'), where('fromOrgUid', '==', userId))),
+    getDocs(query(collection(db, 'partnerRequests'), where('toOrgUid', '==', userId))),
+  ]);
+  const requestDeletePromises = [...sentRequests.docs, ...receivedRequests.docs].map((d) =>
+    deleteDoc(doc(db, 'partnerRequests', d.id))
+  );
+  await Promise.all(requestDeletePromises);
+
+  // Delete the user's uploaded logo from Storage (no-op if none exists)
+  await deleteUserLogo(userId);
 };
 
 export const saveUserSettings = async (userId: string, settings: {
