@@ -34,6 +34,7 @@ interface AppRouterProps {
   profiles: ProfileWithUid[];
   currentUser: string | null;
   currentUserUid: string | null;
+  emailVerified: boolean;
   organisationProfile: OrganisationProfile | null;
   onNavigate: (view: string) => void;
   onSelectListing: (id: string) => void;
@@ -66,6 +67,7 @@ export default function AppRouter({
   profiles,
   currentUser,
   currentUserUid,
+  emailVerified,
   organisationProfile,
   onNavigate,
   onSelectListing,
@@ -302,6 +304,7 @@ export default function AppRouter({
         onNavigate={onNavigate}
         currentUser={currentUser}
         currentUserUid={currentUserUid}
+        emailVerified={emailVerified}
         listings={listings}
         onDeleteListing={onDeleteListing}
         onUpdateListingStatus={onUpdateListingStatus}

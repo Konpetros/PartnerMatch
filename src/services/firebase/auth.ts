@@ -11,6 +11,7 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   sendPasswordResetEmail,
+  sendEmailVerification as firebaseSendEmailVerification,
 } from 'firebase/auth';
 import { auth } from './config';
 
@@ -19,6 +20,7 @@ export interface AuthUser {
   email: string | null;
   displayName: string | null;
   photoURL: string | null;
+  emailVerified: boolean;
 }
 
 const toAuthUser = (user: any): AuthUser => ({
@@ -26,6 +28,7 @@ const toAuthUser = (user: any): AuthUser => ({
   email: user.email,
   displayName: user.displayName,
   photoURL: user.photoURL,
+  emailVerified: user.emailVerified,
 });
 
 export const signInWithGoogle = async (): Promise<AuthUser> => {
@@ -46,6 +49,7 @@ export const registerWithEmail = async (
 ): Promise<AuthUser> => {
   const result = await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(result.user, { displayName });
+  await firebaseSendEmailVerification(result.user);
   return toAuthUser({ ...result.user, displayName });
 };
 
@@ -86,6 +90,12 @@ export const deleteUserAccount = async (password?: string): Promise<void> => {
 
 export const resetPassword = async (email: string): Promise<void> => {
   await sendPasswordResetEmail(auth, email);
+};
+
+export const resendVerificationEmail = async (): Promise<void> => {
+  const user = auth.currentUser;
+  if (!user) throw new Error('No authenticated user');
+  await firebaseSendEmailVerification(user);
 };
 
 export const isEmailPasswordUser = (): boolean => {

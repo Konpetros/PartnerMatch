@@ -35,12 +35,14 @@ import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../da
 import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, updateRequestStatus, hideRequestForUser, withdrawPartnerRequest } from '../services/firebase/firestore';
 import { PartnerRequest } from '../types/partnerRequest';
 import FavouriteButton from './FavouriteButton';
+import { resendVerificationEmail } from '../services/firebase/auth';
 
 interface MyListingsViewProps {
   onOpenSignIn: () => void;
   onNavigate: (view: string) => void;
   currentUser: string | null;
   currentUserUid?: string | null;
+  emailVerified: boolean;
   listings: Listing[];
   onDeleteListing: (id: string) => void;
   onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found') => void;
@@ -56,6 +58,7 @@ export default function MyListingsDashboardView({
   onNavigate, 
   currentUser, 
   currentUserUid,
+  emailVerified,
   listings, 
   onDeleteListing, 
   onUpdateListingStatus, 
@@ -346,6 +349,26 @@ export default function MyListingsDashboardView({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in relative">
+      {!emailVerified && (
+        <div className="mb-6 flex items-center justify-between gap-4 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
+          <p className="text-xs font-semibold text-amber-800">
+            Please verify your email address. Check your inbox for a verification link.
+          </p>
+          <button
+            onClick={async () => {
+              try {
+                await resendVerificationEmail();
+                showToast('Verification email sent.');
+              } catch {
+                showToast('Failed to send verification email. Please try again.');
+              }
+            }}
+            className="shrink-0 text-xs font-bold text-amber-800 hover:underline cursor-pointer whitespace-nowrap"
+          >
+            Resend email
+          </button>
+        </div>
+      )}
       
 
 

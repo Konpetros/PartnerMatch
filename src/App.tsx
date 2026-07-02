@@ -24,6 +24,7 @@ export default function App() {
   const {
     currentUser,
     currentUserUid,
+    emailVerified,
     isAdmin,
     isSignInOpen,
     authLoading,
@@ -220,6 +221,7 @@ export default function App() {
           profiles={profiles}
           currentUser={currentUser}
           currentUserUid={currentUserUid}
+          emailVerified={emailVerified}
           organisationProfile={organisationProfile}
           onNavigate={handleNavigate}
           onSelectListing={handleSelectListing}

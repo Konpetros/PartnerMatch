@@ -12,6 +12,7 @@ export const useAuth = (onFirstLogin: () => void) => {
   const [firebaseUser, setFirebaseUser] = useState<AuthUser | null>(null);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [currentUserUid, setCurrentUserUid] = useState<string | null>(null);
+  const [emailVerified, setEmailVerified] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
@@ -24,6 +25,7 @@ export const useAuth = (onFirstLogin: () => void) => {
         const displayName = user.displayName || user.email?.split('@')[0] || 'Member';
         setCurrentUser(displayName);
         setCurrentUserUid(user.uid);
+        setEmailVerified(user.emailVerified);
 
         // Save/update user record in Firestore
         try {
@@ -53,6 +55,7 @@ export const useAuth = (onFirstLogin: () => void) => {
         setFirebaseUser(null);
         setCurrentUser(null);
         setCurrentUserUid(null);
+        setEmailVerified(false);
         setIsAdmin(false);
         setHasCalledFirstLogin(false);
       }
@@ -73,12 +76,14 @@ export const useAuth = (onFirstLogin: () => void) => {
     await signOut();
     setCurrentUser(null);
     setCurrentUserUid(null);
+    setEmailVerified(false);
     setIsAdmin(false);
   };
 
   return {
     currentUser,
     currentUserUid,
+    emailVerified,
     isAdmin,
     isSignInOpen,
     authLoading,
