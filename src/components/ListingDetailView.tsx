@@ -6,6 +6,7 @@
 import React from 'react';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
+import { formatDate } from '../utils/formatDate';
 import ExpressInterestModal from './ExpressInterestModal';
 import { checkExistingRequest } from '../services/firebase/firestore';
 import { 
@@ -55,17 +56,6 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
     showEmailOnProfile: true,
     showLocationOnProfile: true,
     profilePublic: true,
-  };
-
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    if (isNaN(date.getTime())) return dateStr;
-    const day = date.getDate();
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
   };
 
   const getDeadlineCountdown = (deadlineStr: string) => {
