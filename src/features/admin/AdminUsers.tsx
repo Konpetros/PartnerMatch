@@ -211,7 +211,7 @@ export default function AdminUsers({
                       {/* Role Badges */}
                       <td className="py-4.5 px-6">
                         {user.isAdmin ? (
-                          <span className="inline-flex items-center space-x-1 bg-indigo-50 text-indigo-650 px-2.5 py-1 rounded-full text-xs font-bold">
+                          <span className="inline-flex items-center space-x-1 bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full text-xs font-bold">
                             <Shield className="w-3.5 h-3.5 shrink-0" />
                             <span>Admin</span>
                           </span>
@@ -242,7 +242,7 @@ export default function AdminUsers({
                                 if (confirmed) onBanUser(user.uid);
                               }}
                               title="Ban User"
-                              className="p-2 bg-amber-50 text-amber-600 hover:bg-amber-505 hover:text-red-500 rounded-xl transition-all cursor-pointer"
+                              className="p-2 bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-red-500 rounded-xl transition-all cursor-pointer"
                             >
                               <UserMinus className="w-4 h-4" />
                             </button>

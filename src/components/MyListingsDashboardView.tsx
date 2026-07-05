@@ -1246,7 +1246,7 @@ export default function MyListingsDashboardView({
                               </span>
                             )}
                             {statusVal === 'pending' && (
-                              <span className="bg-amber-105 bg-amber-100 text-amber-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+                              <span className="bg-amber-100 text-amber-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
                                 Pending
                               </span>
                             )}
@@ -1362,7 +1362,7 @@ export default function MyListingsDashboardView({
                               </span>
                             )}
                             {statusVal === 'expired' && (
-                              <span className="bg-red-100 text-red-650 text-red-600 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+                              <span className="bg-red-100 text-red-600 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
                                 Expired
                               </span>
                             )}
@@ -1372,7 +1372,7 @@ export default function MyListingsDashboardView({
                               </span>
                             )}
                             {statusVal === 'partnership-found' && (
-                              <span className="bg-blue-105 bg-blue-100 text-blue-700 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+                              <span className="bg-blue-100 text-blue-700 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
                                 Found
                               </span>
                             )}
@@ -1390,7 +1390,7 @@ export default function MyListingsDashboardView({
                           </button>
                           <button
                             onClick={() => setConfirmDeleteId(listing.id)}
-                            className="p-1 px-2 border border-slate-200 rounded-lg text-red-650 text-red-650/80 font-semibold text-[10px] hover:bg-red-50 flex items-center space-x-1"
+                            className="p-1 px-2 border border-slate-200 rounded-lg text-red-600 font-semibold text-[10px] hover:bg-red-50 flex items-center space-x-1"
                           >
                             <Trash2 className="w-3 h-3 text-slate-400" />
                             <span>Delete</span>
