@@ -1251,7 +1251,7 @@ export default function MyListingsDashboardView({
                               </span>
                             )}
                             {statusVal === 'expired' && (
-                              <span className="bg-red-105 bg-red-100 text-red-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+                              <span className="bg-red-100 text-red-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
                                 Expired
                               </span>
                             )}
@@ -1417,7 +1417,7 @@ export default function MyListingsDashboardView({
       {confirmDeleteId && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/40 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-[24px] max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-5 animate-slide-in">
-            <div className="p-3 bg-red-50 text-red-650 w-12 h-12 rounded-full flex items-center justify-center">
+            <div className="p-3 bg-red-50 text-red-600 w-12 h-12 rounded-full flex items-center justify-center">
               <AlertCircle className="w-6 h-6 text-red-600 animate-pulse" />
             </div>
             <div className="space-y-2">

@@ -122,13 +122,13 @@ export default function AdminAllListings({
       case 'rejected':
         return (
           <span className="inline-flex items-center space-x-1.5 bg-red-50 text-red-700 px-2.5 py-1 rounded-full text-xs font-bold font-sans border border-red-100">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-550 bg-red-500 shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
             <span>Rejected</span>
           </span>
         );
       case 'partnership-found':
         return (
-          <span className="inline-flex items-center space-x-1.5 bg-indigo-50 text-indigo-650 px-2.5 py-1 rounded-full text-xs font-bold font-sans">
+          <span className="inline-flex items-center space-x-1.5 bg-indigo-50 text-indigo-600 px-2.5 py-1 rounded-full text-xs font-bold font-sans">
             <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />
             <span>Matched</span>
           </span>
@@ -207,7 +207,7 @@ export default function AdminAllListings({
           </div>
           <button
             onClick={handleBulkDelete}
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-500 hover:bg-red-650 text-white text-xs font-bold rounded-lg transition-colors shadow-sm cursor-pointer"
+            className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-bold rounded-lg transition-colors shadow-sm cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>Delete Selected</span>
