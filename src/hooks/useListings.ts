@@ -42,7 +42,7 @@ export const useListings = (currentUserUid: string | null) => {
 
   const handleUpdateListingStatus = async (
     id: string,
-    status: 'active' | 'pending' | 'expired' | 'partnership-found'
+    status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected'
   ) => {
     try {
       await firestoreUpdateListingStatus(id, status);
@@ -63,7 +63,7 @@ export const useListings = (currentUserUid: string | null) => {
 
   const handleRejectListing = async (id: string, reason: string) => {
     try {
-      await updateListing(id, { status: 'expired', rejectionReason: reason });
+      await updateListing(id, { status: 'rejected', rejectionReason: reason });
     } catch (error) {
       console.error('rejectListing error:', error);
       throw error;

@@ -15,10 +15,10 @@ import { formatDate } from '../../utils/formatDate';
 interface AdminAllListingsProps {
   listings: Listing[];
   onDelete: (id: string) => void;
-  onUpdateStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found') => void;
+  onUpdateStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected') => void;
 }
 
-type TabType = 'all' | 'active' | 'pending' | 'expired' | 'partnership-found';
+type TabType = 'all' | 'active' | 'pending' | 'expired' | 'rejected' | 'partnership-found';
 
 export default function AdminAllListings({
   listings,
@@ -35,6 +35,7 @@ export default function AdminAllListings({
     active: listings.filter(l => l.status === 'active' || !l.status).length,
     pending: listings.filter(l => l.status === 'pending').length,
     expired: listings.filter(l => l.status === 'expired').length,
+    rejected: listings.filter(l => l.status === 'rejected').length,
     'partnership-found': listings.filter(l => l.status === 'partnership-found').length,
   };
 
@@ -118,6 +119,13 @@ export default function AdminAllListings({
             <span>Expired</span>
           </span>
         );
+      case 'rejected':
+        return (
+          <span className="inline-flex items-center space-x-1.5 bg-red-50 text-red-700 px-2.5 py-1 rounded-full text-xs font-bold font-sans border border-red-100">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-550 bg-red-500 shrink-0" />
+            <span>Rejected</span>
+          </span>
+        );
       case 'partnership-found':
         return (
           <span className="inline-flex items-center space-x-1.5 bg-indigo-50 text-indigo-650 px-2.5 py-1 rounded-full text-xs font-bold font-sans">
@@ -142,7 +150,7 @@ export default function AdminAllListings({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Tab Filters */}
         <div className="flex flex-wrap gap-1.5 p-1 bg-slate-200/50 rounded-xl max-w-fit">
-          {(['all', 'active', 'pending', 'expired', 'partnership-found'] as TabType[]).map(tab => {
+          {(['all', 'active', 'pending', 'expired', 'rejected', 'partnership-found'] as TabType[]).map(tab => {
             const isActive = activeTab === tab;
             const label = tab === 'partnership-found' ? 'Matched' : tab.charAt(0).toUpperCase() + tab.slice(1);
             return (
@@ -318,6 +326,7 @@ export default function AdminAllListings({
                               <option value="active">Active</option>
                               <option value="pending">Pending</option>
                               <option value="expired">Expired</option>
+                              <option value="rejected">Rejected</option>
                               <option value="partnership-found">Matched</option>
                             </select>
                             <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />

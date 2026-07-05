@@ -43,7 +43,7 @@ interface AppRouterProps {
   onViewOrgProfile: (id: string) => void;
   onSubmitListing: (listing: Listing) => void;
   onDeleteListing: (id: string) => void;
-  onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found') => void;
+  onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected') => void;
   onProfileComplete: (profile: OrganisationProfile) => void;
   onUpdateProfile: (profile: OrganisationProfile) => void;
   onOpenSignIn: () => void;

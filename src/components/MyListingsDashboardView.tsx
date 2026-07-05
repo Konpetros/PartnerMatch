@@ -45,7 +45,7 @@ interface MyListingsViewProps {
   emailVerified: boolean;
   listings: Listing[];
   onDeleteListing: (id: string) => void;
-  onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found') => void;
+  onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected') => void;
   onSignOut: () => void;
   initialSection?: 'listings' | 'settings' | 'announcements' | 'profile' | 'favourites' | 'partner-requests';
   organisationProfile?: OrganisationProfile | null;
@@ -72,7 +72,7 @@ export default function MyListingsDashboardView({
   const [toast, setToast] = useState<string | null>(null);
   
   // Tab control state
-  const [activeTab, setActiveTab] = useState<'All' | 'Active' | 'Pending' | 'Expired' | 'Partnership Found'>('All');
+  const [activeTab, setActiveTab] = useState<'All' | 'Active' | 'Pending' | 'Expired' | 'Rejected' | 'Partnership Found'>('All');
   
   // Search bar query state
   const [searchQuery, setSearchQuery] = useState('');
@@ -316,6 +316,7 @@ export default function MyListingsDashboardView({
   const activeCount = userListings.filter(l => l.status === 'active' || !l.status).length; // fallback to active if not set
   const pendingCount = userListings.filter(l => l.status === 'pending').length;
   const expiredCount = userListings.filter(l => l.status === 'expired').length;
+  const rejectedCount = userListings.filter(l => l.status === 'rejected').length;
   const partnershipFoundCount = userListings.filter(l => l.status === 'partnership-found').length;
 
   const tabCounts = {
@@ -323,6 +324,7 @@ export default function MyListingsDashboardView({
     'Active': activeCount,
     'Pending': pendingCount,
     'Expired': expiredCount,
+    'Rejected': rejectedCount,
     'Partnership Found': partnershipFoundCount
   };
 
@@ -340,6 +342,8 @@ export default function MyListingsDashboardView({
       matchesTab = statusVal === 'pending';
     } else if (activeTab === 'Expired') {
       matchesTab = statusVal === 'expired';
+    } else if (activeTab === 'Rejected') {
+      matchesTab = statusVal === 'rejected';
     } else if (activeTab === 'Partnership Found') {
       matchesTab = statusVal === 'partnership-found';
     }
@@ -1112,7 +1116,7 @@ export default function MyListingsDashboardView({
               
               {/* Tab options rows */}
               <div className="flex items-center space-x-1.5 overflow-x-auto scroller-hide bg-slate-50 p-1 rounded-xl">
-                {(['All', 'Active', 'Pending', 'Expired', 'Partnership Found'] as const).map(tab => {
+                {(['All', 'Active', 'Pending', 'Expired', 'Rejected', 'Partnership Found'] as const).map(tab => {
                   const isActive = activeTab === tab;
                   const itemCounter = tabCounts[tab];
                   return (
@@ -1221,6 +1225,12 @@ export default function MyListingsDashboardView({
                                 </p>
                               </div>
                             </div>
+                            {listing.status === 'rejected' && listing.rejectionReason && (
+                              <div className="mt-2 bg-red-50 border border-red-100 rounded-xl px-3 py-2.5 max-w-lg">
+                                <p className="text-[10px] font-bold text-red-700 uppercase tracking-wide mb-0.5">Rejection Reason</p>
+                                <p className="text-xs text-red-600 font-medium leading-relaxed">{listing.rejectionReason}</p>
+                              </div>
+                            )}
                           </td>
 
                           {/* Deadline Date col */}
@@ -1243,6 +1253,11 @@ export default function MyListingsDashboardView({
                             {statusVal === 'expired' && (
                               <span className="bg-red-105 bg-red-100 text-red-600 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
                                 Expired
+                              </span>
+                            )}
+                            {statusVal === 'rejected' && (
+                              <span className="bg-red-50 text-red-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+                                Rejected
                               </span>
                             )}
                             {statusVal === 'partnership-found' && (
@@ -1319,6 +1334,13 @@ export default function MyListingsDashboardView({
                           </div>
                         </div>
 
+                        {listing.status === 'rejected' && listing.rejectionReason && (
+                          <div className="mt-2 bg-red-50 border border-red-100 rounded-xl px-3 py-2.5">
+                            <p className="text-[10px] font-bold text-red-700 uppercase tracking-wide mb-0.5">Rejection Reason</p>
+                            <p className="text-xs text-red-600 font-medium leading-relaxed">{listing.rejectionReason}</p>
+                          </div>
+                        )}
+
                         <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-150/40">
                           <div>
                             <span className="text-[9px] text-slate-400 font-bold uppercase block tracking-wider">Deadline</span>
@@ -1342,6 +1364,11 @@ export default function MyListingsDashboardView({
                             {statusVal === 'expired' && (
                               <span className="bg-red-100 text-red-650 text-red-600 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
                                 Expired
+                              </span>
+                            )}
+                            {statusVal === 'rejected' && (
+                              <span className="bg-red-50 text-red-700 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">
+                                Rejected
                               </span>
                             )}
                             {statusVal === 'partnership-found' && (

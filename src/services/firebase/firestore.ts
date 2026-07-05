@@ -73,7 +73,7 @@ export const getUserListings = async (userId: string): Promise<Listing[]> => {
 
 export const updateListingStatus = async (
   id: string,
-  status: 'active' | 'pending' | 'expired' | 'partnership-found'
+  status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected'
 ): Promise<void> => {
   await updateDoc(doc(db, 'listings', id), { status });
 };

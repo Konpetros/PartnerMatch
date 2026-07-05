@@ -34,7 +34,7 @@ export interface Listing {
   partnerSearchDeadline: string;
   views?: number;
   createdAt?: string;
-  status?: 'active' | 'pending' | 'expired' | 'partnership-found';
+  status?: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected';
   projectRole?: 'Coordinator' | 'Partner' | 'Both';
   sectors?: string[];
   submitterProfile?: OrganisationProfile;
