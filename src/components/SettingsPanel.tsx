@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield } from 'lucide-react';
-import { updateUserPassword, deleteUserAccount, isEmailPasswordUser } from '../services/firebase/auth';
+import { updateUserPassword, deleteUserAccount, isEmailPasswordUser, reauthenticateUser } from '../services/firebase/auth';
 import { deleteUserData, saveUserSettings, getUserSettings, saveProfilePrivacySettings } from '../services/firebase/firestore';
 
 interface SettingsPanelProps {
@@ -98,8 +98,17 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
     setDeleteLoading(true);
     setDeleteError('');
     try {
+      // Step 1: Validate credentials FIRST — throws immediately if the password is wrong,
+      // before any Firestore or Storage data is touched.
+      if (isEmailUser) {
+        await reauthenticateUser(deletePassword);
+      }
+      // Step 2: Now that identity is confirmed, clean up Firestore/Storage data
+      // while the user is still authenticated.
       await deleteUserData(currentUserUid);
-      await deleteUserAccount(isEmailUser ? deletePassword : undefined);
+      // Step 3: Finally delete the Firebase Auth account itself. No password needed
+      // here since reauthentication already happened in Step 1.
+      await deleteUserAccount();
       onAccountDeleted();
     } catch (err: any) {
       const code = err?.code || '';

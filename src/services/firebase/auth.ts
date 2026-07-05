@@ -75,6 +75,13 @@ export const updateUserPassword = async (currentPassword: string, newPassword: s
   await firebaseUpdatePassword(user, newPassword);
 };
 
+export const reauthenticateUser = async (password: string): Promise<void> => {
+  const user = auth.currentUser;
+  if (!user || !user.email) throw new Error('No authenticated user');
+  const credential = EmailAuthProvider.credential(user.email, password);
+  await reauthenticateWithCredential(user, credential);
+};
+
 export const deleteUserAccount = async (password?: string): Promise<void> => {
   const user = auth.currentUser;
   if (!user) throw new Error('No authenticated user');
