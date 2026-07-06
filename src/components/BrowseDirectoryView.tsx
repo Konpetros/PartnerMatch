@@ -626,12 +626,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           </div>
                         )}
                       </div>
-                      <div className="hidden sm:flex flex-col items-end text-right shrink-0">
-                        <span className="text-orange-600 font-bold text-[11px]">
-                          🗓 {formatDate(listing.partnerSearchDeadline)}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
+                      <div className="flex items-center shrink-0">
                         <ExpressInterestButton
                           listing={listing}
                           currentUserUid={currentUserUid ?? null}
@@ -639,8 +634,13 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           alreadySent={sentListingIds.includes(listing.id)}
                           onSent={handleInterestSent}
                         />
-                        <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-primary transition-colors shrink-0" />
                       </div>
+                      <div className="hidden sm:flex flex-col items-end text-right shrink-0">
+                        <span className="text-orange-600 font-bold text-[11px]">
+                          🗓 {formatDate(listing.partnerSearchDeadline)}
+                        </span>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-primary transition-colors shrink-0" />
                     </div>
                   );
                 })}

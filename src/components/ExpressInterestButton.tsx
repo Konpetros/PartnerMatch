@@ -32,7 +32,7 @@ export default function ExpressInterestButton({
           if (!alreadySent) setModalOpen(true);
         }}
         disabled={alreadySent}
-        className={`w-full py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
+        className={`w-full px-3 py-2 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
           alreadySent
             ? 'border-emerald-200 bg-emerald-50 text-emerald-600 cursor-not-allowed'
             : 'border-brand-primary text-brand-primary bg-white hover:bg-blue-50'
