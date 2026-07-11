@@ -46,6 +46,7 @@ export default function App() {
     handleUpdateListingStatus,
     handleApproveListing,
     handleRejectListing,
+    handleUpdateListing,
   } = useListings(currentUserUid);
 
   // Profile — pass UID to load/save from Firestore
@@ -68,8 +69,10 @@ export default function App() {
     currentView,
     selectedListingId,
     selectedOrgId,
+    editingListingId,
     handleNavigate,
     handleSelectListing,
+    handleEditListing,
     handleSelectOrganisation,
     handleViewListingFromOrg,
     handleViewOrgProfile,
@@ -118,6 +121,15 @@ export default function App() {
       showToast('Listing submitted! It will appear after admin approval.');
     } catch {
       showToast('Failed to submit listing. Please try again.');
+    }
+  };
+
+  const onUpdateListing = async (id: string, data: import('./types').Listing | Partial<import('./types').Listing>) => {
+    try {
+      await handleUpdateListing(id, data as Partial<import('./types').Listing>);
+      showToast('Listing updated! It will reappear after admin approval.');
+    } catch {
+      showToast('Failed to update listing. Please try again.');
     }
   };
 
@@ -229,6 +241,9 @@ export default function App() {
           onViewListingFromOrg={handleViewListingFromOrg}
           onViewOrgProfile={handleViewOrgProfile}
           onSubmitListing={onSubmitListing}
+          editingListingId={editingListingId}
+          onUpdateListing={onUpdateListing}
+          onEditListing={handleEditListing}
           onDeleteListing={handleDeleteListing}
           onUpdateListingStatus={handleUpdateListingStatus}
           onProfileComplete={onProfileComplete}

@@ -70,6 +70,15 @@ export const useListings = (currentUserUid: string | null) => {
     }
   };
 
+  const handleUpdateListing = async (id: string, data: Partial<Listing>) => {
+    try {
+      await updateListing(id, data);
+    } catch (error) {
+      console.error('updateListing error:', error);
+      throw error;
+    }
+  };
+
   return {
     listings,
     listingsLoading,
@@ -78,5 +87,6 @@ export const useListings = (currentUserUid: string | null) => {
     handleUpdateListingStatus,
     handleApproveListing,
     handleRejectListing,
+    handleUpdateListing,
   };
 };

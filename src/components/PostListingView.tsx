@@ -20,6 +20,8 @@ import {
 interface SubmitViewProps {
   organisationProfile: OrganisationProfile | null;
   onSubmitListing: (listing: Listing) => void;
+  onUpdateListing?: (id: string, data: Partial<Listing>) => void;
+  editingListing?: Listing | null;
   onNavigate: (view: string) => void;
   onSelectListing: (id: string) => void;
 }
@@ -27,11 +29,15 @@ interface SubmitViewProps {
 export default function PostListingView({ 
   organisationProfile, 
   onSubmitListing, 
+  onUpdateListing,
+  editingListing,
   onNavigate, 
   onSelectListing 
 }: SubmitViewProps) {
   // Safe fallback if profile is somehow null (e.g., initial render of preview)
   const profile = organisationProfile;
+
+  const isEditMode = !!editingListing;
 
   // Form values specific to listings
   const [selectedKeyActions, setSelectedKeyActions] = useState<KeyAction[]>([]);
@@ -43,12 +49,26 @@ export default function PostListingView({
   const [projectRole, setProjectRole] = useState<'Coordinator' | 'Partner' | 'Both' | ''>('');
   const [title, setTitle] = useState('');
 
-  // Pre-fill contact email once profile loads
+  // Pre-fill contact email from profile only when creating a new listing
   useEffect(() => {
-    if (profile) {
+    if (profile && !editingListing) {
       setContactEmail(profile.contactEmail);
     }
-  }, [profile]);
+  }, [profile, editingListing]);
+
+  // Pre-fill all fields when editing an existing listing
+  useEffect(() => {
+    if (editingListing) {
+      setTitle(editingListing.title || '');
+      setDescription(editingListing.description || '');
+      setSelectedKeyActions(editingListing.keyActions || []);
+      setSelectedSectors(editingListing.sectors || []);
+      setSelectedThematics(editingListing.thematicAreas || []);
+      setPartnerSearchDeadline(editingListing.partnerSearchDeadline || '');
+      setProjectRole(editingListing.projectRole || '');
+      setContactEmail(editingListing.contactEmail || '');
+    }
+  }, [editingListing]);
 
   // Success states
   const [isSuccess, setIsSuccess] = useState(false);
@@ -150,7 +170,28 @@ export default function PostListingView({
       submitterProfile: profile,
     };
 
-    onSubmitListing(newListing as Listing);
+    if (isEditMode && editingListing && onUpdateListing) {
+      const updatedData: Partial<Listing> = {
+        name: profile.organisationName,
+        title: title.trim(),
+        type: profile.organisationType,
+        country: profile.country,
+        countryFlag: profile.countryFlag,
+        keyActions: selectedKeyActions,
+        sectors: selectedSectors,
+        thematicAreas: selectedThematics,
+        contactEmail: contactEmail.trim(),
+        description: description.trim(),
+        partnerSearchDeadline: partnerSearchDeadline,
+        status: 'pending',
+        projectRole: projectRole as 'Coordinator' | 'Partner' | 'Both',
+        submitterProfile: profile,
+        rejectionReason: '',
+      };
+      onUpdateListing(editingListing.id, updatedData);
+    } else {
+      onSubmitListing(newListing as Listing);
+    }
     setIsSuccess(true);
   };
 
@@ -193,9 +234,9 @@ export default function PostListingView({
         </div>
         
         <div className="space-y-3">
-          <h1 className="text-3xl font-black text-slate-800">Partner Call Submitted!</h1>
+          <h1 className="text-3xl font-black text-slate-800">{isEditMode ? 'Listing Updated!' : 'Partner Call Submitted!'}</h1>
           <p className="text-slate-500 text-sm max-w-sm mx-auto">
-            Your partner search listing has been submitted and is <span className="font-bold text-amber-600">pending admin review</span>. It will appear in the directory once approved — usually within 24 hours.
+            Your partner search listing has been {isEditMode ? 'updated' : 'submitted'} and is <span className="font-bold text-amber-600">pending admin review</span>. It will appear in the directory once approved — usually within 24 hours.
           </p>
         </div>
 
@@ -605,7 +646,7 @@ export default function PostListingView({
               type="submit"
               className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-4 rounded-brand font-bold text-sm transition-all shadow-md active:scale-95 cursor-pointer"
             >
-              <span>Submit Listing</span>
+              <span>{isEditMode ? 'Save Changes' : 'Submit Listing'}</span>
             </button>
         </form>
 

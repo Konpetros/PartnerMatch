@@ -42,6 +42,9 @@ interface AppRouterProps {
   onViewListingFromOrg: (id: string) => void;
   onViewOrgProfile: (id: string) => void;
   onSubmitListing: (listing: Listing) => void;
+  editingListingId: string | null;
+  onUpdateListing: (id: string, data: Partial<Listing>) => void;
+  onEditListing: (id: string) => void;
   onDeleteListing: (id: string) => void;
   onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected') => void;
   onProfileComplete: (profile: OrganisationProfile) => void;
@@ -75,6 +78,9 @@ export default function AppRouter({
   onViewListingFromOrg,
   onViewOrgProfile,
   onSubmitListing,
+  editingListingId,
+  onUpdateListing,
+  onEditListing,
   onDeleteListing,
   onUpdateListingStatus,
   onProfileComplete,
@@ -263,10 +269,15 @@ export default function AppRouter({
   }
 
   if (currentView === 'submit') {
+    const editingListing = editingListingId
+      ? listings.find((l) => l.id === editingListingId) ?? null
+      : null;
     return (
       <PostListingView
         organisationProfile={organisationProfile}
         onSubmitListing={onSubmitListing}
+        onUpdateListing={onUpdateListing}
+        editingListing={editingListing}
         onNavigate={onNavigate}
         onSelectListing={onSelectListing}
       />
@@ -312,6 +323,7 @@ export default function AppRouter({
         organisationProfile={organisationProfile}
         onUpdateProfile={onUpdateProfile}
         onSelectListing={onSelectListing}
+        onEditListing={onEditListing}
         initialSection={
           currentView === 'settings' ? 'settings' :
           currentView === 'my-profile' ? 'profile' :

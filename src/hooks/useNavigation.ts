@@ -36,8 +36,10 @@ export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSi
   const [currentView, setCurrentView] = useState<AppView>('home');
   const [selectedListingId, setSelectedListingId] = useState<string | null>(null);
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
+  const [editingListingId, setEditingListingId] = useState<string | null>(null);
 
   const handleNavigate = (view: string) => {
+    setEditingListingId(null);
     if (view === 'submit' && !isAuthenticated) {
       openSignIn();
       return;
@@ -57,6 +59,11 @@ export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSi
   const handleSelectListing = (id: string) => {
     setSelectedListingId(id);
     setCurrentView('detail');
+  };
+
+  const handleEditListing = (id: string) => {
+    setEditingListingId(id);
+    setCurrentView('submit');
   };
 
   const handleSelectOrganisation = (id: string) => {
@@ -79,8 +86,10 @@ export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSi
     currentView,
     selectedListingId,
     selectedOrgId,
+    editingListingId,
     handleNavigate,
     handleSelectListing,
+    handleEditListing,
     handleSelectOrganisation,
     handleViewListingFromOrg,
     handleViewOrgProfile,
