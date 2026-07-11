@@ -467,7 +467,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                       {listing.title && (
                         <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-brand-primary transition-colors">{listing.title}</h3>
                       )}
-                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 break-words flex-1">
+                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 break-words">
                         {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
                       </p>
                       <div className="flex flex-col">
