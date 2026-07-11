@@ -691,7 +691,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                           {listing.title}
                         </h3>
                       )}
-                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 flex-1">
+                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 break-words flex-1">
                         {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
                       </p>
 
