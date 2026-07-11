@@ -347,12 +347,9 @@ export default function PostListingView({
 
             {/* Detailed Description */}
             <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-605 uppercase tracking-wide">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
                 Project Description & Partner Requirements *
               </label>
-              <p className="text-xs text-slate-400 font-medium">
-                Describe your project idea, what kind of partner you are looking for, their expected role, and any specific requirements.
-              </p>
               <RichTextEditor
                 value={description}
                 onChange={setDescription}
