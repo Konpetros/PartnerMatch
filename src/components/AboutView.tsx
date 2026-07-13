@@ -22,6 +22,7 @@ import {
   HelpCircle,
   Heart,
   Mail,
+  MessageSquare,
   Building2,
   Shield
 } from 'lucide-react';
@@ -66,9 +67,9 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
       description: "Bookmark interesting partner calls to your Favourites and revisit them from your dashboard"
     },
     {
-      icon: Mail,
-      title: "Direct Contact",
-      description: "Reach out to any organisation directly via email — no intermediary, no forms, no delays"
+      icon: MessageSquare,
+      title: "Connect & Chat",
+      description: "Chat with your partners directly inside PartnerMatch once a request is accepted"
     },
     {
       icon: Building2,
@@ -158,7 +159,7 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
     },
     {
       question: "How do I contact an organisation I found on PartnerMatch?",
-      answer: "Each active listing includes the organisation's contact email. Simply click 'Contact Organisation' on the listing detail page to send them an email directly. No intermediary, no forms — just direct contact."
+      answer: "Express interest in their listing, and once they accept, you can message each other directly through the built-in chat in your dashboard. Organisations can also choose to share their email for direct contact."
     }
   ];
 
