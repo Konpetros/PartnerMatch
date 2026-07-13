@@ -207,8 +207,8 @@ export default function Footer({ onNavigate }: FooterProps) {
                   Cookie Policy
                 </button>
               </li>
-              <li className="flex items-center space-x-2 pt-2 text-xs text-slate-500">
-                <Mail className="w-4 h-4 text-slate-400" />
+              <li className="flex items-center space-x-2 pt-2 text-xs text-slate-300">
+                <Mail className="w-4 h-4 text-slate-300" />
                 <span>support@partnermatch.eu</span>
               </li>
             </ul>
