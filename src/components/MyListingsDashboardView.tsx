@@ -637,11 +637,22 @@ export default function MyListingsDashboardView({
                             ) : (
                               chatMessages.map(msg => {
                                 const mine = msg.fromUid === currentUserUid;
+                                const avatarLogo = mine ? organisationProfile?.logoUrl : other.logo;
+                                const avatarName = mine ? (organisationProfile?.organisationName || currentUser || '?') : other.name;
+                                const avatar = avatarLogo ? (
+                                  <img src={avatarLogo} alt={avatarName} referrerPolicy="no-referrer" className="w-7 h-7 rounded-lg object-contain border border-slate-100 bg-white p-0.5 shrink-0" />
+                                ) : (
+                                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-[10px] shrink-0">
+                                    {(avatarName || '?').charAt(0).toUpperCase()}
+                                  </div>
+                                );
                                 return (
-                                  <div key={msg.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`max-w-[78%] px-3.5 py-2 rounded-2xl ${mine ? 'bg-brand-primary text-white rounded-br-md' : 'bg-white border border-slate-100 text-slate-700 rounded-bl-md'}`}>
+                                  <div key={msg.id} className={`flex items-end gap-2 ${mine ? 'justify-end' : 'justify-start'}`}>
+                                    {!mine && avatar}
+                                    <div className={`max-w-[70%] px-3.5 py-2 rounded-2xl ${mine ? 'bg-brand-primary text-white rounded-br-md' : 'bg-white border border-slate-100 text-slate-700 rounded-bl-md'}`}>
                                       <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{msg.text}</p>
                                     </div>
+                                    {mine && avatar}
                                   </div>
                                 );
                               })
