@@ -28,12 +28,15 @@ import {
   Mail,
   Clock,
   CheckCheck,
-  XCircle
+  XCircle,
+  MessageSquare,
+  Send
 } from 'lucide-react';
 import { Listing, OrganisationProfile, OrganisationType } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
-import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, updateRequestStatus, hideRequestForUser, withdrawPartnerRequest } from '../services/firebase/firestore';
+import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, updateRequestStatus, hideRequestForUser, withdrawPartnerRequest, sendMessage, subscribeToMessages } from '../services/firebase/firestore';
 import { PartnerRequest } from '../types/partnerRequest';
+import { Message } from '../types/message';
 import FavouriteButton from './FavouriteButton';
 import { resendVerificationEmail } from '../services/firebase/auth';
 
@@ -47,7 +50,7 @@ interface MyListingsViewProps {
   onDeleteListing: (id: string) => void;
   onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected') => void;
   onSignOut: () => void;
-  initialSection?: 'listings' | 'settings' | 'announcements' | 'profile' | 'favourites' | 'partner-requests';
+  initialSection?: 'listings' | 'settings' | 'announcements' | 'profile' | 'favourites' | 'partner-requests' | 'messages';
   organisationProfile?: OrganisationProfile | null;
   onUpdateProfile?: (profile: OrganisationProfile) => void;
   onSelectListing?: (id: string) => void;
@@ -80,12 +83,16 @@ export default function MyListingsDashboardView({
   const [searchQuery, setSearchQuery] = useState('');
 
   // Active section to toggle between 'listings', 'settings' and 'announcements'
-  const [activeSection, setActiveSection] = useState<'listings' | 'settings' | 'announcements' | 'profile' | 'favourites' | 'partner-requests'>(initialSection);
+  const [activeSection, setActiveSection] = useState<'listings' | 'settings' | 'announcements' | 'profile' | 'favourites' | 'partner-requests' | 'messages'>(initialSection);
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
   const [incomingRequests, setIncomingRequests] = useState<PartnerRequest[]>([]);
   const [sentRequests, setSentRequests] = useState<PartnerRequest[]>([]);
   const [requestsTab, setRequestsTab] = useState<'received' | 'sent'>('received');
   const [requestsLoading, setRequestsLoading] = useState(false);
+  const [activeChatRequest, setActiveChatRequest] = useState<PartnerRequest | null>(null);
+  const [chatMessages, setChatMessages] = useState<Message[]>([]);
+  const [chatInput, setChatInput] = useState('');
+  const [chatSending, setChatSending] = useState(false);
 
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
@@ -109,6 +116,28 @@ export default function MyListingsDashboardView({
       });
     }
   }, [currentUserUid, activeSection]);
+
+  useEffect(() => {
+    if (currentUserUid && activeSection === 'messages') {
+      setRequestsLoading(true);
+      Promise.all([
+        getIncomingRequests(currentUserUid),
+        getSentRequests(currentUserUid),
+      ]).then(([incoming, sent]) => {
+        setIncomingRequests(incoming.filter(r => !(r.hiddenBy || []).includes(currentUserUid)));
+        setSentRequests(sent.filter(r => !(r.hiddenBy || []).includes(currentUserUid)));
+      }).finally(() => setRequestsLoading(false));
+    }
+  }, [currentUserUid, activeSection]);
+
+  useEffect(() => {
+    if (activeChatRequest && currentUserUid) {
+      const unsubscribe = subscribeToMessages(activeChatRequest.id, currentUserUid, setChatMessages);
+      return () => unsubscribe();
+    } else {
+      setChatMessages([]);
+    }
+  }, [activeChatRequest, currentUserUid]);
 
   useEffect(() => {
     setActiveSection(initialSection as any);
@@ -237,6 +266,20 @@ export default function MyListingsDashboardView({
     return `${day} ${month} ${year}`;
   };
 
+  const conversations = [...incomingRequests, ...sentRequests]
+    .filter(r => r.status === 'accepted')
+    .filter((r, idx, arr) => arr.findIndex(x => x.id === r.id) === idx)
+    .sort((a, b) => (b.lastMessageAt || b.createdAt).localeCompare(a.lastMessageAt || a.createdAt));
+
+  const getOtherParty = (req: PartnerRequest) => {
+    const iAmSender = req.fromOrgUid === currentUserUid;
+    return {
+      uid: iAmSender ? req.toOrgUid : req.fromOrgUid,
+      name: iAmSender ? req.toOrgName : req.fromOrgName,
+      logo: iAmSender ? req.toOrgLogo : req.fromOrgLogo,
+    };
+  };
+
   // 1. UNAUTHENTICATED LOCKED STATE
   if (!currentUser) {
     return (
@@ -355,6 +398,86 @@ export default function MyListingsDashboardView({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in relative">
+      {activeChatRequest && (() => {
+        const other = getOtherParty(activeChatRequest);
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={() => setActiveChatRequest(null)}>
+            <div className="bg-white rounded-2xl w-full max-w-md flex flex-col max-h-[80vh] shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-100 shrink-0">
+                {other.logo ? (
+                  <img src={other.logo} alt={other.name} referrerPolicy="no-referrer" className="w-9 h-9 rounded-lg object-contain border border-slate-100 bg-white p-0.5 shrink-0" />
+                ) : (
+                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-xs shrink-0">
+                    {other.name.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
+                  <p className="text-[11px] text-slate-400 font-medium truncate">Re: {activeChatRequest.listingTitle}</p>
+                </div>
+                <button onClick={() => setActiveChatRequest(null)} className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer shrink-0">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-2.5 bg-slate-50 min-h-[240px]">
+                {chatMessages.length === 0 ? (
+                  <p className="text-center text-xs text-slate-400 font-medium py-8">No messages yet. Say hello to start the conversation.</p>
+                ) : (
+                  chatMessages.map(msg => {
+                    const mine = msg.fromUid === currentUserUid;
+                    return (
+                      <div key={msg.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`max-w-[78%] px-3.5 py-2 rounded-2xl ${mine ? 'bg-brand-primary text-white rounded-br-md' : 'bg-white border border-slate-100 text-slate-700 rounded-bl-md'}`}>
+                          <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{msg.text}</p>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              <div className="flex items-center gap-2 px-3 py-3 border-t border-slate-100 shrink-0">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !chatSending && chatInput.trim() && currentUserUid) {
+                      e.preventDefault();
+                      const other2 = getOtherParty(activeChatRequest);
+                      const text = chatInput.trim();
+                      setChatInput('');
+                      setChatSending(true);
+                      sendMessage(activeChatRequest.id, currentUserUid, other2.uid, text)
+                        .catch(() => showToast('Failed to send message.'))
+                        .finally(() => setChatSending(false));
+                    }
+                  }}
+                  placeholder="Write a message"
+                  className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all"
+                />
+                <button
+                  disabled={chatSending || !chatInput.trim()}
+                  onClick={() => {
+                    if (!chatInput.trim() || !currentUserUid) return;
+                    const other2 = getOtherParty(activeChatRequest);
+                    const text = chatInput.trim();
+                    setChatInput('');
+                    setChatSending(true);
+                    sendMessage(activeChatRequest.id, currentUserUid, other2.uid, text)
+                      .catch(() => showToast('Failed to send message.'))
+                      .finally(() => setChatSending(false));
+                  }}
+                  className="w-10 h-10 flex items-center justify-center bg-brand-primary hover:bg-brand-primary-hover disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl transition-all cursor-pointer shrink-0"
+                >
+                  <Send className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
       {!emailVerified && (
         <div className="mb-6 flex items-center justify-between gap-4 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
           <p className="text-xs font-semibold text-amber-800">
@@ -442,6 +565,14 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
+              onClick={() => setActiveSection('messages')}
+              className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left cursor-pointer ${activeSection === 'messages' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
+            >
+              <MessageSquare className="w-4 h-4 shrink-0" />
+              <span>Messages</span>
+            </button>
+
+            <button
               onClick={() => setActiveSection('settings')}
               className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'settings' ? 'bg-blue-50 text-brand-primary' : 'text-slate-600 hover:bg-slate-50'}`}
             >
@@ -488,7 +619,50 @@ export default function MyListingsDashboardView({
 
         {/* MAIN CONTENT AREA */}
         <main className="flex-1 w-full space-y-6">
-          {activeSection === 'partner-requests' ? (
+          {activeSection === 'messages' ? (
+            <div className="space-y-4 animate-fade-in">
+              <div className="border-b border-slate-100 pb-4">
+                <h2 className="text-xl font-extrabold text-slate-800">Messages</h2>
+                <p className="text-sm text-slate-500 mt-1">Your conversations with accepted partners.</p>
+              </div>
+              {requestsLoading ? (
+                <div className="text-center py-12 text-slate-400 text-sm font-medium">Loading conversations...</div>
+              ) : conversations.length === 0 ? (
+                <div className="text-center py-16 space-y-3">
+                  <MessageSquare className="w-10 h-10 text-slate-200 mx-auto" />
+                  <p className="text-sm font-semibold text-slate-400">No conversations yet</p>
+                  <p className="text-xs text-slate-400">Once a partner request is accepted, you can message each other here.</p>
+                </div>
+              ) : (
+                <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden divide-y divide-slate-100">
+                  {conversations.map(req => {
+                    const other = getOtherParty(req);
+                    return (
+                      <div
+                        key={req.id}
+                        onClick={() => setActiveChatRequest(req)}
+                        className="flex items-center gap-3 px-4 py-3.5 cursor-pointer hover:bg-slate-50 transition-colors"
+                      >
+                        {other.logo ? (
+                          <img src={other.logo} alt={other.name} referrerPolicy="no-referrer" className="w-11 h-11 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" />
+                        ) : (
+                          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
+                            {other.name.charAt(0).toUpperCase()}
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
+                          <p className="text-[11px] text-slate-400 font-medium truncate">Re: {req.listingTitle}</p>
+                          <p className="text-xs text-slate-500 truncate mt-0.5">{req.lastMessageText || 'No messages yet — say hello'}</p>
+                        </div>
+                        <MessageSquare className="w-4 h-4 text-slate-300 shrink-0" />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ) : activeSection === 'partner-requests' ? (
             <div className="space-y-4 animate-fade-in">
               <div className="border-b border-slate-100 pb-4">
                 <h2 className="text-xl font-extrabold text-slate-800">Partner Requests</h2>
