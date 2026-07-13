@@ -317,6 +317,7 @@ export default function AppRouter({
         currentUserUid={currentUserUid}
         emailVerified={emailVerified}
         listings={listings}
+        profiles={profiles}
         onDeleteListing={onDeleteListing}
         onUpdateListingStatus={onUpdateListingStatus}
         onSignOut={onSignOut}
