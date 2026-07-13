@@ -30,7 +30,8 @@ import {
   CheckCheck,
   XCircle,
   MessageSquare,
-  Send
+  Send,
+  ArrowLeft
 } from 'lucide-react';
 import { Listing, OrganisationProfile, OrganisationType } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
@@ -97,6 +98,25 @@ export default function MyListingsDashboardView({
   const [chatInput, setChatInput] = useState('');
   const [chatSending, setChatSending] = useState(false);
 
+  const conversations = [...incomingRequests, ...sentRequests]
+    .filter(r => r.status === 'accepted')
+    .filter((r, idx, arr) => arr.findIndex(x => x.id === r.id) === idx)
+    .sort((a, b) => (b.lastMessageAt || b.createdAt).localeCompare(a.lastMessageAt || a.createdAt));
+
+  const getOtherParty = (req: PartnerRequest) => {
+    const iAmSender = req.fromOrgUid === currentUserUid;
+    return {
+      uid: iAmSender ? req.toOrgUid : req.fromOrgUid,
+      name: iAmSender ? req.toOrgName : req.fromOrgName,
+      logo: iAmSender ? req.toOrgLogo : req.fromOrgLogo,
+    };
+  };
+
+  const isEmailPublic = (orgUid: string): boolean => {
+    const p = profiles.find(pr => pr.uid === orgUid);
+    return p?.showEmailOnProfile ?? true;
+  };
+
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [dismissedIds, setDismissedIds] = useState<string[]>([]);
 
@@ -132,6 +152,12 @@ export default function MyListingsDashboardView({
       }).finally(() => setRequestsLoading(false));
     }
   }, [currentUserUid, activeSection]);
+
+  useEffect(() => {
+    if (activeSection === 'messages' && !activeChatRequest && conversations.length > 0) {
+      setActiveChatRequest(conversations[0]);
+    }
+  }, [activeSection, conversations, activeChatRequest]);
 
   useEffect(() => {
     if (activeChatRequest && currentUserUid) {
@@ -269,25 +295,6 @@ export default function MyListingsDashboardView({
     return `${day} ${month} ${year}`;
   };
 
-  const conversations = [...incomingRequests, ...sentRequests]
-    .filter(r => r.status === 'accepted')
-    .filter((r, idx, arr) => arr.findIndex(x => x.id === r.id) === idx)
-    .sort((a, b) => (b.lastMessageAt || b.createdAt).localeCompare(a.lastMessageAt || a.createdAt));
-
-  const getOtherParty = (req: PartnerRequest) => {
-    const iAmSender = req.fromOrgUid === currentUserUid;
-    return {
-      uid: iAmSender ? req.toOrgUid : req.fromOrgUid,
-      name: iAmSender ? req.toOrgName : req.fromOrgName,
-      logo: iAmSender ? req.toOrgLogo : req.fromOrgLogo,
-    };
-  };
-
-  const isEmailPublic = (orgUid: string): boolean => {
-    const p = profiles.find(pr => pr.uid === orgUid);
-    return p?.showEmailOnProfile ?? true;
-  };
-
   // 1. UNAUTHENTICATED LOCKED STATE
   if (!currentUser) {
     return (
@@ -406,86 +413,6 @@ export default function MyListingsDashboardView({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in relative">
-      {activeChatRequest && (() => {
-        const other = getOtherParty(activeChatRequest);
-        return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={() => setActiveChatRequest(null)}>
-            <div className="bg-white rounded-2xl w-full max-w-md flex flex-col max-h-[80vh] shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-100 shrink-0">
-                {other.logo ? (
-                  <img src={other.logo} alt={other.name} referrerPolicy="no-referrer" className="w-9 h-9 rounded-lg object-contain border border-slate-100 bg-white p-0.5 shrink-0" />
-                ) : (
-                  <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-xs shrink-0">
-                    {other.name.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
-                  <p className="text-[11px] text-slate-400 font-medium truncate">Re: {activeChatRequest.listingTitle}</p>
-                </div>
-                <button onClick={() => setActiveChatRequest(null)} className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer shrink-0">
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-2.5 bg-slate-50 min-h-[240px]">
-                {chatMessages.length === 0 ? (
-                  <p className="text-center text-xs text-slate-400 font-medium py-8">No messages yet. Say hello to start the conversation.</p>
-                ) : (
-                  chatMessages.map(msg => {
-                    const mine = msg.fromUid === currentUserUid;
-                    return (
-                      <div key={msg.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`max-w-[78%] px-3.5 py-2 rounded-2xl ${mine ? 'bg-brand-primary text-white rounded-br-md' : 'bg-white border border-slate-100 text-slate-700 rounded-bl-md'}`}>
-                          <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{msg.text}</p>
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-
-              <div className="flex items-center gap-2 px-3 py-3 border-t border-slate-100 shrink-0">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !chatSending && chatInput.trim() && currentUserUid) {
-                      e.preventDefault();
-                      const other2 = getOtherParty(activeChatRequest);
-                      const text = chatInput.trim();
-                      setChatInput('');
-                      setChatSending(true);
-                      sendMessage(activeChatRequest.id, currentUserUid, other2.uid, text)
-                        .catch(() => showToast('Failed to send message.'))
-                        .finally(() => setChatSending(false));
-                    }
-                  }}
-                  placeholder="Write a message"
-                  className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all"
-                />
-                <button
-                  disabled={chatSending || !chatInput.trim()}
-                  onClick={() => {
-                    if (!chatInput.trim() || !currentUserUid) return;
-                    const other2 = getOtherParty(activeChatRequest);
-                    const text = chatInput.trim();
-                    setChatInput('');
-                    setChatSending(true);
-                    sendMessage(activeChatRequest.id, currentUserUid, other2.uid, text)
-                      .catch(() => showToast('Failed to send message.'))
-                      .finally(() => setChatSending(false));
-                  }}
-                  className="w-10 h-10 flex items-center justify-center bg-brand-primary hover:bg-brand-primary-hover disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl transition-all cursor-pointer shrink-0"
-                >
-                  <Send className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      })()}
       {!emailVerified && (
         <div className="mb-6 flex items-center justify-between gap-4 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4">
           <p className="text-xs font-semibold text-amber-800">
@@ -642,31 +569,127 @@ export default function MyListingsDashboardView({
                   <p className="text-xs text-slate-400">Once a partner request is accepted, you can message each other here.</p>
                 </div>
               ) : (
-                <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden divide-y divide-slate-100">
-                  {conversations.map(req => {
-                    const other = getOtherParty(req);
-                    return (
-                      <div
-                        key={req.id}
-                        onClick={() => setActiveChatRequest(req)}
-                        className="flex items-center gap-3 px-4 py-3.5 cursor-pointer hover:bg-slate-50 transition-colors"
-                      >
-                        {other.logo ? (
-                          <img src={other.logo} alt={other.name} referrerPolicy="no-referrer" className="w-11 h-11 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" />
-                        ) : (
-                          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
-                            {other.name.charAt(0).toUpperCase()}
+                <div className="flex flex-col md:flex-row gap-4 bg-white rounded-2xl border border-slate-100 overflow-hidden" style={{ minHeight: '520px' }}>
+
+                  {/* LEFT: conversation list */}
+                  <div className={`md:w-72 md:border-r border-slate-100 md:shrink-0 overflow-y-auto ${activeChatRequest ? 'hidden md:block' : 'block'}`}>
+                    <div className="divide-y divide-slate-100">
+                      {conversations.map(req => {
+                        const other = getOtherParty(req);
+                        const isSelected = activeChatRequest?.id === req.id;
+                        return (
+                          <div
+                            key={req.id}
+                            onClick={() => setActiveChatRequest(req)}
+                            className={`flex items-center gap-3 px-4 py-3.5 cursor-pointer transition-colors ${isSelected ? 'bg-blue-50 border-l-2 border-brand-primary' : 'hover:bg-slate-50 border-l-2 border-transparent'}`}
+                          >
+                            {other.logo ? (
+                              <img src={other.logo} alt={other.name} referrerPolicy="no-referrer" className="w-10 h-10 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" />
+                            ) : (
+                              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
+                                {other.name.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
+                              <p className="text-[11px] text-slate-400 font-medium truncate">Re: {req.listingTitle}</p>
+                              <p className="text-xs text-slate-500 truncate mt-0.5">{req.lastMessageText || 'No messages yet — say hello'}</p>
+                            </div>
                           </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
-                          <p className="text-[11px] text-slate-400 font-medium truncate">Re: {req.listingTitle}</p>
-                          <p className="text-xs text-slate-500 truncate mt-0.5">{req.lastMessageText || 'No messages yet — say hello'}</p>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* RIGHT: active chat pane */}
+                  <div className={`flex-1 flex-col min-w-0 ${activeChatRequest ? 'flex' : 'hidden md:flex'}`}>
+                    {!activeChatRequest ? (
+                      <div className="flex-1 flex items-center justify-center text-center px-6 py-16">
+                        <div className="space-y-2">
+                          <MessageSquare className="w-10 h-10 text-slate-200 mx-auto" />
+                          <p className="text-sm font-semibold text-slate-400">Select a conversation</p>
                         </div>
-                        <MessageSquare className="w-4 h-4 text-slate-300 shrink-0" />
                       </div>
-                    );
-                  })}
+                    ) : (() => {
+                      const other = getOtherParty(activeChatRequest);
+                      return (
+                        <>
+                          <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-100 shrink-0">
+                            <button onClick={() => setActiveChatRequest(null)} className="md:hidden p-1.5 -ml-1.5 text-slate-400 hover:text-slate-600 rounded-lg transition-colors cursor-pointer shrink-0">
+                              <ArrowLeft className="w-4 h-4" />
+                            </button>
+                            {other.logo ? (
+                              <img src={other.logo} alt={other.name} referrerPolicy="no-referrer" className="w-9 h-9 rounded-lg object-contain border border-slate-100 bg-white p-0.5 shrink-0" />
+                            ) : (
+                              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-xs shrink-0">
+                                {other.name.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
+                              <p className="text-[11px] text-slate-400 font-medium truncate">Re: {activeChatRequest.listingTitle}</p>
+                            </div>
+                          </div>
+
+                          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-2.5 bg-slate-50 min-h-[300px]">
+                            {chatMessages.length === 0 ? (
+                              <p className="text-center text-xs text-slate-400 font-medium py-8">No messages yet. Say hello to start the conversation.</p>
+                            ) : (
+                              chatMessages.map(msg => {
+                                const mine = msg.fromUid === currentUserUid;
+                                return (
+                                  <div key={msg.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
+                                    <div className={`max-w-[78%] px-3.5 py-2 rounded-2xl ${mine ? 'bg-brand-primary text-white rounded-br-md' : 'bg-white border border-slate-100 text-slate-700 rounded-bl-md'}`}>
+                                      <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">{msg.text}</p>
+                                    </div>
+                                  </div>
+                                );
+                              })
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-2 px-3 py-3 border-t border-slate-100 shrink-0">
+                            <input
+                              type="text"
+                              value={chatInput}
+                              onChange={(e) => setChatInput(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !chatSending && chatInput.trim() && currentUserUid) {
+                                  e.preventDefault();
+                                  const other2 = getOtherParty(activeChatRequest);
+                                  const text = chatInput.trim();
+                                  setChatInput('');
+                                  setChatSending(true);
+                                  sendMessage(activeChatRequest.id, currentUserUid, other2.uid, text)
+                                    .catch(() => showToast('Failed to send message.'))
+                                    .finally(() => setChatSending(false));
+                                }
+                              }}
+                              placeholder="Write a message"
+                              className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all"
+                            />
+                            <button
+                              disabled={chatSending || !chatInput.trim()}
+                              onClick={() => {
+                                if (!chatInput.trim() || !currentUserUid) return;
+                                const other2 = getOtherParty(activeChatRequest);
+                                const text = chatInput.trim();
+                                setChatInput('');
+                                setChatSending(true);
+                                sendMessage(activeChatRequest.id, currentUserUid, other2.uid, text)
+                                  .catch(() => showToast('Failed to send message.'))
+                                  .finally(() => setChatSending(false));
+                              }}
+                              className="w-10 h-10 flex items-center justify-center bg-brand-primary hover:bg-brand-primary-hover disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl transition-all cursor-pointer shrink-0"
+                            >
+                              <Send className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+
                 </div>
               )}
             </div>
@@ -752,7 +775,7 @@ export default function MyListingsDashboardView({
                               </div>
                             )}
                             <button
-                              onClick={(e) => { e.stopPropagation(); setActiveChatRequest(req); }}
+                              onClick={(e) => { e.stopPropagation(); setActiveChatRequest(req); setActiveSection('messages'); }}
                               className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white rounded-xl text-xs font-bold transition-all cursor-pointer"
                             >
                               <MessageSquare className="w-3.5 h-3.5" />
@@ -869,7 +892,7 @@ export default function MyListingsDashboardView({
                               )}
                             </div>
                             <button
-                              onClick={(e) => { e.stopPropagation(); setActiveChatRequest(req); }}
+                              onClick={(e) => { e.stopPropagation(); setActiveChatRequest(req); setActiveSection('messages'); }}
                               className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white rounded-xl text-xs font-bold transition-all cursor-pointer"
                             >
                               <MessageSquare className="w-3.5 h-3.5" />
