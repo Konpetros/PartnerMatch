@@ -294,7 +294,7 @@ export default function PostListingView({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Form Panel (7 Columns) */}
-        <form onSubmit={handleFormSubmit} className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-[24px] border border-blue-50/80 shadow-sm space-y-8">
+        <form onSubmit={handleFormSubmit} className="lg:col-span-8 bg-white p-6 sm:p-8 rounded-[24px] border border-blue-50/80 shadow-sm space-y-8">
           
           {/* Form Error Panel */}
           {formErrors.length > 0 && (
@@ -651,7 +651,7 @@ export default function PostListingView({
         </form>
 
         {/* Live Card Preview Panel */}
-        <div className="lg:col-span-12 xl:col-span-5 space-y-4 lg:sticky lg:top-24">
+        <div className="lg:col-span-12 xl:col-span-4 space-y-4 lg:sticky lg:top-24">
           <div className="p-4 bg-orange-50 border border-orange-100 rounded-xl text-[11px] text-slate-700 font-medium">
             💡 <span className="font-bold text-slate-800">Dynamic Card Compilation:</span> Below is a live rendering of how your partner listing card compiles in the catalog index as you type.
           </div>
