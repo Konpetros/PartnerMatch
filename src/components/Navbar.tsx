@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut, Settings, Megaphone, Heart, Handshake } from 'lucide-react';
+import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut, Settings, Megaphone, Heart, Handshake, MessageSquare } from 'lucide-react';
 import PartnerMatchLogo from '../assets/PartnerMatchLogo';
 
 interface NavbarProps {
@@ -172,6 +172,17 @@ export default function Navbar({
                       <span>Partner Requests</span>
                     </button>
                     <button
+                      id="dropdown-messages"
+                      onClick={() => {
+                        onNavigate('messages');
+                        setAvatarMenuOpen(false);
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
+                    >
+                      <MessageSquare className="w-4 h-4 text-slate-500" />
+                      <span>Messages</span>
+                    </button>
+                    <button
                       id="dropdown-announcements"
                       onClick={() => {
                         onNavigate('announcements');
@@ -319,6 +330,17 @@ export default function Navbar({
                 >
                   <Handshake className="w-5 h-5 text-gray-400" />
                   <span>Partner Requests</span>
+                </button>
+                <button
+                  id="mobile-messages"
+                  onClick={() => {
+                    onNavigate('messages');
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+                >
+                  <MessageSquare className="w-5 h-5 text-gray-400" />
+                  <span>Messages</span>
                 </button>
                 <button
                   id="mobile-signout"
