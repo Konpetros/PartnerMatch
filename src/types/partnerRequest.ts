@@ -18,4 +18,5 @@ export interface PartnerRequest {
   hiddenBy?: string[];
   lastMessageText?: string;
   lastMessageAt?: string;
+  readStatus?: { [uid: string]: string };
 }

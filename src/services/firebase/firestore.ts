@@ -362,10 +362,12 @@ export const sendMessage = async (
     text,
     createdAt,
   });
-  // Denormalise the last message onto the partner request so the inbox can show a preview
+  // Denormalise the last message onto the partner request so the inbox can show a preview,
+  // and mark the sender as caught up so their own messages never appear unread to them
   await updateDoc(doc(db, 'partnerRequests', requestId), {
     lastMessageText: text,
     lastMessageAt: createdAt,
+    [`readStatus.${fromUid}`]: createdAt,
   });
 };
 
@@ -384,6 +386,15 @@ export const subscribeToMessages = (
       .map((d) => ({ id: d.id, ...d.data() } as Message))
       .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
     callback(messages);
+  });
+};
+
+export const markConversationRead = async (
+  requestId: string,
+  userUid: string
+): Promise<void> => {
+  await updateDoc(doc(db, 'partnerRequests', requestId), {
+    [`readStatus.${userUid}`]: new Date().toISOString(),
   });
 };
 
