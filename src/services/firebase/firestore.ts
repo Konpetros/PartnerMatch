@@ -18,6 +18,7 @@ import { db } from './config';
 import { Listing } from '../../types';
 import { OrganisationProfile } from '../../types';
 import { PartnerRequest } from '../../types/partnerRequest';
+import { Message } from '../../types/message';
 import { deleteUserLogo } from './storage';
 
 // ─── LISTINGS ────────────────────────────────────────────────
@@ -342,6 +343,48 @@ export const checkExistingRequest = async (
     )
   );
   return !snapshot.empty;
+};
+
+// ─── MESSAGES ────────────────────────────────────────────────
+
+export const sendMessage = async (
+  requestId: string,
+  fromUid: string,
+  toUid: string,
+  text: string
+): Promise<void> => {
+  const createdAt = new Date().toISOString();
+  await addDoc(collection(db, 'messages'), {
+    requestId,
+    fromUid,
+    toUid,
+    participants: [fromUid, toUid],
+    text,
+    createdAt,
+  });
+  // Denormalise the last message onto the partner request so the inbox can show a preview
+  await updateDoc(doc(db, 'partnerRequests', requestId), {
+    lastMessageText: text,
+    lastMessageAt: createdAt,
+  });
+};
+
+export const subscribeToMessages = (
+  requestId: string,
+  currentUserUid: string,
+  callback: (messages: Message[]) => void
+): (() => void) => {
+  const q = query(
+    collection(db, 'messages'),
+    where('requestId', '==', requestId),
+    where('participants', 'array-contains', currentUserUid)
+  );
+  return onSnapshot(q, (snapshot) => {
+    const messages = snapshot.docs
+      .map((d) => ({ id: d.id, ...d.data() } as Message))
+      .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+    callback(messages);
+  });
 };
 
 export const getFavourites = async (userId: string): Promise<string[]> => {
