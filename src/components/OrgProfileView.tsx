@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
-import { ArrowLeft, Mail, MapPin, Globe, Calendar, Languages, Building2, Hash, Award, FolderOpen, FileText, Linkedin, Facebook, Instagram, Twitter, LayoutGrid, List } from 'lucide-react';
+import { ArrowLeft, Mail, MapPin, Globe, Calendar, Languages, Building2, Hash, Award, FolderOpen, FileText, Linkedin, Facebook, Instagram, Twitter, LayoutGrid, List, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import { stripHtml, formatDate } from '../utils';
 
 interface BaseProps {
@@ -31,6 +31,7 @@ export type OrgProfileViewProps = ModeAListingProps | ModeBProfileProps;
 export default function OrgProfileView(props: OrgProfileViewProps) {
   const { onBack, onViewListing } = props;
   const [orgViewMode, setOrgViewMode] = useState<'grid' | 'list'>('grid');
+  const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
   // Determine active listings filter for Mode B
   const orgListings = props.listings
@@ -314,6 +315,77 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
           <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
             {activeProfile.description}
           </p>
+        </div>
+      )}
+
+      {/* Featured Projects */}
+      {activeProfile.featuredProjects && activeProfile.featuredProjects.length > 0 && (
+        <div className="bg-white rounded-2xl border border-slate-100 p-5 shadow-sm">
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-3 pb-3 border-b border-slate-100 flex items-center gap-2">
+            <FolderOpen className="w-3.5 h-3.5" />
+            Featured Projects
+          </h3>
+          <div className="space-y-3">
+            {activeProfile.featuredProjects.map((project, index) => {
+              const isExpandable = !!(project.description || project.link);
+              const isOpen = expandedProject === index;
+              return (
+                <div key={index} className="border border-slate-200 rounded-xl p-4">
+                  <div
+                    className={`flex items-start justify-between gap-3 ${isExpandable ? 'cursor-pointer' : ''}`}
+                    onClick={() => isExpandable && setExpandedProject(isOpen ? null : index)}
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-slate-800">{project.title}</p>
+                      <div className="flex items-center gap-1.5 flex-wrap mt-2">
+                        {project.kaType && (
+                          <span className="text-[10px] font-extrabold bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full">
+                            {project.kaType}
+                          </span>
+                        )}
+                        {project.year && (
+                          <span className="text-[10px] font-extrabold bg-orange-50 text-orange-600 border border-orange-100 px-2.5 py-1 rounded-full">
+                            {project.year}
+                          </span>
+                        )}
+                        {project.role && (
+                          <span className="text-[10px] font-extrabold bg-violet-100 text-violet-800 px-2.5 py-1 rounded-full">
+                            {project.role}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {isExpandable && (
+                      isOpen
+                        ? <ChevronUp className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                        : <ChevronDown className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    )}
+                  </div>
+                  {isExpandable && isOpen && (
+                    <div className="mt-3 pt-3 border-t border-slate-100">
+                      {project.description && (
+                        <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line mb-2.5">
+                          {project.description}
+                        </p>
+                      )}
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-primary hover:underline"
+                        >
+                          View project
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
