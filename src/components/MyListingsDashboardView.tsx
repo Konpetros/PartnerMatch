@@ -35,7 +35,7 @@ import {
 } from 'lucide-react';
 import { Listing, OrganisationProfile, OrganisationType } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
-import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, updateRequestStatus, hideRequestForUser, withdrawPartnerRequest, sendMessage, subscribeToMessages } from '../services/firebase/firestore';
+import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, updateRequestStatus, hideRequestForUser, withdrawPartnerRequest, sendMessage, subscribeToMessages, markConversationRead } from '../services/firebase/firestore';
 import { PartnerRequest } from '../types/partnerRequest';
 import { Message } from '../types/message';
 import { ProfileWithUid } from '../hooks/useProfiles';
@@ -103,6 +103,14 @@ export default function MyListingsDashboardView({
     .filter((r, idx, arr) => arr.findIndex(x => x.id === r.id) === idx)
     .sort((a, b) => (b.lastMessageAt || b.createdAt).localeCompare(a.lastMessageAt || a.createdAt));
 
+  const isConversationUnread = (req: PartnerRequest): boolean => {
+    if (!req.lastMessageAt || !currentUserUid) return false;
+    const myLastRead = req.readStatus?.[currentUserUid];
+    return !myLastRead || req.lastMessageAt > myLastRead;
+  };
+
+  const unreadCount = conversations.filter(isConversationUnread).length;
+
   const getOtherParty = (req: PartnerRequest) => {
     const iAmSender = req.fromOrgUid === currentUserUid;
     return {
@@ -154,10 +162,36 @@ export default function MyListingsDashboardView({
   }, [currentUserUid, activeSection]);
 
   useEffect(() => {
+    if (currentUserUid) {
+      Promise.all([
+        getIncomingRequests(currentUserUid),
+        getSentRequests(currentUserUid),
+      ]).then(([incoming, sent]) => {
+        setIncomingRequests(incoming.filter(r => !(r.hiddenBy || []).includes(currentUserUid)));
+        setSentRequests(sent.filter(r => !(r.hiddenBy || []).includes(currentUserUid)));
+      }).catch(() => {});
+    }
+  }, [currentUserUid]);
+
+  useEffect(() => {
     if (activeSection === 'messages' && !activeChatRequest && conversations.length > 0) {
       setActiveChatRequest(conversations[0]);
     }
   }, [activeSection, conversations, activeChatRequest]);
+
+  useEffect(() => {
+    if (activeChatRequest && currentUserUid && isConversationUnread(activeChatRequest)) {
+      const now = new Date().toISOString();
+      markConversationRead(activeChatRequest.id, currentUserUid).catch(() => {});
+      const patch = (list: PartnerRequest[]) =>
+        list.map(r => r.id === activeChatRequest.id
+          ? { ...r, readStatus: { ...(r.readStatus || {}), [currentUserUid]: now } }
+          : r);
+      setIncomingRequests(prev => patch(prev));
+      setSentRequests(prev => patch(prev));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeChatRequest, currentUserUid]);
 
   useEffect(() => {
     if (activeChatRequest && currentUserUid) {
@@ -501,10 +535,17 @@ export default function MyListingsDashboardView({
 
             <button
               onClick={() => setActiveSection('messages')}
-              className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left cursor-pointer ${activeSection === 'messages' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
+              className={`flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left cursor-pointer ${activeSection === 'messages' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
-              <MessageSquare className="w-4 h-4 shrink-0" />
-              <span>Messages</span>
+              <span className="flex items-center space-x-2.5">
+                <MessageSquare className="w-4 h-4 shrink-0" />
+                <span>Messages</span>
+              </span>
+              {unreadCount > 0 && (
+                <span className="bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center shrink-0">
+                  {unreadCount}
+                </span>
+              )}
             </button>
 
             <button
@@ -591,9 +632,14 @@ export default function MyListingsDashboardView({
                               </div>
                             )}
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
+                              <div className="flex items-center gap-1.5">
+                                <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
+                                {isConversationUnread(req) && !isSelected && (
+                                  <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
+                                )}
+                              </div>
                               <p className="text-[11px] text-slate-400 font-medium truncate">Re: {req.listingTitle}</p>
-                              <p className="text-xs text-slate-500 truncate mt-0.5">{req.lastMessageText || 'No messages yet — say hello'}</p>
+                              <p className={`text-xs truncate mt-0.5 ${isConversationUnread(req) && !isSelected ? 'text-slate-800 font-semibold' : 'text-slate-500'}`}>{req.lastMessageText || 'No messages yet — say hello'}</p>
                             </div>
                           </div>
                         );
