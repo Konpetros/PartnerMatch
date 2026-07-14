@@ -246,20 +246,6 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
               </div>
 
               <div className="space-y-2 pt-1">
-                {(profile.showEmailOnProfile ?? true) ? (
-                  <a
-                    id="contact-mailto-button"
-                    href={`mailto:${listing.contactEmail}?subject=Erasmus+ Partnership Enquiry via PartnerMatch`}
-                    className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-3 rounded-brand font-bold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 text-center cursor-pointer"
-                  >
-                    <Mail className="w-4 h-4 text-brand-accent shrink-0" />
-                    <span>Contact Organisation</span>
-                  </a>
-                ) : (
-                  <div className="w-full flex items-center justify-center py-3 rounded-xl text-sm text-slate-400 border border-dashed border-slate-200 font-medium">
-                    Contact details hidden by organisation
-                  </div>
-                )}
             {canExpressInterest && (
               <button
                 onClick={() => setInterestModalOpen(true)}
