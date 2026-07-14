@@ -6,7 +6,7 @@ interface FeaturedProjectsEditorProps {
   onChange: (projects: FeaturedProject[]) => void;
 }
 
-const KA_TYPES = ['KA1', 'KA210', 'KA220', 'KA131', 'Other'];
+const KA_TYPES = ['KA1', 'KA2', 'KA3', 'Other'];
 const ROLES = ['Coordinator', 'Partner'];
 const MAX_PROJECTS = 10;
 
@@ -18,7 +18,7 @@ export default function FeaturedProjectsEditor({ projects, onChange }: FeaturedP
 
   const add = () => {
     if (projects.length >= MAX_PROJECTS) return;
-    onChange([...projects, { title: '', kaType: 'KA220', year: '', role: 'Coordinator', description: '', link: '' }]);
+    onChange([...projects, { title: '', kaType: 'KA2', year: '', role: 'Coordinator', description: '', link: '' }]);
   };
 
   const remove = (index: number) => {
