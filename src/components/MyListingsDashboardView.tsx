@@ -41,7 +41,7 @@ import { Message } from '../types/message';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import FavouriteButton from './FavouriteButton';
 import { resendVerificationEmail } from '../services/firebase/auth';
-import { stripHtml } from '../utils';
+import { stripHtml, formatDate } from '../utils';
 
 interface MyListingsViewProps {
   onOpenSignIn: () => void;
@@ -319,16 +319,7 @@ export default function MyListingsDashboardView({
     }, 4000);
   };
 
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    if (isNaN(date.getTime())) return dateStr;
-    const day = date.getDate();
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  };
+
 
   // 1. UNAUTHENTICATED LOCKED STATE
   if (!currentUser) {

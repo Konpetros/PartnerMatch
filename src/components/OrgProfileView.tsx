@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import { ArrowLeft, Mail, MapPin, Globe, Calendar, Languages, Building2, Hash, Award, FolderOpen, FileText, Linkedin, Facebook, Instagram, Twitter, LayoutGrid, List } from 'lucide-react';
-import { stripHtml } from '../utils';
+import { stripHtml, formatDate } from '../utils';
 
 interface BaseProps {
   onBack: () => void;
@@ -81,16 +81,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
     }
   };
 
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    if (isNaN(date.getTime())) return dateStr;
-    const day = date.getDate();
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  };
+
 
   // Status rendering for Mode A
   const renderStatusLabel = (status: string) => {
