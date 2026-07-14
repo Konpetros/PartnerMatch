@@ -4,9 +4,10 @@
  */
 
 import React, { useState, useRef } from 'react';
-import { OrganisationProfile, OrganisationType } from '../types';
+import { OrganisationProfile, OrganisationType, FeaturedProject } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
 import { Building, AlertCircle, Check, Info, Upload } from 'lucide-react';
+import FeaturedProjectsEditor from './FeaturedProjectsEditor';
 
 interface ProfileSetupViewProps {
   onProfileComplete: (profile: OrganisationProfile) => void;
@@ -22,6 +23,7 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
   const [oid, setOid] = useState('');
   const [experienceLevel, setExperienceLevel] = useState('First-timer');
   const [previousProjects, setPreviousProjects] = useState('0');
+  const [featuredProjects, setFeaturedProjects] = useState<FeaturedProject[]>([]);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [contactEmail, setContactEmail] = useState('');
   const [sector, setSector] = useState('Youth');
@@ -98,6 +100,7 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
       oid: oid.trim(),
       experienceLevel,
       previousProjects,
+      featuredProjects,
       languagesSpoken: selectedLanguages,
       contactEmail: contactEmail.trim(),
       sector,
@@ -370,6 +373,9 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
               </div>
             </div>
           </div>
+
+          {/* Featured Projects */}
+          <FeaturedProjectsEditor projects={featuredProjects} onChange={setFeaturedProjects} />
 
           {/* Erasmus+ Sector */}
           <div className="space-y-1">

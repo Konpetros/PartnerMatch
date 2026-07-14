@@ -33,7 +33,7 @@ import {
   Send,
   ArrowLeft
 } from 'lucide-react';
-import { Listing, OrganisationProfile, OrganisationType } from '../types';
+import { Listing, OrganisationProfile, OrganisationType, FeaturedProject } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
 import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, updateRequestStatus, hideRequestForUser, withdrawPartnerRequest, sendMessage, subscribeToMessages, markConversationRead } from '../services/firebase/firestore';
 import { PartnerRequest } from '../types/partnerRequest';
@@ -42,6 +42,7 @@ import { ProfileWithUid } from '../hooks/useProfiles';
 import FavouriteButton from './FavouriteButton';
 import { resendVerificationEmail } from '../services/firebase/auth';
 import { stripHtml, formatDate } from '../utils';
+import FeaturedProjectsEditor from './FeaturedProjectsEditor';
 
 interface MyListingsViewProps {
   onOpenSignIn: () => void;
@@ -241,6 +242,7 @@ export default function MyListingsDashboardView({
   const [profileOid, setProfileOid] = useState(organisationProfile?.oid || '');
   const [profileExperience, setProfileExperience] = useState(organisationProfile?.experienceLevel || 'First-timer');
   const [profilePreviousProjects, setProfilePreviousProjects] = useState(organisationProfile?.previousProjects || '0');
+  const [profileFeaturedProjects, setProfileFeaturedProjects] = useState<FeaturedProject[]>(organisationProfile?.featuredProjects || []);
   const [profileLanguages, setProfileLanguages] = useState<string[]>(organisationProfile?.languagesSpoken || []);
   const [profileContactEmail, setProfileContactEmail] = useState(organisationProfile?.contactEmail || '');
   const [profileSector, setProfileSector] = useState(organisationProfile?.sector || 'Youth');
@@ -292,6 +294,7 @@ export default function MyListingsDashboardView({
       oid: profileOid.trim(),
       experienceLevel: profileExperience,
       previousProjects: profilePreviousProjects,
+      featuredProjects: profileFeaturedProjects,
       languagesSpoken: profileLanguages,
       contactEmail: profileContactEmail.trim(),
       sector: profileSector,
@@ -1227,6 +1230,9 @@ export default function MyListingsDashboardView({
                     </select>
                   </div>
                 </div>
+
+                {/* Featured Projects */}
+                <FeaturedProjectsEditor projects={profileFeaturedProjects} onChange={setProfileFeaturedProjects} />
 
                 {/* Contact Email */}
                 <div className="space-y-1">
