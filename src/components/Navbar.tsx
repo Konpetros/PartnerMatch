@@ -48,6 +48,16 @@ export default function Navbar({
     { id: 'submit', label: 'Submit Listing', icon: PlusCircle },
   ];
 
+  const accountItems = [
+    { id: 'my-listings', label: 'My Listings', icon: LayoutDashboard },
+    { id: 'my-profile', label: 'My Organisation', icon: User },
+    { id: 'favourites', label: 'Favourites', icon: Heart },
+    { id: 'partner-requests', label: 'Partner Requests', icon: Handshake },
+    { id: 'messages', label: 'Messages', icon: MessageSquare },
+    { id: 'announcements', label: 'Announcements', icon: Megaphone },
+    { id: 'settings', label: 'Settings', icon: Settings },
+  ];
+
   const truncatedName = currentUser && currentUser.length > 12 
     ? `${currentUser.slice(0, 12)}...` 
     : currentUser;
@@ -128,83 +138,23 @@ export default function Navbar({
 
                 {avatarMenuOpen && (
                   <div className="absolute right-0 top-12 bg-white rounded-[16px] border border-slate-200 shadow-xl py-2 w-48 z-50 animate-fade-in">
-                    <button
-                      id="dropdown-my-listings"
-                      onClick={() => {
-                        onNavigate('my-listings');
-                        setAvatarMenuOpen(false);
-                      }}
-                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
-                    >
-                      <LayoutDashboard className="w-4 h-4 text-slate-500" />
-                      <span>My Listings</span>
-                    </button>
-                    <button
-                      id="dropdown-my-profile"
-                      onClick={() => {
-                        onNavigate('my-profile');
-                        setAvatarMenuOpen(false);
-                      }}
-                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
-                    >
-                      <User className="w-4 h-4 text-slate-500" />
-                      <span>My Organisation</span>
-                    </button>
-                    <button
-                      id="dropdown-favourites"
-                      onClick={() => {
-                        onNavigate('favourites');
-                        setAvatarMenuOpen(false);
-                      }}
-                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
-                    >
-                      <Heart className="w-4 h-4 text-slate-500" />
-                      <span>Favourites</span>
-                    </button>
-                    <button
-                      id="dropdown-partner-requests"
-                      onClick={() => {
-                        onNavigate('partner-requests');
-                        setAvatarMenuOpen(false);
-                      }}
-                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
-                    >
-                      <Handshake className="w-4 h-4 text-slate-500" />
-                      <span>Partner Requests</span>
-                    </button>
-                    <button
-                      id="dropdown-messages"
-                      onClick={() => {
-                        onNavigate('messages');
-                        setAvatarMenuOpen(false);
-                      }}
-                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
-                    >
-                      <MessageSquare className="w-4 h-4 text-slate-500" />
-                      <span>Messages</span>
-                    </button>
-                    <button
-                      id="dropdown-announcements"
-                      onClick={() => {
-                        onNavigate('announcements');
-                        setAvatarMenuOpen(false);
-                      }}
-                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
-                    >
-                      <Megaphone className="w-4 h-4 text-slate-500" />
-                      <span>Announcements</span>
-                    </button>
-                    <button
-                      id="dropdown-settings"
-                      onClick={() => {
-                        onNavigate('settings');
-                        setAvatarMenuOpen(false);
-                      }}
-                      className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
-                    >
-                      <Settings className="w-4 h-4 text-slate-500" />
-                      <span>Settings</span>
-                    </button>
+                    {accountItems.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <button
+                          key={item.id}
+                          id={`dropdown-${item.id}`}
+                          onClick={() => {
+                            onNavigate(item.id);
+                            setAvatarMenuOpen(false);
+                          }}
+                          className="flex items-center space-x-2 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer w-full text-left"
+                        >
+                          <Icon className="w-4 h-4 text-slate-500" />
+                          <span>{item.label}</span>
+                        </button>
+                      );
+                    })}
                     <div className="border-t border-slate-100 my-1" />
                     <button
                       id="dropdown-signout"
@@ -295,46 +245,20 @@ export default function Navbar({
               </div>
               <span className="font-semibold text-sm text-slate-700">{truncatedName}</span>
             </div>
-            <button
-              id="mobile-acct-my-listings"
-              onClick={() => { onNavigate('my-listings'); setMobileAccountMenuOpen(false); }}
-              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-            >
-              <LayoutDashboard className="w-5 h-5 text-gray-400" />
-              <span>My Listings</span>
-            </button>
-            <button
-              id="mobile-acct-my-profile"
-              onClick={() => { onNavigate('my-profile'); setMobileAccountMenuOpen(false); }}
-              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-            >
-              <User className="w-5 h-5 text-gray-400" />
-              <span>My Profile</span>
-            </button>
-            <button
-              id="mobile-acct-favourites"
-              onClick={() => { onNavigate('favourites'); setMobileAccountMenuOpen(false); }}
-              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-            >
-              <Heart className="w-5 h-5 text-gray-400" />
-              <span>Favourites</span>
-            </button>
-            <button
-              id="mobile-acct-partner-requests"
-              onClick={() => { onNavigate('partner-requests'); setMobileAccountMenuOpen(false); }}
-              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-            >
-              <Handshake className="w-5 h-5 text-gray-400" />
-              <span>Partner Requests</span>
-            </button>
-            <button
-              id="mobile-acct-messages"
-              onClick={() => { onNavigate('messages'); setMobileAccountMenuOpen(false); }}
-              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-            >
-              <MessageSquare className="w-5 h-5 text-gray-400" />
-              <span>Messages</span>
-            </button>
+            {accountItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.id}
+                  id={`mobile-acct-${item.id}`}
+                  onClick={() => { onNavigate(item.id); setMobileAccountMenuOpen(false); }}
+                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+                >
+                  <Icon className="w-5 h-5 text-gray-400" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
             <button
               id="mobile-acct-signout"
               onClick={() => { onSignOut(); setMobileAccountMenuOpen(false); }}
