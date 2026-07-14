@@ -1,5 +1,14 @@
 import { OrganisationType } from './listing';
 
+export interface FeaturedProject {
+  title: string;
+  kaType: string;
+  year: string;
+  role: string;
+  description?: string;
+  link?: string;
+}
+
 export interface OrganisationProfile {
   organisationName: string;
   organisationType: OrganisationType;
@@ -11,6 +20,7 @@ export interface OrganisationProfile {
   oid: string;
   experienceLevel: string;
   previousProjects: string;
+  featuredProjects?: FeaturedProject[];
   languagesSpoken: string[];
   contactEmail: string;
   sector: string;
