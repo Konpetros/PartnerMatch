@@ -26,6 +26,7 @@ export default function Navbar({
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const [mobileAccountMenuOpen, setMobileAccountMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Click outside to close standard dropdown menu
@@ -222,16 +223,34 @@ export default function Navbar({
             )}
           </div>
 
-          {/* Handheld/Mobile Menu Toggle */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden flex items-center gap-1 relative">
             <button
               id="mobile-menu-toggle"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => { setMobileMenuOpen(!mobileMenuOpen); setMobileAccountMenuOpen(false); }}
               className="p-2 rounded-xl text-gray-500 hover:text-brand-primary hover:bg-gray-100 transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
+            {!currentUser ? (
+              <button
+                id="mobile-signin-header"
+                onClick={() => { onOpenSignIn(); setMobileMenuOpen(false); }}
+                className="flex items-center space-x-1.5 bg-brand-primary hover:bg-brand-primary-hover text-white px-3 py-2 rounded-brand text-sm font-semibold transition-all cursor-pointer"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>Sign In</span>
+              </button>
+            ) : (
+              <button
+                id="mobile-avatar-btn"
+                onClick={() => { setMobileAccountMenuOpen(!mobileAccountMenuOpen); setMobileMenuOpen(false); }}
+                className="w-9 h-9 rounded-full bg-brand-primary text-white font-bold text-sm flex items-center justify-center shadow-xs cursor-pointer shrink-0"
+                aria-label="Account menu"
+              >
+                {currentUser.charAt(0).toUpperCase()}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -262,99 +281,68 @@ export default function Navbar({
                 </button>
               );
             })}
-            
-            {!currentUser ? (
-              <div className="pt-4 pb-2 border-t border-gray-100 px-4">
-                <button
-                  id="mobile-signin-btn"
-                  onClick={() => {
-                    onOpenSignIn();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center justify-center space-x-2 w-full bg-brand-primary hover:bg-brand-primary-hover text-white py-3 rounded-brand font-semibold transition-all cursor-pointer"
-                >
-                  <LogIn className="w-5 h-5" />
-                  <span>Sign In</span>
-                </button>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile Account Menu Panel */}
+      {mobileAccountMenuOpen && currentUser && (
+        <div className="md:hidden bg-white border-b border-gray-100 animate-fade-in">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <div className="flex items-center space-x-3 px-4 py-2 border-b border-gray-50 mb-2">
+              <div className="w-9 h-9 rounded-full bg-brand-primary text-white font-bold text-sm flex items-center justify-center shadow-xs">
+                {currentUser.charAt(0).toUpperCase()}
               </div>
-            ) : (
-              <div className="pt-4 pb-2 border-t border-gray-100 px-4 space-y-1">
-                <div className="flex items-center space-x-3 px-4 py-2 border-b border-gray-50 mb-2">
-                  <div className="w-9 h-9 rounded-full bg-brand-primary text-white font-bold text-sm flex items-center justify-center shadow-xs">
-                    {currentUser.charAt(0).toUpperCase()}
-                  </div>
-                  <span className="font-semibold text-sm text-slate-700">
-                    {truncatedName}
-                  </span>
-                </div>
-                <button
-                  id="mobile-my-listings"
-                  onClick={() => {
-                    onNavigate('my-listings');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-                >
-                  <LayoutDashboard className="w-5 h-5 text-gray-400" />
-                  <span>My Listings</span>
-                </button>
-                <button
-                  id="mobile-my-profile"
-                  onClick={() => {
-                    onNavigate('my-profile');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-                >
-                  <User className="w-5 h-5 text-gray-400" />
-                  <span>My Profile</span>
-                </button>
-                <button
-                  id="mobile-favourites"
-                  onClick={() => {
-                    onNavigate('favourites');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-                >
-                  <Heart className="w-5 h-5 text-gray-400" />
-                  <span>Favourites</span>
-                </button>
-                <button
-                  id="mobile-partner-requests"
-                  onClick={() => {
-                    onNavigate('partner-requests');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-                >
-                  <Handshake className="w-5 h-5 text-gray-400" />
-                  <span>Partner Requests</span>
-                </button>
-                <button
-                  id="mobile-messages"
-                  onClick={() => {
-                    onNavigate('messages');
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
-                >
-                  <MessageSquare className="w-5 h-5 text-gray-400" />
-                  <span>Messages</span>
-                </button>
-                <button
-                  id="mobile-signout"
-                  onClick={() => {
-                    onSignOut();
-                    setMobileMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-red-500 hover:bg-red-50 transition-all cursor-pointer text-left"
-                >
-                  <LogOut className="w-5 h-5 text-red-450" />
-                  <span>Sign Out</span>
-                </button>
-              </div>
-            )}
+              <span className="font-semibold text-sm text-slate-700">{truncatedName}</span>
+            </div>
+            <button
+              id="mobile-acct-my-listings"
+              onClick={() => { onNavigate('my-listings'); setMobileAccountMenuOpen(false); }}
+              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+            >
+              <LayoutDashboard className="w-5 h-5 text-gray-400" />
+              <span>My Listings</span>
+            </button>
+            <button
+              id="mobile-acct-my-profile"
+              onClick={() => { onNavigate('my-profile'); setMobileAccountMenuOpen(false); }}
+              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+            >
+              <User className="w-5 h-5 text-gray-400" />
+              <span>My Profile</span>
+            </button>
+            <button
+              id="mobile-acct-favourites"
+              onClick={() => { onNavigate('favourites'); setMobileAccountMenuOpen(false); }}
+              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+            >
+              <Heart className="w-5 h-5 text-gray-400" />
+              <span>Favourites</span>
+            </button>
+            <button
+              id="mobile-acct-partner-requests"
+              onClick={() => { onNavigate('partner-requests'); setMobileAccountMenuOpen(false); }}
+              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+            >
+              <Handshake className="w-5 h-5 text-gray-400" />
+              <span>Partner Requests</span>
+            </button>
+            <button
+              id="mobile-acct-messages"
+              onClick={() => { onNavigate('messages'); setMobileAccountMenuOpen(false); }}
+              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-gray-600 hover:text-brand-primary hover:bg-gray-50 transition-all cursor-pointer text-left"
+            >
+              <MessageSquare className="w-5 h-5 text-gray-400" />
+              <span>Messages</span>
+            </button>
+            <button
+              id="mobile-acct-signout"
+              onClick={() => { onSignOut(); setMobileAccountMenuOpen(false); }}
+              className="flex items-center space-x-3 w-full px-4 py-3 rounded-xl text-base font-semibold text-red-500 hover:bg-red-50 transition-all cursor-pointer text-left"
+            >
+              <LogOut className="w-5 h-5 text-red-450" />
+              <span>Sign Out</span>
+            </button>
           </div>
         </div>
       )}
