@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import { ArrowLeft, Mail, MapPin, Globe, Calendar, Languages, Building2, Hash, Award, FolderOpen, FileText, Linkedin, Facebook, Instagram, Twitter, LayoutGrid, List } from 'lucide-react';
+import { stripHtml } from '../utils';
 
 interface BaseProps {
   onBack: () => void;
@@ -468,7 +469,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                         <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-brand-primary transition-colors">{listing.title}</h3>
                       )}
                       <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 break-words">
-                        {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
+                        {stripHtml(listing.description)}
                       </p>
                       <div className="flex flex-col">
                         {listing.keyActions.length > 0 && (

@@ -5,6 +5,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { formatDate } from '../utils/formatDate';
+import { stripHtml } from '../utils/stripHtml';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
 import { getFavourites, getSentRequests } from '../services/firebase/firestore';
@@ -469,7 +470,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
                       </h3>
                     )}
                     <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 break-words">
-                      {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
+                      {stripHtml(listing.description)}
                     </p>
 
                     <div className="flex flex-col">

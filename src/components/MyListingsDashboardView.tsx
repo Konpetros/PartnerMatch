@@ -41,6 +41,7 @@ import { Message } from '../types/message';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import FavouriteButton from './FavouriteButton';
 import { resendVerificationEmail } from '../services/firebase/auth';
+import { stripHtml } from '../utils';
 
 interface MyListingsViewProps {
   onOpenSignIn: () => void;
@@ -1053,7 +1054,7 @@ export default function MyListingsDashboardView({
                             )}
 
                             <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 break-words">
-                              {listing.description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()}
+                              {stripHtml(listing.description)}
                             </p>
 
                             <div className="flex flex-col">

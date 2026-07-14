@@ -8,6 +8,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { COUNTRIES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import RichTextEditor from './RichTextEditor';
+import { stripHtml } from '../utils';
 import { 
   Mail, 
   Check, 
@@ -705,7 +706,7 @@ export default function PostListingView({
 
               {/* Description */}
               <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-3">
-                {description.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim() || 'Provide a partner search description to preview the live rendering text of how potential European partners learn about your priorities and requirements...'}
+                {stripHtml(description) || 'Provide a partner search description to preview the live rendering text of how potential European partners learn about your priorities and requirements...'}
               </p>
 
               {/* Labelled badge rows */}
