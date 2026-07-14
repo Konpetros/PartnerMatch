@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { formatDate } from '../utils/formatDate';
 import { stripHtml } from '../utils/stripHtml';
+import ListingCard from './ListingCard';
 import { Listing, SearchFilters, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
 import { getFavourites, getSentRequests } from '../services/firebase/firestore';
@@ -547,225 +548,38 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
           <>
             {viewMode === 'list' && (
               <div className="space-y-3">
-                {paginatedListings.map((listing) => {
-                  const flag = listing.countryFlag || '🇪🇺';
-                  return (
-                    <div
-                      key={listing.id}
-                      onClick={() => onSelectListing(listing.id)}
-                      className="group bg-white rounded-2xl border border-blue-50/50 hover:border-blue-300 hover:shadow-md transition-all cursor-pointer p-4 flex items-center gap-4"
-                    >
-                      {listing.submitterProfile?.logoUrl ? (
-                        <img
-                          src={listing.submitterProfile.logoUrl}
-                          alt={`${listing.name} logo`}
-                          referrerPolicy="no-referrer"
-                          className="w-12 h-12 rounded-lg object-contain border border-slate-100 bg-white p-1.5 shrink-0"
-                        />
-                      ) : (
-                        <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-base shrink-0">
-                          {listing.name.charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
-                          <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-brand-primary transition-colors">
-                            {listing.title || listing.name}
-                          </h3>
-                          <span className="bg-slate-100 text-slate-600 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider shrink-0">
-                            {listing.type}
-                          </span>
-                          {listing.projectRole && (
-                            <>
-                              {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
-                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-violet-100 text-violet-800 shrink-0">
-                                  Coordinator
-                                </span>
-                              )}
-                              {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
-                                <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-violet-100 text-violet-800 shrink-0">
-                                  Partner
-                                </span>
-                              )}
-                            </>
-                          )}
-                          {listing.keyActions.map((action) => (
-                            <span
-                              key={action}
-                              className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 shrink-0"
-                            >
-                              {action}
-                            </span>
-                          ))}
-                          {listing.sectors && listing.sectors.map((sector) => (
-                            <span
-                              key={sector}
-                              className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0"
-                            >
-                              {sector}
-                            </span>
-                          ))}
-                        </div>
-                        <p className="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-1.5 truncate">
-                          <span>{flag}</span>
-                          <span className="truncate">
-                            {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
-                          </span>
-                        </p>
-                        {listing.thematicAreas && listing.thematicAreas.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-1.5">
-                            {listing.thematicAreas.slice(0, 2).map((area) => (
-                              <span key={area} className="text-[9px] font-bold text-brand-primary/80 bg-blue-50/40 px-2 py-0.5 rounded-full">
-                                #{area}
-                              </span>
-                            ))}
-                            {listing.thematicAreas.length > 2 && (
-                              <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">
-                                +{listing.thematicAreas.length - 2} more
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex items-center shrink-0">
-                        <ExpressInterestButton
-                          listing={listing}
-                          currentUserUid={currentUserUid ?? null}
-                          currentUserProfile={currentUserProfile ?? null}
-                          alreadySent={sentListingIds.includes(listing.id)}
-                          onSent={handleInterestSent}
-                        />
-                      </div>
-                      <div className="hidden sm:flex flex-col items-end text-right shrink-0">
-                        <span className="text-orange-600 font-bold text-[11px]">
-                          🗓 {formatDate(listing.partnerSearchDeadline)}
-                        </span>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-primary transition-colors shrink-0" />
-                    </div>
-                  );
-                })}
+                {paginatedListings.map((listing) => (
+                  <ListingCard
+                    key={listing.id}
+                    listing={listing}
+                    variant="list"
+                    currentUserUid={currentUserUid ?? null}
+                    currentUserProfile={currentUserProfile ?? null}
+                    isFavourited={favouriteIds.includes(listing.id)}
+                    alreadySent={sentListingIds.includes(listing.id)}
+                    onSelect={onSelectListing}
+                    onToggleFavourite={handleToggleFavourite}
+                    onInterestSent={handleInterestSent}
+                  />
+                ))}
               </div>
             )}
             {viewMode === 'grid' && (
             <div id="listings-real-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {paginatedListings.map((listing) => {
-                const flag = listing.countryFlag || '🇪🇺';
-                return (
-                  <div
-                    id={`listing-card-${listing.id}`}
-                    key={listing.id}
-                    onClick={() => onSelectListing(listing.id)}
-                    className="group bg-white rounded-[20px] border border-blue-50/50 hover:border-blue-300 hover:shadow-md overflow-hidden card-shadow flex flex-col cursor-pointer"
-                  >
-                    {/* Body Details */}
-                    <div className="p-5 flex-1 flex flex-col space-y-3.5">
-                      <div className="flex items-center gap-3">
-                        {listing.submitterProfile?.logoUrl ? (
-                          <img
-                            src={listing.submitterProfile.logoUrl}
-                            alt={`${listing.name} logo`}
-                            referrerPolicy="no-referrer"
-                            className="w-12 h-12 rounded-lg object-contain border border-slate-100 bg-white p-1.5 shrink-0"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-base shrink-0">
-                            {listing.name.charAt(0).toUpperCase()}
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            {listing.name}
-                          </span>
-                          <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1 mt-0.5">
-                            <span>{flag}</span>
-                            <span className="truncate">
-                              {listing.country}{(listing.submitterProfile?.city || (listing as any).city) ? `, ${listing.submitterProfile?.city || (listing as any).city}` : ''}
-                            </span>
-                          </span>
-                        </div>
-                        <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} isFavourited={favouriteIds.includes(listing.id)} onToggle={handleToggleFavourite} />
-                      </div>
-
-                      {listing.title && (
-                        <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-brand-primary transition-colors">
-                          {listing.title}
-                        </h3>
-                      )}
-                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 break-words">
-                        {stripHtml(listing.description)}
-                      </p>
-
-                      <div className="flex flex-col">
-                        {listing.keyActions.length > 0 && (
-                          <div className="flex items-center gap-2 py-1.5">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Key Action</span>
-                            <div className="flex flex-wrap gap-1">
-                              {listing.keyActions.map((action) => (
-                                <span key={action} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
-                                  {action}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        {listing.projectRole && (
-                          <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Role</span>
-                            <div className="flex flex-wrap gap-1">
-                              {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
-                                <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Coordinator</span>
-                              )}
-                              {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
-                                <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Partner</span>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                        {listing.sectors && listing.sectors.length > 0 && (
-                          <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Sector</span>
-                            <div className="flex flex-wrap gap-1">
-                              {listing.sectors.map((sector) => (
-                                <span key={sector} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
-                                  {sector}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Deadline</span>
-                          <span className="text-[9px] font-extrabold bg-orange-50 text-orange-600 px-2 py-0.5 rounded-full">
-                            {formatDate(listing.partnerSearchDeadline)}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Highly aesthetic metadata snippet */}
-                      <div className="pt-2.5 border-t border-gray-100 flex flex-wrap gap-1">
-                        {listing.thematicAreas.slice(0, 2).map((area) => (
-                          <span key={area} className="text-[10px] font-bold text-brand-primary/80 bg-blue-50/40 px-2 py-0.5 rounded-full">
-                            #{area.replace(' & ', '')}
-                          </span>
-                        ))}
-                        {listing.thematicAreas.length > 2 && (
-                          <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">
-                            +{listing.thematicAreas.length - 2} more
-                          </span>
-                        )}
-                      </div>
-                      <ExpressInterestButton
-                        listing={listing}
-                        currentUserUid={currentUserUid ?? null}
-                        currentUserProfile={currentUserProfile ?? null}
-                        alreadySent={sentListingIds.includes(listing.id)}
-                        onSent={handleInterestSent}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
+              {paginatedListings.map((listing) => (
+                <ListingCard
+                  key={listing.id}
+                  listing={listing}
+                  variant="grid"
+                  currentUserUid={currentUserUid ?? null}
+                  currentUserProfile={currentUserProfile ?? null}
+                  isFavourited={favouriteIds.includes(listing.id)}
+                  alreadySent={sentListingIds.includes(listing.id)}
+                  onSelect={onSelectListing}
+                  onToggleFavourite={handleToggleFavourite}
+                  onInterestSent={handleInterestSent}
+                />
+              ))}
             </div>
             )}
 
