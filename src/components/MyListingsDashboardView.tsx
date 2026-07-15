@@ -44,6 +44,7 @@ import { resendVerificationEmail } from '../services/firebase/auth';
 import { stripHtml, formatDate } from '../utils';
 import FeaturedProjectsEditor from './FeaturedProjectsEditor';
 import MultiSelectDropdown from './MultiSelectDropdown';
+import RichTextEditor from './RichTextEditor';
 
 interface MyListingsViewProps {
   onOpenSignIn: () => void;
@@ -288,7 +289,7 @@ export default function MyListingsDashboardView({
     if (!profileContactEmail.trim() || !profileContactEmail.includes('@')) errors.push('A valid Contact Email is required.');
     if (profileLanguages.length === 0) errors.push('Please select at least one language.');
     if (profileSectors.length === 0) errors.push('Please select at least one Erasmus+ sector.');
-    if (!profileDescription.trim()) errors.push('Please add a description of your organisation.');
+    if (!profileDescription.trim() || profileDescription.replace(/<[^>]*>/g, '').trim() === '') errors.push('Please add a description of your organisation.');
     if (errors.length > 0) { setProfileFormErrors(errors); return; }
     setProfileFormErrors([]);
     const selectedCountryObj = COUNTRIES.find((c) => c.name === profileCountry);
@@ -1298,8 +1299,7 @@ export default function MyListingsDashboardView({
                 {/* Description */}
                 <div className="space-y-1">
                   <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">About Your Organisation *</label>
-                  <textarea value={profileDescription} onChange={(e) => setProfileDescription(e.target.value)} rows={5} maxLength={800} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all resize-none" />
-                  <p className="text-[10px] text-slate-400 text-right">{profileDescription.length}/800</p>
+                  <RichTextEditor value={profileDescription} onChange={setProfileDescription} placeholder="Describe your organisation, your mission, your experience, and what kind of partnerships you are looking for." />
                 </div>
 
                 {/* Social Media */}

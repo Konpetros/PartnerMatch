@@ -9,6 +9,7 @@ import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS, THEMATIC_ARE
 import { Building, AlertCircle, Check, Info, Upload } from 'lucide-react';
 import FeaturedProjectsEditor from './FeaturedProjectsEditor';
 import MultiSelectDropdown from './MultiSelectDropdown';
+import RichTextEditor from './RichTextEditor';
 
 interface ProfileSetupViewProps {
   onProfileComplete: (profile: OrganisationProfile) => void;
@@ -84,7 +85,7 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
     if (sectors.length === 0) {
       errors.push('Please select at least one Erasmus+ sector');
     }
-    if (!description.trim()) {
+    if (!description.trim() || description.replace(/<[^>]*>/g, '').trim() === '') {
       errors.push('Please add a description of your organisation.');
     }
 
@@ -455,24 +456,17 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="setup-org-description" className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
               About Your Organisation *
             </label>
             <p className="text-[11px] text-slate-400 font-medium">
               Describe your organisation, your mission, your experience, and what kind of partnerships you are looking for. This will appear on your public profile.
             </p>
-            <textarea
-              id="setup-org-description"
-              rows={5}
-              maxLength={800}
-              placeholder="e.g. We are a youth NGO based in Athens, Greece, with 10 years of experience in non-formal education and European mobility projects. We specialise in..."
+            <RichTextEditor
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400 resize-none"
+              onChange={setDescription}
+              placeholder="e.g. We are a youth NGO based in Athens, Greece, with 10 years of experience in non-formal education and European mobility projects. We specialise in..."
             />
-            <p className="text-[10px] text-slate-400 font-medium text-right">
-              {description.length}/800 characters
-            </p>
           </div>
 
           {/* Submit */}
