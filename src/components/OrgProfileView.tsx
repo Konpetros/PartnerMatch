@@ -55,7 +55,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
         previousProjects: (props.listing as any).previousProjects || '0',
         languagesSpoken: (props.listing as any).languagesSpoken || ['English'],
         contactEmail: props.listing.contactEmail,
-        sector: 'Youth',
+        sectors: ['Youth'],
         description: props.listing.description || '',
       })
     : props.profile;
@@ -245,11 +245,17 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
               <p className="text-sm font-bold text-slate-800">{activeProfile.organisationType}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <FileText className="w-4 h-4 text-slate-400 shrink-0" />
+          <div className="flex items-start gap-3">
+            <FileText className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
             <div>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Primary Erasmus+ Sector</p>
-              <p className="text-sm font-bold text-slate-800">{activeProfile.sector}</p>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Erasmus+ Sectors</p>
+              <div className="flex flex-wrap gap-1">
+                {(activeProfile.sectors || []).map((s) => (
+                  <span key={s} className="text-[10px] font-extrabold px-2 py-0.5 rounded bg-green-100 text-green-800">
+                    {s}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-3">
