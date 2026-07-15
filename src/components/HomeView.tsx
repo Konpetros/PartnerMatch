@@ -12,7 +12,6 @@ import FavouriteButton from './FavouriteButton';
 import { getFavourites, getSentRequests } from '../services/firebase/firestore';
 import ExpressInterestButton from './ExpressInterestButton';
 import { 
-  Search, 
   ArrowRight, 
   Users, 
   Globe2, 
@@ -258,29 +257,6 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
           <p className="text-base sm:text-lg text-slate-500 font-medium text-center max-w-2xl mx-auto mt-8">
             Free directory for Erasmus+ organisations across Europe. Find partners for KA1, KA2, and KA3 projects, or list your organisation in minutes.
           </p>
-
-          {/* Search bar in one row below */}
-          <div className="w-full mt-10">
-            <div className="flex items-center bg-white border border-slate-200 rounded-full shadow-md px-4 py-2 max-w-2xl mx-auto gap-3">
-              <Search className="text-slate-400 w-4 h-4 shrink-0" />
-              <input
-                id="search-input-field"
-                type="text"
-                placeholder="Filter by organisation name, city, keywords..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="text-slate-400 hover:text-slate-600 text-xs font-bold cursor-pointer shrink-0"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-          </div>
 
           {/* Trust row below the search bar */}
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 mt-10 text-base sm:text-lg text-slate-500 font-medium">
