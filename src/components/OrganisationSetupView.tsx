@@ -8,6 +8,7 @@ import { OrganisationProfile, OrganisationType, FeaturedProject } from '../types
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS, THEMATIC_AREAS } from '../data';
 import { Building, AlertCircle, Check, Info, Upload } from 'lucide-react';
 import FeaturedProjectsEditor from './FeaturedProjectsEditor';
+import MultiSelectDropdown from './MultiSelectDropdown';
 
 interface ProfileSetupViewProps {
   onProfileComplete: (profile: OrganisationProfile) => void;
@@ -417,59 +418,22 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
           </div>
 
           {/* Thematic Topics */}
-          <div className="space-y-2">
-            <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-              Thematic Topics (Optional)
-            </span>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-56 overflow-y-auto pr-2 border border-slate-150 rounded-xl bg-slate-50 p-4">
-              {THEMATIC_AREAS.map((area) => {
-                const isChecked = thematicAreas.includes(area);
-                return (
-                  <button
-                    key={area}
-                    type="button"
-                    title={area}
-                    onClick={() => handleThematicAreaToggle(area)}
-                    className={`px-3 py-2.5 rounded-lg text-xs font-semibold text-left flex items-center space-x-2 border transition-all cursor-pointer ${
-                      isChecked
-                        ? 'bg-brand-primary border-brand-primary text-white'
-                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
-                    }`}
-                  >
-                    <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${isChecked ? 'bg-white border-white' : 'border-slate-300'}`}>
-                      {isChecked && <Check className="w-2.5 h-2.5 text-brand-primary stroke-[3px]" />}
-                    </div>
-                    <span className="truncate">{area}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <MultiSelectDropdown
+            label="Thematic Topics"
+            options={THEMATIC_AREAS}
+            selected={thematicAreas}
+            onChange={setThematicAreas}
+          />
 
           {/* Languages spoken */}
           <div className="space-y-2">
-            <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-              Languages Spoken * (Select at least 1)
-            </span>
-            <div className="flex flex-wrap gap-1.5 p-3.5 border border-slate-150 bg-slate-50 rounded-xl max-h-40 overflow-y-auto">
-              {LANGUAGES.map((lang) => {
-                const isSelected = selectedLanguages.includes(lang);
-                return (
-                  <button
-                    key={lang}
-                    type="button"
-                    onClick={() => handleLanguageToggle(lang)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-green-600 text-white font-bold'
-                        : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-                    }`}
-                  >
-                    <span>{lang}</span>
-                  </button>
-                );
-              })}
-            </div>
+            <MultiSelectDropdown
+              label="Languages Spoken"
+              options={LANGUAGES}
+              selected={selectedLanguages}
+              onChange={setSelectedLanguages}
+              required
+            />
           </div>
 
           {/* Contact Email */}
