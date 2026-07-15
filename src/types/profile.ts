@@ -23,7 +23,7 @@ export interface OrganisationProfile {
   featuredProjects?: FeaturedProject[];
   languagesSpoken: string[];
   contactEmail: string;
-  sector: string;
+  sectors: string[];
   logoUrl?: string;
   description: string;
   showEmailOnProfile?: boolean;
