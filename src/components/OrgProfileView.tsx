@@ -197,17 +197,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
             </p>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            {activeProfile.website && (
-              <a
-                href={activeProfile.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-1.5 text-sm font-bold text-brand-primary bg-slate-50 hover:bg-blue-50 border border-slate-200 px-4 py-2 rounded-xl transition-all shrink-0"
-              >
-                <span>Visit Website</span>
-                <Globe className="w-4 h-4" />
-              </a>
-            )}
+
             {activeProfile.linkedinUrl && (
               <a href={activeProfile.linkedinUrl} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-500 hover:text-blue-700 border border-slate-200 transition-all" title="LinkedIn">
                 <Linkedin className="w-4 h-4" />
@@ -303,6 +293,22 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
               <p className="text-sm font-bold text-slate-800">{activeProfile.previousProjects}</p>
             </div>
           </div>
+          {activeProfile.website && (
+            <div className="flex items-center gap-3">
+              <Globe className="w-4 h-4 text-slate-400 shrink-0" />
+              <div>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Website</p>
+                <a
+                  href={activeProfile.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-bold text-brand-primary hover:underline"
+                >
+                  {activeProfile.website.replace(/^https?:\/\//, '')}
+                </a>
+              </div>
+            </div>
+          )}
           <div className="flex items-center gap-3">
             <Hash className="w-4 h-4 text-slate-400 shrink-0" />
             <div>
