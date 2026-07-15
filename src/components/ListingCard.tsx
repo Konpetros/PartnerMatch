@@ -157,7 +157,7 @@ export default function ListingCard({
         <div className="flex flex-col">
           {listing.keyActions.length > 0 && (
             <div className="flex items-center gap-2 py-1.5">
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Key Action</span>
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[62px] shrink-0">Key Action</span>
               <div className="flex flex-wrap gap-1">
                 {listing.keyActions.map((action) => (
                   <span key={action} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
@@ -169,7 +169,7 @@ export default function ListingCard({
           )}
           {listing.projectRole && (
             <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Role</span>
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[62px] shrink-0">Role</span>
               <div className="flex flex-wrap gap-1">
                 {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
                   <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Coordinator</span>
@@ -182,7 +182,7 @@ export default function ListingCard({
           )}
           {listing.sectors && listing.sectors.length > 0 && (
             <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Sector</span>
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[62px] shrink-0">Sector</span>
               <div className="flex flex-wrap gap-1">
                 {listing.sectors.map((sector) => (
                   <span key={sector} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
@@ -193,7 +193,7 @@ export default function ListingCard({
             </div>
           )}
           <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[44px] shrink-0">Deadline</span>
+            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[62px] shrink-0">Deadline</span>
             <span className="text-[9px] font-extrabold bg-orange-50 text-orange-600 px-2 py-0.5 rounded-full">
               {formatDate(listing.partnerSearchDeadline)}
             </span>
