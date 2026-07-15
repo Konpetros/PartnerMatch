@@ -18,6 +18,7 @@ import {
   Pencil, 
   Trash2, 
   CheckCircle, 
+  Check,
   X,
   AlertCircle,
   Megaphone,
@@ -244,7 +245,11 @@ export default function MyListingsDashboardView({
   const [profileFeaturedProjects, setProfileFeaturedProjects] = useState<FeaturedProject[]>(organisationProfile?.featuredProjects || []);
   const [profileLanguages, setProfileLanguages] = useState<string[]>(organisationProfile?.languagesSpoken || []);
   const [profileContactEmail, setProfileContactEmail] = useState(organisationProfile?.contactEmail || '');
-  const [profileSector, setProfileSector] = useState(organisationProfile?.sector || 'Youth');
+  const [profileSectors, setProfileSectors] = useState<string[]>(organisationProfile?.sectors || ['Youth']);
+
+  const handleProfileSectorToggle = (s: string) => {
+    setProfileSectors((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
+  };
   const [profileDescription, setProfileDescription] = useState(organisationProfile?.description || '');
   const [profileLinkedin, setProfileLinkedin] = useState(organisationProfile?.linkedinUrl || '');
   const [profileFacebook, setProfileFacebook] = useState(organisationProfile?.facebookUrl || '');
@@ -276,7 +281,7 @@ export default function MyListingsDashboardView({
     if (!profileCity.trim()) errors.push('City is required.');
     if (!profileContactEmail.trim() || !profileContactEmail.includes('@')) errors.push('A valid Contact Email is required.');
     if (profileLanguages.length === 0) errors.push('Please select at least one language.');
-    if (!profileSector) errors.push('Please select your Erasmus+ sector.');
+    if (profileSectors.length === 0) errors.push('Please select at least one Erasmus+ sector.');
     if (!profileDescription.trim()) errors.push('Please add a description of your organisation.');
     if (errors.length > 0) { setProfileFormErrors(errors); return; }
     setProfileFormErrors([]);
@@ -296,7 +301,7 @@ export default function MyListingsDashboardView({
       featuredProjects: profileFeaturedProjects,
       languagesSpoken: profileLanguages,
       contactEmail: profileContactEmail.trim(),
-      sector: profileSector,
+      sectors: profileSectors,
       logoUrl: profileLogoPreview || '',
       description: profileDescription.trim(),
       linkedinUrl: profileLinkedin.trim(),
@@ -1239,12 +1244,31 @@ export default function MyListingsDashboardView({
                   <input type="email" value={profileContactEmail} onChange={(e) => setProfileContactEmail(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
                 </div>
 
-                {/* Sector */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Erasmus+ Sector *</label>
-                  <select value={profileSector} onChange={(e) => setProfileSector(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
-                    {ERASMUS_SECTORS.map((s) => <option key={s} value={s}>{s}</option>)}
-                  </select>
+                {/* Sectors */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Erasmus+ Sectors * (Select at least 1)</label>
+                  <div className="flex flex-wrap gap-1.5 p-3.5 border border-slate-200 bg-slate-50 rounded-xl">
+                    {ERASMUS_SECTORS.map((s) => {
+                      const isChecked = profileSectors.includes(s);
+                      return (
+                        <button
+                          key={s}
+                          type="button"
+                          onClick={() => handleProfileSectorToggle(s)}
+                          className={`px-3 py-2 rounded-lg text-xs font-semibold flex items-center space-x-2 border transition-all cursor-pointer ${
+                            isChecked
+                              ? 'bg-brand-primary border-brand-primary text-white'
+                              : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                          }`}
+                        >
+                          <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 ${isChecked ? 'bg-white border-white' : 'border-slate-300'}`}>
+                            {isChecked && <Check className="w-2 h-2 text-brand-primary stroke-[3px]" />}
+                          </div>
+                          <span>{s}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Languages */}
