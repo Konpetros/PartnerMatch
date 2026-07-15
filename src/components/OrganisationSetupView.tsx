@@ -5,7 +5,7 @@
 
 import React, { useState, useRef } from 'react';
 import { OrganisationProfile, OrganisationType, FeaturedProject } from '../types';
-import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS } from '../data';
+import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS, THEMATIC_AREAS } from '../data';
 import { Building, AlertCircle, Check, Info, Upload } from 'lucide-react';
 import FeaturedProjectsEditor from './FeaturedProjectsEditor';
 
@@ -27,6 +27,11 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [contactEmail, setContactEmail] = useState('');
   const [sectors, setSectors] = useState<string[]>(['Youth']);
+  const [thematicAreas, setThematicAreas] = useState<string[]>([]);
+
+  const handleThematicAreaToggle = (area: string) => {
+    setThematicAreas((prev) => (prev.includes(area) ? prev.filter((x) => x !== area) : [...prev, area]));
+  };
 
   const handleSectorToggle = (s: string) => {
     setSectors((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
@@ -108,6 +113,7 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
       languagesSpoken: selectedLanguages,
       contactEmail: contactEmail.trim(),
       sectors,
+      thematicAreas,
       logoUrl: logoPreview || '',
       description: description.trim(),
     };
@@ -404,6 +410,36 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
                       {isChecked && <Check className="w-2 h-2 text-brand-primary stroke-[3px]" />}
                     </div>
                     <span>{s}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Thematic Topics */}
+          <div className="space-y-2">
+            <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+              Thematic Topics (Optional)
+            </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-56 overflow-y-auto pr-2 border border-slate-150 rounded-xl bg-slate-50 p-4">
+              {THEMATIC_AREAS.map((area) => {
+                const isChecked = thematicAreas.includes(area);
+                return (
+                  <button
+                    key={area}
+                    type="button"
+                    title={area}
+                    onClick={() => handleThematicAreaToggle(area)}
+                    className={`px-3 py-2.5 rounded-lg text-xs font-semibold text-left flex items-center space-x-2 border transition-all cursor-pointer ${
+                      isChecked
+                        ? 'bg-brand-primary border-brand-primary text-white'
+                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                    }`}
+                  >
+                    <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${isChecked ? 'bg-white border-white' : 'border-slate-300'}`}>
+                      {isChecked && <Check className="w-2.5 h-2.5 text-brand-primary stroke-[3px]" />}
+                    </div>
+                    <span className="truncate">{area}</span>
                   </button>
                 );
               })}

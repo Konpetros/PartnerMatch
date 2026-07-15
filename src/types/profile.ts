@@ -24,6 +24,7 @@ export interface OrganisationProfile {
   languagesSpoken: string[];
   contactEmail: string;
   sectors: string[];
+  thematicAreas?: string[];
   logoUrl?: string;
   description: string;
   showEmailOnProfile?: boolean;

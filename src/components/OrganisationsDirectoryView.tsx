@@ -394,6 +394,20 @@ export default function OrganisationsDirectoryView({
                         </div>
                       )}
                     </div>
+                    {org.thematicAreas && org.thematicAreas.length > 0 && (
+                      <div className="flex flex-wrap gap-1 pt-2 mt-1 border-t border-slate-100">
+                        {org.thematicAreas.slice(0, 3).map((area) => (
+                          <span key={area} className="text-[9px] font-bold text-brand-primary/80 bg-blue-50/40 px-2 py-0.5 rounded-full">
+                            #{area}
+                          </span>
+                        ))}
+                        {org.thematicAreas.length > 3 && (
+                          <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">
+                            +{org.thematicAreas.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
 
                     <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                       {renderStatusBadge('active')}

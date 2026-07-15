@@ -258,6 +258,21 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
               </div>
             </div>
           </div>
+          {activeProfile.thematicAreas && activeProfile.thematicAreas.length > 0 && (
+            <div className="flex items-start gap-3">
+              <Hash className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-1">Thematic Topics</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {activeProfile.thematicAreas.map((area) => (
+                    <span key={area} className="text-[10px] font-bold text-brand-primary/80 bg-blue-50/40 px-2 py-0.5 rounded-full">
+                      #{area}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
           <div className="flex items-center gap-3">
             <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
             <div>
