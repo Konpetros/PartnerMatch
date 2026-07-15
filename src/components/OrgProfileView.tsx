@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import DOMPurify from 'dompurify';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import { ArrowLeft, Mail, MapPin, Globe, Calendar, Languages, Building2, Hash, Award, FolderOpen, FileText, Linkedin, Facebook, Instagram, Twitter, LayoutGrid, List, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
@@ -339,9 +340,15 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
             <Building2 className="w-3.5 h-3.5" />
             About This Organisation
           </h3>
-          <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
-            {activeProfile.description}
-          </p>
+          <div
+            className="text-sm text-slate-600 leading-relaxed prose prose-sm max-w-none prose-headings:text-slate-800 prose-a:text-brand-primary prose-strong:text-slate-800"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(activeProfile.description, {
+                ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'a', 'h2', 'h3', 'ul', 'ol', 'li', 'mark', 'span'],
+                ALLOWED_ATTR: ['href', 'target', 'rel', 'style', 'class'],
+              }),
+            }}
+          />
         </div>
       )}
 

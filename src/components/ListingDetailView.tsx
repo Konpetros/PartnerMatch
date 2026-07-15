@@ -5,6 +5,7 @@
 
 import React from 'react';
 import DOMPurify from 'dompurify';
+import { stripHtml } from '../utils';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
 import { formatDate } from '../utils/formatDate';
@@ -291,16 +292,19 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
               </div>
             </div>
 
-            {profile.description && (
-              <div className="bg-white rounded-[20px] p-6 border border-slate-100 space-y-3">
-                <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider border-b border-slate-100 pb-3">
-                  About the Organisation
-                </h3>
-                <p className="text-slate-600 text-xs leading-relaxed">
-                  {profile.description.length > 200 ? profile.description.slice(0, 200) + '...' : profile.description}
-                </p>
-              </div>
-            )}
+            {profile.description && (() => {
+              const plainDescription = stripHtml(profile.description);
+              return (
+                <div className="bg-white rounded-[20px] p-6 border border-slate-100 space-y-3">
+                  <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider border-b border-slate-100 pb-3">
+                    About the Organisation
+                  </h3>
+                  <p className="text-slate-600 text-xs leading-relaxed">
+                    {plainDescription.length > 200 ? plainDescription.slice(0, 200) + '...' : plainDescription}
+                  </p>
+                </div>
+              );
+            })()}
 
             <div className="bg-white rounded-[20px] p-6 border border-slate-100 space-y-4">
               <h3 className="font-bold text-slate-800 text-xs uppercase tracking-wider border-b border-slate-100 pb-3">
