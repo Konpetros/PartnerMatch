@@ -359,12 +359,21 @@ export default function OrganisationsDirectoryView({
                           </span>
                         </div>
                       )}
-                      {org.sector && (
+                      {org.sectors && org.sectors.length > 0 && (
                         <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
                           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Sector</span>
-                          <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-green-100 text-green-800">
-                            {org.sector}
-                          </span>
+                          <div className="flex flex-wrap gap-1">
+                            {org.sectors.slice(0, 3).map((s) => (
+                              <span key={s} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-green-100 text-green-800">
+                                {s}
+                              </span>
+                            ))}
+                            {org.sectors.length > 3 && (
+                              <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-md border border-slate-100">
+                                +{org.sectors.length - 3}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       )}
                       {org.languagesSpoken && org.languagesSpoken.length > 0 && (
