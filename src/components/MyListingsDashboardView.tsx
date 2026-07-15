@@ -15,7 +15,6 @@ import {
   User, 
   Settings, 
   LogOut, 
-  Search, 
   Pencil, 
   Trash2, 
   CheckCircle, 
@@ -1427,16 +1426,6 @@ export default function MyListingsDashboardView({
               </div>
 
               {/* Search Bar Input control (Right aligned on desktop) */}
-              <div className="relative w-full lg:w-64 max-w-sm">
-                <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-450 pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder="Search listings..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-250/70 rounded-xl pl-10 pr-4 py-2 text-xs font-semibold text-slate-705 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-400"
-                />
-              </div>
 
             </div>
 
