@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { OrganisationType } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
-import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, THEMATIC_AREAS } from '../data';
+import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import { MapPin, Inbox, Search } from 'lucide-react';
 
 interface OrganisationsViewProps {
@@ -31,10 +31,11 @@ export default function OrganisationsDirectoryView({
   const [selectedExperience, setSelectedExperience] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('');
   const [selectedThematic, setSelectedThematic] = useState('');
+  const [selectedSector, setSelectedSector] = useState('');
 
   useEffect(() => {
     setIsLoading(false);
-  }, [searchQuery, selectedCountry, selectedType, selectedLetter, selectedExperience, selectedLanguage, selectedThematic]);
+  }, [searchQuery, selectedCountry, selectedType, selectedLetter, selectedExperience, selectedLanguage, selectedThematic, selectedSector]);
 
   // Derive unique organisations list — only show public profiles
   const uniqueOrganisations = listings.filter(org => org.profilePublic !== false);
@@ -70,7 +71,10 @@ export default function OrganisationsDirectoryView({
     // 7. Thematic topics
     const matchesThematic = !selectedThematic || (org.thematicAreas || []).includes(selectedThematic);
 
-    return matchesSearch && matchesCountry && matchesType && matchesLetter && matchesExperience && matchesLanguage && matchesThematic;
+    // 8. Erasmus+ Sector
+    const matchesSector = !selectedSector || (org.sectors || []).includes(selectedSector);
+
+    return matchesSearch && matchesCountry && matchesType && matchesLetter && matchesExperience && matchesLanguage && matchesThematic && matchesSector;
   });
 
   const isAnyFilterActive =
@@ -80,7 +84,8 @@ export default function OrganisationsDirectoryView({
     selectedLetter !== 'All' ||
     selectedExperience !== '' ||
     selectedLanguage !== '' ||
-    selectedThematic !== '';
+    selectedThematic !== '' ||
+    selectedSector !== '';
 
   const handleClearFilters = () => {
     setSearchQuery('');
@@ -90,6 +95,7 @@ export default function OrganisationsDirectoryView({
     setSelectedExperience('');
     setSelectedLanguage('');
     setSelectedThematic('');
+    setSelectedSector('');
   };
 
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -177,19 +183,18 @@ export default function OrganisationsDirectoryView({
               </div>
             )}
           </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Search bar inputs */}
-          <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search organisations..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-405"
-            />
-          </div>
+        <div className="relative">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search organisations..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all placeholder:text-slate-405"
+          />
+        </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
           {/* Country select */}
           <div className="relative">
             <select
@@ -220,6 +225,25 @@ export default function OrganisationsDirectoryView({
               {ORGANISATION_TYPES.map((t) => (
                 <option key={t} value={t}>
                   {t}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+              <span className="text-xs">▼</span>
+            </div>
+          </div>
+
+          {/* Erasmus+ Sector dropdown */}
+          <div className="relative">
+            <select
+              value={selectedSector}
+              onChange={(e) => setSelectedSector(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+            >
+              <option value="">🎯 All Sectors</option>
+              {ERASMUS_SECTORS.map((s) => (
+                <option key={s} value={s}>
+                  {s}
                 </option>
               ))}
             </select>
