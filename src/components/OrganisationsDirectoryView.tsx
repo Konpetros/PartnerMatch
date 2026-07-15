@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { OrganisationType } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
-import { COUNTRIES, ORGANISATION_TYPES } from '../data';
+import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, THEMATIC_AREAS } from '../data';
 import { MapPin, Inbox, Search } from 'lucide-react';
 
 interface OrganisationsViewProps {
@@ -28,10 +28,13 @@ export default function OrganisationsDirectoryView({
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [selectedLetter, setSelectedLetter] = useState('All');
+  const [selectedExperience, setSelectedExperience] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [selectedThematic, setSelectedThematic] = useState('');
 
   useEffect(() => {
     setIsLoading(false);
-  }, [searchQuery, selectedCountry, selectedType, selectedLetter]);
+  }, [searchQuery, selectedCountry, selectedType, selectedLetter, selectedExperience, selectedLanguage, selectedThematic]);
 
   // Derive unique organisations list — only show public profiles
   const uniqueOrganisations = listings.filter(org => org.profilePublic !== false);
@@ -58,20 +61,35 @@ export default function OrganisationsDirectoryView({
       selectedLetter === 'All' ||
       org.organisationName.trim().charAt(0).toUpperCase() === selectedLetter;
 
-    return matchesSearch && matchesCountry && matchesType && matchesLetter;
+    // 5. Experience level
+    const matchesExperience = !selectedExperience || org.experienceLevel === selectedExperience;
+
+    // 6. Languages
+    const matchesLanguage = !selectedLanguage || (org.languagesSpoken || []).includes(selectedLanguage);
+
+    // 7. Thematic topics
+    const matchesThematic = !selectedThematic || (org.thematicAreas || []).includes(selectedThematic);
+
+    return matchesSearch && matchesCountry && matchesType && matchesLetter && matchesExperience && matchesLanguage && matchesThematic;
   });
 
   const isAnyFilterActive =
     searchQuery !== '' ||
     selectedCountry !== '' ||
     selectedType !== '' ||
-    selectedLetter !== 'All';
+    selectedLetter !== 'All' ||
+    selectedExperience !== '' ||
+    selectedLanguage !== '' ||
+    selectedThematic !== '';
 
   const handleClearFilters = () => {
     setSearchQuery('');
     setSelectedCountry('');
     setSelectedType('');
     setSelectedLetter('All');
+    setSelectedExperience('');
+    setSelectedLanguage('');
+    setSelectedThematic('');
   };
 
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -202,6 +220,63 @@ export default function OrganisationsDirectoryView({
               {ORGANISATION_TYPES.map((t) => (
                 <option key={t} value={t}>
                   {t}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+              <span className="text-xs">▼</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          {/* Experience Level dropdown */}
+          <div className="relative">
+            <select
+              value={selectedExperience}
+              onChange={(e) => setSelectedExperience(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+            >
+              <option value="">🎖 All Experience Levels</option>
+              <option value="First-timer">First-timer</option>
+              <option value="Experienced">Experienced</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+              <span className="text-xs">▼</span>
+            </div>
+          </div>
+
+          {/* Languages dropdown */}
+          <div className="relative">
+            <select
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+            >
+              <option value="">🗣 All Languages</option>
+              {LANGUAGES.map((lang) => (
+                <option key={lang} value={lang}>
+                  {lang}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
+              <span className="text-xs">▼</span>
+            </div>
+          </div>
+
+          {/* Thematic Topics dropdown */}
+          <div className="relative">
+            <select
+              value={selectedThematic}
+              onChange={(e) => setSelectedThematic(e.target.value)}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
+            >
+              <option value="">🎯 All Thematic Topics</option>
+              {THEMATIC_AREAS.map((area) => (
+                <option key={area} value={area}>
+                  {area}
                 </option>
               ))}
             </select>
