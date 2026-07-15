@@ -336,16 +336,6 @@ export default function OrganisationsDirectoryView({
                           <span className="truncate">{org.country}{cityValue ? `, ${cityValue}` : ''}</span>
                         </span>
                       </div>
-                      <div className="flex flex-col items-end gap-1 shrink-0">
-                        <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wide">
-                          {org.organisationType}
-                        </span>
-                        {org.experienceLevel && (
-                          <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
-                            {org.experienceLevel}
-                          </span>
-                        )}
-                      </div>
                     </div>
 
                     {org.description && (
@@ -355,10 +345,24 @@ export default function OrganisationsDirectoryView({
                     )}
 
                     <div className="flex flex-col">
+                      <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Type</span>
+                        <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
+                          {org.organisationType}
+                        </span>
+                      </div>
+                      {org.experienceLevel && (
+                        <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Experience</span>
+                          <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
+                            {org.experienceLevel}
+                          </span>
+                        </div>
+                      )}
                       {org.sector && (
                         <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
                           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Sector</span>
-                          <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                          <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-green-100 text-green-800">
                             {org.sector}
                           </span>
                         </div>
@@ -368,7 +372,7 @@ export default function OrganisationsDirectoryView({
                           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Languages</span>
                           <div className="flex flex-wrap gap-1">
                             {org.languagesSpoken.slice(0, 3).map((lang) => (
-                              <span key={lang} className="text-[9px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-100">
+                              <span key={lang} className="text-[9px] font-extrabold px-2 py-0.5 rounded-md bg-violet-100 text-violet-800 border border-violet-200">
                                 {lang}
                               </span>
                             ))}
