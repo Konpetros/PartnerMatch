@@ -1425,8 +1425,6 @@ export default function MyListingsDashboardView({
                 })}
               </div>
 
-              {/* Search Bar Input control (Right aligned on desktop) */}
-
             </div>
 
             {/* LISTINGS DISPLAY GRID or TABLE */}
