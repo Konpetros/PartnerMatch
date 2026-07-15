@@ -212,22 +212,6 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
         </div>
       </div>
 
-      {/* Email Notifications */}
-      <div className="bg-white rounded-2xl border border-slate-100 p-5 space-y-3 shadow-sm">
-        <div className="flex items-center justify-between opacity-50 cursor-not-allowed">
-          <div>
-            <p className="text-sm font-bold text-slate-700">Email Notifications <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full ml-1">Coming Soon</span></p>
-            <p className="text-xs text-slate-500 font-medium">Receive email updates when someone contacts you</p>
-          </div>
-          <button
-            disabled
-            className="relative w-11 h-6 rounded-full bg-slate-200 cursor-not-allowed focus:outline-none"
-          >
-            <span className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow" />
-          </button>
-        </div>
-      </div>
-
       {/* Change Password — email users only */}
       {isEmailUser && (
         <div className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4 shadow-sm">
