@@ -335,7 +335,7 @@ export default function PostListingView({
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-2 pt-2 border-t border-slate-100 text-xs text-slate-650 font-medium">
                 <div>
-                  <span className="text-slate-400 font-bold">Sector:</span> {profile.sector}
+                  <span className="text-slate-400 font-bold">Sector:</span> {(profile.sectors || []).join(', ') || 'Not set'}
                 </div>
                 <div>
                   <span className="text-slate-400 font-bold">OID:</span> {profile.oid || 'Not Provided'}
@@ -343,9 +343,6 @@ export default function PostListingView({
                 <div className="flex items-center flex-wrap gap-1.5">
                   <span className="text-slate-400 font-bold">Experience:</span>
                   <span>{profile.experienceLevel}</span>
-                  <span className="bg-blue-50 text-brand-primary text-[11px] font-bold px-2.5 py-1 rounded-full">
-                    {profile.sector}
-                  </span>
                 </div>
               </div>
 

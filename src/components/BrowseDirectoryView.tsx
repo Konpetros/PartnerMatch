@@ -109,7 +109,7 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
       const matchesProjectRole = !filters.projectRole || item.projectRole === filters.projectRole;
 
       // Sector match
-      const matchesSector = !filters.sector || item.submitterProfile?.sector === filters.sector;
+      const matchesSector = !filters.sector || (item.submitterProfile?.sectors || []).includes(filters.sector);
 
       return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic && matchesSector && matchesProjectRole;
     });

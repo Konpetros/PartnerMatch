@@ -14,7 +14,7 @@ export const filterListings = (listings: Listing[], filters: SearchFilters): Lis
       filters.keyActions.some(action => item.keyActions.includes(action));
     const matchesThematic = !filters.thematicArea || item.thematicAreas.includes(filters.thematicArea);
     const matchesProjectRole = !filters.projectRole || item.projectRole === filters.projectRole;
-    const matchesSector = !filters.sector || item.submitterProfile?.sector === filters.sector;
+    const matchesSector = !filters.sector || (item.submitterProfile?.sectors || []).includes(filters.sector);
     return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic && matchesSector && matchesProjectRole;
   });
 };
