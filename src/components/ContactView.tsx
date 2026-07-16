@@ -29,8 +29,10 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
   // Validation / Response state
   const [errors, setErrors] = useState<string[]>([]);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: string[] = [];
 
@@ -56,16 +58,35 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
       return;
     }
 
-    // Build and open a pre-filled mailto link so the message actually reaches support
-    const mailtoSubject = encodeURIComponent(`[PartnerMatch Contact] ${subject} — from ${fullName}`);
-    const mailtoBody = encodeURIComponent(
-      `Name: ${fullName}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`
-    );
-    window.location.href = `mailto:support@partnermatch.eu?subject=${mailtoSubject}&body=${mailtoBody}`;
-
-    // Success
     setErrors([]);
-    setIsSuccess(true);
+    setSubmitError('');
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: 'be811448-93de-4e46-80b5-829add922c98',
+          name: fullName,
+          email: email,
+          subject: `[PartnerMatch Contact] ${subject} — from ${fullName}`,
+          message: `Subject Category: ${subject}\n\nMessage:\n${message}`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSuccess(true);
+      } else {
+        setSubmitError('Something went wrong sending your message. Please try again, or email us directly at support@partnermatch.eu.');
+      }
+    } catch {
+      setSubmitError('Could not connect. Please check your internet connection and try again, or email us directly at support@partnermatch.eu.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleReset = () => {
@@ -75,6 +96,7 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
     setMessage('');
     setErrors([]);
     setIsSuccess(false);
+    setSubmitError('');
   };
 
   return (
@@ -113,7 +135,7 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold text-slate-850">Thank You!</h3>
                   <p className="text-sm text-slate-600 font-semibold">
-                    Thank you! Your email client should have opened with this message pre-filled to support@partnermatch.eu. If it didn't open, please email us directly. We'll get back to you within 48 hours.
+                    Thank you! Your message has been sent to support@partnermatch.eu. We'll get back to you within 48 hours.
                   </p>
                 </div>
                 <button
@@ -126,6 +148,7 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5" id="contact-support-form">
+                <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
                 
                 {/* Form Errors summary */}
                 {errors.length > 0 && (
@@ -139,6 +162,14 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
                         <li key={i}>{err}</li>
                       ))}
                     </ul>
+                  </div>
+                )}
+
+                {/* Network/API submission error */}
+                {submitError && (
+                  <div className="p-4 bg-red-50 border border-red-100 rounded-xl flex items-center space-x-2 animate-fade-in" id="contact-submit-error">
+                    <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                    <span className="text-xs text-red-600 font-semibold">{submitError}</span>
                   </div>
                 )}
 
@@ -225,11 +256,12 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
                 {/* Submit button */}
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover text-white py-3.5 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md active:scale-95 cursor-pointer"
+                  disabled={isSubmitting}
+                  className="w-full inline-flex items-center justify-center space-x-2 bg-brand-primary hover:bg-brand-primary-hover disabled:opacity-60 disabled:cursor-not-allowed text-white py-3.5 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-md active:scale-95 cursor-pointer"
                   id="contact-submit-btn"
                 >
                   <Send className="w-4 h-4 text-brand-accent shrink-0" />
-                  <span>Send Message</span>
+                  <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
                 </button>
 
               </form>
