@@ -46,6 +46,7 @@ import FeaturedProjectsEditor from './FeaturedProjectsEditor';
 import MultiSelectDropdown from './MultiSelectDropdown';
 import RichTextEditor from './RichTextEditor';
 import AnnouncementsSection from './dashboard/AnnouncementsSection';
+import FavouritesSection from './dashboard/FavouritesSection';
 
 interface MyListingsViewProps {
   onOpenSignIn: () => void;
@@ -94,6 +95,7 @@ export default function MyListingsDashboardView({
   // Active section to toggle between 'listings', 'settings' and 'announcements'
   const [activeSection, setActiveSection] = useState<'listings' | 'settings' | 'announcements' | 'profile' | 'favourites' | 'partner-requests' | 'messages'>(initialSection);
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
+  const [dashSentListingIds, setDashSentListingIds] = useState<string[]>([]);
   const [incomingRequests, setIncomingRequests] = useState<PartnerRequest[]>([]);
   const [sentRequests, setSentRequests] = useState<PartnerRequest[]>([]);
   const [requestsTab, setRequestsTab] = useState<'received' | 'sent'>('received');
@@ -136,8 +138,21 @@ export default function MyListingsDashboardView({
   useEffect(() => {
     if (currentUserUid) {
       getFavourites(currentUserUid).then(setFavouriteIds);
+      getSentRequests(currentUserUid).then(requests =>
+        setDashSentListingIds(requests.map(r => r.listingId))
+      );
     }
   }, [currentUserUid]);
+
+  const handleDashToggleFavourite = (listingId: string) => {
+    setFavouriteIds(prev =>
+      prev.includes(listingId) ? prev.filter(id => id !== listingId) : [...prev, listingId]
+    );
+  };
+
+  const handleDashInterestSent = (listingId: string) => {
+    setDashSentListingIds(prev => [...prev, listingId]);
+  };
 
   useEffect(() => {
     if (currentUserUid && activeSection === 'partner-requests') {
@@ -986,130 +1001,16 @@ export default function MyListingsDashboardView({
               )}
             </div>
           ) : activeSection === 'favourites' ? (
-            <div className="space-y-4 animate-fade-in">
-              <div className="border-b border-slate-100 pb-4">
-                <h2 className="text-xl font-extrabold text-slate-800">Saved Listings</h2>
-                <p className="text-sm text-slate-500 mt-1">Partner calls you've saved for later.</p>
-              </div>
-              {favouriteIds.length === 0 ? (
-                <div className="text-center py-16 space-y-3">
-                  <Heart className="w-10 h-10 text-slate-200 mx-auto" />
-                  <p className="text-sm font-semibold text-slate-400">No saved listings yet</p>
-                  <p className="text-xs text-slate-400">Press the heart icon on any listing to save it here.</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {listings
-                    .filter(l => favouriteIds.includes(l.id) && (l.status === 'active' || !l.status))
-                    .map(listing => {
-                      const flag = listing.countryFlag || '🇪🇺';
-                      return (
-                        <div
-                          key={listing.id}
-                          onClick={() => onSelectListing && onSelectListing(listing.id)}
-                          className="group bg-white rounded-[20px] border border-blue-50/50 hover:border-blue-300 hover:shadow-md card-shadow flex flex-col cursor-pointer"
-                        >
-                          <div className="p-5 flex-1 flex flex-col space-y-3.5">
-                            <div className="flex items-center gap-3">
-                              {listing.submitterProfile?.logoUrl ? (
-                                <img
-                                  src={listing.submitterProfile.logoUrl}
-                                  alt={`${listing.name} logo`}
-                                  referrerPolicy="no-referrer"
-                                  className="w-12 h-12 rounded-lg object-contain border border-slate-100 bg-white p-1.5 shrink-0"
-                                />
-                              ) : (
-                                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-base shrink-0">
-                                  {listing.name.charAt(0).toUpperCase()}
-                                </div>
-                              )}
-                              <div className="flex-1 min-w-0">
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                                  {listing.name}
-                                </span>
-                                <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1 mt-0.5">
-                                  <span>{flag}</span>
-                                  <span className="truncate">{listing.country}{listing.submitterProfile?.city ? `, ${listing.submitterProfile.city}` : ''}</span>
-                                </span>
-                              </div>
-                              <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} />
-                            </div>
-
-                            {listing.title && (
-                              <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-brand-primary transition-colors">
-                                {listing.title}
-                              </h3>
-                            )}
-
-                            <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 break-words">
-                              {stripHtml(listing.description)}
-                            </p>
-
-                            <div className="flex flex-col">
-                              {listing.keyActions.length > 0 && (
-                                <div className="flex items-center gap-2 py-1.5">
-                                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Key Action</span>
-                                  <div className="flex flex-wrap gap-1">
-                                    {listing.keyActions.map((action) => (
-                                      <span key={action} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">{action}</span>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              {listing.projectRole && (
-                                <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Role</span>
-                                  <div className="flex flex-wrap gap-1">
-                                    {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
-                                      <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Coordinator</span>
-                                    )}
-                                    {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
-                                      <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Partner</span>
-                                    )}
-                                  </div>
-                                </div>
-                              )}
-                              {listing.sectors && listing.sectors.length > 0 && (
-                                <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Sector</span>
-                                  <div className="flex flex-wrap gap-1">
-                                    {listing.sectors.map((sector) => (
-                                      <span key={sector} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">{sector}</span>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                              {listing.partnerSearchDeadline && (
-                                <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Deadline</span>
-                                  <span className="text-[9px] font-extrabold bg-orange-50 text-orange-600 border border-orange-100 px-2.5 py-1 rounded-full">
-                                    {formatDate(listing.partnerSearchDeadline)}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-
-                            {listing.thematicAreas && listing.thematicAreas.length > 0 && (
-                              <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-1.5">
-                                {listing.thematicAreas.slice(0, 2).map((area) => (
-                                  <span key={area} className="text-[9.5px] font-bold text-brand-primary/80 bg-blue-50/40 px-2 py-0.5 rounded-full">
-                                    #{area}
-                                  </span>
-                                ))}
-                                {listing.thematicAreas.length > 2 && (
-                                  <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">
-                                    +{listing.thematicAreas.length - 2}
-                                  </span>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-              )}
-            </div>
+            <FavouritesSection
+              listings={listings}
+              favouriteIds={favouriteIds}
+              currentUserUid={currentUserUid ?? null}
+              currentUserProfile={organisationProfile ?? null}
+              sentListingIds={dashSentListingIds}
+              onSelectListing={onSelectListing}
+              onToggleFavourite={handleDashToggleFavourite}
+              onInterestSent={handleDashInterestSent}
+            />
           ) : activeSection === 'settings' ? (
             <SettingsPanel
               currentUserUid={currentUserUid || ''}
