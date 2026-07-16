@@ -111,6 +111,7 @@ export default function AppRouter({
           onSelectListing={onSelectListing}
           currentUserUid={currentUserUid}
           currentUserProfile={organisationProfile}
+          profiles={profiles}
         />
       );
     }
@@ -174,6 +175,7 @@ export default function AppRouter({
         onSelectListing={onSelectListing}
         currentUserUid={currentUserUid}
         currentUserProfile={organisationProfile}
+        profiles={profiles}
       />
     );
   }
@@ -264,6 +266,7 @@ export default function AppRouter({
         onSelectListing={onSelectListing}
         currentUserUid={currentUserUid}
         currentUserProfile={organisationProfile}
+        profiles={profiles}
       />
     );
   }
@@ -346,6 +349,7 @@ export default function AppRouter({
       onSelectListing={onSelectListing}
       currentUserUid={currentUserUid}
       currentUserProfile={organisationProfile}
+      profiles={profiles}
     />
   );
 }

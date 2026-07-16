@@ -8,6 +8,7 @@ import { formatDate } from '../utils/formatDate';
 import { stripHtml } from '../utils/stripHtml';
 import ListingCard from './ListingCard';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
+import { ProfileWithUid } from '../hooks/useProfiles';
 import FavouriteButton from './FavouriteButton';
 import { getFavourites, getSentRequests } from '../services/firebase/firestore';
 import ExpressInterestButton from './ExpressInterestButton';
@@ -15,7 +16,7 @@ import {
   ArrowRight, 
   Users, 
   Globe2, 
-  Layers, 
+  Building2,
   BookOpen, 
   RefreshCcw,
   LayoutGrid,
@@ -29,9 +30,10 @@ interface HomeViewProps {
   onSelectListing: (id: string) => void;
   currentUserUid?: string | null;
   currentUserProfile?: OrganisationProfile | null;
+  profiles?: ProfileWithUid[];
 }
 
-export default function HomeView({ listings, onNavigate, onSelectListing, currentUserUid, currentUserProfile }: HomeViewProps) {
+export default function HomeView({ listings, onNavigate, onSelectListing, currentUserUid, currentUserProfile, profiles = [] }: HomeViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
@@ -371,11 +373,11 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
 
           <div className="bg-white p-6 rounded-[20px] shadow-sm flex items-center space-x-4 border border-blue-100/30">
             <div className="p-3 bg-purple-100 text-purple-600 rounded-xl">
-              <Layers className="w-8 h-8" />
+              <Building2 className="w-8 h-8" />
             </div>
             <div>
-              <p className="text-3xl font-black text-slate-800">3 Key Actions</p>
-              <p className="text-slate-500 text-xs font-semibold">KA1, KA2 & KA3 Supported</p>
+              <p className="text-3xl font-black text-slate-800">{profiles.length}</p>
+              <p className="text-slate-500 text-xs font-semibold">Organisations</p>
             </div>
           </div>
         </div>
