@@ -85,7 +85,7 @@ export default function MyListingsDashboardView({
   const [toast, setToast] = useState<string | null>(null);
   
   // Tab control state
-  const [activeTab, setActiveTab] = useState<'All' | 'Active' | 'Pending' | 'Expired' | 'Rejected' | 'Partnership Found'>('All');
+  const [activeTab, setActiveTab] = useState<'All' | 'Active' | 'Pending' | 'Expired' | 'Rejected' | 'Partnerships'>('All');
   
   // Search bar query state
   const [searchQuery, setSearchQuery] = useState('');
@@ -426,7 +426,7 @@ export default function MyListingsDashboardView({
     'Pending': pendingCount,
     'Expired': expiredCount,
     'Rejected': rejectedCount,
-    'Partnership Found': partnershipFoundCount
+    'Partnerships': partnershipFoundCount
   };
 
   // Perform filtering
@@ -445,7 +445,7 @@ export default function MyListingsDashboardView({
       matchesTab = statusVal === 'expired';
     } else if (activeTab === 'Rejected') {
       matchesTab = statusVal === 'rejected';
-    } else if (activeTab === 'Partnership Found') {
+    } else if (activeTab === 'Partnerships') {
       matchesTab = statusVal === 'partnership-found';
     }
 
@@ -1419,7 +1419,7 @@ export default function MyListingsDashboardView({
               
               {/* Tab options rows */}
               <div className="flex items-center space-x-1.5 overflow-x-auto scroller-hide bg-slate-50 p-1 rounded-xl">
-                {(['All', 'Active', 'Pending', 'Expired', 'Rejected', 'Partnership Found'] as const).map(tab => {
+                {(['All', 'Active', 'Pending', 'Expired', 'Rejected', 'Partnerships'] as const).map(tab => {
                   const isActive = activeTab === tab;
                   const itemCounter = tabCounts[tab];
                   return (
