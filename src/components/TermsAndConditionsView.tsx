@@ -124,6 +124,9 @@ export default function TermsAndConditionsView({ onNavigate }: TermsViewProps) {
           <p>
             You represent and warrant that you have the right to grant this licence and that your content does not infringe the intellectual property rights of any third party.
           </p>
+          <p>
+            Messages you send through our in-platform chat feature are visible only to you and the recipient organisation, and are not displayed publicly on PartnerMatch. The same standards of accuracy, legality, and conduct set out in this section and Section 7 (Prohibited Conduct) apply to messages.
+          </p>
         </Section>
 
         <Section title="7. Prohibited Conduct">
@@ -135,6 +138,7 @@ export default function TermsAndConditionsView({ onNavigate }: TermsViewProps) {
             <li>Attempt to gain unauthorised access to any part of the platform or other users' accounts.</li>
             <li>Use automated tools to scrape, harvest, or collect data from the platform without our prior written consent.</li>
             <li>Upload content that is defamatory, offensive, discriminatory, or otherwise harmful.</li>
+            <li>Use the in-platform messaging feature to send spam, harassment, or unsolicited commercial offers to other organisations.</li>
             <li>Violate any applicable laws or regulations in your use of the platform.</li>
           </ul>
           <p>
