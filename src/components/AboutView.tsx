@@ -44,42 +44,42 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
     {
       icon: Globe,
       title: "Pan-European Directory",
-      description: "Discover partner organisations from all 35+ Erasmus+ Programme Countries in one place"
+      description: "Discover partner organisations from 35+ Erasmus+ Programme Countries."
     },
     {
       icon: Filter,
       title: "Powerful Filtering",
-      description: "Filter by country, organisation type, Key Action, sector, and thematic area"
+      description: "Filter by country, organisation type, Key Action, sector, and thematic area."
     },
     {
       icon: Calendar,
       title: "Deadline Tracking",
-      description: "Every listing shows its partner search deadline so you never miss a collaboration window"
+      description: "Every listing shows its deadline so you never miss a collaboration window."
     },
     {
       icon: Sparkles,
       title: "Free — No Subscription Ever",
-      description: "Browsing the directory and listing your organisation is completely free, with no hidden fees"
+      description: "Browsing and listing your organisation is completely free, no hidden fees."
     },
     {
       icon: Heart,
       title: "Save Favourite Listings",
-      description: "Bookmark interesting partner calls to your Favourites and revisit them from your dashboard"
+      description: "Bookmark partner calls to your Favourites and revisit them anytime."
     },
     {
       icon: MessageSquare,
       title: "Connect & Chat",
-      description: "Chat with your partners directly inside PartnerMatch once a request is accepted"
+      description: "Chat with partners directly inside PartnerMatch once a request is accepted."
     },
     {
       icon: Building2,
       title: "Organisation Profiles",
-      description: "Every registered organisation gets a rich public profile — sectors, thematic focus, languages, and a showcase of past Erasmus+ projects to build trust with partners"
+      description: "Every organisation gets a rich profile — sectors, topics, and past projects."
     },
     {
       icon: Shield,
       title: "Privacy Controls",
-      description: "Control what information is visible to others — email, city, and profile visibility are all configurable"
+      description: "Control what's visible to others — email, city, and profile visibility."
     }
   ];
 
