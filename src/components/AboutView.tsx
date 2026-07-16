@@ -74,7 +74,7 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
     {
       icon: Building2,
       title: "Organisation Profiles",
-      description: "Every registered organisation gets a public profile page with their details, sector, and active partner calls"
+      description: "Every registered organisation gets a rich public profile — sectors, thematic focus, languages, and a showcase of past Erasmus+ projects to build trust with partners"
     },
     {
       icon: Shield,
@@ -129,6 +129,11 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
       emoji: "💼",
       title: "Independent Erasmus+ Consultants",
       description: "Experienced coordinators, researchers, and project designers advising partner search consortia."
+    },
+    {
+      emoji: "📚",
+      title: "Adult Education Providers",
+      description: "Community learning centres, libraries, and organisations delivering lifelong learning and adult skills training."
     }
   ];
 
@@ -184,11 +189,11 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
 
       {/* What is PartnerMatch Section — full width */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="space-y-6">
+        <div className="space-y-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
             What is PartnerMatch?
           </h2>
-          <div className="text-slate-600 space-y-4 leading-relaxed text-sm sm:text-base font-medium">
+          <div className="text-slate-600 space-y-4 leading-relaxed text-sm sm:text-base font-medium text-center">
             <p>
               PartnerMatch is a free directory where Erasmus+ organisations — NGOs, schools, VET providers, universities, and youth organisations — can list themselves, post partner calls and find relevant and suitable partners for their Erasmus+ projects.
             </p>
