@@ -174,10 +174,6 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-indigo-50/50 py-16 sm:py-20 text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <div className="inline-flex items-center space-x-2 bg-indigo-100/60 text-brand-primary px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide">
-            <PartnerMatchLogo size={16} />
-            <span>Connecting European Education</span>
-          </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-800 leading-tight">
             About <span className="text-brand-primary">Partner</span><span className="text-brand-accent">Match</span>
           </h1>
