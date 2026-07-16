@@ -194,7 +194,7 @@ export default function ListingCard({
           )}
           <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
             <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[62px] shrink-0">Deadline</span>
-            <span className="text-[9px] font-extrabold bg-orange-50 text-orange-600 px-2 py-0.5 rounded-full">
+            <span className="text-[9px] font-extrabold bg-orange-50 text-orange-600 px-2 py-0.5 rounded">
               {formatDate(listing.partnerSearchDeadline)}
             </span>
           </div>
