@@ -242,24 +242,6 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                 </span>
               </h2>
               <div className="flex items-center space-x-4">
-                <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 gap-1">
-                  <button
-                    id="view-mode-grid-btn"
-                    onClick={() => setViewMode('grid')}
-                    className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'grid' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                    aria-label="Grid view"
-                  >
-                    <LayoutGrid className="w-4 h-4" />
-                  </button>
-                  <button
-                    id="view-mode-list-btn"
-                    onClick={() => setViewMode('list')}
-                    className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'list' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                    aria-label="List view"
-                  >
-                    <List className="w-4 h-4" />
-                  </button>
-                </div>
                 <button
                   id="clear-filters-btn"
                   onClick={handleClearFilters}
@@ -505,6 +487,24 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
           </div>
 
           <div className="flex items-center space-x-2.5 shrink-0">
+            <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 gap-1">
+              <button
+                id="view-mode-grid-btn"
+                onClick={() => setViewMode('grid')}
+                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'grid' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                aria-label="Grid view"
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+              <button
+                id="view-mode-list-btn"
+                onClick={() => setViewMode('list')}
+                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'list' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                aria-label="List view"
+              >
+                <List className="w-4 h-4" />
+              </button>
+            </div>
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Sort By:</span>
             <div className="relative min-w-[185px]">
               <select
