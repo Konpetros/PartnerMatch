@@ -69,13 +69,16 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
               <strong>Account information</strong> — when you register, we collect your name, email address, and authentication credentials (via Google Sign-In or email/password).
             </li>
             <li>
-              <strong>Organisation profile</strong> — when you set up your organisation profile, we collect your organisation name, type, country, city, website, contact email, description, logo, and other details you choose to provide.
+              <strong>Organisation profile</strong> — when you set up your organisation profile, we collect your organisation name, type, country, city, website, contact email, description, logo, sectors, thematic topics, languages spoken, experience level, and a showcase of past Erasmus+ projects (title, Erasmus+ key action, year, role, description, and link) that you choose to add.
             </li>
             <li>
               <strong>Listing data</strong> — when you submit a partner search listing, we collect the content of that listing including project description, key actions, thematic topics, sectors, and partner requirements.
             </li>
             <li>
-              <strong>Usage data</strong> — we use Google Analytics and Firebase Analytics to collect anonymised data about how users interact with the platform, including page views, session duration, and device type. This data does not identify you personally.
+              <strong>Messaging data</strong> — if you use our in-platform chat to message an accepted partner, we store the content and timestamp of those messages. Messages are only visible to the two organisations involved in that conversation, and are permanently deleted if either party deletes their account.
+            </li>
+            <li>
+              <strong>Usage data</strong> — we use Google Analytics and Firebase Analytics to collect anonymised data about how users interact with the platform, including page views, session duration, and device type. This data does not identify you personally, and is only collected if you have accepted analytics cookies via our cookie consent banner.
             </li>
             <li>
               <strong>Technical data</strong> — standard technical data such as IP address, browser type, and operating system may be collected automatically by our hosting infrastructure (Hostinger and Firebase).
@@ -128,6 +131,9 @@ export default function PrivacyPolicyView({ onNavigate }: PrivacyPolicyViewProps
             </li>
             <li>
               <strong>Hostinger and Firebase</strong> — used to host and serve the PartnerMatch web application.
+            </li>
+            <li>
+              <strong>Web3Forms</strong> — used to process submissions from our Contact Us form. When you submit the contact form, your name, email address, and message are sent to Web3Forms to deliver your message to our support inbox. Web3Forms does not use this data for any other purpose.
             </li>
           </ul>
           <p>
