@@ -297,7 +297,7 @@ export default function OrganisationsDirectoryView({
               onChange={(e) => setSelectedThematic(e.target.value)}
               className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary focus:bg-white transition-all appearance-none cursor-pointer"
             >
-              <option value="">🎯 All Thematic Topics</option>
+              <option value="">🎓 All Thematic Topics</option>
               {THEMATIC_AREAS.map((area) => (
                 <option key={area} value={area}>
                   {area}
