@@ -54,13 +54,29 @@ export default function ListingCard({
       >
         {logo}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center flex-wrap gap-x-2 gap-y-1">
-            <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-brand-primary transition-colors">
-              {listing.title || listing.name}
-            </h3>
-            <span className="bg-orange-50 text-orange-600 border border-orange-100 text-[9px] font-extrabold px-1.5 py-0.5 rounded shrink-0">
-              🗓 {formatDate(listing.partnerSearchDeadline)}
-            </span>
+          <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-brand-primary transition-colors">
+            {listing.title || listing.name}
+          </h3>
+          {listing.description && (
+            <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
+              {stripHtml(listing.description)}
+            </p>
+          )}
+          <p className="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-1.5 truncate">
+            <span>{flag}</span>
+            <span className="truncate">{listing.country}{cityPart}</span>
+          </p>
+          <div className="flex items-center flex-wrap gap-x-2 gap-y-1 mt-1.5">
+            {listing.keyActions.map((action) => (
+              <span key={action} className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 shrink-0">
+                {action}
+              </span>
+            ))}
+            {listing.sectors && listing.sectors.map((sector) => (
+              <span key={sector} className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">
+                {sector}
+              </span>
+            ))}
             {listing.projectRole && (
               <>
                 {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
@@ -75,21 +91,10 @@ export default function ListingCard({
                 )}
               </>
             )}
-            {listing.keyActions.map((action) => (
-              <span key={action} className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 shrink-0">
-                {action}
-              </span>
-            ))}
-            {listing.sectors && listing.sectors.map((sector) => (
-              <span key={sector} className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">
-                {sector}
-              </span>
-            ))}
+            <span className="bg-orange-50 text-orange-600 border border-orange-100 text-[9px] font-extrabold px-1.5 py-0.5 rounded shrink-0">
+              🗓 {formatDate(listing.partnerSearchDeadline)}
+            </span>
           </div>
-          <p className="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-1.5 truncate">
-            <span>{flag}</span>
-            <span className="truncate">{listing.country}{cityPart}</span>
-          </p>
           {listing.thematicAreas && listing.thematicAreas.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-1.5">
               {listing.thematicAreas.slice(0, 2).map((area) => (
@@ -162,6 +167,18 @@ export default function ListingCard({
               </div>
             </div>
           )}
+          {listing.sectors && listing.sectors.length > 0 && (
+            <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
+              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[62px] shrink-0">Sector</span>
+              <div className="flex flex-wrap gap-1">
+                {listing.sectors.map((sector) => (
+                  <span key={sector} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                    {sector}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
           {listing.projectRole && (
             <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[62px] shrink-0">Role</span>
@@ -172,18 +189,6 @@ export default function ListingCard({
                 {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
                   <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Partner</span>
                 )}
-              </div>
-            </div>
-          )}
-          {listing.sectors && listing.sectors.length > 0 && (
-            <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-              <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[62px] shrink-0">Sector</span>
-              <div className="flex flex-wrap gap-1">
-                {listing.sectors.map((sector) => (
-                  <span key={sector} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">
-                    {sector}
-                  </span>
-                ))}
               </div>
             </div>
           )}
