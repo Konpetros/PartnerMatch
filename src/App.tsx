@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SignInModal from './components/SignInModal';
 import AppRouter from './router/AppRouter';
+import CookieConsentBanner from './components/CookieConsentBanner';
 
 import { useAuth } from './hooks/useAuth';
 import { useListings } from './hooks/useListings';
@@ -265,6 +266,9 @@ export default function App() {
       {!['admin', 'admin-pending', 'admin-listings', 'admin-users', 'admin-announcements'].includes(currentView) && (
         <Footer onNavigate={handleNavigate} />
       )}
+
+      {/* Cookie Consent Banner */}
+      <CookieConsentBanner onNavigate={handleNavigate} />
 
       {/* Sign In Modal */}
       <SignInModal
