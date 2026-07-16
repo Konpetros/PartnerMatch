@@ -3,16 +3,20 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import { ArrowLeft, Mail, MapPin, Globe, Calendar, Languages, Building2, Hash, Award, FolderOpen, FileText, Linkedin, Facebook, Instagram, Twitter, LayoutGrid, List, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import { stripHtml, formatDate } from '../utils';
+import { getFavourites, getSentRequests } from '../services/firebase/firestore';
+import ListingCard from './ListingCard';
 
 interface BaseProps {
   onBack: () => void;
   onViewListing: (id: string) => void;
+  currentUserUid?: string | null;
+  currentUserProfile?: OrganisationProfile | null;
 }
 
 interface ModeAListingProps extends BaseProps {
@@ -30,9 +34,32 @@ interface ModeBProfileProps extends BaseProps {
 export type OrgProfileViewProps = ModeAListingProps | ModeBProfileProps;
 
 export default function OrgProfileView(props: OrgProfileViewProps) {
-  const { onBack, onViewListing } = props;
+  const { onBack, onViewListing, currentUserUid, currentUserProfile } = props;
   const [orgViewMode, setOrgViewMode] = useState<'grid' | 'list'>('grid');
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
+  const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
+  const [sentListingIds, setSentListingIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (currentUserUid) {
+      getFavourites(currentUserUid).then(setFavouriteIds);
+      getSentRequests(currentUserUid).then(requests =>
+        setSentListingIds(requests.map(r => r.listingId))
+      );
+    }
+  }, [currentUserUid]);
+
+  const handleToggleFavourite = (listingId: string) => {
+    setFavouriteIds(prev =>
+      prev.includes(listingId)
+        ? prev.filter(id => id !== listingId)
+        : [...prev, listingId]
+    );
+  };
+
+  const handleInterestSent = (listingId: string) => {
+    setSentListingIds(prev => [...prev, listingId]);
+  };
 
   // Determine active listings filter for Mode B
   const orgListings = props.listings
@@ -535,147 +562,22 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
           </div>
           {orgListings.length === 0 ? (
             <p className="text-sm text-slate-400 text-center py-4 font-medium">No active partner searches at the moment.</p>
-          ) : orgViewMode === 'grid' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {orgListings.map((listing) => {
-                const flag = listing.countryFlag || '🇪🇺';
-                return (
-                  <div
-                    key={listing.id}
-                    onClick={() => onViewListing(listing.id)}
-                    className="group bg-white rounded-[20px] border border-blue-50/50 hover:border-blue-300 hover:shadow-md card-shadow flex flex-col cursor-pointer"
-                  >
-                    <div className="p-5 flex-1 flex flex-col space-y-3.5">
-                      <div className="flex items-center gap-3">
-                        {listing.submitterProfile?.logoUrl ? (
-                          <img src={listing.submitterProfile.logoUrl} alt={listing.name} referrerPolicy="no-referrer" className="w-12 h-12 rounded-lg object-contain border border-slate-100 bg-white p-1.5 shrink-0" />
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-base shrink-0">
-                            {listing.name.charAt(0).toUpperCase()}
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{listing.name}</span>
-                          <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1 mt-0.5">
-                            <span>{flag}</span>
-                            <span className="truncate">{listing.country}{listing.submitterProfile?.city ? `, ${listing.submitterProfile.city}` : ''}</span>
-                          </span>
-                        </div>
-                      </div>
-                      {listing.title && (
-                        <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2 group-hover:text-brand-primary transition-colors">{listing.title}</h3>
-                      )}
-                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3 break-words">
-                        {stripHtml(listing.description)}
-                      </p>
-                      <div className="flex flex-col">
-                        {listing.keyActions.length > 0 && (
-                          <div className="flex items-center gap-2 py-1.5">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Key Action</span>
-                            <div className="flex flex-wrap gap-1">
-                              {listing.keyActions.map((action) => (
-                                <span key={action} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">{action}</span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        {listing.projectRole && (
-                          <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Role</span>
-                            <div className="flex flex-wrap gap-1">
-                              {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Coordinator</span>}
-                              {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Partner</span>}
-                            </div>
-                          </div>
-                        )}
-                        {listing.sectors && listing.sectors.length > 0 && (
-                          <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Sector</span>
-                            <div className="flex flex-wrap gap-1">
-                              {listing.sectors.map((sector) => (
-                                <span key={sector} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">{sector}</span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        {listing.partnerSearchDeadline && (
-                          <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Deadline</span>
-                            <span className="text-[9px] font-extrabold bg-orange-50 text-orange-600 border border-orange-100 px-2.5 py-1 rounded-full">{formatDate(listing.partnerSearchDeadline)}</span>
-                          </div>
-                        )}
-                      </div>
-                      {listing.thematicAreas && listing.thematicAreas.length > 0 && (
-                        <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-1.5">
-                          {listing.thematicAreas.slice(0, 2).map((area) => (
-                            <span key={area} className="text-[9.5px] font-bold text-brand-primary/80 bg-blue-50/40 px-2 py-0.5 rounded-full">#{area}</span>
-                          ))}
-                          {listing.thematicAreas.length > 2 && (
-                            <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">+{listing.thematicAreas.length - 2}</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
           ) : (
-            <div className="space-y-3">
-              {orgListings.map((listing) => {
-                const flag = listing.countryFlag || '🇪🇺';
-                return (
-                  <div
-                    key={listing.id}
-                    onClick={() => onViewListing(listing.id)}
-                    className="group bg-white rounded-xl border border-slate-100 hover:border-blue-200 hover:shadow-sm p-4 cursor-pointer transition-all flex items-center gap-4"
-                  >
-                    {listing.submitterProfile?.logoUrl ? (
-                      <img src={listing.submitterProfile.logoUrl} alt={listing.name} referrerPolicy="no-referrer" className="w-10 h-10 rounded-lg object-contain border border-slate-100 bg-white p-1 shrink-0" />
-                    ) : (
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
-                        {listing.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-bold text-slate-800 text-sm">{listing.title || listing.name}</p>
-                        {listing.keyActions.map((ka) => (
-                          <span key={ka} className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">{ka}</span>
-                        ))}
-                        {listing.projectRole && (listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
-                          <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-violet-100 text-violet-800">Coordinator</span>
-                        )}
-                        {listing.projectRole && (listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
-                          <span className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-violet-100 text-violet-800">Partner</span>
-                        )}
-                        {listing.sectors && listing.sectors.map((sector) => (
-                          <span key={sector} className="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">{sector}</span>
-                        ))}
-                      </div>
-                      <p className="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-1.5">
-                        <span>{flag}</span>
-                        <span>{listing.country}{listing.submitterProfile?.city ? `, ${listing.submitterProfile.city}` : ''}</span>
-                      </p>
-                      {listing.thematicAreas && listing.thematicAreas.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mt-1.5">
-                          {listing.thematicAreas.slice(0, 2).map((area) => (
-                            <span key={area} className="text-[9px] font-bold text-brand-primary/80 bg-blue-50/40 px-2 py-0.5 rounded-full">#{area}</span>
-                          ))}
-                          {listing.thematicAreas.length > 2 && (
-                            <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">+{listing.thematicAreas.length - 2} more</span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                    {listing.partnerSearchDeadline && (
-                      <span className="text-[9px] font-extrabold bg-orange-50 text-orange-600 border border-orange-100 px-2.5 py-1 rounded-full shrink-0">
-                        {formatDate(listing.partnerSearchDeadline)}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
+            <div className={orgViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 gap-4' : 'space-y-3'}>
+              {orgListings.map((listing) => (
+                <ListingCard
+                  key={listing.id}
+                  listing={listing}
+                  variant={orgViewMode}
+                  currentUserUid={currentUserUid ?? null}
+                  currentUserProfile={currentUserProfile ?? null}
+                  isFavourited={favouriteIds.includes(listing.id)}
+                  alreadySent={sentListingIds.includes(listing.id)}
+                  onSelect={onViewListing}
+                  onToggleFavourite={handleToggleFavourite}
+                  onInterestSent={handleInterestSent}
+                />
+              ))}
             </div>
           )}
         </div>

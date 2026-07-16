@@ -212,6 +212,8 @@ export default function AppRouter({
             listings={listings}
             onBack={() => onNavigate('organisations')}
             onViewListing={onViewListingFromOrg}
+            currentUserUid={currentUserUid}
+            currentUserProfile={organisationProfile}
           />
         );
       }
@@ -227,6 +229,8 @@ export default function AppRouter({
               listings={listings}
               onBack={() => onNavigate('browse')}
               onViewListing={onViewListingFromOrg}
+              currentUserUid={currentUserUid}
+              currentUserProfile={organisationProfile}
             />
           );
         }
