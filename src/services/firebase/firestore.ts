@@ -226,6 +226,15 @@ export const deleteUserData = async (userId: string): Promise<void> => {
   );
   await Promise.all(requestDeletePromises);
 
+  // Delete all chat messages this user sent or received
+  const userMessages = await getDocs(
+    query(collection(db, 'messages'), where('participants', 'array-contains', userId))
+  );
+  const messageDeletePromises = userMessages.docs.map((d) =>
+    deleteDoc(doc(db, 'messages', d.id))
+  );
+  await Promise.all(messageDeletePromises);
+
   // Delete the user's uploaded logo from Storage (no-op if none exists)
   await deleteUserLogo(userId);
 };
