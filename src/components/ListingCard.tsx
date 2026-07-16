@@ -58,8 +58,8 @@ export default function ListingCard({
             <h3 className="font-bold text-slate-800 text-sm truncate group-hover:text-brand-primary transition-colors">
               {listing.title || listing.name}
             </h3>
-            <span className="bg-slate-100 text-slate-700 text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider shrink-0">
-              {listing.type}
+            <span className="bg-orange-50 text-orange-600 border border-orange-100 text-[9px] font-extrabold px-1.5 py-0.5 rounded shrink-0">
+              🗓 {formatDate(listing.partnerSearchDeadline)}
             </span>
             {listing.projectRole && (
               <>
@@ -113,11 +113,6 @@ export default function ListingCard({
             alreadySent={alreadySent}
             onSent={onInterestSent}
           />
-        </div>
-        <div className="hidden sm:flex flex-col items-end text-right shrink-0">
-          <span className="text-orange-600 font-bold text-[11px]">
-            🗓 {formatDate(listing.partnerSearchDeadline)}
-          </span>
         </div>
         <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-brand-primary transition-colors shrink-0" />
       </div>
