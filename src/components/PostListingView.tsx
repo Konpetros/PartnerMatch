@@ -9,6 +9,7 @@ import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { COUNTRIES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import RichTextEditor from './RichTextEditor';
 import MultiSelectDropdown from './MultiSelectDropdown';
+import ListingCard from './ListingCard';
 import { stripHtml } from '../utils';
 import { 
   Mail, 
@@ -282,6 +283,25 @@ export default function PostListingView({
       </div>
     );
   }
+
+  const previewListing: Listing = {
+    id: 'preview',
+    name: profile.organisationName,
+    title: title,
+    type: profile.organisationType,
+    country: profile.country,
+    countryFlag: profile.countryFlag,
+    keyActions: selectedKeyActions,
+    thematicAreas: selectedThematics,
+    contactEmail: contactEmail,
+    description: description,
+    thumbnailUrl: profile.logoUrl || '',
+    partnerSearchDeadline: partnerSearchDeadline,
+    status: 'pending',
+    projectRole: (projectRole || undefined) as 'Coordinator' | 'Partner' | 'Both' | undefined,
+    sectors: selectedSectors,
+    submitterProfile: profile,
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
@@ -636,118 +656,18 @@ export default function PostListingView({
             💡 <span className="font-bold text-slate-800">Dynamic Card Compilation:</span> Below is a live rendering of how your partner listing card compiles in the catalog index as you type.
           </div>
 
-          <div className="bg-white rounded-[20px] overflow-hidden shadow-lg border-2 border-brand-primary max-w-sm mx-auto">
-            <div className="p-5 flex flex-col space-y-3.5">
-
-              {/* Header: logo + org name + location + type/experience */}
-              <div className="flex items-center gap-3">
-                {profile.logoUrl ? (
-                  <img
-                    src={profile.logoUrl}
-                    alt="Organisation logo"
-                    referrerPolicy="no-referrer"
-                    className="w-12 h-12 rounded-lg object-contain border border-slate-100 bg-white p-1.5 shrink-0"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-base shrink-0">
-                    {profile.organisationName.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                    {profile.organisationName}
-                  </span>
-                  <span className="text-xs font-semibold text-slate-500 flex items-center space-x-1 mt-0.5">
-                    <span>{profile.countryFlag}</span>
-                    <span className="truncate">{profile.country}{profile.city ? `, ${profile.city}` : ''}</span>
-                  </span>
-                </div>
-                <div className="flex flex-col items-end gap-1 shrink-0">
-                  <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase tracking-wide">
-                    {profile.organisationType}
-                  </span>
-                  {profile.experienceLevel && (
-                    <span className="text-[9px] font-extrabold bg-slate-100 text-slate-500 px-2 py-0.5 rounded">
-                      {profile.experienceLevel}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Title */}
-              {title ? (
-                <h3 className="font-bold text-slate-800 text-sm leading-snug line-clamp-2">
-                  {title}
-                </h3>
-              ) : (
-                <p className="text-slate-300 text-xs italic">Your partner call title will appear here...</p>
-              )}
-
-              {/* Description */}
-              <p className="text-slate-500 text-[11px] leading-relaxed line-clamp-3">
-                {stripHtml(description) || 'Provide a partner search description to preview the live rendering text of how potential European partners learn about your priorities and requirements...'}
-              </p>
-
-              {/* Labelled badge rows */}
-              <div className="flex flex-col">
-                {selectedKeyActions.length > 0 && (
-                  <div className="flex items-center gap-2 py-1.5">
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Key Action</span>
-                    <div className="flex flex-wrap gap-1">
-                      {selectedKeyActions.map((action) => (
-                        <span key={action} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">{action}</span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {projectRole && (
-                  <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Role</span>
-                    <div className="flex flex-wrap gap-1">
-                      {(projectRole === 'Coordinator' || projectRole === 'Both') && (
-                        <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Coordinator</span>
-                      )}
-                      {(projectRole === 'Partner' || projectRole === 'Both') && (
-                        <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-violet-100 text-violet-800">Partner</span>
-                      )}
-                    </div>
-                  </div>
-                )}
-                {selectedSectors.length > 0 && (
-                  <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Sector</span>
-                    <div className="flex flex-wrap gap-1">
-                      {selectedSectors.map((sector) => (
-                        <span key={sector} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">{sector}</span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {partnerSearchDeadline && (
-                  <div className="border-t border-slate-100 flex items-center gap-2 py-1.5">
-                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[68px] shrink-0">Deadline</span>
-                    <span className="text-[9px] font-extrabold bg-orange-50 text-orange-600 px-2 py-0.5 rounded-full">{partnerSearchDeadline}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Thematic tags */}
-              {selectedThematics.length > 0 && (
-                <div className="pt-2.5 border-t border-gray-100 flex flex-wrap gap-1">
-                  {selectedThematics.slice(0, 2).map((area) => (
-                    <span key={area} className="text-[9.5px] font-bold text-brand-primary/80 bg-blue-50/40 px-2 py-0.5 rounded-full">
-                      #{area.replace(' & ', '')}
-                    </span>
-                  ))}
-                  {selectedThematics.length > 2 && (
-                    <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-full">
-                      +{selectedThematics.length - 2} more
-                    </span>
-                  )}
-                </div>
-              )}
-
-            </div>
+          <div className="pointer-events-none max-w-sm mx-auto">
+            <ListingCard
+              listing={previewListing}
+              variant="grid"
+              currentUserUid={null}
+              currentUserProfile={null}
+              isFavourited={false}
+              alreadySent={false}
+              onSelect={() => {}}
+              onToggleFavourite={() => {}}
+              onInterestSent={() => {}}
+            />
           </div>
         </div>
       </div>
