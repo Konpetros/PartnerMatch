@@ -122,7 +122,7 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
 
         <Section title="3. Analytics Cookies">
           <p>
-            We plan to use Google Analytics to help us understand how visitors use PartnerMatch. This allows us to improve the platform based on real usage data. Google Analytics uses cookies to collect anonymised information about your interactions with the platform.
+            We use Google Analytics to help us understand how visitors use PartnerMatch. This allows us to improve the platform based on real usage data. Google Analytics uses cookies to collect anonymised information about your interactions with the platform, but only after you have given consent via the cookie banner described in Section 5.
           </p>
           <div className="overflow-x-auto">
             <table className="w-full text-xs border-collapse mt-2">
@@ -153,10 +153,10 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
               </tbody>
             </table>
           </div>
-          <div className="flex items-start space-x-2 p-3 bg-amber-50 border border-amber-100 rounded-xl mt-2">
-            <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-            <p className="text-xs text-amber-700 font-semibold">
-              Google Analytics has not yet been activated on PartnerMatch. When it is enabled, a cookie consent banner will appear allowing you to accept or decline analytics cookies before they are set.
+          <div className="flex items-start space-x-2 p-3 bg-emerald-50 border border-emerald-100 rounded-xl mt-2">
+            <Shield className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+            <p className="text-xs text-emerald-700 font-semibold">
+              Google Analytics uses Google's Consent Mode: it loads with analytics cookies switched off by default, and these cookies are only set after you actively choose "Accept All" in the cookie banner described in Section 5.
             </p>
           </div>
         </Section>
@@ -180,14 +180,14 @@ export default function CookiePolicyView({ onNavigate }: CookiePolicyViewProps) 
 
         <Section title="5. Cookie Consent Banner">
           <p>
-            When Google Analytics is activated on PartnerMatch, a cookie consent banner will appear at the bottom of the screen on your first visit. The banner will allow you to:
+            A cookie consent banner appears at the bottom of the screen on your first visit to PartnerMatch. The banner allows you to:
           </p>
           <ul className="list-disc pl-5 space-y-2">
-            <li><strong>Accept all cookies</strong> — enables both essential and analytics cookies.</li>
-            <li><strong>Decline optional cookies</strong> — only essential cookies will be set. Analytics will not be activated.</li>
+            <li><strong>Accept All</strong> — enables both essential and analytics cookies.</li>
+            <li><strong>Decline</strong> — only essential cookies will be set. Analytics cookies will remain switched off.</li>
           </ul>
           <p>
-            Your choice will be saved and respected on future visits. You can change your preference at any time by contacting us at <a href="mailto:support@partnermatch.eu" className="text-brand-primary font-semibold hover:underline">support@partnermatch.eu</a>.
+            Your choice is saved in your browser's local storage and respected on future visits, so the banner will not appear again unless you clear your browser's site data. To change your preference, clear your browser's cookies and local storage for partnermatch.eu, or contact us at <a href="mailto:support@partnermatch.eu" className="text-brand-primary font-semibold hover:underline">support@partnermatch.eu</a>.
           </p>
         </Section>
 
