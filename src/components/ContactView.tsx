@@ -221,6 +221,7 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
                       <option value="Technical Issue">Technical Issue</option>
                       <option value="Report a Listing">Report a Listing</option>
                       <option value="Partnership Inquiry">Partnership Inquiry</option>
+                      <option value="Suggest a Feature">Suggest a Feature</option>
                       <option value="Other">Other</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
