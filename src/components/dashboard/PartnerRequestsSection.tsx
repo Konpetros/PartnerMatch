@@ -11,7 +11,7 @@ interface PartnerRequestsSectionProps {
   currentUserUid: string | null;
   onSelectListing?: (id: string) => void;
   setActiveChatRequest: (req: PartnerRequest) => void;
-  setActiveSection: (section: string) => void;
+  setActiveSection: (section: any) => void;
   setIncomingRequests: (updater: (prev: PartnerRequest[]) => PartnerRequest[]) => void;
   setSentRequests: (updater: (prev: PartnerRequest[]) => PartnerRequest[]) => void;
   showToast: (message: string) => void;
