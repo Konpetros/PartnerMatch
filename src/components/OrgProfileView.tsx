@@ -158,7 +158,7 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
             ? 'bg-emerald-500 border-emerald-600 text-white' 
             : 'bg-slate-500 border-slate-600 text-white'
         } shadow-xs`}>
-          {hasActive ? 'Seeking Partners' : 'Member Organisation'}
+          {hasActive ? 'Open Partner Calls' : 'Member Organisation'}
         </span>
       );
     }
