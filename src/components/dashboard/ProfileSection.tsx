@@ -53,6 +53,7 @@ export default function ProfileSection({ organisationProfile, onUpdateProfile, s
     if (!profileContactEmail.trim() || !profileContactEmail.includes('@')) errors.push('A valid Contact Email is required.');
     if (profileLanguages.length === 0) errors.push('Please select at least one language.');
     if (profileSectors.length === 0) errors.push('Please select at least one Erasmus+ sector.');
+    if (profileThematicAreas.length === 0) errors.push('Please select at least one thematic topic.');
     if (!profileDescription.trim() || profileDescription.replace(/<[^>]*>/g, '').trim() === '') errors.push('Please add a description of your organisation.');
     if (errors.length > 0) { setProfileFormErrors(errors); return; }
     setProfileFormErrors([]);
@@ -220,6 +221,7 @@ export default function ProfileSection({ organisationProfile, onUpdateProfile, s
               selected={profileThematicAreas}
               onChange={setProfileThematicAreas}
               maxSelections={3}
+              required
             />
 
             <MultiSelectDropdown
