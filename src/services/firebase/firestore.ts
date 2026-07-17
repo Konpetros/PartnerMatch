@@ -245,6 +245,8 @@ export const saveUserSettings = async (userId: string, settings: {
   showEmailOnProfile?: boolean;
   showLocationOnProfile?: boolean;
   profilePublic?: boolean;
+  defaultViewMode?: 'grid' | 'list';
+  defaultSortBy?: 'newest' | 'deadline' | 'views';
 }): Promise<void> => {
   await setDoc(doc(db, 'users', userId), { settings }, { merge: true });
 };
@@ -254,6 +256,8 @@ export const getUserSettings = async (userId: string): Promise<{
   showEmailOnProfile: boolean;
   showLocationOnProfile: boolean;
   profilePublic: boolean;
+  defaultViewMode: 'grid' | 'list';
+  defaultSortBy: 'newest' | 'deadline' | 'views';
 }> => {
   const snap = await getDoc(doc(db, 'users', userId));
   if (!snap.exists()) return {
@@ -261,6 +265,8 @@ export const getUserSettings = async (userId: string): Promise<{
     showEmailOnProfile: true,
     showLocationOnProfile: true,
     profilePublic: true,
+    defaultViewMode: 'grid',
+    defaultSortBy: 'newest',
   };
   const settings = snap.data()?.settings || {};
   return {
@@ -268,6 +274,8 @@ export const getUserSettings = async (userId: string): Promise<{
     showEmailOnProfile: settings.showEmailOnProfile ?? true,
     showLocationOnProfile: settings.showLocationOnProfile ?? true,
     profilePublic: settings.profilePublic ?? true,
+    defaultViewMode: settings.defaultViewMode ?? 'grid',
+    defaultSortBy: settings.defaultSortBy ?? 'newest',
   };
 };
 
