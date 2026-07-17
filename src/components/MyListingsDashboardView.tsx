@@ -22,7 +22,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { Listing, OrganisationProfile } from '../types';
-import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, markConversationRead } from '../services/firebase/firestore';
+import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, markConversationRead, archiveConversation, unarchiveConversation } from '../services/firebase/firestore';
 import { PartnerRequest } from '../types/partnerRequest';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import { resendVerificationEmail } from '../services/firebase/auth';
@@ -87,10 +87,36 @@ export default function MyListingsDashboardView({
   const [requestsLoading, setRequestsLoading] = useState(false);
   const [activeChatRequest, setActiveChatRequest] = useState<PartnerRequest | null>(null);
 
-  const conversations = [...incomingRequests, ...sentRequests]
+  const acceptedConversations = [...incomingRequests, ...sentRequests]
     .filter(r => r.status === 'accepted')
     .filter((r, idx, arr) => arr.findIndex(x => x.id === r.id) === idx)
     .sort((a, b) => (b.lastMessageAt || b.createdAt).localeCompare(a.lastMessageAt || a.createdAt));
+
+  const conversations = acceptedConversations.filter(
+    r => !(r.archivedBy || []).includes(currentUserUid || '')
+  );
+
+  const archivedConversations = acceptedConversations.filter(
+    r => (r.archivedBy || []).includes(currentUserUid || '')
+  );
+
+  const handleArchiveToggle = (requestId: string) => {
+    if (!currentUserUid) return;
+    const isArchived = archivedConversations.some(r => r.id === requestId);
+    const action = isArchived ? unarchiveConversation : archiveConversation;
+    action(requestId, currentUserUid).catch(() => showToast('Failed to update archive status.'));
+    const patch = (list: PartnerRequest[]) =>
+      list.map(r => {
+        if (r.id !== requestId) return r;
+        const current = r.archivedBy || [];
+        return {
+          ...r,
+          archivedBy: isArchived ? current.filter(id => id !== currentUserUid) : [...current, currentUserUid],
+        };
+      });
+    setIncomingRequests(prev => patch(prev));
+    setSentRequests(prev => patch(prev));
+  };
 
   const isConversationUnread = (req: PartnerRequest): boolean => {
     if (!req.lastMessageAt || !currentUserUid) return false;
