@@ -156,11 +156,15 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
     },
     {
       question: "How long does my listing stay active?",
-      answer: "Until the partner search deadline you set when submitting. After that date your listing expires automatically. You can also manually mark a listing as 'Partnership Found' from your dashboard once you have found a suitable partner."
+      answer: "Until the partner search deadline you set when submitting. After that date your listing expires automatically. You can also manually mark a listing as 'Partnership Found' from your dashboard once you've found a partner — this removes it from public view and keeps it as a private record in your dashboard."
     },
     {
       question: "Can I submit more than one listing?",
-      answer: "Yes. If your organisation is looking for partners across multiple projects or Key Actions, you can submit a separate listing for each one."
+      answer: "Yes. If your organisation is looking for partners across multiple projects or Key Actions, you can submit a separate listing for each one, up to a limit of 10 active or pending listings at a time."
+    },
+    {
+      question: "Can I edit or delete my listing after submitting?",
+      answer: "Yes. You can edit your listing's details at any time from your dashboard — updates go back through a quick review before they're visible publicly again. You can also delete a listing entirely if you no longer need it."
     },
     {
       question: "How do I contact an organisation I found on PartnerMatch?",
