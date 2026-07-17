@@ -515,9 +515,9 @@ export default function OrganisationsDirectoryView({
                       </div>
                     )}
 
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                    <div className="flex items-center pt-2 border-t border-slate-100">
                       {renderStatusBadge(getOrgStatus(org.uid))}
-                      <span className="text-xs font-bold text-brand-primary group-hover:underline">
+                      <span className="text-xs font-bold text-brand-primary group-hover:underline ml-auto">
                         View Profile →
                       </span>
                     </div>
