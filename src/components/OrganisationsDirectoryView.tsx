@@ -6,17 +6,20 @@
 import React, { useState, useEffect } from 'react';
 import { OrganisationType } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
+import { Listing } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import { MapPin, Inbox, Search } from 'lucide-react';
 
 interface OrganisationsViewProps {
   listings: ProfileWithUid[];
+  partnerListings: Listing[];
   onSelectOrganisation: (id: string) => void;
   onNavigate: (view: string) => void;
 }
 
 export default function OrganisationsDirectoryView({
   listings,
+  partnerListings,
   onSelectOrganisation,
   onNavigate,
 }: OrganisationsViewProps) {
@@ -100,14 +103,13 @@ export default function OrganisationsDirectoryView({
 
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-  // Status Badge Builder Helper
-  const renderStatusBadge = (status?: string) => {
-    const activeStatus = status || 'active';
-    switch (activeStatus) {
+  // Status Badge Builder Helper — returns null (no badge) if the org has no relevant listing status
+  const renderStatusBadge = (status: string | null) => {
+    switch (status) {
       case 'active':
         return (
           <span className="bg-emerald-500 text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-sm">
-            Seeking Partner
+            Open Partner Calls
           </span>
         );
       case 'partnership-found':
@@ -129,12 +131,16 @@ export default function OrganisationsDirectoryView({
           </span>
         );
       default:
-        return (
-          <span className="bg-emerald-500 text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-sm">
-            Seeking Partner
-          </span>
-        );
+        return null;
     }
+  };
+
+  // Determine an organisation's real status based on their actual listings
+  const getOrgStatus = (orgUid: string): string | null => {
+    const orgListings = (partnerListings || []).filter((l) => (l as any).submittedBy === orgUid);
+    if (orgListings.some((l) => l.status === 'active')) return 'active';
+    if (orgListings.some((l) => l.status === 'partnership-found')) return 'partnership-found';
+    return null;
   };
 
   return (
@@ -510,7 +516,7 @@ export default function OrganisationsDirectoryView({
                     )}
 
                     <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-                      {renderStatusBadge('active')}
+                      {renderStatusBadge(getOrgStatus(org.uid))}
                       <span className="text-xs font-bold text-brand-primary group-hover:underline">
                         View Profile →
                       </span>

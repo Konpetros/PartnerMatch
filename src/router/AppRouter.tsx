@@ -196,6 +196,7 @@ export default function AppRouter({
     return (
       <OrganisationsDirectoryView
         listings={profiles}
+        partnerListings={listings}
         onSelectOrganisation={onSelectOrganisation}
         onNavigate={onNavigate}
       />
