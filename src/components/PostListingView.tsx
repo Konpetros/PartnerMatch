@@ -572,6 +572,7 @@ export default function PostListingView({
               selected={selectedThematics}
               onChange={setSelectedThematics}
               required
+              maxSelections={3}
             />
           </div>
 
