@@ -333,52 +333,6 @@ export default function PostListingView({
             </div>
           )}
 
-          {/* Section 1 — Organisation Preview (read-only, locked) */}
-          <div className="space-y-4">
-            <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-              <Building className="w-5 h-5 text-brand-primary" />
-              <span>Submitting As</span>
-            </h2>
-
-            <div className="bg-slate-50 border border-slate-200 rounded-[16px] p-5 space-y-3">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h3 className="font-extrabold text-slate-850 text-base">{profile.organisationName}</h3>
-                  <p className="text-xs text-slate-500 font-bold mt-0.5 flex items-center space-x-1">
-                    <span>{profile.countryFlag}</span>
-                    <span>{profile.city}, {profile.country}</span>
-                  </p>
-                </div>
-                <span className="bg-brand-primary text-white text-[9.5px] font-extrabold uppercase px-2 py-0.5 rounded-md tracking-wider">
-                  {profile.organisationType}
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-2 pt-2 border-t border-slate-100 text-xs text-slate-650 font-medium">
-                <div>
-                  <span className="text-slate-400 font-bold">Sector:</span> {(profile.sectors || []).join(', ') || 'Not set'}
-                </div>
-                <div>
-                  <span className="text-slate-400 font-bold">OID:</span> {profile.oid || 'Not Provided'}
-                </div>
-                <div className="flex items-center flex-wrap gap-1.5">
-                  <span className="text-slate-400 font-bold">Experience:</span>
-                  <span>{profile.experienceLevel}</span>
-                </div>
-              </div>
-
-              <div className="pt-2 text-right">
-                <button
-                  type="button"
-                  onClick={() => onNavigate('my-profile')}
-                  className="text-xs font-bold text-brand-primary hover:underline cursor-pointer"
-                >
-                  Not correct? Update your profile
-                </button>
-              </div>
-            </div>
-          </div>
-
           {/* Section 1 — About the Project */}
           <div className="space-y-6">
             <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
