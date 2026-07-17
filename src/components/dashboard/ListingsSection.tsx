@@ -232,15 +232,23 @@ export default function ListingsSection({
                               <CheckCircle className="w-4 h-4" />
                             </button>
                           )}
-                          {statusVal === 'partnership-found' && (
-                            <button
-                              onClick={() => onUpdateListingStatus(listing.id, 'active')}
-                              className="p-2 text-slate-500 hover:text-green-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
-                              title="Mark as Active Again"
-                            >
-                              <RefreshCcw className="w-4 h-4" />
-                            </button>
-                          )}
+                          {statusVal === 'partnership-found' && (() => {
+                            const deadlinePassed = new Date(listing.partnerSearchDeadline) < new Date();
+                            return (
+                              <button
+                                onClick={() => !deadlinePassed && onUpdateListingStatus(listing.id, 'active')}
+                                disabled={deadlinePassed}
+                                className={`p-2 rounded-lg transition-colors ${
+                                  deadlinePassed
+                                    ? 'text-slate-300 cursor-not-allowed'
+                                    : 'text-slate-500 hover:text-green-600 hover:bg-slate-100 cursor-pointer'
+                                }`}
+                                title={deadlinePassed ? 'Deadline has passed — update it via Edit before reactivating' : 'Mark as Active Again'}
+                              >
+                                <RefreshCcw className="w-4 h-4" />
+                              </button>
+                            );
+                          })()}
                           {/* Edit Button */}
                           <button
                             onClick={() => onEditListing(listing.id)}
@@ -359,15 +367,24 @@ export default function ListingsSection({
                           <span>Found</span>
                         </button>
                       )}
-                      {statusVal === 'partnership-found' && (
-                        <button
-                          onClick={() => onUpdateListingStatus(listing.id, 'active')}
-                          className="p-1 px-2 border border-slate-200 rounded-lg text-green-600 font-semibold text-[10px] hover:bg-green-50 flex items-center space-x-1 cursor-pointer"
-                        >
-                          <RefreshCcw className="w-3 h-3" />
-                          <span>Reactivate</span>
-                        </button>
-                      )}
+                      {statusVal === 'partnership-found' && (() => {
+                        const deadlinePassed = new Date(listing.partnerSearchDeadline) < new Date();
+                        return (
+                          <button
+                            onClick={() => !deadlinePassed && onUpdateListingStatus(listing.id, 'active')}
+                            disabled={deadlinePassed}
+                            title={deadlinePassed ? 'Deadline has passed — update it via Edit before reactivating' : undefined}
+                            className={`p-1 px-2 border rounded-lg font-semibold text-[10px] flex items-center space-x-1 ${
+                              deadlinePassed
+                                ? 'border-slate-150 text-slate-300 cursor-not-allowed'
+                                : 'border-slate-200 text-green-600 hover:bg-green-50 cursor-pointer'
+                            }`}
+                          >
+                            <RefreshCcw className="w-3 h-3" />
+                            <span>Reactivate</span>
+                          </button>
+                        );
+                      })()}
                       <button
                         onClick={() => onEditListing(listing.id)}
                         className="p-1 px-2 border border-slate-200 rounded-lg text-slate-600 font-semibold text-[10px] hover:bg-slate-100 flex items-center space-x-1 cursor-pointer"
