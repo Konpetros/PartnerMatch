@@ -120,7 +120,10 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
       // Sector match
       const matchesSector = !filters.sector || (item.submitterProfile?.sectors || []).includes(filters.sector);
 
-      return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic && matchesSector && matchesProjectRole;
+      // Status match — only genuinely active listings are shown publicly
+      const matchesStatus = item.status === 'active';
+
+      return matchesQuery && matchesCountry && matchesOrgType && matchesKeyAction && matchesThematic && matchesSector && matchesProjectRole && matchesStatus;
     });
 
     // Apply sorting

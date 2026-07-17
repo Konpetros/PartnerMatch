@@ -443,7 +443,7 @@ export default function ListingsSection({
                 Partnership Found! 🎉
               </h3>
               <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-semibold">
-                Congratulations! Would you like to keep this listing visible in your dashboard (marked as Partnership Found), or remove it entirely from PartnerMatch?
+                Congratulations! This listing will be removed from public view and kept as a private record in your dashboard's Partnerships tab. You can still find it there anytime.
               </p>
             </div>
             <div className="flex flex-col space-y-2 pt-2">
@@ -455,17 +455,7 @@ export default function ListingsSection({
                 }}
                 className="w-full px-4 py-3 bg-brand-primary hover:bg-brand-primary-hover text-white font-extrabold text-xs rounded-xl shadow-md transition-all cursor-pointer active:scale-95"
               >
-                Keep Listing (Mark as Partnership Found)
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  onDeleteListing(confirmPartnershipId);
-                  setConfirmPartnershipId(null);
-                }}
-                className="w-full px-4 py-3 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs rounded-xl transition-all cursor-pointer"
-              >
-                Remove Listing Entirely
+                Confirm
               </button>
               <button
                 type="button"
