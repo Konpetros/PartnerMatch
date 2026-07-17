@@ -265,6 +265,7 @@ export default function OrganisationsDirectoryView({
               <option value="First-timer">First-timer</option>
               <option value="Experienced">Experienced</option>
               <option value="Advanced">Advanced</option>
+              <option value="Expert Coordinator">Expert Coordinator</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-slate-400">
               <span className="text-xs">▼</span>
