@@ -16,6 +16,7 @@ export interface PartnerRequest {
   status: 'pending' | 'accepted' | 'declined';
   createdAt: string;
   hiddenBy?: string[];
+  archivedBy?: string[];
   lastMessageText?: string;
   lastMessageAt?: string;
   readStatus?: { [uid: string]: string };

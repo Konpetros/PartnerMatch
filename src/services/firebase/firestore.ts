@@ -13,6 +13,7 @@ import {
   increment,
   setDoc,
   arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore';
 import { db } from './config';
 import { Listing } from '../../types';
@@ -331,6 +332,18 @@ export const hideRequestForUser = async (
 ): Promise<void> => {
   await updateDoc(doc(db, 'partnerRequests', requestId), {
     hiddenBy: arrayUnion(userUid)
+  });
+};
+
+export const archiveConversation = async (requestId: string, userUid: string): Promise<void> => {
+  await updateDoc(doc(db, 'partnerRequests', requestId), {
+    archivedBy: arrayUnion(userUid),
+  });
+};
+
+export const unarchiveConversation = async (requestId: string, userUid: string): Promise<void> => {
+  await updateDoc(doc(db, 'partnerRequests', requestId), {
+    archivedBy: arrayRemove(userUid),
   });
 };
 
