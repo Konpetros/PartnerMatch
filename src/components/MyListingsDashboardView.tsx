@@ -15,36 +15,17 @@ import {
   User, 
   Settings, 
   LogOut, 
-  Pencil, 
-  Trash2, 
-  CheckCircle, 
-  Check,
   X,
-  AlertCircle,
   Megaphone,
-  Upload,
   Heart,
   Handshake,
-  Mail,
-  Clock,
-  CheckCheck,
-  XCircle,
-  MessageSquare,
-  Send,
-  ArrowLeft
+  MessageSquare
 } from 'lucide-react';
-import { Listing, OrganisationProfile, OrganisationType, FeaturedProject } from '../types';
-import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS, THEMATIC_AREAS } from '../data';
-import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, updateRequestStatus, hideRequestForUser, withdrawPartnerRequest, sendMessage, subscribeToMessages, markConversationRead } from '../services/firebase/firestore';
+import { Listing, OrganisationProfile } from '../types';
+import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, markConversationRead } from '../services/firebase/firestore';
 import { PartnerRequest } from '../types/partnerRequest';
-import { Message } from '../types/message';
 import { ProfileWithUid } from '../hooks/useProfiles';
-import FavouriteButton from './FavouriteButton';
 import { resendVerificationEmail } from '../services/firebase/auth';
-import { stripHtml, formatDate } from '../utils';
-import FeaturedProjectsEditor from './FeaturedProjectsEditor';
-import MultiSelectDropdown from './MultiSelectDropdown';
-import RichTextEditor from './RichTextEditor';
 import AnnouncementsSection from './dashboard/AnnouncementsSection';
 import FavouritesSection from './dashboard/FavouritesSection';
 import ProfileSection from './dashboard/ProfileSection';
