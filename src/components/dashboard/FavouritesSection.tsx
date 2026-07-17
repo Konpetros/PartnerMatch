@@ -1,4 +1,5 @@
-import { Heart } from 'lucide-react';
+import { useState } from 'react';
+import { Heart, LayoutGrid, List } from 'lucide-react';
 import { Listing } from '../../types/listing';
 import { OrganisationProfile } from '../../types/profile';
 import ListingCard from '../ListingCard';
@@ -24,15 +25,62 @@ export default function FavouritesSection({
   onToggleFavourite,
   onInterestSent,
 }: FavouritesSectionProps) {
-  const favouriteListings = listings.filter(
-    (l) => favouriteIds.includes(l.id) && (l.status === 'active' || !l.status)
-  );
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
+
+  const favouriteListings = listings
+    .filter((l) => favouriteIds.includes(l.id) && (l.status === 'active' || !l.status))
+    .sort((a, b) => {
+      if (sortBy === 'deadline') {
+        return (a.partnerSearchDeadline || '').localeCompare(b.partnerSearchDeadline || '');
+      }
+      if (sortBy === 'views') {
+        return (b.views || 0) - (a.views || 0);
+      }
+      return (b.createdAt || '').localeCompare(a.createdAt || '');
+    });
 
   return (
     <div className="space-y-4 animate-fade-in">
-      <div className="border-b border-slate-100 pb-4">
-        <h2 className="text-xl font-extrabold text-slate-800">Saved Listings</h2>
-        <p className="text-sm text-slate-500 mt-1">Partner calls you've saved for later.</p>
+      <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div>
+          <h2 className="text-xl font-extrabold text-slate-800">Saved Listings</h2>
+          <p className="text-sm text-slate-500 mt-1">Partner calls you've saved for later.</p>
+        </div>
+        {favouriteListings.length > 0 && (
+          <div className="flex items-center gap-2.5 shrink-0">
+            <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 gap-1">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'grid' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                aria-label="Grid view"
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'list' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                aria-label="List view"
+              >
+                <List className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="relative">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as 'newest' | 'deadline' | 'views')}
+                className="bg-slate-50 border border-slate-200 rounded-xl pl-3 pr-8 py-2 text-xs font-bold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
+              >
+                <option value="newest">🗓 Newest First</option>
+                <option value="deadline">⏳ Deadline Soonest</option>
+                <option value="views">🔥 Most Viewed</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                <span className="text-[10px]">▼</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       {favouriteListings.length === 0 ? (
         <div className="text-center py-16 space-y-3">
@@ -41,12 +89,12 @@ export default function FavouritesSection({
           <p className="text-xs text-slate-400">Press the heart icon on any listing to save it here.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 gap-4' : 'space-y-3'}>
           {favouriteListings.map((listing) => (
             <ListingCard
               key={listing.id}
               listing={listing}
-              variant="grid"
+              variant={viewMode}
               currentUserUid={currentUserUid}
               currentUserProfile={currentUserProfile}
               isFavourited={favouriteIds.includes(listing.id)}
