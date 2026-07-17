@@ -177,8 +177,8 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
       
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-indigo-50/50 py-16 sm:py-20 text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-800 leading-tight">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+          <h1 className="text-4xl font-black tracking-tight text-slate-900">
             About <span className="text-brand-primary">Partner</span><span className="text-brand-accent">Match</span>
           </h1>
           <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
@@ -188,8 +188,8 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
       </section>
 
       {/* What is PartnerMatch Section — full width */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="space-y-6 text-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-3xl mx-auto space-y-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
             What is PartnerMatch?
           </h2>
@@ -313,7 +313,8 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
 
       {/* Frequently Asked Questions Section */}
       <section className="bg-slate-50/50 border-t border-slate-100 py-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto space-y-8">
           <div className="text-center space-y-2">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
               Frequently Asked Questions
@@ -357,11 +358,12 @@ export default function AboutView({ onNavigate }: AboutViewProps) {
             })}
           </div>
         </div>
+        </div>
       </section>
 
       {/* Who is Behind PartnerMatch Section */}
-      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-indigo-100 rounded-[24px] p-8 sm:p-10 space-y-4">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-3xl mx-auto bg-gradient-to-br from-blue-50 to-indigo-50 border border-indigo-100 rounded-[24px] p-8 sm:p-10 space-y-4">
           <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800 tracking-tight">
             Who is Behind PartnerMatch?
           </h2>
