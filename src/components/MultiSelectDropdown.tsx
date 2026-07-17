@@ -7,9 +7,10 @@ interface MultiSelectDropdownProps {
   selected: string[];
   onChange: (selected: string[]) => void;
   required?: boolean;
+  maxSelections?: number;
 }
 
-export default function MultiSelectDropdown({ label, options, selected, onChange, required = false }: MultiSelectDropdownProps) {
+export default function MultiSelectDropdown({ label, options, selected, onChange, required = false, maxSelections }: MultiSelectDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -26,7 +27,11 @@ export default function MultiSelectDropdown({ label, options, selected, onChange
   }, []);
 
   const toggle = (option: string) => {
-    onChange(selected.includes(option) ? selected.filter((o) => o !== option) : [...selected, option]);
+    const isSelected = selected.includes(option);
+    if (!isSelected && maxSelections !== undefined && selected.length >= maxSelections) {
+      return;
+    }
+    onChange(isSelected ? selected.filter((o) => o !== option) : [...selected, option]);
   };
 
   const summary =
@@ -36,11 +41,17 @@ export default function MultiSelectDropdown({ label, options, selected, onChange
       ? selected.join(', ')
       : `${selected.length} selected`;
 
+  const labelSuffix = required
+    ? ` * (Select at least 1${maxSelections ? `, up to ${maxSelections}` : ''})`
+    : maxSelections
+    ? ` (Optional, up to ${maxSelections})`
+    : ' (Optional)';
+
   return (
     <div className="space-y-1" ref={ref}>
       <span className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
         {label}
-        {required ? ' * (Select at least 1)' : ' (Optional)'}
+        {labelSuffix}
       </span>
       <div className="relative">
         <button
@@ -55,13 +66,19 @@ export default function MultiSelectDropdown({ label, options, selected, onChange
           <div className="absolute z-20 mt-1 w-full bg-white border border-slate-200 rounded-xl shadow-lg max-h-64 overflow-y-auto p-2">
             {options.map((option) => {
               const isChecked = selected.includes(option);
+              const atCap = !isChecked && maxSelections !== undefined && selected.length >= maxSelections;
               return (
                 <button
                   key={option}
                   type="button"
+                  disabled={atCap}
                   onClick={() => toggle(option)}
-                  className={`w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold text-left transition-all cursor-pointer ${
-                    isChecked ? 'bg-blue-50 text-brand-primary' : 'text-slate-600 hover:bg-slate-50'
+                  className={`w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold text-left transition-all ${
+                    atCap
+                      ? 'opacity-40 cursor-not-allowed text-slate-400'
+                      : isChecked
+                      ? 'bg-blue-50 text-brand-primary cursor-pointer'
+                      : 'text-slate-600 hover:bg-slate-50 cursor-pointer'
                   }`}
                 >
                   <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${isChecked ? 'bg-brand-primary border-brand-primary' : 'border-slate-300'}`}>
