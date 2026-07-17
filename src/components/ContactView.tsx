@@ -104,8 +104,8 @@ export default function ContactView({ onNavigate }: ContactViewProps) {
       
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-indigo-50/50 py-16 text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
+          <h1 className="text-4xl font-black tracking-tight text-slate-900">
             Contact & Support
           </h1>
           <p className="text-base sm:text-lg text-slate-500 max-w-xl mx-auto font-medium">
