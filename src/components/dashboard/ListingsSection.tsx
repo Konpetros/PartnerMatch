@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { LogOut, PlusCircle, ClipboardList, Pencil, Trash2, AlertCircle } from 'lucide-react';
+import { LogOut, PlusCircle, ClipboardList, Pencil, Trash2, AlertCircle, CheckCircle, RefreshCcw } from 'lucide-react';
 import { Listing } from '../../types';
 import { formatDate } from '../../utils';
 
 interface ListingsSectionProps {
   listings: Listing[];
   filteredListings: Listing[];
+  onUpdateListingStatus: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected') => void;
   activeTab: 'All' | 'Active' | 'Pending' | 'Expired' | 'Rejected' | 'Partnerships';
   setActiveTab: (tab: 'All' | 'Active' | 'Pending' | 'Expired' | 'Rejected' | 'Partnerships') => void;
   tabCounts: Record<string, number>;
@@ -16,12 +17,12 @@ interface ListingsSectionProps {
   setActiveSection: (section: any) => void;
   onEditListing: (id: string) => void;
   onDeleteListing: (id: string) => void;
-  onUpdateListingStatus?: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected') => void;
 }
 
 export default function ListingsSection({
   listings,
   filteredListings,
+  onUpdateListingStatus,
   activeTab,
   setActiveTab,
   tabCounts,
@@ -32,9 +33,9 @@ export default function ListingsSection({
   setActiveSection,
   onEditListing,
   onDeleteListing,
-  onUpdateListingStatus,
 }: ListingsSectionProps) {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [confirmPartnershipId, setConfirmPartnershipId] = useState<string | null>(null);
 
   return (
     <>
@@ -222,6 +223,24 @@ export default function ListingsSection({
                       {/* Actions button col */}
                       <td className="py-4 text-right pr-2 relative">
                         <div className="inline-flex items-center space-x-2.5">
+                          {statusVal === 'active' && (
+                            <button
+                              onClick={() => setConfirmPartnershipId(listing.id)}
+                              className="p-2 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                              title="Mark as Partnership Found"
+                            >
+                              <CheckCircle className="w-4 h-4" />
+                            </button>
+                          )}
+                          {statusVal === 'partnership-found' && (
+                            <button
+                              onClick={() => onUpdateListingStatus(listing.id, 'active')}
+                              className="p-2 text-slate-500 hover:text-green-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                              title="Mark as Active Again"
+                            >
+                              <RefreshCcw className="w-4 h-4" />
+                            </button>
+                          )}
                           {/* Edit Button */}
                           <button
                             onClick={() => onEditListing(listing.id)}
@@ -331,6 +350,24 @@ export default function ListingsSection({
 
                     {/* Action buttons list in mobile context */}
                     <div className="flex items-center justify-end space-x-2 pt-2 border-t border-slate-150/40">
+                      {statusVal === 'active' && (
+                        <button
+                          onClick={() => setConfirmPartnershipId(listing.id)}
+                          className="p-1 px-2 border border-slate-200 rounded-lg text-blue-600 font-semibold text-[10px] hover:bg-blue-50 flex items-center space-x-1 cursor-pointer"
+                        >
+                          <CheckCircle className="w-3 h-3" />
+                          <span>Found</span>
+                        </button>
+                      )}
+                      {statusVal === 'partnership-found' && (
+                        <button
+                          onClick={() => onUpdateListingStatus(listing.id, 'active')}
+                          className="p-1 px-2 border border-slate-200 rounded-lg text-green-600 font-semibold text-[10px] hover:bg-green-50 flex items-center space-x-1 cursor-pointer"
+                        >
+                          <RefreshCcw className="w-3 h-3" />
+                          <span>Reactivate</span>
+                        </button>
+                      )}
                       <button
                         onClick={() => onEditListing(listing.id)}
                         className="p-1 px-2 border border-slate-200 rounded-lg text-slate-600 font-semibold text-[10px] hover:bg-slate-100 flex items-center space-x-1 cursor-pointer"
@@ -386,6 +423,54 @@ export default function ListingsSection({
                 type="button"
                 onClick={() => setConfirmDeleteId(null)}
                 className="flex-1 px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PARTNERSHIP FOUND CONFIRMATION MODAL */}
+      {confirmPartnershipId && (
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-[24px] max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-5 animate-slide-in">
+            <div className="p-3 bg-blue-50 text-blue-600 w-12 h-12 rounded-full flex items-center justify-center">
+              <CheckCircle className="w-6 h-6 text-blue-600" />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-bold text-slate-800 tracking-tight">
+                Partnership Found! 🎉
+              </h3>
+              <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-semibold">
+                Congratulations! Would you like to keep this listing visible in your dashboard (marked as Partnership Found), or remove it entirely from PartnerMatch?
+              </p>
+            </div>
+            <div className="flex flex-col space-y-2 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  onUpdateListingStatus(confirmPartnershipId, 'partnership-found');
+                  setConfirmPartnershipId(null);
+                }}
+                className="w-full px-4 py-3 bg-brand-primary hover:bg-brand-primary-hover text-white font-extrabold text-xs rounded-xl shadow-md transition-all cursor-pointer active:scale-95"
+              >
+                Keep Listing (Mark as Partnership Found)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  onDeleteListing(confirmPartnershipId);
+                  setConfirmPartnershipId(null);
+                }}
+                className="w-full px-4 py-3 bg-red-50 hover:bg-red-100 text-red-600 font-bold text-xs rounded-xl transition-all cursor-pointer"
+              >
+                Remove Listing Entirely
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmPartnershipId(null)}
+                className="w-full px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all cursor-pointer"
               >
                 Cancel
               </button>
