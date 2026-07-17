@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield } from 'lucide-react';
+import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield, LayoutGrid, List } from 'lucide-react';
 import { updateUserPassword, deleteUserAccount, isEmailPasswordUser, reauthenticateUser } from '../services/firebase/auth';
 import { deleteUserData, saveUserSettings, getUserSettings, saveProfilePrivacySettings } from '../services/firebase/firestore';
 
@@ -40,12 +40,19 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
   const [profilePublic, setProfilePublic] = useState(true);
   const [privacySaved, setPrivacySaved] = useState(false);
 
+  // Display preferences state
+  const [defaultViewMode, setDefaultViewMode] = useState<'grid' | 'list'>('grid');
+  const [defaultSortBy, setDefaultSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
+  const [prefsSaved, setPrefsSaved] = useState(false);
+
   useEffect(() => {
     getUserSettings(currentUserUid).then(settings => {
       setEmailNotifications(settings.emailNotifications);
       setShowEmailOnProfile(settings.showEmailOnProfile);
       setShowLocationOnProfile(settings.showLocationOnProfile);
       setProfilePublic(settings.profilePublic);
+      setDefaultViewMode(settings.defaultViewMode);
+      setDefaultSortBy(settings.defaultSortBy);
     });
   }, [currentUserUid]);
 
@@ -208,6 +215,65 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
             >
               <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${profilePublic ? 'translate-x-4' : 'translate-x-0.5'}`} />
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Preferences */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4 shadow-sm">
+        <div className="flex items-center space-x-2">
+          <LayoutGrid className="w-4 h-4 text-brand-primary" />
+          <h3 className="text-sm font-bold text-slate-800">Preferences</h3>
+          {prefsSaved && <span className="text-xs text-emerald-600 font-bold flex items-center space-x-1"><Check className="w-3 h-3" /><span>Saved</span></span>}
+        </div>
+        <p className="text-xs text-slate-500">Set your defaults for browsing partner listings.</p>
+        <div className="space-y-4">
+          <div>
+            <p className="text-xs font-semibold text-slate-700 mb-2">Default view</p>
+            <div className="inline-flex bg-slate-50 rounded-xl p-1 gap-1">
+              <button
+                onClick={async () => {
+                  setDefaultViewMode('grid');
+                  await saveUserSettings(currentUserUid, { defaultViewMode: 'grid' });
+                  setPrefsSaved(true);
+                  setTimeout(() => setPrefsSaved(false), 2000);
+                }}
+                className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${defaultViewMode === 'grid' ? 'bg-white shadow-sm text-brand-primary' : 'text-slate-500 hover:text-slate-700'}`}
+              >
+                <LayoutGrid className="w-3.5 h-3.5" />
+                <span>Grid</span>
+              </button>
+              <button
+                onClick={async () => {
+                  setDefaultViewMode('list');
+                  await saveUserSettings(currentUserUid, { defaultViewMode: 'list' });
+                  setPrefsSaved(true);
+                  setTimeout(() => setPrefsSaved(false), 2000);
+                }}
+                className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${defaultViewMode === 'list' ? 'bg-white shadow-sm text-brand-primary' : 'text-slate-500 hover:text-slate-700'}`}
+              >
+                <List className="w-3.5 h-3.5" />
+                <span>List</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-slate-700 mb-2">Default sort order</p>
+            <select
+              value={defaultSortBy}
+              onChange={async (e) => {
+                const val = e.target.value as 'newest' | 'deadline' | 'views';
+                setDefaultSortBy(val);
+                await saveUserSettings(currentUserUid, { defaultSortBy: val });
+                setPrefsSaved(true);
+                setTimeout(() => setPrefsSaved(false), 2000);
+              }}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all cursor-pointer"
+            >
+              <option value="newest">🗓 Newest First</option>
+              <option value="deadline">⏳ Deadline Soonest</option>
+              <option value="views">🔥 Most Viewed</option>
+            </select>
           </div>
         </div>
       </div>
