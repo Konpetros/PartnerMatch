@@ -16,6 +16,7 @@ interface ListingsSectionProps {
   setActiveSection: (section: any) => void;
   onEditListing: (id: string) => void;
   onDeleteListing: (id: string) => void;
+  onUpdateListingStatus?: (id: string, status: 'active' | 'pending' | 'expired' | 'partnership-found' | 'rejected') => void;
 }
 
 export default function ListingsSection({
@@ -31,6 +32,7 @@ export default function ListingsSection({
   setActiveSection,
   onEditListing,
   onDeleteListing,
+  onUpdateListingStatus,
 }: ListingsSectionProps) {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 

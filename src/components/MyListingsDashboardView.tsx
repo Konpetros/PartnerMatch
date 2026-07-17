@@ -574,6 +574,7 @@ export default function MyListingsDashboardView({
           ) : (
             <ListingsSection
               listings={listings}
+              onUpdateListingStatus={onUpdateListingStatus}
               filteredListings={filteredListings}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
