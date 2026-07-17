@@ -152,13 +152,10 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
       );
     } else {
       const hasActive = orgListings.length > 0;
+      if (!hasActive) return null;
       return (
-        <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wide border ${
-          hasActive 
-            ? 'bg-emerald-500 border-emerald-600 text-white' 
-            : 'bg-slate-500 border-slate-600 text-white'
-        } shadow-xs`}>
-          {hasActive ? 'Open Partner Calls' : 'Member Organisation'}
+        <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wide border bg-emerald-500 border-emerald-600 text-white shadow-xs">
+          Open Partner Calls
         </span>
       );
     }
