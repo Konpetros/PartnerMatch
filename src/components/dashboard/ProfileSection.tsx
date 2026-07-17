@@ -172,42 +172,44 @@ export default function ProfileSection({ organisationProfile, onUpdateProfile, s
             <span>Erasmus+ Profile</span>
           </h3>
 
-          <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Experience Level *</label>
-            <div className="relative">
-              <select
-                value={profileExperience}
-                onChange={(e) => {
-                  const level = e.target.value;
-                  setProfileExperience(level);
-                  const projectsMap: Record<string, string> = {
-                    'First-timer': '0',
-                    'Experienced': '1-5',
-                    'Advanced': '6-10',
-                    'Expert Coordinator': '10+',
-                  };
-                  setProfilePreviousProjects(projectsMap[level] || '0');
-                }}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
-              >
-                <option value="First-timer">First-timer (0 past projects)</option>
-                <option value="Experienced">Experienced (1–5 past projects)</option>
-                <option value="Advanced">Advanced (6–10 past projects)</option>
-                <option value="Expert Coordinator">Expert Coordinator (10+ past projects)</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                <span className="text-xs">▼</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Experience Level *</label>
+              <div className="relative">
+                <select
+                  value={profileExperience}
+                  onChange={(e) => {
+                    const level = e.target.value;
+                    setProfileExperience(level);
+                    const projectsMap: Record<string, string> = {
+                      'First-timer': '0',
+                      'Experienced': '1-5',
+                      'Advanced': '6-10',
+                      'Expert Coordinator': '10+',
+                    };
+                    setProfilePreviousProjects(projectsMap[level] || '0');
+                  }}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
+                >
+                  <option value="First-timer">First-timer (0 past projects)</option>
+                  <option value="Experienced">Experienced (1–5 past projects)</option>
+                  <option value="Advanced">Advanced (6–10 past projects)</option>
+                  <option value="Expert Coordinator">Expert Coordinator (10+ past projects)</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                  <span className="text-xs">▼</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <MultiSelectDropdown
-            label="Erasmus+ Sectors"
-            options={ERASMUS_SECTORS}
-            selected={profileSectors}
-            onChange={setProfileSectors}
-            required
-          />
+            <MultiSelectDropdown
+              label="Erasmus+ Sectors"
+              options={ERASMUS_SECTORS}
+              selected={profileSectors}
+              onChange={setProfileSectors}
+              required
+            />
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <MultiSelectDropdown
