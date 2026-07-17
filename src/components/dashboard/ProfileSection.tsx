@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Upload, Check } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { OrganisationProfile, OrganisationType, FeaturedProject } from '../../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, ERASMUS_SECTORS, THEMATIC_AREAS } from '../../data';
 import FeaturedProjectsEditor from '../FeaturedProjectsEditor';
@@ -42,10 +42,6 @@ export default function ProfileSection({ organisationProfile, onUpdateProfile, s
     const reader = new FileReader();
     reader.onloadend = () => setProfileLogoPreview(reader.result as string);
     reader.readAsDataURL(file);
-  };
-
-  const handleProfileSectorToggle = (s: string) => {
-    setProfileSectors((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
   };
 
   const handleProfileSubmit = (e: React.FormEvent) => {
@@ -176,81 +172,60 @@ export default function ProfileSection({ organisationProfile, onUpdateProfile, s
             <span>Erasmus+ Profile</span>
           </h3>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Experience Level *</label>
-              <div className="relative">
-                <select
-                  value={profileExperience}
-                  onChange={(e) => setProfileExperience(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
-                >
-                  <option value="First-timer">First-timer</option>
-                  <option value="Experienced">Experienced</option>
-                  <option value="Advanced">Advanced</option>
-                  <option value="Expert Coordinator">Expert Coordinator</option>
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                  <span className="text-xs">▼</span>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-1">
-              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Past Erasmus+ Projects</label>
+          <div className="space-y-1">
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Experience Level *</label>
+            <div className="relative">
               <select
-                value={profilePreviousProjects}
-                onChange={(e) => setProfilePreviousProjects(e.target.value)}
+                value={profileExperience}
+                onChange={(e) => {
+                  const level = e.target.value;
+                  setProfileExperience(level);
+                  const projectsMap: Record<string, string> = {
+                    'First-timer': '0',
+                    'Experienced': '1-5',
+                    'Advanced': '6-10',
+                    'Expert Coordinator': '10+',
+                  };
+                  setProfilePreviousProjects(projectsMap[level] || '0');
+                }}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
               >
-                <option value="0">0</option>
-                <option value="1-2">1–2</option>
-                <option value="3-5">3–5</option>
-                <option value="6-10">6–10</option>
-                <option value="10+">10+</option>
+                <option value="First-timer">First-timer (0 past projects)</option>
+                <option value="Experienced">Experienced (1–5 past projects)</option>
+                <option value="Advanced">Advanced (6–10 past projects)</option>
+                <option value="Expert Coordinator">Expert Coordinator (10+ past projects)</option>
               </select>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Erasmus+ Sectors * (Select at least 1)</label>
-            <div className="flex flex-wrap gap-1.5 p-3.5 border border-slate-200 bg-slate-50 rounded-xl">
-              {ERASMUS_SECTORS.map((s) => {
-                const isChecked = profileSectors.includes(s);
-                return (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => handleProfileSectorToggle(s)}
-                    className={`px-3 py-2 rounded-lg text-xs font-semibold flex items-center space-x-2 border transition-all cursor-pointer ${
-                      isChecked
-                        ? 'bg-brand-primary border-brand-primary text-white'
-                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
-                    }`}
-                  >
-                    <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 ${isChecked ? 'bg-white border-white' : 'border-slate-300'}`}>
-                      {isChecked && <Check className="w-2 h-2 text-brand-primary stroke-[3px]" />}
-                    </div>
-                    <span>{s}</span>
-                  </button>
-                );
-              })}
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                <span className="text-xs">▼</span>
+              </div>
             </div>
           </div>
 
           <MultiSelectDropdown
-            label="Thematic Topics"
-            options={THEMATIC_AREAS}
-            selected={profileThematicAreas}
-            onChange={setProfileThematicAreas}
-          />
-
-          <MultiSelectDropdown
-            label="Languages Spoken"
-            options={LANGUAGES}
-            selected={profileLanguages}
-            onChange={setProfileLanguages}
+            label="Erasmus+ Sectors"
+            options={ERASMUS_SECTORS}
+            selected={profileSectors}
+            onChange={setProfileSectors}
             required
           />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <MultiSelectDropdown
+              label="Thematic Topics"
+              options={THEMATIC_AREAS}
+              selected={profileThematicAreas}
+              onChange={setProfileThematicAreas}
+              maxSelections={3}
+            />
+
+            <MultiSelectDropdown
+              label="Languages Spoken"
+              options={LANGUAGES}
+              selected={profileLanguages}
+              onChange={setProfileLanguages}
+              required
+            />
+          </div>
         </div>
 
         {/* Section 3 — Featured Projects */}
