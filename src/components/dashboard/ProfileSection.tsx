@@ -127,16 +127,18 @@ export default function ProfileSection({ organisationProfile, onUpdateProfile, s
             </div>
           </div>
 
-          <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Name *</label>
-            <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Name *</label>
+              <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+            </div>
 
-          <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Type *</label>
-            <select value={profileType} onChange={(e) => setProfileType(e.target.value as OrganisationType)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
-              {ORGANISATION_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-            </select>
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Type *</label>
+              <select value={profileType} onChange={(e) => setProfileType(e.target.value as OrganisationType)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
+                {ORGANISATION_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
