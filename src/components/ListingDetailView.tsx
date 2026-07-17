@@ -355,12 +355,7 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
               </div>
             )}
 
-            <div className="bg-blue-50/40 rounded-xl p-4 border border-blue-100 text-xs text-slate-500 leading-relaxed space-y-2 font-medium">
-              <span className="font-bold text-brand-primary">💡 Partnership Advice</span>
-              <p>
-                When contacting potential Erasmus+ partners, remember to attach your organisation's PIF (Partner Information Form) and clearly outline the draft idea or role you expect them to fulfill inside the consortia.
-              </p>
-            </div>
+
           </div>
 
         </div>
