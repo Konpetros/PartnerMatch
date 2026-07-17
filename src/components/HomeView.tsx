@@ -10,7 +10,7 @@ import ListingCard from './ListingCard';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import FavouriteButton from './FavouriteButton';
-import { getFavourites, getSentRequests } from '../services/firebase/firestore';
+import { getFavourites, getSentRequests, getUserSettings } from '../services/firebase/firestore';
 import ExpressInterestButton from './ExpressInterestButton';
 import { 
   ArrowRight, 
@@ -36,6 +36,12 @@ interface HomeViewProps {
 export default function HomeView({ listings, onNavigate, onSelectListing, currentUserUid, currentUserProfile, profiles = [] }: HomeViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  useEffect(() => {
+    if (currentUserUid) {
+      getUserSettings(currentUserUid).then(settings => setViewMode(settings.defaultViewMode));
+    }
+  }, [currentUserUid]);
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
   const [sentListingIds, setSentListingIds] = useState<string[]>([]);
 

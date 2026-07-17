@@ -9,7 +9,7 @@ import { stripHtml } from '../utils/stripHtml';
 import ListingCard from './ListingCard';
 import { Listing, SearchFilters, KeyAction, OrganisationProfile } from '../types';
 import FavouriteButton from './FavouriteButton';
-import { getFavourites, getSentRequests } from '../services/firebase/firestore';
+import { getFavourites, getSentRequests, getUserSettings } from '../services/firebase/firestore';
 import ExpressInterestButton from './ExpressInterestButton';
 import { COUNTRIES, ORGANISATION_TYPES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import { 
@@ -47,6 +47,15 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
   const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+
+  useEffect(() => {
+    if (currentUserUid) {
+      getUserSettings(currentUserUid).then(settings => {
+        setViewMode(settings.defaultViewMode);
+        setSortBy(settings.defaultSortBy);
+      });
+    }
+  }, [currentUserUid]);
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
   const [sentListingIds, setSentListingIds] = useState<string[]>([]);
 
