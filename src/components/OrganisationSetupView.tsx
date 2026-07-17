@@ -54,12 +54,6 @@ export default function OrganisationSetupView({ onProfileComplete }: ProfileSetu
     reader.readAsDataURL(file);
   };
 
-  const handleLanguageToggle = (lang: string) => {
-    setSelectedLanguages((prev) =>
-      prev.includes(lang) ? prev.filter((x) => x !== lang) : [...prev, lang]
-    );
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const errors: string[] = [];

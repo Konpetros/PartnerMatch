@@ -91,12 +91,6 @@ export default function PostListingView({
     );
   };
 
-  const handleThematicToggle = (area: string) => {
-    setSelectedThematics((prev) => 
-      prev.includes(area) ? prev.filter((x) => x !== area) : [...prev, area]
-    );
-  };
-
   // Validation & Submit
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();

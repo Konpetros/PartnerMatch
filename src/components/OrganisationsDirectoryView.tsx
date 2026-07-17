@@ -4,7 +4,6 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { OrganisationType } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import { Listing } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
