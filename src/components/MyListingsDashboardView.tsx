@@ -472,14 +472,6 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
-              onClick={() => setActiveSection('settings')}
-              className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'settings' ? 'bg-blue-50 text-brand-primary' : 'text-slate-600 hover:bg-slate-50'}`}
-            >
-              <Settings className="w-4 h-4 shrink-0" />
-              <span>Settings</span>
-            </button>
-
-            <button
               onClick={() => setActiveSection('announcements')}
               className={`flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'announcements' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
@@ -492,6 +484,14 @@ export default function MyListingsDashboardView({
                   {visibleAnnouncements.length}
                 </span>
               )}
+            </button>
+
+            <button
+              onClick={() => setActiveSection('settings')}
+              className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'settings' ? 'bg-blue-50 text-brand-primary' : 'text-slate-600 hover:bg-slate-50'}`}
+            >
+              <Settings className="w-4 h-4 shrink-0" />
+              <span>Settings</span>
             </button>
           </nav>
 
