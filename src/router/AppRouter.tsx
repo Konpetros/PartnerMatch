@@ -288,6 +288,8 @@ export default function AppRouter({
         editingListing={editingListing}
         onNavigate={onNavigate}
         onSelectListing={onSelectListing}
+        currentUserUid={currentUserUid}
+        existingListings={listings}
       />
     );
   }

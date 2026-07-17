@@ -27,6 +27,8 @@ interface SubmitViewProps {
   editingListing?: Listing | null;
   onNavigate: (view: string) => void;
   onSelectListing: (id: string) => void;
+  currentUserUid?: string | null;
+  existingListings?: Listing[];
 }
 
 export default function PostListingView({ 
@@ -35,7 +37,9 @@ export default function PostListingView({
   onUpdateListing,
   editingListing,
   onNavigate, 
-  onSelectListing 
+  onSelectListing,
+  currentUserUid,
+  existingListings = [],
 }: SubmitViewProps) {
   // Safe fallback if profile is somehow null (e.g., initial render of preview)
   const profile = organisationProfile;
@@ -137,6 +141,15 @@ export default function PostListingView({
 
     if (!agreedToTerms) {
       errors.push('Please agree to the Terms & Conditions and Privacy Policy to submit your listing.');
+    }
+
+    if (!editingListing && currentUserUid) {
+      const activeOrPendingCount = existingListings.filter(
+        (l) => (l as any).submittedBy === currentUserUid && (l.status === 'active' || l.status === 'pending')
+      ).length;
+      if (activeOrPendingCount >= 10) {
+        errors.push('You have reached the maximum of 10 active or pending listings. Please mark an existing listing as expired or partnership found before submitting a new one.');
+      }
     }
 
     if (errors.length > 0) {
