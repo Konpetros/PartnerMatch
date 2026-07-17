@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MessageSquare, ArrowLeft, Send } from 'lucide-react';
+import { MessageSquare, ArrowLeft, Send, Archive, ArchiveRestore } from 'lucide-react';
 import { PartnerRequest } from '../../types/partnerRequest';
 import { Message } from '../../types/message';
 import { OrganisationProfile } from '../../types/profile';
@@ -7,6 +7,8 @@ import { sendMessage, subscribeToMessages } from '../../services/firebase/firest
 
 interface MessagesSectionProps {
   conversations: PartnerRequest[];
+  archivedConversations: PartnerRequest[];
+  onArchiveToggle: (id: string) => void;
   activeChatRequest: PartnerRequest | null;
   setActiveChatRequest: (req: PartnerRequest | null) => void;
   isConversationUnread: (req: PartnerRequest) => boolean;
@@ -19,6 +21,8 @@ interface MessagesSectionProps {
 
 export default function MessagesSection({
   conversations,
+  archivedConversations,
+  onArchiveToggle,
   activeChatRequest,
   setActiveChatRequest,
   isConversationUnread,
@@ -31,6 +35,9 @@ export default function MessagesSection({
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [chatSending, setChatSending] = useState(false);
+  const [showArchived, setShowArchived] = useState(false);
+
+  const displayedConversations = showArchived ? archivedConversations : conversations;
 
   useEffect(() => {
     if (activeChatRequest && currentUserUid) {
@@ -69,7 +76,7 @@ export default function MessagesSection({
       </div>
       {requestsLoading ? (
         <div className="text-center py-12 text-slate-400 text-sm font-medium">Loading conversations...</div>
-      ) : conversations.length === 0 ? (
+      ) : conversations.length === 0 && archivedConversations.length === 0 ? (
         <div className="text-center py-16 space-y-3">
           <MessageSquare className="w-10 h-10 text-slate-200 mx-auto" />
           <p className="text-sm font-semibold text-slate-400">No conversations yet</p>
@@ -80,37 +87,64 @@ export default function MessagesSection({
 
           {/* LEFT: conversation list */}
           <div className={`md:w-72 md:border-r border-slate-100 md:shrink-0 overflow-y-auto ${activeChatRequest ? 'hidden md:block' : 'block'}`}>
-            <div className="divide-y divide-slate-100">
-              {conversations.map(req => {
-                const other = getOtherParty(req);
-                const isSelected = activeChatRequest?.id === req.id;
-                return (
-                  <div
-                    key={req.id}
-                    onClick={() => setActiveChatRequest(req)}
-                    className={`flex items-center gap-3 px-4 py-3.5 cursor-pointer transition-colors ${isSelected ? 'bg-blue-50 border-l-2 border-brand-primary' : 'hover:bg-slate-50 border-l-2 border-transparent'}`}
-                  >
-                    {other.logo ? (
-                      <img src={other.logo} alt={other.name} referrerPolicy="no-referrer" className="w-10 h-10 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" />
-                    ) : (
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
-                        {other.name.charAt(0).toUpperCase()}
-                      </div>
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
-                        {isConversationUnread(req) && !isSelected && (
-                          <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
-                        )}
-                      </div>
-                      <p className="text-[11px] text-slate-400 font-medium truncate">Re: {req.listingTitle}</p>
-                      <p className={`text-xs truncate mt-0.5 ${isConversationUnread(req) && !isSelected ? 'text-slate-800 font-semibold' : 'text-slate-500'}`}>{req.lastMessageText || 'No messages yet — say hello'}</p>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="flex bg-slate-50 p-1 m-2 rounded-lg gap-1">
+              <button
+                onClick={() => setShowArchived(false)}
+                className={`flex-1 py-1.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${!showArchived ? 'bg-white shadow-sm text-brand-primary' : 'text-slate-500 hover:text-slate-700'}`}
+              >
+                Active ({conversations.length})
+              </button>
+              <button
+                onClick={() => setShowArchived(true)}
+                className={`flex-1 py-1.5 rounded-md text-[11px] font-bold transition-all cursor-pointer ${showArchived ? 'bg-white shadow-sm text-brand-primary' : 'text-slate-500 hover:text-slate-700'}`}
+              >
+                Archived ({archivedConversations.length})
+              </button>
             </div>
+            {displayedConversations.length === 0 ? (
+              <p className="text-center text-xs text-slate-400 font-medium py-8 px-4">
+                {showArchived ? 'No archived conversations.' : 'No active conversations.'}
+              </p>
+            ) : (
+              <div className="divide-y divide-slate-100">
+                {displayedConversations.map(req => {
+                  const other = getOtherParty(req);
+                  const isSelected = activeChatRequest?.id === req.id;
+                  return (
+                    <div
+                      key={req.id}
+                      onClick={() => setActiveChatRequest(req)}
+                      className={`flex items-center gap-3 px-4 py-3.5 cursor-pointer transition-colors ${isSelected ? 'bg-blue-50 border-l-2 border-brand-primary' : 'hover:bg-slate-50 border-l-2 border-transparent'}`}
+                    >
+                      {other.logo ? (
+                        <img src={other.logo} alt={other.name} referrerPolicy="no-referrer" className="w-10 h-10 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" />
+                      ) : (
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-blue-700 flex items-center justify-center text-white font-black text-sm shrink-0">
+                          {other.name.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
+                          {isConversationUnread(req) && !isSelected && (
+                            <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
+                          )}
+                        </div>
+                        <p className="text-[11px] text-slate-400 font-medium truncate">Re: {req.listingTitle}</p>
+                        <p className={`text-xs truncate mt-0.5 ${isConversationUnread(req) && !isSelected ? 'text-slate-800 font-semibold' : 'text-slate-500'}`}>{req.lastMessageText || 'No messages yet — say hello'}</p>
+                      </div>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); onArchiveToggle(req.id); }}
+                        className="p-1.5 text-slate-300 hover:text-slate-500 rounded-lg transition-colors cursor-pointer shrink-0"
+                        title={showArchived ? 'Unarchive' : 'Archive'}
+                      >
+                        {showArchived ? <ArchiveRestore className="w-3.5 h-3.5" /> : <Archive className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* RIGHT: active chat pane */}

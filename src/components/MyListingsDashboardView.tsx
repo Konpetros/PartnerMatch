@@ -521,6 +521,8 @@ export default function MyListingsDashboardView({
           {activeSection === 'messages' ? (
             <MessagesSection
               conversations={conversations}
+              archivedConversations={archivedConversations}
+              onArchiveToggle={handleArchiveToggle}
               activeChatRequest={activeChatRequest}
               setActiveChatRequest={setActiveChatRequest}
               isConversationUnread={isConversationUnread}
