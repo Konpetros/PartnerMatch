@@ -388,77 +388,6 @@ export default function PostListingView({
                 The date you need to find a partner by. Your listing will expire automatically on this date.
               </p>
             </div>
-          </div>
-
-          {/* Section 2 — Partnership Preferences */}
-          <div className="space-y-6">
-            <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
-              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">2</span>
-              <span>Partnership Preferences</span>
-            </h2>
-
-            {/* Project Role Selector */}
-            <div className="space-y-2">
-              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
-                Your Role in This Project *
-              </label>
-              <p className="text-[11px] text-slate-400 font-medium">
-                Are you looking for partners to join your project, or are you open to joining someone else's project?
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setProjectRole('Coordinator')}
-                  className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
-                    projectRole === 'Coordinator'
-                      ? 'border-brand-primary bg-blue-50/50'
-                      : 'border-slate-200 bg-white hover:border-slate-305'
-                  }`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${projectRole === 'Coordinator' ? 'bg-brand-primary border-brand-primary' : 'border-slate-300'}`}>
-                      {projectRole === 'Coordinator' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
-                    </div>
-                    <div className="font-bold text-sm text-slate-800">🎯 Coordinator</div>
-                  </div>
-                  <div className="text-[11px] text-slate-500 mt-2">I am seeking partners to join my project consortium</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setProjectRole('Partner')}
-                  className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
-                    projectRole === 'Partner'
-                      ? 'border-brand-primary bg-blue-50/50'
-                      : 'border-slate-200 bg-white hover:border-slate-305'
-                  }`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${projectRole === 'Partner' ? 'bg-brand-primary border-brand-primary' : 'border-slate-300'}`}>
-                      {projectRole === 'Partner' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
-                    </div>
-                    <div className="font-bold text-sm text-slate-800">🤝 Partner</div>
-                  </div>
-                  <div className="text-[11px] text-slate-500 mt-2">I am seeking to join a project as a partner in their consortium</div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setProjectRole('Both')}
-                  className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
-                    projectRole === 'Both'
-                      ? 'border-brand-primary bg-blue-50/50'
-                      : 'border-slate-200 bg-white hover:border-slate-305'
-                  }`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${projectRole === 'Both' ? 'bg-brand-primary border-brand-primary' : 'border-slate-300'}`}>
-                      {projectRole === 'Both' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
-                    </div>
-                    <div className="font-bold text-sm text-slate-800">🔄 Open</div>
-                  </div>
-                  <div className="text-[11px] text-slate-500 mt-2">I am open to joining a project as a partner or coordinator in their consortium</div>
-                </button>
-              </div>
-            </div>
 
             {/* Key Actions */}
             <div className="space-y-2">
@@ -535,6 +464,77 @@ export default function PostListingView({
               required
               maxSelections={3}
             />
+          </div>
+
+          {/* Section 2 — Partnership Preferences */}
+          <div className="space-y-6">
+            <h2 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
+              <span className="w-5 h-5 text-sm font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center">2</span>
+              <span>Partnership Preferences</span>
+            </h2>
+
+            {/* Project Role Selector */}
+            <div className="space-y-2">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">
+                Your Role in This Project *
+              </label>
+              <p className="text-[11px] text-slate-400 font-medium">
+                Are you looking for partners to join your project, or are you open to joining someone else's project?
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setProjectRole('Coordinator')}
+                  className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
+                    projectRole === 'Coordinator'
+                      ? 'border-brand-primary bg-blue-50/50'
+                      : 'border-slate-200 bg-white hover:border-slate-305'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${projectRole === 'Coordinator' ? 'bg-brand-primary border-brand-primary' : 'border-slate-300'}`}>
+                      {projectRole === 'Coordinator' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
+                    </div>
+                    <div className="font-bold text-sm text-slate-800">🎯 Coordinator</div>
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-2">I am seeking partners to join my project consortium</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProjectRole('Partner')}
+                  className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
+                    projectRole === 'Partner'
+                      ? 'border-brand-primary bg-blue-50/50'
+                      : 'border-slate-200 bg-white hover:border-slate-305'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${projectRole === 'Partner' ? 'bg-brand-primary border-brand-primary' : 'border-slate-300'}`}>
+                      {projectRole === 'Partner' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
+                    </div>
+                    <div className="font-bold text-sm text-slate-800">🤝 Partner</div>
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-2">I am seeking to join a project as a partner in their consortium</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProjectRole('Both')}
+                  className={`p-4 rounded-[16px] border-2 text-left transition-all cursor-pointer ${
+                    projectRole === 'Both'
+                      ? 'border-brand-primary bg-blue-50/50'
+                      : 'border-slate-200 bg-white hover:border-slate-305'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-4 h-4 rounded border-2 flex items-center justify-center shrink-0 ${projectRole === 'Both' ? 'bg-brand-primary border-brand-primary' : 'border-slate-300'}`}>
+                      {projectRole === 'Both' && <Check className="w-2.5 h-2.5 text-white stroke-[3px]" />}
+                    </div>
+                    <div className="font-bold text-sm text-slate-800">🔄 Open</div>
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-2">I am open to joining a project as a partner or coordinator in their consortium</div>
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Section 3 — Contact */}
