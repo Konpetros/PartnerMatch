@@ -98,7 +98,7 @@ export default function ProfileSection({ organisationProfile, onUpdateProfile, s
         <h2 className="text-lg font-black text-slate-800">My Organisation</h2>
         <p className="text-xs text-slate-500 mt-1">Update your organisation details visible to potential partners.</p>
       </div>
-      <form onSubmit={handleProfileSubmit} className="bg-white rounded-2xl border border-slate-100 p-6 space-y-5 shadow-sm">
+      <form onSubmit={handleProfileSubmit} className="bg-white rounded-2xl border border-slate-100 p-6 space-y-8 shadow-sm">
         {profileFormErrors.length > 0 && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs space-y-1">
             <ul className="list-disc pl-4 space-y-1">
@@ -107,203 +107,221 @@ export default function ProfileSection({ organisationProfile, onUpdateProfile, s
           </div>
         )}
 
-        {/* Logo */}
-        <div className="space-y-2">
-          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Logo <span className="text-slate-400 font-normal normal-case">(optional)</span></label>
-          <div className="flex items-center space-x-4">
-            {profileLogoPreview ? (
-              <img src={profileLogoPreview} alt="Logo" className="w-16 h-16 rounded-xl object-contain border border-slate-200 p-1" />
-            ) : (
-              <div className="w-16 h-16 rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300">
-                <Upload className="w-6 h-6" />
-              </div>
-            )}
-            <button type="button" onClick={() => profileLogoInputRef.current?.click()} className="text-xs font-bold text-brand-primary hover:underline cursor-pointer">
-              {profileLogoPreview ? 'Change Logo' : 'Upload Logo'}
-            </button>
-            <input ref={profileLogoInputRef} type="file" accept="image/*" onChange={handleProfileLogoChange} className="hidden" />
+        {/* Section 1 — Organisation Identity */}
+        <div className="space-y-5">
+          <h3 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
+            <span className="w-5 h-5 text-xs font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center shrink-0">1</span>
+            <span>Organisation Identity</span>
+          </h3>
+
+          <div className="space-y-2">
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Logo <span className="text-slate-400 font-normal normal-case">(optional)</span></label>
+            <div className="flex items-center space-x-4">
+              {profileLogoPreview ? (
+                <img src={profileLogoPreview} alt="Logo" className="w-16 h-16 rounded-xl object-contain border border-slate-200 p-1" />
+              ) : (
+                <div className="w-16 h-16 rounded-xl border-2 border-dashed border-slate-200 flex items-center justify-center text-slate-300">
+                  <Upload className="w-6 h-6" />
+                </div>
+              )}
+              <button type="button" onClick={() => profileLogoInputRef.current?.click()} className="text-xs font-bold text-brand-primary hover:underline cursor-pointer">
+                {profileLogoPreview ? 'Change Logo' : 'Upload Logo'}
+              </button>
+              <input ref={profileLogoInputRef} type="file" accept="image/*" onChange={handleProfileLogoChange} className="hidden" />
+            </div>
           </div>
-        </div>
 
-        {/* Organisation Name */}
-        <div className="space-y-1">
-          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Name *</label>
-          <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
-        </div>
-
-        {/* Organisation Type */}
-        <div className="space-y-1">
-          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Type *</label>
-          <select value={profileType} onChange={(e) => setProfileType(e.target.value as OrganisationType)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
-            {ORGANISATION_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
-        </div>
-
-        {/* Country & City */}
-        <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Country *</label>
-            <select value={profileCountry} onChange={(e) => setProfileCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
-              <option value="">Select country</option>
-              {COUNTRIES.map((c) => <option key={c.name} value={c.name}>{c.flag} {c.name}</option>)}
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Name *</label>
+            <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+          </div>
+
+          <div className="space-y-1">
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Organisation Type *</label>
+            <select value={profileType} onChange={(e) => setProfileType(e.target.value as OrganisationType)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
+              {ORGANISATION_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
-          <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">City *</label>
-            <input type="text" value={profileCity} onChange={(e) => setProfileCity(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Country *</label>
+              <select value={profileCountry} onChange={(e) => setProfileCountry(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all">
+                <option value="">Select country</option>
+                {COUNTRIES.map((c) => <option key={c.name} value={c.name}>{c.flag} {c.name}</option>)}
+              </select>
+            </div>
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">City *</label>
+              <input type="text" value={profileCity} onChange={(e) => setProfileCity(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Website</label>
+              <input type="text" value={profileWebsite} onChange={(e) => setProfileWebsite(e.target.value)} placeholder="https://" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+            </div>
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">OID</label>
+              <input type="text" value={profileOid} onChange={(e) => setProfileOid(e.target.value)} placeholder="E10012345" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
+            </div>
           </div>
         </div>
 
-        {/* Website & OID */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Website</label>
-            <input type="text" value={profileWebsite} onChange={(e) => setProfileWebsite(e.target.value)} placeholder="https://" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
-          </div>
-          <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">OID</label>
-            <input type="text" value={profileOid} onChange={(e) => setProfileOid(e.target.value)} placeholder="E10012345" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
-          </div>
-        </div>
+        {/* Section 2 — Erasmus+ Profile */}
+        <div className="space-y-5">
+          <h3 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
+            <span className="w-5 h-5 text-xs font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center shrink-0">2</span>
+            <span>Erasmus+ Profile</span>
+          </h3>
 
-        {/* Experience Level & Previous Projects */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Experience Level *</label>
-            <div className="relative">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Experience Level *</label>
+              <div className="relative">
+                <select
+                  value={profileExperience}
+                  onChange={(e) => setProfileExperience(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
+                >
+                  <option value="First-timer">First-timer</option>
+                  <option value="Experienced">Experienced</option>
+                  <option value="Advanced">Advanced</option>
+                  <option value="Expert Coordinator">Expert Coordinator</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                  <span className="text-xs">▼</span>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Past Erasmus+ Projects</label>
               <select
-                value={profileExperience}
-                onChange={(e) => setProfileExperience(e.target.value)}
+                value={profilePreviousProjects}
+                onChange={(e) => setProfilePreviousProjects(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
               >
-                <option value="First-timer">First-timer</option>
-                <option value="Experienced">Experienced</option>
-                <option value="Advanced">Advanced</option>
-                <option value="Expert Coordinator">Expert Coordinator</option>
+                <option value="0">0</option>
+                <option value="1-2">1–2</option>
+                <option value="3-5">3–5</option>
+                <option value="6-10">6–10</option>
+                <option value="10+">10+</option>
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
-                <span className="text-xs">▼</span>
-              </div>
             </div>
           </div>
+
+          <div className="space-y-2">
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Erasmus+ Sectors * (Select at least 1)</label>
+            <div className="flex flex-wrap gap-1.5 p-3.5 border border-slate-200 bg-slate-50 rounded-xl">
+              {ERASMUS_SECTORS.map((s) => {
+                const isChecked = profileSectors.includes(s);
+                return (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => handleProfileSectorToggle(s)}
+                    className={`px-3 py-2 rounded-lg text-xs font-semibold flex items-center space-x-2 border transition-all cursor-pointer ${
+                      isChecked
+                        ? 'bg-brand-primary border-brand-primary text-white'
+                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
+                    }`}
+                  >
+                    <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 ${isChecked ? 'bg-white border-white' : 'border-slate-300'}`}>
+                      {isChecked && <Check className="w-2 h-2 text-brand-primary stroke-[3px]" />}
+                    </div>
+                    <span>{s}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <MultiSelectDropdown
+            label="Thematic Topics"
+            options={THEMATIC_AREAS}
+            selected={profileThematicAreas}
+            onChange={setProfileThematicAreas}
+          />
+
+          <MultiSelectDropdown
+            label="Languages Spoken"
+            options={LANGUAGES}
+            selected={profileLanguages}
+            onChange={setProfileLanguages}
+            required
+          />
+        </div>
+
+        {/* Section 3 — Featured Projects */}
+        <div className="space-y-5">
+          <h3 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
+            <span className="w-5 h-5 text-xs font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center shrink-0">3</span>
+            <span>Featured Projects</span>
+          </h3>
+          <FeaturedProjectsEditor projects={profileFeaturedProjects} onChange={setProfileFeaturedProjects} />
+        </div>
+
+        {/* Section 4 — About & Contact */}
+        <div className="space-y-5">
+          <h3 className="text-sm font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center space-x-2">
+            <span className="w-5 h-5 text-xs font-black bg-brand-primary/10 text-brand-primary rounded-full inline-flex items-center justify-center shrink-0">4</span>
+            <span>About & Contact</span>
+          </h3>
+
           <div className="space-y-1">
-            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Past Erasmus+ Projects</label>
-            <select
-              value={profilePreviousProjects}
-              onChange={(e) => setProfilePreviousProjects(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
-            >
-              <option value="0">0</option>
-              <option value="1-2">1–2</option>
-              <option value="3-5">3–5</option>
-              <option value="6-10">6–10</option>
-              <option value="10+">10+</option>
-            </select>
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">About Your Organisation *</label>
+            <RichTextEditor value={profileDescription} onChange={setProfileDescription} placeholder="Describe your organisation, your mission, your experience, and what kind of partnerships you are looking for." />
           </div>
-        </div>
 
-        {/* Featured Projects */}
-        <FeaturedProjectsEditor projects={profileFeaturedProjects} onChange={setProfileFeaturedProjects} />
-
-        {/* Contact Email */}
-        <div className="space-y-1">
-          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Contact Email *</label>
-          <input type="email" value={profileContactEmail} onChange={(e) => setProfileContactEmail(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
-        </div>
-
-        {/* Sectors */}
-        <div className="space-y-2">
-          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Erasmus+ Sectors * (Select at least 1)</label>
-          <div className="flex flex-wrap gap-1.5 p-3.5 border border-slate-200 bg-slate-50 rounded-xl">
-            {ERASMUS_SECTORS.map((s) => {
-              const isChecked = profileSectors.includes(s);
-              return (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => handleProfileSectorToggle(s)}
-                  className={`px-3 py-2 rounded-lg text-xs font-semibold flex items-center space-x-2 border transition-all cursor-pointer ${
-                    isChecked
-                      ? 'bg-brand-primary border-brand-primary text-white'
-                      : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'
-                  }`}
-                >
-                  <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center shrink-0 ${isChecked ? 'bg-white border-white' : 'border-slate-300'}`}>
-                    {isChecked && <Check className="w-2 h-2 text-brand-primary stroke-[3px]" />}
-                  </div>
-                  <span>{s}</span>
-                </button>
-              );
-            })}
+          <div className="space-y-1">
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Contact Email *</label>
+            <input type="email" value={profileContactEmail} onChange={(e) => setProfileContactEmail(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-700 outline-none focus:border-brand-primary transition-all" />
           </div>
-        </div>
 
-        {/* Thematic Topics */}
-        <MultiSelectDropdown
-          label="Thematic Topics"
-          options={THEMATIC_AREAS}
-          selected={profileThematicAreas}
-          onChange={setProfileThematicAreas}
-        />
-
-        {/* Languages */}
-        <MultiSelectDropdown
-          label="Languages Spoken"
-          options={LANGUAGES}
-          selected={profileLanguages}
-          onChange={setProfileLanguages}
-          required
-        />
-
-        {/* Description */}
-        <div className="space-y-1">
-          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">About Your Organisation *</label>
-          <RichTextEditor value={profileDescription} onChange={setProfileDescription} placeholder="Describe your organisation, your mission, your experience, and what kind of partnerships you are looking for." />
-        </div>
-
-        {/* Social Media */}
-        <div className="space-y-3">
-          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Social Media <span className="text-slate-400 font-normal normal-case">(optional)</span></label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
-              <span className="text-xs font-bold text-blue-700 shrink-0">in</span>
-              <input
-                type="url"
-                value={profileLinkedin}
-                onChange={(e) => setProfileLinkedin(e.target.value)}
-                placeholder="https://linkedin.com/company/your-org"
-                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
-              />
-            </div>
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
-              <span className="text-xs font-bold text-blue-600 shrink-0">f</span>
-              <input
-                type="url"
-                value={profileFacebook}
-                onChange={(e) => setProfileFacebook(e.target.value)}
-                placeholder="https://facebook.com/your-org"
-                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
-              />
-            </div>
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
-              <span className="text-xs font-bold text-pink-600 shrink-0">ig</span>
-              <input
-                type="url"
-                value={profileInstagram}
-                onChange={(e) => setProfileInstagram(e.target.value)}
-                placeholder="https://instagram.com/your-org"
-                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
-              />
-            </div>
-            <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
-              <span className="text-xs font-bold text-slate-800 shrink-0">𝕏</span>
-              <input
-                type="url"
-                value={profileTwitter}
-                onChange={(e) => setProfileTwitter(e.target.value)}
-                placeholder="https://x.com/your-org"
-                className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
-              />
+          <div className="space-y-3">
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide">Social Media <span className="text-slate-400 font-normal normal-case">(optional)</span></label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+                <span className="text-xs font-bold text-blue-700 shrink-0">in</span>
+                <input
+                  type="url"
+                  value={profileLinkedin}
+                  onChange={(e) => setProfileLinkedin(e.target.value)}
+                  placeholder="https://linkedin.com/company/your-org"
+                  className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
+                />
+              </div>
+              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+                <span className="text-xs font-bold text-blue-600 shrink-0">f</span>
+                <input
+                  type="url"
+                  value={profileFacebook}
+                  onChange={(e) => setProfileFacebook(e.target.value)}
+                  placeholder="https://facebook.com/your-org"
+                  className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
+                />
+              </div>
+              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+                <span className="text-xs font-bold text-pink-600 shrink-0">ig</span>
+                <input
+                  type="url"
+                  value={profileInstagram}
+                  onChange={(e) => setProfileInstagram(e.target.value)}
+                  placeholder="https://instagram.com/your-org"
+                  className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
+                />
+              </div>
+              <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+                <span className="text-xs font-bold text-slate-800 shrink-0">𝕏</span>
+                <input
+                  type="url"
+                  value={profileTwitter}
+                  onChange={(e) => setProfileTwitter(e.target.value)}
+                  placeholder="https://x.com/your-org"
+                  className="flex-1 bg-transparent outline-none text-sm font-medium text-slate-700 placeholder:text-slate-400 min-w-0"
+                />
+              </div>
             </div>
           </div>
         </div>
