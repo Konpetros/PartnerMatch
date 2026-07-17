@@ -103,6 +103,10 @@ export default function ListingsSection({
             })}
           </div>
 
+          <p className="text-[11px] text-slate-400 font-medium mt-1.5">
+            {(tabCounts['Active'] || 0) + (tabCounts['Pending'] || 0)}/10 active + pending listings used
+          </p>
+
         </div>
 
         {/* LISTINGS DISPLAY GRID or TABLE */}
