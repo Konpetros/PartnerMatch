@@ -625,10 +625,9 @@ export default function PostListingView({
             💡 <span className="font-bold text-slate-800">Dynamic Card Compilation:</span> Below is a live rendering of how your partner listing card compiles in the catalog index as you type.
           </div>
 
-          <div className="pointer-events-none max-w-sm mx-auto">
+          <div className="pointer-events-none">
             <ListingCard
               listing={previewListing}
-              variant="grid"
               currentUserUid={null}
               currentUserProfile={null}
               isFavourited={false}
