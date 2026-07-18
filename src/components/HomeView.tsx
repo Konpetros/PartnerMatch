@@ -355,8 +355,15 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
 
 
 
-      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 border-t border-b border-indigo-100/50 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center space-y-2 mb-10">
+          <h2 className="text-3xl font-black text-slate-800">At a Glance</h2>
+          <p className="text-slate-500 max-w-none mx-auto text-sm font-semibold">
+            Real numbers from the Erasmus+ community using PartnerMatch
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-white p-6 rounded-[20px] shadow-sm flex items-center space-x-4 border border-blue-100/30">
             <div className="p-3 bg-blue-100 text-brand-primary rounded-xl">
               <Users className="w-8 h-8" />
@@ -386,6 +393,7 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
               <p className="text-slate-500 text-xs font-semibold">Organisations</p>
             </div>
           </div>
+        </div>
         </div>
       </section>
 
