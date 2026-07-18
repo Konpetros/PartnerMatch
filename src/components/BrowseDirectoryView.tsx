@@ -46,12 +46,10 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
 
   const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   useEffect(() => {
     if (currentUserUid) {
       getUserSettings(currentUserUid).then(settings => {
-        setViewMode(settings.defaultViewMode);
         setSortBy(settings.defaultSortBy);
       });
     }
@@ -499,24 +497,6 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
           </div>
 
           <div className="flex items-center space-x-2.5 shrink-0">
-            <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 gap-1">
-              <button
-                id="view-mode-grid-btn"
-                onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'grid' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                aria-label="Grid view"
-              >
-                <LayoutGrid className="w-4 h-4" />
-              </button>
-              <button
-                id="view-mode-list-btn"
-                onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'list' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                aria-label="List view"
-              >
-                <List className="w-4 h-4" />
-              </button>
-            </div>
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Sort By:</span>
             <div className="relative min-w-[185px]">
               <select
@@ -558,31 +538,11 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
         ) : (
           /* LISTING CARDS GRID */
           <>
-            {viewMode === 'list' && (
-              <div className="space-y-3">
-                {paginatedListings.map((listing) => (
-                  <ListingCard
-                    key={listing.id}
-                    listing={listing}
-                    variant="list"
-                    currentUserUid={currentUserUid ?? null}
-                    currentUserProfile={currentUserProfile ?? null}
-                    isFavourited={favouriteIds.includes(listing.id)}
-                    alreadySent={sentListingIds.includes(listing.id)}
-                    onSelect={onSelectListing}
-                    onToggleFavourite={handleToggleFavourite}
-                    onInterestSent={handleInterestSent}
-                  />
-                ))}
-              </div>
-            )}
-            {viewMode === 'grid' && (
-            <div id="listings-real-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="listings-real-grid" className="space-y-4">
               {paginatedListings.map((listing) => (
                 <ListingCard
                   key={listing.id}
                   listing={listing}
-                  variant="grid"
                   currentUserUid={currentUserUid ?? null}
                   currentUserProfile={currentUserProfile ?? null}
                   isFavourited={favouriteIds.includes(listing.id)}
@@ -593,7 +553,6 @@ export default function BrowseDirectoryView({ listings, onNavigate, onSelectList
                 />
               ))}
             </div>
-            )}
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
