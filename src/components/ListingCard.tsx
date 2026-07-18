@@ -110,7 +110,8 @@ export default function ListingCard({
             </div>
           )}
         </div>
-        <div className="flex items-center shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
+          <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid} isFavourited={isFavourited} onToggle={onToggleFavourite} />
           <ExpressInterestButton
             listing={listing}
             currentUserUid={currentUserUid}
