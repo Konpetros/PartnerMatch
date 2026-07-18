@@ -41,7 +41,6 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
   const [privacySaved, setPrivacySaved] = useState(false);
 
   // Display preferences state
-  const [defaultViewMode, setDefaultViewMode] = useState<'grid' | 'list'>('grid');
   const [defaultSortBy, setDefaultSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
   const [prefsSaved, setPrefsSaved] = useState(false);
 
@@ -51,7 +50,6 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
       setShowEmailOnProfile(settings.showEmailOnProfile);
       setShowLocationOnProfile(settings.showLocationOnProfile);
       setProfilePublic(settings.profilePublic);
-      setDefaultViewMode(settings.defaultViewMode);
       setDefaultSortBy(settings.defaultSortBy);
     });
   }, [currentUserUid]);
@@ -228,35 +226,6 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
         </div>
         <p className="text-xs text-slate-500">Set your defaults for browsing partner listings.</p>
         <div className="space-y-4">
-          <div>
-            <p className="text-xs font-semibold text-slate-700 mb-2">Default view</p>
-            <div className="inline-flex bg-slate-50 rounded-xl p-1 gap-1">
-              <button
-                onClick={async () => {
-                  setDefaultViewMode('grid');
-                  await saveUserSettings(currentUserUid, { defaultViewMode: 'grid' });
-                  setPrefsSaved(true);
-                  setTimeout(() => setPrefsSaved(false), 2000);
-                }}
-                className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${defaultViewMode === 'grid' ? 'bg-white shadow-sm text-brand-primary' : 'text-slate-500 hover:text-slate-700'}`}
-              >
-                <LayoutGrid className="w-3.5 h-3.5" />
-                <span>Grid</span>
-              </button>
-              <button
-                onClick={async () => {
-                  setDefaultViewMode('list');
-                  await saveUserSettings(currentUserUid, { defaultViewMode: 'list' });
-                  setPrefsSaved(true);
-                  setTimeout(() => setPrefsSaved(false), 2000);
-                }}
-                className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${defaultViewMode === 'list' ? 'bg-white shadow-sm text-brand-primary' : 'text-slate-500 hover:text-slate-700'}`}
-              >
-                <List className="w-3.5 h-3.5" />
-                <span>List</span>
-              </button>
-            </div>
-          </div>
           <div>
             <p className="text-xs font-semibold text-slate-700 mb-2">Default sort order</p>
             <select
