@@ -14,7 +14,6 @@ interface ListingCardProps {
   onSelect: (id: string) => void;
   onToggleFavourite: (id: string) => void;
   onInterestSent: (id: string) => void;
-  variant?: string;
 }
 
 export default function ListingCard({
