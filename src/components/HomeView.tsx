@@ -35,13 +35,7 @@ interface HomeViewProps {
 
 export default function HomeView({ listings, onNavigate, onSelectListing, currentUserUid, currentUserProfile, profiles = [] }: HomeViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
-  useEffect(() => {
-    if (currentUserUid) {
-      getUserSettings(currentUserUid).then(settings => setViewMode(settings.defaultViewMode));
-    }
-  }, [currentUserUid]);
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
   const [sentListingIds, setSentListingIds] = useState<string[]>([]);
 
@@ -286,51 +280,13 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
                 The latest Erasmus+ partner calls from organisations across Europe
               </p>
             </div>
-            <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 gap-1 shrink-0">
-              <button
-                id="home-view-mode-grid-btn"
-                onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'grid' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                aria-label="Grid view"
-              >
-                <LayoutGrid className="w-4 h-4" />
-              </button>
-              <button
-                id="home-view-mode-list-btn"
-                onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'list' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                aria-label="List view"
-              >
-                <List className="w-4 h-4" />
-              </button>
-            </div>
           </div>
 
-          {viewMode === 'list' && (
-            <div className="space-y-3">
-              {recentActiveListings.map((listing) => (
-                <ListingCard
-                  key={listing.id}
-                  listing={listing}
-                  variant="list"
-                  currentUserUid={currentUserUid ?? null}
-                  currentUserProfile={currentUserProfile ?? null}
-                  isFavourited={favouriteIds.includes(listing.id)}
-                  alreadySent={sentListingIds.includes(listing.id)}
-                  onSelect={onSelectListing}
-                  onToggleFavourite={handleToggleFavourite}
-                  onInterestSent={handleInterestSent}
-                />
-              ))}
-            </div>
-          )}
-          {viewMode === 'grid' && (
-          <div id="listings-recent-real-grid" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div id="listings-recent-real-grid" className="space-y-4">
             {recentActiveListings.map((listing) => (
               <ListingCard
                 key={listing.id}
                 listing={listing}
-                variant="grid"
                 currentUserUid={currentUserUid ?? null}
                 currentUserProfile={currentUserProfile ?? null}
                 isFavourited={favouriteIds.includes(listing.id)}
@@ -341,7 +297,6 @@ export default function HomeView({ listings, onNavigate, onSelectListing, curren
               />
             ))}
           </div>
-          )}
           <div className="flex justify-center pt-4">
             <button
               onClick={() => onNavigate('browse')}
