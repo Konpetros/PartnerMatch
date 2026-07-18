@@ -35,7 +35,6 @@ export type OrgProfileViewProps = ModeAListingProps | ModeBProfileProps;
 
 export default function OrgProfileView(props: OrgProfileViewProps) {
   const { onBack, onViewListing, currentUserUid, currentUserProfile } = props;
-  const [orgViewMode, setOrgViewMode] = useState<'grid' | 'list'>('grid');
   const [expandedProject, setExpandedProject] = useState<number | null>(null);
   const [favouriteIds, setFavouriteIds] = useState<string[]>([]);
   const [sentListingIds, setSentListingIds] = useState<string[]>([]);
@@ -537,35 +536,16 @@ export default function OrgProfileView(props: OrgProfileViewProps) {
                   {orgListings.length} active
                 </span>
               )}
-              {orgListings.length > 0 && (
-                <div className="flex items-center bg-slate-100 rounded-lg p-0.5">
-                  <button
-                    onClick={() => setOrgViewMode('grid')}
-                    className={`p-1.5 rounded-md transition-all cursor-pointer ${orgViewMode === 'grid' ? 'bg-white shadow-sm text-brand-primary' : 'text-slate-400 hover:text-slate-600'}`}
-                    title="Grid view"
-                  >
-                    <LayoutGrid className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={() => setOrgViewMode('list')}
-                    className={`p-1.5 rounded-md transition-all cursor-pointer ${orgViewMode === 'list' ? 'bg-white shadow-sm text-brand-primary' : 'text-slate-400 hover:text-slate-600'}`}
-                    title="List view"
-                  >
-                    <List className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              )}
             </div>
           </div>
           {orgListings.length === 0 ? (
             <p className="text-sm text-slate-400 text-center py-4 font-medium">No active partner searches at the moment.</p>
           ) : (
-            <div className={orgViewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 gap-4' : 'space-y-3'}>
+            <div className="space-y-4">
               {orgListings.map((listing) => (
                 <ListingCard
                   key={listing.id}
                   listing={listing}
-                  variant={orgViewMode}
                   currentUserUid={currentUserUid ?? null}
                   currentUserProfile={currentUserProfile ?? null}
                   isFavourited={favouriteIds.includes(listing.id)}
