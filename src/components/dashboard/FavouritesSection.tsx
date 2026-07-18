@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Heart, LayoutGrid, List } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { Listing } from '../../types/listing';
 import { OrganisationProfile } from '../../types/profile';
 import ListingCard from '../ListingCard';
@@ -25,7 +25,6 @@ export default function FavouritesSection({
   onToggleFavourite,
   onInterestSent,
 }: FavouritesSectionProps) {
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
 
   const favouriteListings = listings
@@ -48,36 +47,18 @@ export default function FavouritesSection({
           <p className="text-sm text-slate-500 mt-1">Partner calls you've saved for later.</p>
         </div>
         {favouriteListings.length > 0 && (
-          <div className="flex items-center gap-2.5 shrink-0">
-            <div className="inline-flex items-center bg-slate-100 rounded-lg p-1 gap-1">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'grid' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                aria-label="Grid view"
-              >
-                <LayoutGrid className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`p-1.5 rounded-md transition-colors cursor-pointer ${viewMode === 'list' ? 'bg-white text-brand-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                aria-label="List view"
-              >
-                <List className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as 'newest' | 'deadline' | 'views')}
-                className="bg-slate-50 border border-slate-200 rounded-xl pl-3 pr-8 py-2 text-xs font-bold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
-              >
-                <option value="newest">🗓 Newest First</option>
-                <option value="deadline">⏳ Deadline Soonest</option>
-                <option value="views">🔥 Most Viewed</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
-                <span className="text-[10px]">▼</span>
-              </div>
+          <div className="relative shrink-0">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as 'newest' | 'deadline' | 'views')}
+              className="bg-slate-50 border border-slate-200 rounded-xl pl-3 pr-8 py-2 text-xs font-bold text-slate-700 outline-none focus:border-brand-primary transition-all appearance-none cursor-pointer"
+            >
+              <option value="newest">🗓 Newest First</option>
+              <option value="deadline">⏳ Deadline Soonest</option>
+              <option value="views">🔥 Most Viewed</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+              <span className="text-[10px]">▼</span>
             </div>
           </div>
         )}
@@ -89,12 +70,11 @@ export default function FavouritesSection({
           <p className="text-xs text-slate-400">Press the heart icon on any listing to save it here.</p>
         </div>
       ) : (
-        <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 gap-4' : 'space-y-3'}>
+        <div className="space-y-4">
           {favouriteListings.map((listing) => (
             <ListingCard
               key={listing.id}
               listing={listing}
-              variant={viewMode}
               currentUserUid={currentUserUid}
               currentUserProfile={currentUserProfile}
               isFavourited={favouriteIds.includes(listing.id)}
