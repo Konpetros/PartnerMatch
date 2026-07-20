@@ -10,6 +10,7 @@ import {
   deleteUser as firebaseDeleteUser,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  reauthenticateWithPopup,
   sendPasswordResetEmail,
   sendEmailVerification as firebaseSendEmailVerification,
 } from 'firebase/auth';
@@ -80,6 +81,19 @@ export const reauthenticateUser = async (password: string): Promise<void> => {
   if (!user || !user.email) throw new Error('No authenticated user');
   const credential = EmailAuthProvider.credential(user.email, password);
   await reauthenticateWithCredential(user, credential);
+};
+
+export const reauthenticateCurrentUser = async (password?: string): Promise<void> => {
+  const user = auth.currentUser;
+  if (!user) throw new Error('No authenticated user');
+
+  if (password && user.email) {
+    const credential = EmailAuthProvider.credential(user.email, password);
+    await reauthenticateWithCredential(user, credential);
+  } else if (user.providerData.some((p) => p.providerId === 'google.com')) {
+    const provider = new GoogleAuthProvider();
+    await reauthenticateWithPopup(user, provider);
+  }
 };
 
 export const deleteUserAccount = async (password?: string): Promise<void> => {
