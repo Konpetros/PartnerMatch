@@ -213,14 +213,16 @@ export const deleteUserData = async (userId: string): Promise<void> => {
   await deleteDoc(doc(db, 'profiles', userId));
   // Delete user record
   await deleteDoc(doc(db, 'users', userId));
-  // Mark all user's listings as expired so they are no longer publicly visible
+  // Fully delete all of the user's listings — each one contains an embedded
+  // copy of their organisation profile, so marking it 'expired' alone is not
+  // enough to satisfy a genuine right-to-erasure request.
   const userListings = await getDocs(
     query(collection(db, 'listings'), where('submittedBy', '==', userId))
   );
-  const expirePromises = userListings.docs.map((d) =>
-    updateDoc(doc(db, 'listings', d.id), { status: 'expired' })
+  const listingDeletePromises = userListings.docs.map((d) =>
+    deleteDoc(doc(db, 'listings', d.id))
   );
-  await Promise.all(expirePromises);
+  await Promise.all(listingDeletePromises);
 
   // Delete partner requests where this user is either party (sent or received)
   const [sentRequests, receivedRequests] = await Promise.all([
