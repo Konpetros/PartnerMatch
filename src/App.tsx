@@ -16,7 +16,7 @@ import { useNavigation } from './hooks/useNavigation';
 import { useToast } from './hooks/useToast';
 import { Listing } from './types';
 import { trackPageView } from './utils/analytics';
-import { updateUserBanStatus, promoteUserToAdmin } from './services/firebase/firestore';
+import { updateUserBanStatus, promoteUserToAdmin, demoteUserFromAdmin } from './services/firebase/firestore';
 
 export default function App() {
   const { toastMessage, showToast } = useToast(5000);
@@ -187,6 +187,20 @@ export default function App() {
     }
   };
 
+  const handleDemoteFromAdmin = async (uid: string) => {
+    if (uid === currentUserUid) {
+      showToast('You cannot remove your own admin privileges.');
+      return;
+    }
+    try {
+      await demoteUserFromAdmin(uid);
+      showToast('Admin privileges removed.');
+    } catch (error) {
+      console.error('Failed to demote user:', error);
+      showToast('Failed to remove admin privileges. Please try again.');
+    }
+  };
+
   // Show full-screen loading spinner while Firebase checks auth state
   if (authLoading) {
     return (
@@ -259,6 +273,7 @@ export default function App() {
           onUnbanUser={handleUnbanUser}
           onDeleteUser={handleDeleteUser}
           onPromoteToAdmin={handlePromoteToAdmin}
+          onDemoteFromAdmin={handleDemoteFromAdmin}
         />
       </main>
 

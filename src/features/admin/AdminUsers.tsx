@@ -19,6 +19,7 @@ interface AdminUsersProps {
   onBanUser: (uid: string) => void;
   onUnbanUser: (uid: string) => void;
   onPromoteToAdmin: (uid: string) => void;
+  onDemoteFromAdmin: (uid: string) => void;
 }
 
 type TabType = 'all' | 'admins' | 'banned';
@@ -29,6 +30,7 @@ export default function AdminUsers({
   onBanUser,
   onUnbanUser,
   onPromoteToAdmin,
+  onDemoteFromAdmin,
 }: AdminUsersProps) {
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -256,22 +258,30 @@ export default function AdminUsers({
                             </button>
                           )}
 
-                          {/* Promote to Admin */}
-                          <button
-                            onClick={() => {
-                              const confirmed = window.confirm(`Elevate ${user.displayName} to Global Administrator? This grants complete site powers.`);
-                              if (confirmed) onPromoteToAdmin(user.uid);
-                            }}
-                            disabled={user.isAdmin}
-                            title={user.isAdmin ? 'Already admin' : 'Promote to Admin'}
-                            className={`p-2 rounded-xl transition-all ${
-                              user.isAdmin 
-                                ? 'bg-slate-50 text-slate-300 pointer-events-none' 
-                                : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-500 hover:text-white cursor-pointer'
-                            }`}
-                          >
-                            <Shield className="w-4 h-4" />
-                          </button>
+                          {/* Promote/Demote Admin Privileges */}
+                          {user.isAdmin ? (
+                            <button
+                              onClick={() => {
+                                const confirmed = window.confirm(`Remove admin privileges from ${user.displayName}?`);
+                                if (confirmed) onDemoteFromAdmin(user.uid);
+                              }}
+                              title="Demote from Admin"
+                              className="p-2 bg-rose-50 text-rose-600 hover:bg-rose-500 hover:text-white rounded-xl transition-all cursor-pointer"
+                            >
+                              <UserMinus className="w-4 h-4" />
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                const confirmed = window.confirm(`Elevate ${user.displayName} to Global Administrator? This grants complete site powers.`);
+                                if (confirmed) onPromoteToAdmin(user.uid);
+                              }}
+                              title="Promote to Admin"
+                              className="p-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-500 hover:text-white rounded-xl transition-all cursor-pointer"
+                            >
+                              <Shield className="w-4 h-4" />
+                            </button>
+                          )}
 
                           {/* Permanently delete user */}
                           <button

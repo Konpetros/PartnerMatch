@@ -60,6 +60,7 @@ interface AppRouterProps {
   onUnbanUser: (uid: string) => void;
   onDeleteUser: (uid: string) => void;
   onPromoteToAdmin: (uid: string) => void;
+  onDemoteFromAdmin: (uid: string) => void;
 }
 
 export default function AppRouter({
@@ -96,6 +97,7 @@ export default function AppRouter({
   onUnbanUser,
   onDeleteUser,
   onPromoteToAdmin,
+  onDemoteFromAdmin,
 }: AppRouterProps) {
 
   // Admin Views Switch Routing Guard
@@ -155,6 +157,7 @@ export default function AppRouter({
             onBanUser={onBanUser}
             onUnbanUser={onUnbanUser}
             onPromoteToAdmin={onPromoteToAdmin}
+            onDemoteFromAdmin={onDemoteFromAdmin}
           />
         )}
         {currentView === 'admin-announcements' && (
