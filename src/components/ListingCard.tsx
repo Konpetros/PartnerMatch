@@ -4,6 +4,7 @@ import { OrganisationProfile } from '../types/profile';
 import { formatDate, stripHtml } from '../utils';
 import FavouriteButton from './FavouriteButton';
 import ExpressInterestButton from './ExpressInterestButton';
+import IconBadge from './IconBadge';
 
 interface ListingCardProps {
   listing: Listing;
@@ -84,32 +85,22 @@ export default function ListingCard({
 
       <div className="flex items-center gap-2 flex-wrap border-t border-slate-100 mt-3 pt-3">
         {listing.keyActions.map((action) => (
-          <span key={action} className="text-[10px] font-bold px-2 py-1 rounded-md bg-blue-100 text-blue-800 flex items-center gap-1">
-            <Zap className="w-3 h-3" /> {action}
-          </span>
+          <IconBadge key={action} icon={Zap} color="blue">{action}</IconBadge>
         ))}
         {listing.sectors && listing.sectors.map((sector) => (
-          <span key={sector} className="text-[10px] font-bold px-2 py-1 rounded-md bg-emerald-100 text-emerald-800 flex items-center gap-1">
-            <Target className="w-3 h-3" /> {sector}
-          </span>
+          <IconBadge key={sector} icon={Target} color="emerald">{sector}</IconBadge>
         ))}
         {listing.projectRole && (
           <>
             {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
-              <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-violet-100 text-violet-800 flex items-center gap-1">
-                <Users className="w-3 h-3" /> Coordinator
-              </span>
+              <IconBadge icon={Users} color="violet">Coordinator</IconBadge>
             )}
             {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
-              <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-violet-100 text-violet-800 flex items-center gap-1">
-                <Users className="w-3 h-3" /> Partner
-              </span>
+              <IconBadge icon={Users} color="violet">Partner</IconBadge>
             )}
           </>
         )}
-        <span className="text-[10px] font-bold px-2 py-1 rounded-md bg-orange-50 text-orange-700 border border-orange-100 flex items-center gap-1">
-          <Calendar className="w-3 h-3" /> {formatDate(listing.partnerSearchDeadline)}
-        </span>
+        <IconBadge icon={Calendar} color="orange">{formatDate(listing.partnerSearchDeadline)}</IconBadge>
       </div>
 
       {listing.thematicAreas && listing.thematicAreas.length > 0 && (
