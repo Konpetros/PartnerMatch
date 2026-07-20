@@ -175,8 +175,6 @@ export default function App() {
     }
   };
 
-  const handleDeleteUser = (_uid: string) => showToast('User management is not yet implemented.');
-
   const handlePromoteToAdmin = async (uid: string) => {
     try {
       await promoteUserToAdmin(uid);
@@ -269,9 +267,8 @@ export default function App() {
           adminUsers={adminUsers}
           onApproveListing={onApproveListing}
           onRejectListing={onRejectListing}
-          onBanUser={handleBanUser}
+           onBanUser={handleBanUser}
           onUnbanUser={handleUnbanUser}
-          onDeleteUser={handleDeleteUser}
           onPromoteToAdmin={handlePromoteToAdmin}
           onDemoteFromAdmin={handleDemoteFromAdmin}
         />

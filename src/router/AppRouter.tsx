@@ -58,7 +58,6 @@ interface AppRouterProps {
   onRejectListing: (id: string, reason: string) => void;
   onBanUser: (uid: string) => void;
   onUnbanUser: (uid: string) => void;
-  onDeleteUser: (uid: string) => void;
   onPromoteToAdmin: (uid: string) => void;
   onDemoteFromAdmin: (uid: string) => void;
 }
@@ -95,7 +94,6 @@ export default function AppRouter({
   onRejectListing,
   onBanUser,
   onUnbanUser,
-  onDeleteUser,
   onPromoteToAdmin,
   onDemoteFromAdmin,
 }: AppRouterProps) {
@@ -153,7 +151,6 @@ export default function AppRouter({
         {currentView === 'admin-users' && (
           <AdminUsers
             users={adminUsers}
-            onDeleteUser={onDeleteUser}
             onBanUser={onBanUser}
             onUnbanUser={onUnbanUser}
             onPromoteToAdmin={onPromoteToAdmin}

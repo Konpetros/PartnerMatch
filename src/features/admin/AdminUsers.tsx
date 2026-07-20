@@ -4,8 +4,6 @@ import {
   Search, 
   Shield, 
   LogOut, 
-  Trash2, 
-  AlertTriangle,
   UserCheck, 
   X,
   FileText,
@@ -15,7 +13,6 @@ import { formatDate } from '../../utils/formatDate';
 
 interface AdminUsersProps {
   users: AdminUser[];
-  onDeleteUser: (uid: string) => void;
   onBanUser: (uid: string) => void;
   onUnbanUser: (uid: string) => void;
   onPromoteToAdmin: (uid: string) => void;
@@ -26,7 +23,6 @@ type TabType = 'all' | 'admins' | 'banned';
 
 export default function AdminUsers({
   users,
-  onDeleteUser,
   onBanUser,
   onUnbanUser,
   onPromoteToAdmin,
@@ -34,7 +30,6 @@ export default function AdminUsers({
 }: AdminUsersProps) {
   const [activeTab, setActiveTab] = useState<TabType>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [deletingUser, setDeletingUser] = useState<AdminUser | null>(null);
 
   // Show generic toast since we can just use native confirm/alerts where fits or keep it dynamic
   const handleViewListings = (displayName: string) => {
@@ -63,17 +58,6 @@ export default function AdminUsers({
     }
     return true;
   });
-
-  const handleDeleteTrigger = (user: AdminUser) => {
-    setDeletingUser(user);
-  };
-
-  const handleConfirmDelete = () => {
-    if (deletingUser) {
-      onDeleteUser(deletingUser.uid);
-      setDeletingUser(null);
-    }
-  };
 
   return (
     <div className="space-y-6 pb-12">
@@ -283,14 +267,6 @@ export default function AdminUsers({
                             </button>
                           )}
 
-                          {/* Permanently delete user */}
-                          <button
-                            onClick={() => handleDeleteTrigger(user)}
-                            title="Delete Account Records"
-                            className="p-2 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all cursor-pointer"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
                         </div>
                       </td>
                     </tr>
@@ -302,43 +278,6 @@ export default function AdminUsers({
         </div>
       )}
 
-      {/* Account Deletion Confirmation Modal */}
-      {deletingUser && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-white w-full max-w-md rounded-[24px] shadow-2xl overflow-hidden border border-slate-100">
-            <div className="p-6 text-center space-y-4">
-              <div className="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto">
-                <AlertTriangle className="w-6 h-6 shrink-0 animate-bounce" />
-              </div>
-
-              <div className="space-y-1.5">
-                <h3 className="text-lg font-black text-slate-800">Prune User Account</h3>
-                <p className="text-xs font-semibold text-slate-500 leading-relaxed">
-                  You are about to delete <strong className="text-slate-800 font-bold">{deletingUser.displayName}</strong>. This will permanently delete the user and all their listings. This cannot be undone.
-                </p>
-              </div>
-
-              {/* Action buttons */}
-              <div className="flex items-center space-x-3 pt-3">
-                <button
-                  type="button"
-                  onClick={() => setDeletingUser(null)}
-                  className="flex-1 px-4 py-2.5 rounded-xl text-xs font-bold text-slate-500 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleConfirmDelete}
-                  className="flex-1 px-4 py-2.5 rounded-xl text-xs font-bold bg-red-500 text-white hover:bg-red-650 shadow-sm transition-colors cursor-pointer"
-                >
-                  Confirm Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
