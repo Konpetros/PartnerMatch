@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield, LayoutGrid } from 'lucide-react';
-import { updateUserPassword, deleteUserAccount, isEmailPasswordUser, reauthenticateUser } from '../services/firebase/auth';
+import { updateUserPassword, deleteUserAccount, isEmailPasswordUser, reauthenticateUser, reauthenticateCurrentUser } from '../services/firebase/auth';
 import { deleteUserData, saveUserSettings, getUserSettings, saveProfilePrivacySettings } from '../services/firebase/firestore';
 
 interface SettingsPanelProps {
@@ -103,10 +103,14 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
     setDeleteLoading(true);
     setDeleteError('');
     try {
-      // Step 1: Validate credentials FIRST — throws immediately if the password is wrong,
-      // before any Firestore or Storage data is touched.
+      // Step 1: Validate credentials FIRST — throws immediately if reauthentication fails,
+      // before any Firestore or Storage data is touched. Handles both email/password and
+      // Google-signed-in users, since Google users previously had no reauthentication path
+      // at all and would fail deletion with auth/requires-recent-login.
       if (isEmailUser) {
         await reauthenticateUser(deletePassword);
+      } else {
+        await reauthenticateCurrentUser();
       }
       // Step 2: Now that identity is confirmed, clean up Firestore/Storage data
       // while the user is still authenticated.
