@@ -130,6 +130,7 @@ export default function AppRouter({
           <AdminDashboard
             listings={listings}
             users={adminUsers}
+            profiles={profiles}
           />
         )}
         {currentView === 'admin-pending' && (

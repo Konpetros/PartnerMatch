@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Listing, AdminUser } from '../../types';
+import { ProfileWithUid } from '../../hooks/useProfiles';
 import {
   Users,
   FileText,
@@ -15,6 +16,7 @@ import {
 interface AdminDashboardProps {
   listings: Listing[];
   users: AdminUser[];
+  profiles: ProfileWithUid[];
 }
 
 type DashboardTab = 'listings' | 'organisations';
@@ -22,6 +24,7 @@ type DashboardTab = 'listings' | 'organisations';
 export default function AdminDashboard({
   listings,
   users,
+  profiles,
 }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState<DashboardTab>('listings');
 
@@ -131,6 +134,50 @@ export default function AdminDashboard({
     }
   });
   const maxRoleValue = Math.max(...Object.values(roleCounts), 1);
+
+  // ===== Chart: Experience Level (real profile data) =====
+  const experienceLevelCounts: Record<string, number> = {
+    'First-timer': 0,
+    'Experienced': 0,
+    'Advanced': 0,
+    'Expert Coordinator': 0,
+  };
+  profiles.forEach(p => {
+    if (p.experienceLevel && p.experienceLevel in experienceLevelCounts) {
+      experienceLevelCounts[p.experienceLevel]++;
+    }
+  });
+  const maxExperienceLevelValue = Math.max(...Object.values(experienceLevelCounts), 1);
+
+  // ===== Chart: Erasmus+ Sectors (real profile data) =====
+  const profileSectorCounts: Record<string, number> = {};
+  profiles.forEach(p => {
+    (p.sectors || []).forEach(s => {
+      profileSectorCounts[s] = (profileSectorCounts[s] || 0) + 1;
+    });
+  });
+  const sortedProfileSectors = Object.entries(profileSectorCounts).sort((a, b) => b[1] - a[1]);
+  const maxProfileSectorValue = Math.max(...sortedProfileSectors.map(s => s[1]), 1);
+
+  // ===== Chart: Languages Spoken (real profile data) =====
+  const languageCounts: Record<string, number> = {};
+  profiles.forEach(p => {
+    (p.languagesSpoken || []).forEach(l => {
+      languageCounts[l] = (languageCounts[l] || 0) + 1;
+    });
+  });
+  const sortedLanguages = Object.entries(languageCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const maxLanguageValue = Math.max(...sortedLanguages.map(l => l[1]), 1);
+
+  // ===== Chart: Thematic Topics (real profile data) =====
+  const profileThematicCounts: Record<string, number> = {};
+  profiles.forEach(p => {
+    (p.thematicAreas || []).forEach(t => {
+      profileThematicCounts[t] = (profileThematicCounts[t] || 0) + 1;
+    });
+  });
+  const sortedProfileThematics = Object.entries(profileThematicCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const maxProfileThematicValue = Math.max(...sortedProfileThematics.map(t => t[1]), 1);
 
   // ===== Chart: New Organisations by Month =====
   const userMonthCounts: Record<string, number> = {};
@@ -465,8 +512,94 @@ export default function AdminDashboard({
             </div>
           </div>
 
-          <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 text-xs text-slate-500 font-semibold">
-            More organisation-specific stats (Experience Level, Erasmus+ Sectors, Languages Spoken, Thematic Topics) are coming next — these require organisation profile data that isn't wired into this dashboard yet.
+          <div className="grid grid-cols-1 gap-6">
+            <div className="bg-white p-6 rounded-[20px] border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <h2 className="text-sm font-black text-slate-700 uppercase tracking-wider mb-1">Experience Level</h2>
+                <p className="text-xs text-slate-400 mb-6">Organisation profiles by declared experience</p>
+              </div>
+              <div className="space-y-3.5">
+                {Object.entries(experienceLevelCounts).map(([level, val]) => {
+                  const percent = (val / maxExperienceLevelValue) * 100;
+                  return (
+                    <div key={level} className="space-y-1.5">
+                      <div className="flex justify-between text-xs font-bold text-slate-600">
+                        <span>{level}</span><span>{val}</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div style={{ width: `${percent}%` }} className="bg-amber-500 h-full rounded-full transition-all duration-500" />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-[20px] border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <h2 className="text-sm font-black text-slate-700 uppercase tracking-wider mb-1">Erasmus+ Sectors</h2>
+                <p className="text-xs text-slate-400 mb-6">Organisation profiles by sector</p>
+              </div>
+              <div className="space-y-3.5">
+                {sortedProfileSectors.length > 0 ? sortedProfileSectors.map(([sector, val]) => {
+                  const percent = (val / maxProfileSectorValue) * 100;
+                  return (
+                    <div key={sector} className="space-y-1.5">
+                      <div className="flex justify-between text-xs font-bold text-slate-600">
+                        <span>{sector}</span><span>{val}</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div style={{ width: `${percent}%` }} className="bg-green-500 h-full rounded-full transition-all duration-500" />
+                      </div>
+                    </div>
+                  );
+                }) : <div className="text-xs text-slate-400 py-12 text-center">No organisation profiles found.</div>}
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-[20px] border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <h2 className="text-sm font-black text-slate-700 uppercase tracking-wider mb-1">Languages Spoken</h2>
+                <p className="text-xs text-slate-400 mb-6">Top 8 languages across organisation profiles</p>
+              </div>
+              <div className="space-y-3.5">
+                {sortedLanguages.length > 0 ? sortedLanguages.map(([lang, val]) => {
+                  const percent = (val / maxLanguageValue) * 100;
+                  return (
+                    <div key={lang} className="space-y-1.5">
+                      <div className="flex justify-between text-xs font-bold text-slate-600">
+                        <span>{lang}</span><span>{val}</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div style={{ width: `${percent}%` }} className="bg-violet-500 h-full rounded-full transition-all duration-500" />
+                      </div>
+                    </div>
+                  );
+                }) : <div className="text-xs text-slate-400 py-12 text-center">No organisation profiles found.</div>}
+              </div>
+            </div>
+
+            <div className="bg-white p-6 rounded-[20px] border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <h2 className="text-sm font-black text-slate-700 uppercase tracking-wider mb-1">Thematic Topics</h2>
+                <p className="text-xs text-slate-400 mb-6">Top 8 thematic areas across organisation profiles</p>
+              </div>
+              <div className="space-y-3.5">
+                {sortedProfileThematics.length > 0 ? sortedProfileThematics.map(([topic, val]) => {
+                  const percent = (val / maxProfileThematicValue) * 100;
+                  return (
+                    <div key={topic} className="space-y-1.5">
+                      <div className="flex justify-between text-xs font-bold text-slate-600">
+                        <span className="truncate pr-2">{topic}</span><span className="shrink-0">{val}</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                        <div style={{ width: `${percent}%` }} className="bg-brand-primary h-full rounded-full transition-all duration-500" />
+                      </div>
+                    </div>
+                  );
+                }) : <div className="text-xs text-slate-400 py-12 text-center">No organisation profiles found.</div>}
+              </div>
+            </div>
           </div>
         </div>
       )}
