@@ -8,6 +8,7 @@ import { ProfileWithUid } from '../hooks/useProfiles';
 import { Listing } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
 import { Inbox, Search, Building2, Award, Target, Languages as LanguagesIcon } from 'lucide-react';
+import IconBadge from './IconBadge';
 
 interface OrganisationsViewProps {
   listings: ProfileWithUid[];
@@ -450,18 +451,12 @@ export default function OrganisationsDirectoryView({
                     )}
 
                     <div className="flex items-center gap-1.5 flex-wrap border-t border-slate-100 pt-3">
-                      <span className="text-[9px] font-bold px-2 py-1 rounded-md bg-blue-100 text-blue-800 flex items-center gap-1">
-                        <Building2 className="w-3 h-3" /> {org.organisationType}
-                      </span>
+                      <IconBadge icon={Building2} color="blue" size="xs">{org.organisationType}</IconBadge>
                       {org.experienceLevel && (
-                        <span className="text-[9px] font-bold px-2 py-1 rounded-md bg-amber-100 text-amber-800 flex items-center gap-1">
-                          <Award className="w-3 h-3" /> {org.experienceLevel}
-                        </span>
+                        <IconBadge icon={Award} color="amber" size="xs">{org.experienceLevel}</IconBadge>
                       )}
                       {org.sectors && org.sectors.slice(0, 3).map((s) => (
-                        <span key={s} className="text-[9px] font-bold px-2 py-1 rounded-md bg-green-100 text-green-800 flex items-center gap-1">
-                          <Target className="w-3 h-3" /> {s}
-                        </span>
+                        <IconBadge key={s} icon={Target} color="green" size="xs">{s}</IconBadge>
                       ))}
                       {org.sectors && org.sectors.length > 3 && (
                         <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-1 rounded-md border border-slate-100">
@@ -469,9 +464,7 @@ export default function OrganisationsDirectoryView({
                         </span>
                       )}
                       {org.languagesSpoken && org.languagesSpoken.slice(0, 3).map((lang) => (
-                        <span key={lang} className="text-[9px] font-bold px-2 py-1 rounded-md bg-violet-100 text-violet-800 flex items-center gap-1">
-                          <LanguagesIcon className="w-3 h-3" /> {lang}
-                        </span>
+                        <IconBadge key={lang} icon={LanguagesIcon} color="violet" size="xs">{lang}</IconBadge>
                       ))}
                       {org.languagesSpoken && org.languagesSpoken.length > 3 && (
                         <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-1 rounded-md border border-slate-100">
