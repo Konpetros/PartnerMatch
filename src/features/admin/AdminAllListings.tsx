@@ -235,7 +235,7 @@ export default function AdminAllListings({
                     />
                   </th>
                   <th className="py-4 px-6 w-20">Org. Logo</th>
-                  <th className="py-4 px-6">Organisation</th>
+                  <th className="py-4 px-6">Listing</th>
                   <th className="py-4 px-6">Country</th>
                   <th className="py-4 px-6">Type</th>
                   <th className="py-4 px-6">Status</th>
@@ -278,13 +278,13 @@ export default function AdminAllListings({
                         )}
                       </td>
 
-                      {/* Organisation */}
+                      {/* Listing */}
                       <td className="py-4.5 px-6 max-w-xs">
                         <div>
                           <p className="text-slate-800 font-bold truncate">
-                            {item.name}
+                            {item.title || item.name}
                           </p>
-                          <p className="text-xs text-slate-450 font-semibold truncate">{item.contactEmail}</p>
+                          <p className="text-xs text-slate-450 font-semibold truncate">{item.name} · {item.contactEmail}</p>
                         </div>
                       </td>
 
