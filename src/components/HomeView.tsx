@@ -19,8 +19,6 @@ import {
   Building2,
   BookOpen, 
   RefreshCcw,
-  LayoutGrid,
-  List,
   ChevronRight
 } from 'lucide-react';
 

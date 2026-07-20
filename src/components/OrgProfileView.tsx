@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import { Listing, KeyAction, OrganisationProfile } from '../types';
 import { ProfileWithUid } from '../hooks/useProfiles';
-import { ArrowLeft, Mail, MapPin, Globe, Calendar, Languages, Building2, Hash, Award, FolderOpen, FileText, Linkedin, Facebook, Instagram, Twitter, LayoutGrid, List, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Mail, MapPin, Globe, Calendar, Languages, Building2, Hash, Award, FolderOpen, FileText, Linkedin, Facebook, Instagram, Twitter, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 import { stripHtml, formatDate } from '../utils';
 import { getFavourites, getSentRequests } from '../services/firebase/firestore';
 import ListingCard from './ListingCard';

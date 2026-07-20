@@ -17,8 +17,6 @@ import {
   RefreshCcw, 
   Layers, 
   Inbox,
-  LayoutGrid,
-  List,
   ChevronRight
 } from 'lucide-react';
 

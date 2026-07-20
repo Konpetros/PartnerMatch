@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield, LayoutGrid, List } from 'lucide-react';
+import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield, LayoutGrid } from 'lucide-react';
 import { updateUserPassword, deleteUserAccount, isEmailPasswordUser, reauthenticateUser } from '../services/firebase/auth';
 import { deleteUserData, saveUserSettings, getUserSettings, saveProfilePrivacySettings } from '../services/firebase/firestore';
 

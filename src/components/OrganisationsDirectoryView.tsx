@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import { Listing } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
-import { MapPin, Inbox, Search, Building2, Award, Target, Languages as LanguagesIcon } from 'lucide-react';
+import { Inbox, Search, Building2, Award, Target, Languages as LanguagesIcon } from 'lucide-react';
 
 interface OrganisationsViewProps {
   listings: ProfileWithUid[];
