@@ -441,7 +441,6 @@ export default function OrganisationsDirectoryView({
                           <span className="truncate">{org.country}{cityValue ? `, ${cityValue}` : ''}</span>
                         </span>
                       </div>
-                      {renderStatusBadge(getOrgStatus(org.uid))}
                     </div>
 
                     {org.description && (
@@ -450,7 +449,7 @@ export default function OrganisationsDirectoryView({
                       </p>
                     )}
 
-                    <div className="flex items-center gap-1.5 flex-wrap">
+                    <div className="flex items-center gap-1.5 flex-wrap border-t border-slate-100 pt-3">
                       <span className="text-[9px] font-bold px-2 py-1 rounded-md bg-blue-100 text-blue-800 flex items-center gap-1">
                         <Building2 className="w-3 h-3" /> {org.organisationType}
                       </span>
@@ -496,7 +495,8 @@ export default function OrganisationsDirectoryView({
                       </div>
                     )}
 
-                    <div className="flex items-center pt-2 border-t border-slate-100">
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                      {renderStatusBadge(getOrgStatus(org.uid))}
                       <span className="text-xs font-bold text-brand-primary group-hover:underline ml-auto">
                         View Profile →
                       </span>
