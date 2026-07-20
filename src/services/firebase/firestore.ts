@@ -128,6 +128,11 @@ export const promoteUserToAdmin = async (uid: string): Promise<void> => {
   await updateDoc(doc(db, 'users', uid), { isAdmin: true });
 };
 
+export const demoteUserFromAdmin = async (uid: string): Promise<void> => {
+  await deleteDoc(doc(db, 'admins', uid));
+  await updateDoc(doc(db, 'users', uid), { isAdmin: false });
+};
+
 // ─── VIEWS COUNTER ───────────────────────────────────────────
 
 export const incrementListingViews = async (id: string): Promise<void> => {
