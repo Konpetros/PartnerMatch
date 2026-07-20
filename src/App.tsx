@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import SignInModal from './components/SignInModal';
 import AppRouter from './router/AppRouter';
 import CookieConsentBanner from './components/CookieConsentBanner';
+import NewPlatformBanner from './components/NewPlatformBanner';
 
 import { useAuth } from './hooks/useAuth';
 import { useListings } from './hooks/useListings';
@@ -223,6 +224,8 @@ export default function App() {
           </div>
         </div>
       )}
+
+      <NewPlatformBanner isLoggedIn={!!currentUser} onOpenSignIn={handleOpenSignIn} />
 
       {/* Navbar */}
       {!['admin', 'admin-pending', 'admin-listings', 'admin-users', 'admin-announcements'].includes(currentView) && (
