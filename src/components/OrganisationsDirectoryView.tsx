@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import { Listing } from '../types';
 import { COUNTRIES, ORGANISATION_TYPES, LANGUAGES, THEMATIC_AREAS, ERASMUS_SECTORS } from '../data';
-import { MapPin, Inbox, Search } from 'lucide-react';
+import { MapPin, Inbox, Search, Building2, Award, Target, Languages as LanguagesIcon } from 'lucide-react';
 
 interface OrganisationsViewProps {
   listings: ProfileWithUid[];
@@ -441,64 +441,46 @@ export default function OrganisationsDirectoryView({
                           <span className="truncate">{org.country}{cityValue ? `, ${cityValue}` : ''}</span>
                         </span>
                       </div>
+                      {renderStatusBadge(getOrgStatus(org.uid))}
                     </div>
 
                     {org.description && (
-                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-2">
+                      <p className="text-slate-500 text-xs leading-relaxed line-clamp-3">
                         {org.description}
                       </p>
                     )}
 
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
-                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Type</span>
-                        <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-blue-100 text-blue-800">
-                          {org.organisationType}
-                        </span>
-                      </div>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <span className="text-[9px] font-bold px-2 py-1 rounded-md bg-blue-100 text-blue-800 flex items-center gap-1">
+                        <Building2 className="w-3 h-3" /> {org.organisationType}
+                      </span>
                       {org.experienceLevel && (
-                        <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
-                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Experience</span>
-                          <span className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
-                            {org.experienceLevel}
-                          </span>
-                        </div>
+                        <span className="text-[9px] font-bold px-2 py-1 rounded-md bg-amber-100 text-amber-800 flex items-center gap-1">
+                          <Award className="w-3 h-3" /> {org.experienceLevel}
+                        </span>
                       )}
-                      {org.sectors && org.sectors.length > 0 && (
-                        <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
-                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Sector</span>
-                          <div className="flex flex-wrap gap-1">
-                            {org.sectors.slice(0, 3).map((s) => (
-                              <span key={s} className="text-[9px] font-extrabold px-2 py-0.5 rounded bg-green-100 text-green-800">
-                                {s}
-                              </span>
-                            ))}
-                            {org.sectors.length > 3 && (
-                              <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-md border border-slate-100">
-                                +{org.sectors.length - 3}
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                      {org.sectors && org.sectors.slice(0, 3).map((s) => (
+                        <span key={s} className="text-[9px] font-bold px-2 py-1 rounded-md bg-green-100 text-green-800 flex items-center gap-1">
+                          <Target className="w-3 h-3" /> {s}
+                        </span>
+                      ))}
+                      {org.sectors && org.sectors.length > 3 && (
+                        <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-1 rounded-md border border-slate-100">
+                          +{org.sectors.length - 3}
+                        </span>
                       )}
-                      {org.languagesSpoken && org.languagesSpoken.length > 0 && (
-                        <div className="flex items-center gap-2 py-1.5">
-                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[60px] shrink-0">Languages</span>
-                          <div className="flex flex-wrap gap-1">
-                            {org.languagesSpoken.slice(0, 3).map((lang) => (
-                              <span key={lang} className="text-[9px] font-extrabold px-2 py-0.5 rounded-md bg-violet-100 text-violet-800 border border-violet-200">
-                                {lang}
-                              </span>
-                            ))}
-                            {org.languagesSpoken.length > 3 && (
-                              <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded-md border border-slate-100">
-                                +{org.languagesSpoken.length - 3}
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                      {org.languagesSpoken && org.languagesSpoken.slice(0, 3).map((lang) => (
+                        <span key={lang} className="text-[9px] font-bold px-2 py-1 rounded-md bg-violet-100 text-violet-800 flex items-center gap-1">
+                          <LanguagesIcon className="w-3 h-3" /> {lang}
+                        </span>
+                      ))}
+                      {org.languagesSpoken && org.languagesSpoken.length > 3 && (
+                        <span className="text-[9px] font-bold text-slate-400 bg-slate-50 px-1.5 py-1 rounded-md border border-slate-100">
+                          +{org.languagesSpoken.length - 3}
+                        </span>
                       )}
                     </div>
+
                     {org.thematicAreas && org.thematicAreas.length > 0 && (
                       <div className="flex flex-wrap gap-1 pt-2 mt-1 border-t border-slate-100">
                         {org.thematicAreas.slice(0, 3).map((area) => (
@@ -515,7 +497,6 @@ export default function OrganisationsDirectoryView({
                     )}
 
                     <div className="flex items-center pt-2 border-t border-slate-100">
-                      {renderStatusBadge(getOrgStatus(org.uid))}
                       <span className="text-xs font-bold text-brand-primary group-hover:underline ml-auto">
                         View Profile →
                       </span>
