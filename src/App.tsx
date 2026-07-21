@@ -78,7 +78,7 @@ export default function App() {
     handleSelectOrganisation,
     handleViewListingFromOrg,
     handleViewOrgProfile,
-  } = useNavigation(!!currentUser, isAdmin, handleOpenSignIn);
+  } = useNavigation(!!currentUser, isAdmin, handleOpenSignIn, listings, profiles);
 
   // Scroll to top on navigation
   useEffect(() => {

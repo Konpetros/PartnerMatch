@@ -219,26 +219,6 @@ export default function AppRouter({
           />
         );
       }
-    } else if (selectedListingId) {
-      const activeListing = listings.find(l => l.id === selectedListingId);
-      if (activeListing) {
-        const submittedBy = (activeListing as any).submittedBy;
-        const orgProfile = submittedBy ? profiles.find(p => p.uid === submittedBy) : null;
-        if (orgProfile) {
-          return (
-            <OrgProfileView
-              profile={orgProfile}
-              listings={listings}
-              onBack={() => onNavigate('browse')}
-              onViewListing={onViewListingFromOrg}
-              currentUserUid={currentUserUid}
-              currentUserProfile={organisationProfile}
-            />
-          );
-        }
-        onNavigate('browse');
-        return null;
-      }
     }
   }
 

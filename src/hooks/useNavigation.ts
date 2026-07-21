@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Listing } from '../types';
+import { ProfileWithUid } from './useProfiles';
 
 export type AppView =
   | 'home'
@@ -34,9 +36,6 @@ export interface NavigationState {
   selectedOrgId: string | null;
 }
 
-// Only the simple, non-parameterized views get a real URL for now.
-// Everything else (detail, org-profile, dashboard sections, admin) stays
-// on whatever URL is currently set, unchanged, until a later step.
 const VIEW_TO_PATH: Partial<Record<AppView, string>> = {
   'home': '/',
   'browse': '/browse',
@@ -54,20 +53,46 @@ const PATH_TO_VIEW: Record<string, AppView> = Object.fromEntries(
   Object.entries(VIEW_TO_PATH).map(([view, path]) => [path, view as AppView])
 );
 
-export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSignIn: () => void) => {
+export const useNavigation = (
+  isAuthenticated: boolean,
+  isAdmin: boolean,
+  openSignIn: () => void,
+  listings: Listing[] = [],
+  profiles: ProfileWithUid[] = []
+) => {
   const routerNavigate = useNavigate();
   const location = useLocation();
 
-  const [currentView, setCurrentView] = useState<AppView>(
-    PATH_TO_VIEW[location.pathname] || 'home'
+  const resolveInitialView = (): AppView => {
+    if (location.pathname.startsWith('/organisation/')) return 'org-profile';
+    if (location.pathname.startsWith('/listing/')) return 'detail';
+    return PATH_TO_VIEW[location.pathname] || 'home';
+  };
+
+  const [currentView, setCurrentView] = useState<AppView>(resolveInitialView());
+  const [selectedListingId, setSelectedListingId] = useState<string | null>(
+    location.pathname.startsWith('/listing/') ? location.pathname.split('/listing/')[1] : null
   );
-  const [selectedListingId, setSelectedListingId] = useState<string | null>(null);
-  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(
+    location.pathname.startsWith('/organisation/') ? location.pathname.split('/organisation/')[1] : null
+  );
   const [editingListingId, setEditingListingId] = useState<string | null>(null);
 
-  // Keep currentView in sync with the URL for browser back/forward and direct URL entry,
-  // but only for the views that currently have a real mapped path.
+  // Keep state in sync with the URL for browser back/forward and direct URL entry.
   useEffect(() => {
+    if (location.pathname.startsWith('/organisation/')) {
+      const id = location.pathname.split('/organisation/')[1];
+      setSelectedOrgId(id);
+      setSelectedListingId(null);
+      setCurrentView('org-profile');
+      return;
+    }
+    if (location.pathname.startsWith('/listing/')) {
+      const id = location.pathname.split('/listing/')[1];
+      setSelectedListingId(id);
+      setCurrentView('detail');
+      return;
+    }
     const matchedView = PATH_TO_VIEW[location.pathname];
     if (matchedView && matchedView !== currentView) {
       setCurrentView(matchedView);
@@ -96,30 +121,38 @@ export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSi
     }
   }, [isAuthenticated, openSignIn, routerNavigate]);
 
-  const handleSelectListing = (id: string) => {
+  const handleSelectListing = useCallback((id: string) => {
     setSelectedListingId(id);
     setCurrentView('detail');
-  };
+    routerNavigate(`/listing/${id}`);
+  }, [routerNavigate]);
 
   const handleEditListing = (id: string) => {
     setEditingListingId(id);
     setCurrentView('submit');
+    routerNavigate('/submit');
   };
 
-  const handleSelectOrganisation = (id: string) => {
+  const handleSelectOrganisation = useCallback((id: string) => {
     setSelectedOrgId(id);
+    setSelectedListingId(null);
     setCurrentView('org-profile');
-  };
+    routerNavigate(`/organisation/${id}`);
+  }, [routerNavigate]);
+
+  // Resolves the submitting organisation's real ID up front, then behaves
+  // exactly like handleSelectOrganisation — collapsing what used to be two
+  // divergent code paths (selectedOrgId vs selectedListingId) into one.
+  const handleViewOrgProfile = useCallback((listingId: string) => {
+    const listing = listings.find(l => l.id === listingId);
+    const submittedBy = listing ? (listing as any).submittedBy : null;
+    if (submittedBy) {
+      handleSelectOrganisation(submittedBy);
+    }
+  }, [listings, handleSelectOrganisation]);
 
   const handleViewListingFromOrg = (id: string) => {
-    setSelectedListingId(id);
-    setCurrentView('detail');
-  };
-
-  const handleViewOrgProfile = (listingId: string) => {
-    setSelectedListingId(listingId);
-    setSelectedOrgId(null);
-    setCurrentView('org-profile');
+    handleSelectListing(id);
   };
 
   return {
