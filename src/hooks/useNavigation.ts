@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export type AppView =
   | 'home'
@@ -33,13 +34,47 @@ export interface NavigationState {
   selectedOrgId: string | null;
 }
 
+// Only the simple, non-parameterized views get a real URL for now.
+// Everything else (detail, org-profile, dashboard sections, admin) stays
+// on whatever URL is currently set, unchanged, until a later step.
+const VIEW_TO_PATH: Partial<Record<AppView, string>> = {
+  'home': '/',
+  'browse': '/browse',
+  'organisations': '/organisations',
+  'about': '/about',
+  'contact': '/contact',
+  'submit': '/submit',
+  'privacy-policy': '/privacy',
+  'terms': '/terms',
+  'gdpr': '/gdpr',
+  'cookie-policy': '/cookies',
+};
+
+const PATH_TO_VIEW: Record<string, AppView> = Object.fromEntries(
+  Object.entries(VIEW_TO_PATH).map(([view, path]) => [path, view as AppView])
+);
+
 export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSignIn: () => void) => {
-  const [currentView, setCurrentView] = useState<AppView>('home');
+  const routerNavigate = useNavigate();
+  const location = useLocation();
+
+  const [currentView, setCurrentView] = useState<AppView>(
+    PATH_TO_VIEW[location.pathname] || 'home'
+  );
   const [selectedListingId, setSelectedListingId] = useState<string | null>(null);
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null);
   const [editingListingId, setEditingListingId] = useState<string | null>(null);
 
-  const handleNavigate = (view: string) => {
+  // Keep currentView in sync with the URL for browser back/forward and direct URL entry,
+  // but only for the views that currently have a real mapped path.
+  useEffect(() => {
+    const matchedView = PATH_TO_VIEW[location.pathname];
+    if (matchedView && matchedView !== currentView) {
+      setCurrentView(matchedView);
+    }
+  }, [location.pathname]);
+
+  const handleNavigate = useCallback((view: string) => {
     setEditingListingId(null);
     if (view === 'submit' && !isAuthenticated) {
       openSignIn();
@@ -48,6 +83,10 @@ export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSi
     if ((view === 'admin' || view === 'admin-pending' || view === 'admin-listings' || view === 'admin-users' || view === 'admin-announcements') && !isAuthenticated) {
       return; // silent redirect — don't expose admin panel exists
     }
+    const path = VIEW_TO_PATH[view as AppView];
+    if (path) {
+      routerNavigate(path);
+    }
     if (view === 'home') {
       setCurrentView('home');
       setSelectedListingId(null);
@@ -55,7 +94,7 @@ export const useNavigation = (isAuthenticated: boolean, isAdmin: boolean, openSi
       setCurrentView(view as AppView);
       setSelectedListingId(null);
     }
-  };
+  }, [isAuthenticated, openSignIn, routerNavigate]);
 
   const handleSelectListing = (id: string) => {
     setSelectedListingId(id);
