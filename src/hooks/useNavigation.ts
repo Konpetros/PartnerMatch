@@ -48,7 +48,7 @@ const VIEW_TO_PATH: Partial<Record<AppView, string>> = {
   'gdpr': '/gdpr',
   'cookie-policy': '/cookies',
   'profile-setup': '/profile-setup',
-  'my-listings': '/dashboard',
+  'my-listings': '/dashboard/listings',
   'settings': '/dashboard/settings',
   'my-profile': '/dashboard/profile',
   'announcements': '/dashboard/announcements',
