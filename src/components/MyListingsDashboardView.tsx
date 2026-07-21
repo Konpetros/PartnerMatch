@@ -556,6 +556,7 @@ export default function MyListingsDashboardView({
             <PartnerRequestsSection
               incomingRequests={incomingRequests}
               sentRequests={sentRequests}
+              listings={listings}
               requestsTab={requestsTab}
               setRequestsTab={setRequestsTab}
               requestsLoading={requestsLoading}

@@ -1,10 +1,12 @@
 import { Handshake, MessageSquare, CheckCheck, XCircle, Clock, CheckCircle } from 'lucide-react';
 import { PartnerRequest } from '../../types/partnerRequest';
+import { Listing } from '../../types/listing';
 import { updateRequestStatus, hideRequestForUser, withdrawPartnerRequest } from '../../services/firebase/firestore';
 
 interface PartnerRequestsSectionProps {
   incomingRequests: PartnerRequest[];
   sentRequests: PartnerRequest[];
+  listings: Listing[];
   requestsTab: 'received' | 'sent';
   setRequestsTab: (tab: 'received' | 'sent') => void;
   requestsLoading: boolean;
@@ -20,6 +22,7 @@ interface PartnerRequestsSectionProps {
 export default function PartnerRequestsSection({
   incomingRequests,
   sentRequests,
+  listings,
   requestsTab,
   setRequestsTab,
   requestsLoading,
@@ -31,6 +34,7 @@ export default function PartnerRequestsSection({
   setSentRequests,
   showToast,
 }: PartnerRequestsSectionProps) {
+  const listingExists = (listingId: string) => listings.some(l => l.id === listingId);
   return (
     <div className="space-y-4 animate-fade-in">
       <div className="border-b border-slate-100 pb-4">
@@ -66,7 +70,7 @@ export default function PartnerRequestsSection({
         ) : (
           <div className="space-y-3">
             {incomingRequests.map(req => (
-              <div key={req.id} onClick={() => onSelectListing?.(req.listingId)} className={`bg-white rounded-2xl border p-5 space-y-4 transition-all cursor-pointer hover:border-blue-300 hover:shadow-md ${req.status === 'pending' ? 'border-blue-100 shadow-sm' : 'border-slate-100'}`}>
+              <div key={req.id} onClick={() => listingExists(req.listingId) && onSelectListing?.(req.listingId)} className={`bg-white rounded-2xl border p-5 space-y-4 transition-all ${listingExists(req.listingId) ? 'cursor-pointer hover:border-blue-300 hover:shadow-md' : ''} ${req.status === 'pending' ? 'border-blue-100 shadow-sm' : 'border-slate-100'}`}>
                 <div className="flex items-center gap-3">
                   {req.fromOrgLogo ? (
                     <img src={req.fromOrgLogo} alt={req.fromOrgName} className="w-11 h-11 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" referrerPolicy="no-referrer" />
@@ -81,7 +85,11 @@ export default function PartnerRequestsSection({
                       <span className="text-xs text-slate-400 font-medium shrink-0">· {req.fromOrgCountry}</span>
                     </div>
                     <p className="text-xs text-slate-500 font-medium mt-0.5">
-                      interested in <span className="text-brand-primary font-bold">{req.listingTitle}</span>
+                      interested in {listingExists(req.listingId) ? (
+                        <span className="text-brand-primary font-bold">{req.listingTitle}</span>
+                      ) : (
+                        <span className="text-slate-400 italic">{req.listingTitle} (listing no longer available)</span>
+                      )}
                     </p>
                   </div>
                   <span className={`text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wide shrink-0 ${
@@ -171,7 +179,7 @@ export default function PartnerRequestsSection({
         ) : (
           <div className="space-y-3">
             {sentRequests.map(req => (
-              <div key={req.id} onClick={() => onSelectListing?.(req.listingId)} className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all">
+              <div key={req.id} onClick={() => listingExists(req.listingId) && onSelectListing?.(req.listingId)} className={`bg-white rounded-2xl border border-slate-100 p-5 space-y-4 transition-all ${listingExists(req.listingId) ? 'cursor-pointer hover:border-blue-300 hover:shadow-md' : ''}`}>
                 <div className="flex items-center gap-3">
                   {req.toOrgLogo ? (
                     <img src={req.toOrgLogo} alt={req.toOrgName} className="w-11 h-11 rounded-xl object-contain border border-slate-100 bg-white p-1 shrink-0" referrerPolicy="no-referrer" />
@@ -186,7 +194,11 @@ export default function PartnerRequestsSection({
                       {req.toOrgCountry && <span className="text-xs text-slate-400 font-medium shrink-0">· {req.toOrgCountry}</span>}
                     </div>
                     <p className="text-xs text-slate-500 font-medium mt-0.5">
-                      you applied to <span className="text-brand-primary font-bold">{req.listingTitle}</span>
+                      you applied to {listingExists(req.listingId) ? (
+                        <span className="text-brand-primary font-bold">{req.listingTitle}</span>
+                      ) : (
+                        <span className="text-slate-400 italic">{req.listingTitle} (listing no longer available)</span>
+                      )}
                     </p>
                   </div>
                   <span className={`text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-wide shrink-0 ${
