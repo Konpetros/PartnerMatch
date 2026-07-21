@@ -18,7 +18,10 @@ import {
   Globe, 
   Calendar, 
   Languages, 
-  Tags
+  Tags,
+  Share2,
+  Link2,
+  Check
 } from 'lucide-react';
 
 interface ListingDetailProps {
@@ -32,6 +35,18 @@ interface ListingDetailProps {
 export default function ListingDetailView({ listing, onBack, onViewOrganisation, currentUserUid, currentUserProfile }: ListingDetailProps) {
   const [interestModalOpen, setInterestModalOpen] = React.useState(false);
   const [alreadySent, setAlreadySent] = React.useState(false);
+  const [shareMenuOpen, setShareMenuOpen] = React.useState(false);
+  const [linkCopied, setLinkCopied] = React.useState(false);
+
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareTitle = listing.title || listing.name;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    });
+  };
 
   React.useEffect(() => {
     if (!currentUserUid || !listing.id) return;
@@ -119,7 +134,69 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
                 <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
                   {listing.title || listing.name}
                 </h1>
-                <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} size="md" />
+                <div className="flex items-center gap-2 shrink-0">
+                  <FavouriteButton listingId={listing.id} currentUserUid={currentUserUid ?? null} size="md" />
+                  <div className="relative">
+                    <button
+                      onClick={() => setShareMenuOpen(!shareMenuOpen)}
+                      className="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-brand-primary transition-all cursor-pointer"
+                      title="Share this listing"
+                    >
+                      <Share2 className="w-4 h-4" />
+                    </button>
+                    {shareMenuOpen && (
+                      <>
+                        <div className="fixed inset-0 z-10" onClick={() => setShareMenuOpen(false)} />
+                        <div className="absolute right-0 top-12 z-20 bg-white rounded-2xl border border-slate-100 shadow-lg p-2 w-52 space-y-0.5">
+                          <a
+                            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="text-[#0A66C2] font-black text-sm w-4 text-center">in</span>
+                            LinkedIn
+                          </a>
+                          <a
+                            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="text-[#1877F2] font-black text-sm w-4 text-center">f</span>
+                            Facebook
+                          </a>
+                          <a
+                            href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="text-slate-900 font-black text-sm w-4 text-center">𝕏</span>
+                            X
+                          </a>
+                          <a
+                            href={`https://wa.me/?text=${encodeURIComponent(shareTitle + ' ' + shareUrl)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                          >
+                            <span className="text-[#25D366] font-black text-sm w-4 text-center">W</span>
+                            WhatsApp
+                          </a>
+                          <div className="border-t border-slate-100 my-1" />
+                          <button
+                            onClick={() => { handleCopyLink(); setShareMenuOpen(false); }}
+                            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer"
+                          >
+                            {linkCopied ? <Check className="w-4 h-4 text-emerald-600" /> : <Link2 className="w-4 h-4 text-slate-400" />}
+                            {linkCopied ? 'Copied!' : 'Copy Link'}
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
               <p className="text-xs text-slate-400 font-semibold">
                 {getRelativeTime(listing.createdAt)}
