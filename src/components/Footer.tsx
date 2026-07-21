@@ -224,7 +224,7 @@ export default function Footer({ onNavigate }: FooterProps) {
 
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-slate-800 flex justify-center items-center text-xs text-slate-500">
-          <p className="text-white">© {currentYear} PartnerMatch. Designed to empower European collaborations.</p>
+          <p className="text-slate-300">© {currentYear} PartnerMatch. Designed to empower European collaborations.</p>
         </div>
       </div>
     </footer>
