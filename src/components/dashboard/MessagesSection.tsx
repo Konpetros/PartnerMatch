@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MessageSquare, ArrowLeft, Send, Archive, ArchiveRestore } from 'lucide-react';
+import { MessageSquare, ArrowLeft, Send, Archive, ArchiveRestore, Trash2 } from 'lucide-react';
 import { PartnerRequest } from '../../types/partnerRequest';
 import { Message } from '../../types/message';
 import { OrganisationProfile } from '../../types/profile';
@@ -9,6 +9,7 @@ interface MessagesSectionProps {
   conversations: PartnerRequest[];
   archivedConversations: PartnerRequest[];
   onArchiveToggle: (id: string) => void;
+  onClearChat?: (id: string) => void;
   activeChatRequest: PartnerRequest | null;
   setActiveChatRequest: (req: PartnerRequest | null) => void;
   isConversationUnread: (req: PartnerRequest) => boolean;
@@ -23,6 +24,7 @@ export default function MessagesSection({
   conversations,
   archivedConversations,
   onArchiveToggle,
+  onClearChat,
   activeChatRequest,
   setActiveChatRequest,
   isConversationUnread,
@@ -36,12 +38,18 @@ export default function MessagesSection({
   const [chatInput, setChatInput] = useState('');
   const [chatSending, setChatSending] = useState(false);
   const [showArchived, setShowArchived] = useState(false);
+  const [showConfirmClear, setShowConfirmClear] = useState(false);
 
   const displayedConversations = showArchived ? archivedConversations : conversations;
 
   useEffect(() => {
+    setShowConfirmClear(false);
+  }, [activeChatRequest]);
+
+  useEffect(() => {
     if (activeChatRequest && currentUserUid) {
-      const unsubscribe = subscribeToMessages(activeChatRequest.id, currentUserUid, setChatMessages);
+      const clearedAt = activeChatRequest.clearedBy?.[currentUserUid];
+      const unsubscribe = subscribeToMessages(activeChatRequest.id, currentUserUid, setChatMessages, clearedAt);
       return () => unsubscribe();
     } else {
       setChatMessages([]);
@@ -175,6 +183,38 @@ export default function MessagesSection({
                       <p className="text-sm font-bold text-slate-800 truncate">{other.name}</p>
                       <p className="text-[11px] text-slate-400 font-medium truncate">Re: {activeChatRequest.listingTitle}</p>
                     </div>
+                    {onClearChat && (
+                      <div className="relative shrink-0">
+                        {showConfirmClear ? (
+                          <div className="flex items-center gap-1.5 bg-red-50 border border-red-100 rounded-lg p-1 animate-fade-in">
+                            <span className="text-[10px] font-bold text-red-600 px-1">Clear history?</span>
+                            <button
+                              onClick={() => {
+                                onClearChat(activeChatRequest.id);
+                                setShowConfirmClear(false);
+                              }}
+                              className="px-2 py-0.5 bg-red-600 text-white rounded text-[10px] font-bold hover:bg-red-700 cursor-pointer"
+                            >
+                              Yes
+                            </button>
+                            <button
+                              onClick={() => setShowConfirmClear(false)}
+                              className="px-2 py-0.5 bg-slate-200 text-slate-700 rounded text-[10px] font-bold hover:bg-slate-300 cursor-pointer"
+                            >
+                              No
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setShowConfirmClear(true)}
+                            className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer shrink-0"
+                            title="Clear Chat History"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex-1 overflow-y-auto px-4 py-4 space-y-2.5 bg-slate-50 min-h-[300px]">

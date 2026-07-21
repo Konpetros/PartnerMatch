@@ -22,7 +22,7 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { Listing, OrganisationProfile } from '../types';
-import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, markConversationRead, archiveConversation, unarchiveConversation } from '../services/firebase/firestore';
+import { subscribeToAnnouncements, saveDismissedAnnouncements, getDismissedAnnouncements, getFavourites, getIncomingRequests, getSentRequests, markConversationRead, archiveConversation, unarchiveConversation, clearAndArchiveConversation } from '../services/firebase/firestore';
 import { PartnerRequest } from '../types/partnerRequest';
 import { ProfileWithUid } from '../hooks/useProfiles';
 import { resendVerificationEmail } from '../services/firebase/auth';
@@ -116,6 +116,25 @@ export default function MyListingsDashboardView({
       });
     setIncomingRequests(prev => patch(prev));
     setSentRequests(prev => patch(prev));
+  };
+
+  const handleClearChat = (requestId: string) => {
+    if (!currentUserUid) return;
+    const clearedAt = new Date().toISOString();
+    clearAndArchiveConversation(requestId, currentUserUid).catch(() => showToast('Failed to clear chat.'));
+    const patch = (list: PartnerRequest[]) =>
+      list.map(r => {
+        if (r.id !== requestId) return r;
+        const currentArchived = r.archivedBy || [];
+        return {
+          ...r,
+          clearedBy: { ...(r.clearedBy || {}), [currentUserUid]: clearedAt },
+          archivedBy: currentArchived.includes(currentUserUid) ? currentArchived : [...currentArchived, currentUserUid],
+        };
+      });
+    setIncomingRequests(prev => patch(prev));
+    setSentRequests(prev => patch(prev));
+    setActiveChatRequest(null);
   };
 
   const isConversationUnread = (req: PartnerRequest): boolean => {
@@ -523,6 +542,7 @@ export default function MyListingsDashboardView({
               conversations={conversations}
               archivedConversations={archivedConversations}
               onArchiveToggle={handleArchiveToggle}
+              onClearChat={handleClearChat}
               activeChatRequest={activeChatRequest}
               setActiveChatRequest={setActiveChatRequest}
               isConversationUnread={isConversationUnread}
