@@ -204,12 +204,6 @@ export default function PartnerRequestsSection({
 
                 {req.status === 'accepted' && (
                   <div className="space-y-2">
-                    <div className="bg-emerald-50 border border-emerald-100 rounded-xl px-4 py-3 space-y-1">
-                      <p className="text-[10px] font-bold text-emerald-700 uppercase tracking-wide flex items-center gap-1.5">
-                        <CheckCircle className="w-3.5 h-3.5" /> Partnership Interest Accepted
-                      </p>
-                      <p className="text-[10px] text-emerald-600 font-medium">Message them using the chat below.</p>
-                    </div>
                     <button
                       onClick={(e) => { e.stopPropagation(); setActiveChatRequest(req); setActiveSection('messages'); }}
                       className="w-full flex items-center justify-center gap-1.5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white rounded-xl text-xs font-bold transition-all cursor-pointer"
