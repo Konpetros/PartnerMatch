@@ -17,6 +17,7 @@ export interface PartnerRequest {
   createdAt: string;
   hiddenBy?: string[];
   archivedBy?: string[];
+  clearedBy?: Record<string, string>;
   lastMessageText?: string;
   lastMessageAt?: string;
   readStatus?: { [uid: string]: string };

@@ -358,6 +358,13 @@ export const unarchiveConversation = async (requestId: string, userUid: string):
   });
 };
 
+export const clearAndArchiveConversation = async (requestId: string, userUid: string): Promise<void> => {
+  await updateDoc(doc(db, 'partnerRequests', requestId), {
+    [`clearedBy.${userUid}`]: new Date().toISOString(),
+    archivedBy: arrayUnion(userUid),
+  });
+};
+
 export const withdrawPartnerRequest = async (
   requestId: string
 ): Promise<void> => {
@@ -407,13 +414,17 @@ export const sendMessage = async (
 export const subscribeToMessages = (
   requestId: string,
   currentUserUid: string,
-  callback: (messages: Message[]) => void
+  callback: (messages: Message[]) => void,
+  clearedAt?: string
 ): (() => void) => {
-  const q = query(
-    collection(db, 'messages'),
+  const constraints = [
     where('requestId', '==', requestId),
-    where('participants', 'array-contains', currentUserUid)
-  );
+    where('participants', 'array-contains', currentUserUid),
+  ];
+  if (clearedAt) {
+    constraints.push(where('createdAt', '>', clearedAt));
+  }
+  const q = query(collection(db, 'messages'), ...constraints);
   return onSnapshot(q, (snapshot) => {
     const messages = snapshot.docs
       .map((d) => ({ id: d.id, ...d.data() } as Message))
