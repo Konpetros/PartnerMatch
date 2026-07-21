@@ -432,7 +432,7 @@ export default function MyListingsDashboardView({
           {/* Nav menu items */}
           <nav className="space-y-1.5 flex flex-col">
             <button
-              onClick={() => setActiveSection('listings')}
+              onClick={() => { setActiveSection('listings'); onNavigate('my-listings'); }}
               className={`flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'listings' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <span className="flex items-center space-x-2.5">
@@ -445,7 +445,7 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
-              onClick={() => setActiveSection('profile')}
+              onClick={() => { setActiveSection('profile'); onNavigate('my-profile'); }}
               className={`w-full flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'profile' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <User className="w-4 h-4 shrink-0" />
@@ -453,7 +453,7 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
-              onClick={() => setActiveSection('favourites')}
+              onClick={() => { setActiveSection('favourites'); onNavigate('favourites'); }}
               className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left cursor-pointer ${activeSection === 'favourites' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <Heart className="w-4 h-4 shrink-0" />
@@ -461,7 +461,7 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
-              onClick={() => setActiveSection('partner-requests')}
+              onClick={() => { setActiveSection('partner-requests'); onNavigate('partner-requests'); }}
               className={`flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left cursor-pointer ${activeSection === 'partner-requests' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <span className="flex items-center space-x-2.5">
@@ -476,7 +476,7 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
-              onClick={() => setActiveSection('messages')}
+              onClick={() => { setActiveSection('messages'); onNavigate('messages'); }}
               className={`flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left cursor-pointer ${activeSection === 'messages' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <span className="flex items-center space-x-2.5">
@@ -491,7 +491,7 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
-              onClick={() => setActiveSection('announcements')}
+              onClick={() => { setActiveSection('announcements'); onNavigate('announcements'); }}
               className={`flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'announcements' ? 'bg-blue-50 text-brand-primary font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <span className="flex items-center space-x-2.5">
@@ -506,7 +506,7 @@ export default function MyListingsDashboardView({
             </button>
 
             <button
-              onClick={() => setActiveSection('settings')}
+              onClick={() => { setActiveSection('settings'); onNavigate('settings'); }}
               className={`flex items-center space-x-2.5 px-4 py-3 rounded-xl text-xs font-semibold transition-any text-left ${activeSection === 'settings' ? 'bg-blue-50 text-brand-primary' : 'text-slate-600 hover:bg-slate-50'}`}
             >
               <Settings className="w-4 h-4 shrink-0" />
