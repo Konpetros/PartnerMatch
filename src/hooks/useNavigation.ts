@@ -47,6 +47,19 @@ const VIEW_TO_PATH: Partial<Record<AppView, string>> = {
   'terms': '/terms',
   'gdpr': '/gdpr',
   'cookie-policy': '/cookies',
+  'profile-setup': '/profile-setup',
+  'my-listings': '/dashboard',
+  'settings': '/dashboard/settings',
+  'my-profile': '/dashboard/profile',
+  'announcements': '/dashboard/announcements',
+  'favourites': '/dashboard/favourites',
+  'partner-requests': '/dashboard/partner-requests',
+  'messages': '/dashboard/messages',
+  'admin': '/admin',
+  'admin-pending': '/admin/pending',
+  'admin-listings': '/admin/listings',
+  'admin-users': '/admin/users',
+  'admin-announcements': '/admin/announcements',
 };
 
 const PATH_TO_VIEW: Record<string, AppView> = Object.fromEntries(
