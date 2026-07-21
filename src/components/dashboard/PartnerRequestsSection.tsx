@@ -199,7 +199,10 @@ export default function PartnerRequestsSection({
                 </div>
 
                 {req.message && (
-                  <p className="text-xs text-slate-500 leading-relaxed bg-slate-50 rounded-xl px-4 py-3 italic">"{req.message}"</p>
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">My message</p>
+                    <p className="text-xs text-slate-500 leading-relaxed bg-slate-50 rounded-xl px-4 py-3 italic">"{req.message}"</p>
+                  </div>
                 )}
 
                 {req.status === 'accepted' && (
