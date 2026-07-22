@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield, LayoutGrid } from 'lucide-react';
-import { updateUserPassword, deleteUserAccount, isEmailPasswordUser, reauthenticateUser, reauthenticateCurrentUser } from '../services/firebase/auth';
+import { Lock, Trash2, Bell, Eye, EyeOff, AlertTriangle, Check, Shield, LayoutGrid, User } from 'lucide-react';
+import { updateUserPassword, deleteUserAccount, isEmailPasswordUser, reauthenticateUser, reauthenticateCurrentUser, getCurrentUserInfo } from '../services/firebase/auth';
 import { deleteUserData, saveUserSettings, getUserSettings, saveProfilePrivacySettings } from '../services/firebase/firestore';
 
 interface SettingsPanelProps {
@@ -145,11 +145,31 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
     }
   };
 
+  const { displayName, email } = getCurrentUserInfo();
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
         <h2 className="text-lg font-black text-slate-800 font-sans tracking-tight">Account Settings</h2>
         <p className="text-xs text-slate-500 mt-1">Manage your account preferences and security.</p>
+      </div>
+
+      {/* Account Info */}
+      <div className="bg-white rounded-2xl border border-slate-100 p-5 space-y-4 shadow-sm">
+        <div className="flex items-center space-x-2">
+          <User className="w-4 h-4 text-brand-primary" />
+          <h3 className="text-sm font-bold text-slate-800">Account Info</h3>
+        </div>
+        <div className="space-y-3">
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Name</p>
+            <p className="text-sm font-semibold text-slate-700 mt-0.5">{displayName}</p>
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Email</p>
+            <p className="text-sm font-semibold text-slate-700 mt-0.5">{email}</p>
+          </div>
+        </div>
       </div>
 
       {/* Privacy & Visibility */}

@@ -124,3 +124,11 @@ export const isEmailPasswordUser = (): boolean => {
   if (!user) return false;
   return user.providerData.some(p => p.providerId === 'password');
 };
+
+export const getCurrentUserInfo = (): { displayName: string; email: string } => {
+  const user = auth.currentUser;
+  return {
+    displayName: user?.displayName || 'Not set',
+    email: user?.email || 'Not set',
+  };
+};
