@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, PlusCircle, Compass, LogIn, Users, LayoutDashboard, User, LogOut, Settings, Megaphone, Heart, Handshake, MessageSquare } from 'lucide-react';
 import PartnerMatchLogo from '../assets/PartnerMatchLogo';
+import NotificationBell from './NotificationBell';
 
 interface NavbarProps {
   currentView: string;
@@ -14,6 +15,13 @@ interface NavbarProps {
   currentUser: string | null;
   onSignOut: () => void;
   isAdmin: boolean;
+  notifications?: {
+    unreadMessagesCount: number;
+    pendingRequestsCount: number;
+    unreadAnnouncementsCount: number;
+    pendingListingsCount: number;
+    totalCount: number;
+  };
 }
 
 export default function Navbar({
@@ -23,6 +31,7 @@ export default function Navbar({
   currentUser,
   onSignOut,
   isAdmin,
+  notifications,
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
@@ -122,7 +131,17 @@ export default function Navbar({
                 <span>Sign In</span>
               </button>
             ) : (
-              <div className="flex items-center">
+              <div className="flex items-center gap-2">
+                {notifications && (
+                  <NotificationBell
+                    unreadMessagesCount={notifications.unreadMessagesCount}
+                    pendingRequestsCount={notifications.pendingRequestsCount}
+                    unreadAnnouncementsCount={notifications.unreadAnnouncementsCount}
+                    pendingListingsCount={notifications.pendingListingsCount}
+                    totalCount={notifications.totalCount}
+                    onNavigate={onNavigate}
+                  />
+                )}
                 <button
                   id="navbar-avatar-btn"
                   onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
