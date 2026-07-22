@@ -13,6 +13,7 @@ import { useListings } from './hooks/useListings';
 import { useProfile } from './hooks/useProfile';
 import { useProfiles } from './hooks/useProfiles';
 import { useUsers } from './hooks/useUsers';
+import { useNotifications } from './hooks/useNotifications';
 import { useNavigation } from './hooks/useNavigation';
 import { useToast } from './hooks/useToast';
 import { Listing } from './types';
@@ -65,6 +66,8 @@ export default function App() {
 
   // All registered users for the admin panel
   const { adminUsers } = useUsers(isAdmin);
+
+  const notifications = useNotifications(currentUserUid, isAdmin, listings);
 
   // Navigation
   const {
@@ -236,6 +239,7 @@ export default function App() {
           currentUser={currentUser}
           onSignOut={onSignOut}
           isAdmin={isAdmin}
+          notifications={currentUser ? notifications : undefined}
         />
       )}
 
