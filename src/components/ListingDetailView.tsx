@@ -21,8 +21,12 @@ import {
   Tags,
   Share2,
   Link2,
-  Check
+  Check,
+  Zap,
+  Target,
+  Users
 } from 'lucide-react';
+import IconBadge from './IconBadge';
 
 interface ListingDetailProps {
   listing: Listing;
@@ -202,48 +206,28 @@ export default function ListingDetailView({ listing, onBack, onViewOrganisation,
               </div>
               <p className="text-xs text-slate-400 font-semibold">
                 {getRelativeTime(listing.createdAt)}
-                {listing.createdAt && listing.partnerSearchDeadline ? ' · ' : ''}
-                {listing.partnerSearchDeadline ? `Deadline ${formatDate(listing.partnerSearchDeadline)}` : ''}
               </p>
             </div>
 
-            <div className="bg-slate-50 rounded-2xl border border-slate-100 px-4 py-1 flex flex-col">
-              {listing.keyActions.length > 0 && (
-                <div className="flex items-center gap-3 py-2.5">
-                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[52px] shrink-0">Key Action</span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {listing.keyActions.map((action) => (
-                      <span key={action} className="text-[9px] font-extrabold px-2.5 py-1 rounded-md bg-blue-100 text-blue-800">
-                        {action}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {listing.keyActions.map((action) => (
+                <IconBadge key={action} icon={Zap} color="blue">{action}</IconBadge>
+              ))}
+              {listing.sectors && listing.sectors.map((sector) => (
+                <IconBadge key={sector} icon={Target} color="emerald">{sector}</IconBadge>
+              ))}
               {listing.projectRole && (
-                <div className="border-t border-slate-100 flex items-center gap-3 py-2.5">
-                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[52px] shrink-0">Role</span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
-                      <span className="text-[9px] font-extrabold px-2.5 py-1 rounded-md bg-violet-100 text-violet-800">Coordinator</span>
-                    )}
-                    {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
-                      <span className="text-[9px] font-extrabold px-2.5 py-1 rounded-md bg-violet-100 text-violet-800">Partner</span>
-                    )}
-                  </div>
-                </div>
+                <>
+                  {(listing.projectRole === 'Coordinator' || listing.projectRole === 'Both') && (
+                    <IconBadge icon={Users} color="violet">Coordinator</IconBadge>
+                  )}
+                  {(listing.projectRole === 'Partner' || listing.projectRole === 'Both') && (
+                    <IconBadge icon={Users} color="violet">Partner</IconBadge>
+                  )}
+                </>
               )}
-              {listing.sectors && listing.sectors.length > 0 && (
-                <div className="border-t border-slate-100 flex items-center gap-3 py-2.5">
-                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider min-w-[52px] shrink-0">Sector</span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {listing.sectors.map((sector) => (
-                      <span key={sector} className="text-[9px] font-extrabold px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800">
-                        {sector}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              {listing.partnerSearchDeadline && (
+                <IconBadge icon={Calendar} color="orange">{formatDate(listing.partnerSearchDeadline)}</IconBadge>
               )}
             </div>
 
