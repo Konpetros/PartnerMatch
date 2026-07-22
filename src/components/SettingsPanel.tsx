@@ -42,6 +42,7 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
 
   // Display preferences state
   const [defaultSortBy, setDefaultSortBy] = useState<'newest' | 'deadline' | 'views'>('newest');
+  const [inAppNotifications, setInAppNotifications] = useState(true);
   const [prefsSaved, setPrefsSaved] = useState(false);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
       setShowLocationOnProfile(settings.showLocationOnProfile);
       setProfilePublic(settings.profilePublic);
       setDefaultSortBy(settings.defaultSortBy);
+      setInAppNotifications(settings.inAppNotifications);
     });
   }, [currentUserUid]);
 
@@ -267,6 +269,24 @@ export default function SettingsPanel({ currentUserUid, onAccountDeleted }: Sett
               <option value="deadline">⏳ Deadline Soonest</option>
               <option value="views">🔥 Most Viewed</option>
             </select>
+          </div>
+          <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+            <div>
+              <p className="text-xs font-semibold text-slate-700">In-app notifications</p>
+              <p className="text-[11px] text-slate-400">Show unread counts on the notification bell</p>
+            </div>
+            <button
+              onClick={async () => {
+                const val = !inAppNotifications;
+                setInAppNotifications(val);
+                await saveUserSettings(currentUserUid, { inAppNotifications: val });
+                setPrefsSaved(true);
+                setTimeout(() => setPrefsSaved(false), 2000);
+              }}
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer shrink-0 ${inAppNotifications ? 'bg-brand-primary' : 'bg-slate-200'}`}
+            >
+              <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${inAppNotifications ? 'translate-x-4' : 'translate-x-0.5'}`} />
+            </button>
           </div>
         </div>
       </div>
