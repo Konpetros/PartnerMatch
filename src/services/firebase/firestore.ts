@@ -253,6 +253,7 @@ export const saveUserSettings = async (userId: string, settings: {
   showLocationOnProfile?: boolean;
   profilePublic?: boolean;
   defaultSortBy?: 'newest' | 'deadline' | 'views';
+  inAppNotifications?: boolean;
 }): Promise<void> => {
   await setDoc(doc(db, 'users', userId), { settings }, { merge: true });
 };
@@ -263,6 +264,7 @@ export const getUserSettings = async (userId: string): Promise<{
   showLocationOnProfile: boolean;
   profilePublic: boolean;
   defaultSortBy: 'newest' | 'deadline' | 'views';
+  inAppNotifications: boolean;
 }> => {
   const snap = await getDoc(doc(db, 'users', userId));
   if (!snap.exists()) return {
@@ -271,6 +273,7 @@ export const getUserSettings = async (userId: string): Promise<{
     showLocationOnProfile: true,
     profilePublic: true,
     defaultSortBy: 'newest',
+    inAppNotifications: true,
   };
   const settings = snap.data()?.settings || {};
   return {
@@ -279,6 +282,7 @@ export const getUserSettings = async (userId: string): Promise<{
     showLocationOnProfile: settings.showLocationOnProfile ?? true,
     profilePublic: settings.profilePublic ?? true,
     defaultSortBy: settings.defaultSortBy ?? 'newest',
+    inAppNotifications: settings.inAppNotifications ?? true,
   };
 };
 
