@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bell, MessageSquare, Handshake, Megaphone, FileText } from 'lucide-react';
+import { Bell, MessageSquare, Handshake, Megaphone, FileText, X } from 'lucide-react';
 
 interface NotificationBellProps {
   unreadMessagesCount: number;
@@ -19,6 +19,7 @@ export default function NotificationBell({
   onNavigate,
 }: NotificationBellProps) {
   const [open, setOpen] = useState(false);
+  const [clearedKeys, setClearedKeys] = useState<string[]>([]);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,12 +32,15 @@ export default function NotificationBell({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const items = [
+  const allItems = [
     { key: 'messages', count: unreadMessagesCount, label: 'unread message', icon: MessageSquare, view: 'messages', color: 'text-blue-600 bg-blue-50' },
     { key: 'requests', count: pendingRequestsCount, label: 'pending partner request', icon: Handshake, view: 'partner-requests', color: 'text-violet-600 bg-violet-50' },
     { key: 'announcements', count: unreadAnnouncementsCount, label: 'new announcement', icon: Megaphone, view: 'announcements', color: 'text-amber-600 bg-amber-50' },
     { key: 'listings', count: pendingListingsCount, label: 'listing awaiting review', icon: FileText, view: 'admin-pending', color: 'text-red-600 bg-red-50' },
   ].filter((item) => item.count > 0);
+
+  const items = allItems.filter((item) => !clearedKeys.includes(item.key));
+  const visibleCount = items.reduce((sum, item) => sum + item.count, 0);
 
   return (
     <div className="relative" ref={ref}>
@@ -46,17 +50,27 @@ export default function NotificationBell({
         aria-label="Notifications"
       >
         <Bell className="w-[18px] h-[18px]" />
-        {totalCount > 0 && (
+        {visibleCount > 0 && (
           <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 flex items-center justify-center bg-red-500 text-white text-[9px] font-bold rounded-full">
-            {totalCount > 9 ? '9+' : totalCount}
+            {visibleCount > 9 ? '9+' : visibleCount}
           </span>
         )}
       </button>
 
       {open && (
         <div className="absolute right-0 top-12 bg-white rounded-[16px] border border-slate-200 shadow-xl w-72 z-50 animate-fade-in overflow-hidden">
-          <div className="px-4 py-3 border-b border-slate-100">
+          <div className="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
             <p className="text-sm font-bold text-slate-800">Notifications</p>
+            {items.length > 0 && (
+              <button
+                onClick={() => setClearedKeys(allItems.map((item) => item.key))}
+                className="flex items-center gap-1 text-[10px] font-bold text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                title="Hide these for now — anything still unresolved will reappear next time you visit"
+              >
+                <X className="w-3 h-3" />
+                Clear All
+              </button>
+            )}
           </div>
           {items.length === 0 ? (
             <div className="px-4 py-8 text-center">
