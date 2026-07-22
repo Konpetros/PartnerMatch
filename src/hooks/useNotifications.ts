@@ -6,6 +6,7 @@ import {
   getSentRequests,
   subscribeToAnnouncements,
   getDismissedAnnouncements,
+  getUserSettings,
 } from '../services/firebase/firestore';
 
 export const useNotifications = (
@@ -13,6 +14,7 @@ export const useNotifications = (
   isAdmin: boolean,
   listings: Listing[]
 ) => {
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [incomingRequests, setIncomingRequests] = useState<PartnerRequest[]>([]);
   const [sentRequests, setSentRequests] = useState<PartnerRequest[]>([]);
   const [announcements, setAnnouncements] = useState<any[]>([]);
@@ -20,23 +22,31 @@ export const useNotifications = (
 
   useEffect(() => {
     if (!currentUserUid) return;
+    getUserSettings(currentUserUid).then((settings) => {
+      setNotificationsEnabled(settings.inAppNotifications);
+    });
+  }, [currentUserUid]);
+
+  useEffect(() => {
+    if (!currentUserUid || !notificationsEnabled) return;
     Promise.all([getIncomingRequests(currentUserUid), getSentRequests(currentUserUid)]).then(
       ([incoming, sent]) => {
         setIncomingRequests(incoming);
         setSentRequests(sent);
       }
     );
-  }, [currentUserUid]);
+  }, [currentUserUid, notificationsEnabled]);
 
   useEffect(() => {
+    if (!notificationsEnabled) return;
     const unsubscribe = subscribeToAnnouncements((data) => setAnnouncements(data));
     return () => unsubscribe();
-  }, []);
+  }, [notificationsEnabled]);
 
   useEffect(() => {
-    if (!currentUserUid) return;
+    if (!currentUserUid || !notificationsEnabled) return;
     getDismissedAnnouncements(currentUserUid).then(setDismissedIds);
-  }, [currentUserUid]);
+  }, [currentUserUid, notificationsEnabled]);
 
   const conversations = [...incomingRequests, ...sentRequests]
     .filter((r) => r.status === 'accepted')
@@ -48,10 +58,10 @@ export const useNotifications = (
     return !myLastRead || req.lastMessageAt > myLastRead;
   };
 
-  const unreadConversations = conversations.filter(isConversationUnread);
-  const pendingIncomingRequests = incomingRequests.filter((r) => r.status === 'pending');
-  const visibleAnnouncements = announcements.filter((a: any) => !dismissedIds.includes(a.id));
-  const pendingListings = isAdmin ? listings.filter((l) => l.status === 'pending') : [];
+  const unreadConversations = notificationsEnabled ? conversations.filter(isConversationUnread) : [];
+  const pendingIncomingRequests = notificationsEnabled ? incomingRequests.filter((r) => r.status === 'pending') : [];
+  const visibleAnnouncements = notificationsEnabled ? announcements.filter((a: any) => !dismissedIds.includes(a.id)) : [];
+  const pendingListings = notificationsEnabled && isAdmin ? listings.filter((l) => l.status === 'pending') : [];
 
   const unreadMessagesCount = unreadConversations.length;
   const pendingRequestsCount = pendingIncomingRequests.length;
